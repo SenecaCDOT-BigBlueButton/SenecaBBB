@@ -141,15 +141,12 @@
                         callback(events);
                     }
             );
+            function run(){
+    var d = $('#calendar').fullCalendar('getDate');
+    alert("The current date of the calendar is " + d);
+            }
         </script>
         <style type='text/css'>
-            body {
-                margin-top: 40px;
-                text-align: center;
-                font-size: 14px;
-                font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-            }
-
             #calendar {
                 width: 900px;
                 margin: 0 auto;
@@ -159,12 +156,18 @@
     </head>
     <body>
         <div id="header">
-            <h1>Calendar</h1><p id="layoutdims">
-            View type: 
-                    <select name="view">
-                        <option value="calendar">Calendar</option>
-                        <option value="grid">Grid</option>
-                    </select></p>
+            <h1>Calendar</h1>
+            <p id="layoutdims">
+                View type: 
+                <select name="view">
+                    <option value="calendar">Calendar</option>
+                    <option value="grid">Grid</option>
+                </select>
+                <%
+                    String type = (String) session.getAttribute("iUserLevel");
+                    out.write("You are a <strong>" + type + "</strong>");
+                %>
+            </p>
         </div>
         <div class="colmask leftmenu">
             <div class="colleft">
@@ -172,8 +175,7 @@
                     <div id='calendar'></div>
                 </div>
                 <div class="col2">
-                    
-                   <a href ="settings.jsp">User Settings</a><br><br>
+                    <a href ="settings.jsp">User Settings</a><br/><br/>
                     <%
                         String level = (String) session.getAttribute("iUserType");
                         if (level.equals("professor") || level.equals("admin")) {
@@ -181,7 +183,7 @@
                         }
                         if (level.equals("admin")) {
                             out.write("<a href =\"manage_professors.jsp\">Manage Professors</a><br><br>");
-                             out.write("<a href =\"manage_users.jsp\">Manage Users</a><br><br>");
+                            out.write("<a href =\"manage_users.jsp\">Manage Users</a><br><br>");
                         }
                     %>
                     <a href="index.jsp?error=Logged out"><strong>Log out</strong></a>
@@ -191,5 +193,6 @@
         <div id="footer">
             This is the footer
         </div>
+             <button type="button" id="my-button" class="my-button" onclick="run()">Click Me!</button>       
     </body>
 </html>

@@ -4,13 +4,6 @@
     <head>
         <link rel='stylesheet' type='text/css' href='css/calendar_layout.css' />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <style type='text/css'>
-            #content {
-                margin: auto;
-                float: left;
-            }
-
-        </style>
         <title>User and Meeting Settings</title>
     </head>
     <body>

@@ -150,3 +150,8 @@ img {
     padding:10px;
     margin:0;
 }
+#content {
+    margin: auto;
+    float: left;
+    text-align:left;
+}

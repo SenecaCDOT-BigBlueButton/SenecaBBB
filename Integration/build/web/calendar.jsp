@@ -10,13 +10,23 @@
         <script type='text/javascript' src='fullcalendar/fullcalendar.min.js'></script>
         <script type='text/javascript' src='fullcalendar/date.js'></script>
         <script type='text/javascript'>
-
+            <% String type = (String) session.getAttribute("iUserType");%>
+            var user = "<%=type%>";
             $(document).ready(function() {
 
                 var date = new Date();
                 var d = date.getDate();
                 var m = date.getMonth();
                 var y = date.getFullYear();
+                var weekday = new Array(7);
+                weekday[0] = "Sunday";
+                weekday[1] = "Monday";
+                weekday[2] = "Tuesday";
+                weekday[3] = "Wednesday";
+                weekday[4] = "Thursday";
+                weekday[5] = "Friday";
+                weekday[6] = "Saturday";
+
 
                 $('#calendar').fullCalendar({
                     header: {
@@ -25,126 +35,85 @@
                         right: 'month,agendaWeek,agendaDay'
                     },
                     eventClick: function(calEvent, jsEvent, view) {
-                        alert(calEvent.custom);
-                    },
-                    editable: true,
-                    events: [
-                        // some original fullCalendar examples
+                        var todayStart = new Date(Date.today());
+                        var todayEnd = new Date(Date.today().add(1).day())
+                        if (calEvent.start.between(todayStart, todayEnd))
                         {
-                            title: 'First event',
-                            start: new Date(y, m, d, 15, 0),
-                            end: new Date(y, m, d, 16, 0),
-                            allDay: false,
-                            custom: "First meeting of multiple",
-                            color: 'black'
-                        },
-                        {
-                            title: 'Second event',
-                            start: new Date(y, m, d, 16, 0),
-                            end: new Date(y, m, d, 17, 0),
-                            allDay: false,
-                            color: 'black',
-                            custom: "Second meeting of multiple"
-                        },
-                        {
-                            title: 'Third event',
-                            start: new Date(y, m, d, 17, 0),
-                            end: new Date(y, m, d, 18, 0),
-                            allDay: false,
-                            color: 'black',
-                            custom: "Final meeting of multiple"
-                        },
-                        {
-                            title: 'Click for google',
-                            start: new Date(y, m, d - 3, 17, 30),
-                            allDay: false,
-                            custom: "Sending you to Google",
-                            url: 'http://google.ca/',
-                            color: 'red'
+                            var p = confirm("Do you wish to start the meeting?");
+                            if (p)
+                                window.location.href = calEvent.link;
+                            else
+                                window.location.href = calEvent.event;
                         }
-                    ]
+                        else
+                            window.location.href = calEvent.event;
+                    },
+                    editable: true
                 });
 
-                // adding a every monday and wednesday events:
-                $('#calendar').fullCalendar('addEventSource',
-                        function(start, end, callback) {
-                            // When requested, dynamically generate virtual
-                            // events for every monday and wednesday.
-                            var events = [];
+                if (user == "student" || user == "professor" || user == "admin" || user == "superadmin")
+                {
+                    $('#calendar').fullCalendar('addEventSource',
+                            function(start, end, callback) {
+                                // When requested, dynamically generate virtual
+                                // events for every monday and wednesday.
+                                var events = [];
 
-                            for (loop = start.getTime();
-                                    loop <= end.getTime();
-                                    loop = loop + (24 * 60 * 60 * 1000)) {
+                                for (loop = start.getTime();
+                                        loop <= end.getTime();
+                                        loop = loop + (24 * 60 * 60 * 1000)) {
 
-                                var test_date = new Date(loop);
+                                    var test_date = new Date(loop);
 
-                                if (test_date.is().monday()) {
-                                    // we're in Moday, create the event
-                                    events.push({
-                                        editable: false,
-                                        title: 'I hate mondays - Garfield',
-                                        start: new Date(test_date.getFullYear(), test_date.getMonth(), test_date.getDate(), 15, 20),
-                                        allDay: false,
-                                        custom: "Some custom information"
-                                    });
-                                }
+                                    if (test_date.is().monday()) {
+                                        // we're in Moday, create the event
+                                        events.push({
+                                            editable: false,
+                                            title: 'Lecture',
+                                            start: new Date(test_date.getFullYear(), test_date.getMonth(), test_date.getDate(), 15, 20),
+                                            allDay: false,
+                                            link: "http://www.google.ca",
+                                            event: "event_details.jsp?date=" + new Date(test_date.getFullYear(), test_date.getMonth(), test_date.getDate(), 15, 20),
+                                            color: 'blue'
+                                        });
+                                    }
+                                } // for loop
 
-                                if (test_date.is().wednesday()) {
-                                    // we're in Wednesday, create the Wednesday event
-                                    events.push({
-                                        editable: false,
-                                        title: 'It\'s the middle of the week!',
-                                        start: new Date(test_date.getFullYear(), test_date.getMonth(), test_date.getDate(), 9, 50),
-                                        allDay: false,
-                                        custom: "Some more custom information",
-                                        color: 'green'
-                                    });
-                                }
-                            } // for loop
+                                // return events generated
+                                callback(events);
+                            }
+                    );
+                }
+                var events = [];
+                events.push({
+                    title: 'Meeting 1',
+                    start: new Date(y, m, d, 16, 0),
+                    end: new Date(y, m, d, 17, 0),
+                    allDay: false,
+                    color: 'black',
+                    event: "event_details2.jsp?date=" + new Date(y, m, d, 16, 0) + "&day=" + weekday[new Date(y, m, d, 16, 0).getDay()] + "&name=" + "Meeting 1",
+                    link: "http://www.google.ca"
+                });
+                events.push({
+                    title: 'Meeting 2',
+                    start: new Date(y, m, d + 2, 17, 0),
+                    end: new Date(y, m, d + 2, 18, 0),
+                    allDay: false,
+                    color: 'black',
+                    event: "event_details2.jsp?date=" + new Date(y, m, d + 2, 17, 0) + "&day=" + weekday[new Date(y, m, d + 2, 17, 0).getDay()] + "&name=" + "Meeting 2",
+                    link: "http://www.google.ca"
+                });
 
-                            // return events generated
-                            callback(events);
-                        }
-                );
+                if (user == "student" || user == "admin" || user == "superadmin")
+                {
+                    $('#calendar').fullCalendar('renderEvent', events[0], true);
+                    $('#calendar').fullCalendar('renderEvent', events[1], true);
+                }
+                function run() {
+                    var d = $('#calendar').fullCalendar('getDate');
+                    alert("The current date of the calendar is " + d);
+                }
             });
-            // adding a every monday and wednesday events:
-            $('#calendar').fullCalendar('addEventSource',
-                    function(start, end, callback) {
-                        // When requested, dynamically generate virtual
-                        // events for every monday and wednesday.
-                        var events = [];
-
-                        for (loop = start.getTime();
-                                loop <= end.getTime();
-                                loop = loop + (24 * 60 * 60 * 1000)) {
-
-                            var test_date = new Date(loop);
-
-                            if (test_date.is().monday()) {
-                                // we're in Moday, create the event
-                                events.push({
-                                    title: 'I hate mondays - Garfield',
-                                    start: test_date
-                                });
-                            }
-
-                            if (test_date.is().wednesday()) {
-                                // we're in Wednesday, create the Wednesday event
-                                events.push({
-                                    title: 'It\'s the middle of the week!',
-                                    start: test_date
-                                });
-                            }
-                        } // for loop
-
-                        // return events generated
-                        callback(events);
-                    }
-            );
-            function run(){
-    var d = $('#calendar').fullCalendar('getDate');
-    alert("The current date of the calendar is " + d);
-            }
         </script>
         <style type='text/css'>
             #calendar {
@@ -164,7 +133,6 @@
                     <option value="grid">Grid</option>
                 </select>
                 <%
-                    String type = (String) session.getAttribute("iUserLevel");
                     out.write("You are a <strong>" + type + "</strong>");
                 %>
             </p>
@@ -178,10 +146,10 @@
                     <a href ="settings.jsp">User Settings</a><br/><br/>
                     <%
                         String level = (String) session.getAttribute("iUserType");
-                        if (level.equals("professor") || level.equals("admin")) {
+                        if (level.equals("professor")) {
                             out.write("<a href =\"class_settings.jsp\">Class Settings</a><br><br>");
                         }
-                        if (level.equals("admin")) {
+                        if (level.equals("admin") || level.equals("superadmin")) {
                             out.write("<a href =\"manage_professors.jsp\">Manage Professors</a><br><br>");
                             out.write("<a href =\"manage_users.jsp\">Manage Users</a><br><br>");
                         }
@@ -193,6 +161,6 @@
         <div id="footer">
             This is the footer
         </div>
-             <button type="button" id="my-button" class="my-button" onclick="run()">Click Me!</button>       
+        <button type="button" id="my-button" class="my-button" onclick="run()">Date range</button>       
     </body>
 </html>

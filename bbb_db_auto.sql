@@ -197,9 +197,9 @@ CREATE TABLE section (
 );
 
 CREATE TABLE professor (
+  u_id            VARCHAR(50),
   sub_id          CHAR(8),
   sc_id           CHAR(2),
-  u_id            VARCHAR(50),
   CONSTRAINT pk_professor 
     PRIMARY KEY (sub_id, sc_id, u_id),
   CONSTRAINT fk_section_of_professor
@@ -207,17 +207,17 @@ CREATE TABLE professor (
     REFERENCES section (sub_id, sc_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT fk_bbb_user_professor
+  CONSTRAINT fk_bbb_user_of_professor
     FOREIGN KEY (u_id) 
     REFERENCES bbb_user (u_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE  
 );
 
-CREATE TABLE student ( 
+CREATE TABLE student (
+  u_id            VARCHAR(50), 
   sub_id          CHAR(8),
   sc_id           CHAR(2),
-  u_id            VARCHAR(50),
   s_isbanned      BIT(1),
   CONSTRAINT pk_student 
     PRIMARY KEY (sub_id, sc_id, u_id),

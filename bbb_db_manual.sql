@@ -1,6 +1,12 @@
 /*
   V 0.2
   all column name that has a '_is' part is binary and uses BIT(1) for column type
+  this script uses table 'bbb_admin' to generate primary keys for tables:
+        user_role
+        meeting
+        meeting_schedule
+        lecture
+        lecture_schedule
   -Bo Li
 */
 DROP TABLE IF EXISTS guest_lecturer CASCADE;
@@ -24,12 +30,18 @@ DROP TABLE IF EXISTS bbb_admin CASCADE;
 
 # admin is future keyword, using bbb_admin instead
 CREATE TABLE bbb_admin (
+  row_num         TINYINT,
   next_m_id       MEDIUMINT UNSIGNED,
-  next_ms_id      MEDIUMINT UNSIGNED
+  next_ms_id      MEDIUMINT UNSIGNED,
+  next_l_id       MEDIUMINT UNSIGNED,
+  next_ls_id      MEDIUMINT UNSIGNED,
+  next_ur_id      MEDIUMINT UNSIGNED,
+  CONSTRAINT pk_bbb_admin
+    PRIMARY KEY (row_num)
 );
 
 CREATE TABLE user_role (
-  ur_id           MEDIUMINT UNSIGNED AUTO_INCREMENT,
+  ur_id           MEDIUMINT UNSIGNED,
   ur_name         VARCHAR(50),
   ur_rolemask     BIT(10),
   CONSTRAINT pk_user_role 
@@ -59,7 +71,7 @@ CREATE TABLE bbb_user (
 );
 
 CREATE TABLE meeting_schedule (
-  ms_id           MEDIUMINT UNSIGNED AUTO_INCREMENT,
+  ms_id           MEDIUMINT UNSIGNED,
   ms_intdatetime  DATETIME,
   ms_intervals    MEDIUMINT UNSIGNED,
   ms_repeats      MEDIUMINT UNSIGNED,
@@ -98,7 +110,7 @@ CREATE TABLE user_info (
 );
 
 CREATE TABLE meeting (
-  m_id            MEDIUMINT UNSIGNED AUTO_INCREMENT,
+  m_id            MEDIUMINT UNSIGNED,
   m_intdatetime   DATETIME NOT NULL,
   m_duration      MEDIUMINT UNSIGNED NOT NULL,
   m_iscancel      BIT(1),
@@ -222,7 +234,7 @@ CREATE TABLE student (
 );
 
 CREATE TABLE lecture_schedule (
-  ls_id           MEDIUMINT UNSIGNED AUTO_INCREMENT,
+  ls_id           MEDIUMINT UNSIGNED,
   sub_id          CHAR(8),
   sc_id           CHAR(2),
   ls_intdatetime  DATETIME,
@@ -290,6 +302,6 @@ CREATE TABLE guest_lecturer (
     FOREIGN KEY (u_id) 
     REFERENCES bbb_user (u_id)
     ON DELETE CASCADE
-	ON UPDATE CASCADE
+    ON UPDATE CASCADE
 );
   

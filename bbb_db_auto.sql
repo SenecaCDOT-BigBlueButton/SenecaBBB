@@ -1,6 +1,12 @@
 /*
   V 0.2
   all column name that has a '_is' part is binary and uses BIT(1) for column type
+  this script uses AUTO_INCREMENT to generate primary keys for tables:
+        user_role
+        meeting
+        meeting_schedule
+        lecture
+        lecture_schedule
   -Bo Li
 */
 DROP TABLE IF EXISTS guest_lecturer CASCADE;
@@ -24,8 +30,14 @@ DROP TABLE IF EXISTS bbb_admin CASCADE;
 
 # admin is future keyword, using bbb_admin instead
 CREATE TABLE bbb_admin (
+  row_num         TINYINT,
   next_m_id       MEDIUMINT UNSIGNED,
-  next_ms_id      MEDIUMINT UNSIGNED
+  next_ms_id      MEDIUMINT UNSIGNED,
+  next_l_id       MEDIUMINT UNSIGNED,
+  next_ls_id      MEDIUMINT UNSIGNED,
+  next_ur_id      MEDIUMINT UNSIGNED,
+  CONSTRAINT pk_bbb_admin
+    PRIMARY KEY (row_num)
 );
 
 CREATE TABLE user_role (
@@ -185,9 +197,9 @@ CREATE TABLE section (
 );
 
 CREATE TABLE professor (
+  u_id            VARCHAR(50),
   sub_id          CHAR(8),
   sc_id           CHAR(2),
-  u_id            VARCHAR(50),
   CONSTRAINT pk_professor 
     PRIMARY KEY (sub_id, sc_id, u_id),
   CONSTRAINT fk_section_of_professor
@@ -195,17 +207,17 @@ CREATE TABLE professor (
     REFERENCES section (sub_id, sc_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT fk_bbb_user_professor
+  CONSTRAINT fk_bbb_user_of_professor
     FOREIGN KEY (u_id) 
     REFERENCES bbb_user (u_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE  
 );
 
-CREATE TABLE student ( 
+CREATE TABLE student (
+  u_id            VARCHAR(50), 
   sub_id          CHAR(8),
   sc_id           CHAR(2),
-  u_id            VARCHAR(50),
   s_isbanned      BIT(1),
   CONSTRAINT pk_student 
     PRIMARY KEY (sub_id, sc_id, u_id),
@@ -239,7 +251,7 @@ CREATE TABLE lecture_schedule (
 );
   
 CREATE TABLE lecture (
-  l_id            MEDIUMINT UNSIGNED,
+  l_id            MEDIUMINT UNSIGNED AUTO_INCREMENT,
   ls_id           MEDIUMINT UNSIGNED,
   sub_id          CHAR(8),
   sc_id           CHAR(2),
@@ -290,6 +302,6 @@ CREATE TABLE guest_lecturer (
     FOREIGN KEY (u_id) 
     REFERENCES bbb_user (u_id)
     ON DELETE CASCADE
-	ON UPDATE CASCADE
+    ON UPDATE CASCADE
 );
   

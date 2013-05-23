@@ -12,6 +12,14 @@
     if (name == null || name == "null") {
         name = "";
     }
+    String link = request.getParameter("link");
+    if (link == null || link == "null") {
+        link = "";
+    }
+    String create = request.getParameter("create");
+    if (create == null || create == "null") {
+        create = "";
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -47,12 +55,16 @@
             }
         </style>
         <script>
+            var created = "<%=create%>";
+
             function edit() {
                 document.getElementById("eName").disabled = false;
                 document.getElementById("whitelist").style.visibility = "visible";
                 document.getElementById("recorded").disabled = false;
                 document.getElementById("date").disabled = false;
-                document.getElementById("delRec").style.visibility = "visible";
+                text = document.getElementById("delRec").value;
+                if (text)
+                    document.getElementById("delRec").style.visibility = "visible";
                 document.getElementById("editMeeting").value = "Save";
                 document.getElementById("editMeeting").onclick = save;
             }
@@ -107,7 +119,7 @@
                     <table style="text-align:left">
                         <tr>
                             <td>Event Name:</td>
-                            <td><input type="text" id="eName" value="<%=name%>" disabled="disabled"></td>
+                            <td><input type="text" id="eName" value="<%=name%>" disabled></td>
                         </tr>
                         <tr>
                             <td>Event Type:</td>
@@ -121,12 +133,17 @@
                         </tr>
                         <tr>
                             <td>Recorded URL:</td>
-                            <td><a id="recURL" href="http://www.yahoo.ca">www.yahoo.ca</a></td>
+                            <td><a id="recURL" href="http://www.yahoo.ca"><%=link%></a></td>
                             <td><button id="delRec" onclick="deleteRec()" style="visibility:hidden;" type="button">Delete</button></td>
                         </tr>
                         <tr>
                             <td>Date:</td>
-                            <td><input type="text" id="date" name="date" value="<%=date%>" disabled="disabled"></td>
+                        <script>
+       if (created !== "true")
+           document.write("<td><input type=\"text\" id =\"date\" name =\"date\" value=\"<%=date%>\" disabled> </td>");
+       else
+           document.write("<td><input type=\"date\" id =\"date\" name =\"date\" value=\"<%=date%>\" disabled> </td>")
+                        </script>
                         </tr>
                         <tr>
                             <td style="vertical-align: top;">
@@ -134,10 +151,6 @@
                             </td>
                             <td>
                                 <table style="background:#C7DDFF; padding:10px;">
-                                    <tr>
-                                        <td><strong>Days:</strong></td>
-                                        <td><%=day%></td>
-                                    </tr>
                                     <tr>
                                         <td><strong>Interval:</strong></td>
                                         <td>Daily</td>
@@ -165,7 +178,7 @@
                 </div>
             </div>
             <div class="col2">
-                <a href="calendar.jsp"><strong>Back</strong></a>
+                <a href="calendar.jsp"><strong>Back to Calendar</strong></a>
             </div>
         </div>
     </div>
@@ -267,10 +280,14 @@
                     </table>
                 </div>
                 <div style="text-align: center; padding: 0 0 10px 0;" class="ep-recl-dialog-buttons">
-                    <button name="ok" onclick="hideSched(1)">OK</button>
-                    <button name="cancel" onclick="hideSched(0)">Cancel</button>
+                    <button name="ok" onclick="hideSched(1);">OK</button>
+                    <button name="cancel" onclick="hideSched(0);">Cancel</button>
                 </div>
             </div>
         </div>
+        <script>
+            if (created === "true")
+                edit();
+        </script>
     </div>
 </html>

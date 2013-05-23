@@ -12,6 +12,12 @@
         <script type='text/javascript'>
             <% String type = (String) session.getAttribute("iUserType");%>
             var user = "<%=type%>";
+            function create() {
+                if (user == "student" || user == "employee" || user == "guest")
+                    window.location.replace("event_details2.jsp?create=true");
+                else
+                    window.location.replace("event_details.jsp?create=true");
+            }
             $(document).ready(function() {
 
                 var date = new Date();
@@ -73,7 +79,7 @@
                                             start: new Date(test_date.getFullYear(), test_date.getMonth(), test_date.getDate(), 15, 20),
                                             allDay: false,
                                             link: "http://www.google.ca",
-                                            event: "event_details.jsp?date=" + new Date(test_date.getFullYear(), test_date.getMonth(), test_date.getDate(), 15, 20),
+                                            event: "event_details.jsp?date=" + new Date(test_date.getFullYear(), test_date.getMonth(), test_date.getDate(), 15, 20) + "&link=www.yahoo.ca",
                                             color: 'blue'
                                         });
                                     }
@@ -91,7 +97,7 @@
                     end: new Date(y, m, d, 17, 0),
                     allDay: false,
                     color: 'black',
-                    event: "event_details2.jsp?date=" + new Date(y, m, d, 16, 0) + "&day=" + weekday[new Date(y, m, d, 16, 0).getDay()] + "&name=" + "Meeting 1",
+                    event: "event_details2.jsp?date=" + new Date(y, m, d, 16, 0) + "&day=" + weekday[new Date(y, m, d, 16, 0).getDay()] + "&name=" + "Meeting 1" + "&link=www.yahoo.ca",
                     link: "http://www.google.ca"
                 });
                 events.push({
@@ -100,7 +106,7 @@
                     end: new Date(y, m, d + 2, 18, 0),
                     allDay: false,
                     color: 'black',
-                    event: "event_details2.jsp?date=" + new Date(y, m, d + 2, 17, 0) + "&day=" + weekday[new Date(y, m, d + 2, 17, 0).getDay()] + "&name=" + "Meeting 2",
+                    event: "event_details2.jsp?date=" + new Date(y, m, d + 2, 17, 0) + "&day=" + weekday[new Date(y, m, d + 2, 17, 0).getDay()] + "&name=" + "Meeting 2" + "&link=www.yahoo.ca",
                     link: "http://www.google.ca"
                 });
 
@@ -140,6 +146,7 @@
         <div class="colmask leftmenu">
             <div class="colleft">
                 <div class="col1">
+                    <input type="button" onclick="create()" value="Create Event"/> 
                     <div id='calendar'></div>
                 </div>
                 <div class="col2">

@@ -12,6 +12,14 @@
     if (name == null || name == "null") {
         name = "";
     }
+    String link = request.getParameter("link");
+    if (link == null || link == "null") {
+        link = "";
+    }
+    String create = request.getParameter("create");
+    if (create == null || create == "null") {
+        create = "";
+    }
     String type = (String) session.getAttribute("iUserType");
 %>
 <!DOCTYPE html>
@@ -48,13 +56,17 @@
             }
         </style>
         <script>
+            var created = "<%=create%>";
+
             function edit() {
                 document.getElementById("eName").disabled = false;
                 document.getElementById("whitelist").style.visibility = "visible";
                 document.getElementById("saveText").style.visibility = "hidden";
                 document.getElementById("recorded").disabled = false;
                 document.getElementById("date").disabled = false;
-                document.getElementById("delRec").style.visibility = "visible";
+                text = document.getElementById("delRec").value;
+                if (text)
+                    document.getElementById("delRec").style.visibility = "visible";
                 document.getElementById("editMeeting").value = "Save";
                 document.getElementById("editMeeting").onclick = save;
             }
@@ -129,12 +141,17 @@
                         </tr>
                         <tr>
                             <td>Recorded URL:</td>
-                            <td><a id="recURL" href="http://www.yahoo.ca">www.yahoo.ca</a></td>
+                            <td><a id="recURL" href="http://www.yahoo.ca"><%=link%></a></td>
                             <td><button id="delRec" onclick="deleteRec()" style="visibility:hidden;" type="button">Delete</button></td>
                         </tr>
                         <tr>
                             <td>Date:</td>
-                            <td><input type="text" id="date" name="date" value="<%=date%>" disabled="disabled"></td>
+                        <script>
+            if (created !== "true")
+                document.write("<td><input type=\"text\" id =\"date\" name =\"date\" value=\"<%=date%>\" disabled> </td>");
+            else
+                document.write("<td><input type=\"date\" id =\"date\" name =\"date\" value=\"<%=date%>\" disabled> </td>")
+                        </script>
                         </tr>
                         <tr>
                             <td style="vertical-align: top;">
@@ -142,10 +159,6 @@
                             </td>
                             <td>
                                 <table style="background:#C7DDFF; padding:10px;">
-                                    <tr>
-                                        <td><strong>Days:</strong></td>
-                                        <td>Monday</td>
-                                    </tr>
                                     <tr>
                                         <td><strong>Interval:</strong></td>
                                         <td>Weekly</td>
@@ -174,7 +187,7 @@
                 </div>
             </div>
             <div class="col2">
-                <a href="calendar.jsp"><strong>Back</strong></a>
+                <a href="calendar.jsp"><strong>Back to Calendar</strong></a>
             </div>
         </div>
     </div>
@@ -315,5 +328,8 @@
                 document.getElementById("editMeeting").style.visibility = "hidden";
                 document.getElementById("editSched").style.visibility = "hidden";
             }
+
+            if (created === "true")
+                edit();
     </script>
 </html>

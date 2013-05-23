@@ -175,7 +175,7 @@
                     </div>
                 </div>
                 <div class="col2">
-                    <a href="<%=prevPage%>"><strong>Back</strong></a>
+                    <a href="<%=prevPage%>"><strong>Back to Event Details</strong></a>
                 </div>
             </div>
         </div>

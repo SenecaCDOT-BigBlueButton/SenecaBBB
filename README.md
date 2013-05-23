@@ -26,9 +26,11 @@ sudo gedit /etc/mysql/my.cnf
 sudo service mysql restart
 ```
 
-4) Download the script file (bbb_db_auto.sql) and run it 
+4) Download the MySQL script files and run them 
 ```
-mysql -u root -p db < bbb_db_auto.sql
+mysql -u root -p db < bbb_db_manual.sql
+mysql -u root -p db < bbb_db_fn_nextval.sql
+mysql -u root -p db < bbb_db_sample_data.sql
 ```
 
 5) Connect to mysql-server (use the password you set when installing mysql server)
@@ -44,7 +46,7 @@ grant all on db.* to 'senecaBBB'@'%' IDENTIFIED by 'db';
 
 7) In NetBeans, click on the Services tab then right click Databases -> New Connection 
    and choose MySQL
-   - Host: 127.0.0.1
+   - Host: 127.0.0.1 //if not working, use your VM IP
    - Port: 3309
    - Username: senecaBBB
    - Password: db

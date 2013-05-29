@@ -63,13 +63,12 @@ public class LDAPAuthenticate {
         authenticated = "false";
         logout = false;
 
-        increaseStat(1);
+        //increaseStat(1);
 
         try {
             //Using factory get an instance of document builder
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             //parse using builder to get DOM representation of the XML file
-
             Document dom = db.parse(Thread.currentThread().getContextClassLoader().getResourceAsStream("config.xml"));
             //get the root element
             Element docEle = dom.getDocumentElement();
@@ -276,9 +275,9 @@ public class LDAPAuthenticate {
                 calculateAccessLevel();
 
                 if (title.equals("Student")) {
-                    increaseStat(2);
+                   // increaseStat(2);
                 } else {
-                    increaseStat(3);
+                   // increaseStat(3);
                 }
 
                 return true;
@@ -438,7 +437,7 @@ public class LDAPAuthenticate {
     private void reset() {
         position = userID = givenName = title = null;
     }
-
+/*
     private void increaseStat(int num) {
         try {
             FileInputStream fstream = new FileInputStream("/var/lib/tomcat6/webapps/auth/WEB-INF/stats.txt");
@@ -476,8 +475,8 @@ public class LDAPAuthenticate {
                 System.out.println("Could not access stats.txt, if developing ignore message");
             }
         }
-    }
-
+    }*/
+/*
     public int[] readStats() {
         int[] stats = {0, 0, 0};
 
@@ -497,5 +496,5 @@ public class LDAPAuthenticate {
         } catch (Exception e) {
         }
         return stats;
-    }
+    }*/
 }

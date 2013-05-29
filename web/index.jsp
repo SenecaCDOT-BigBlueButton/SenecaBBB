@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="ldap" scope="session" class="ldap.LDAPAuthenticate" />
 <%
     session.invalidate();
     String error = request.getParameter("error");
@@ -36,11 +36,11 @@
     </head>
     <body>
         <div id="error"><h2><%=error%></h2></div>
-        <form id ="login" name="formLogin" action="response.jsp" onSubmit="return validate();" method="post">
+        <form id ="login" name="formLogin" action="auth.jsp" onSubmit="return validate();" method="post">
             <h1>Log In</h1>
             <fieldset id="inputs">
-                <input id="username" name="username" type="text" placeholder="Username" autofocus required>   
-                <input id="password" name="password" type="password" placeholder="Password" required>
+                <input id="SenecaLDAPBBBLogin" name="SenecaLDAPBBBLogin" type="text" placeholder="Username" autofocus required>   
+                <input id="SenecaLDAPBBBLoginPass" name="SenecaLDAPBBBLoginPass" type="password" placeholder="Password" required>
             </fieldset>
             <fieldset id="actions">
                 <input type="submit" id="submit" value="Log in">

@@ -133,6 +133,10 @@
         <div id="header">
             <h1>Calendar</h1>
             <p id="layoutdims">
+                <%
+                    String name = (String) session.getAttribute("sUserName");
+                    out.write("<strong>" + name +"</strong>");
+                %>
                 View type: 
                 <select name="view">
                     <option value="calendar">Calendar</option>

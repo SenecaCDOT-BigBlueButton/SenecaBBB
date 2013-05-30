@@ -26,25 +26,31 @@ sudo gedit /etc/mysql/my.cnf
 sudo service mysql restart
 ```
 
-4) Download the MySQL script files and run them 
+4) Log in with the root account and create the database 'db'
+```
+mysql -u root -p 
+create database db;
+```
+
+5) Download the MySQL script files and run them 
 ```
 mysql -u root -p db < bbb_db_manual.sql
 mysql -u root -p db < bbb_db_fn_nextval.sql
 mysql -u root -p db < bbb_db_sample_data.sql
 ```
 
-5) Connect to mysql-server (use the password you set when installing mysql server)
+6) Connect to mysql-server (use the password you set when installing mysql server)
 ```
 mysql -u root -p
 ```
 
-6) Create a user for remote access to DB and grant privileges
+7) Create a user for remote access to DB and grant privileges
 ```
 create user 'senecaBBB'@'%' identified by 'db';
 grant all on db.* to 'senecaBBB'@'%' IDENTIFIED by 'db';
 ```
 
-7) In NetBeans, click on the Services tab then right click Databases -> New Connection 
+8) In NetBeans, click on the Services tab then right click Databases -> New Connection 
    and choose MySQL
    - Host: 127.0.0.1 //if not working, use your VM IP
    - Port: 3309

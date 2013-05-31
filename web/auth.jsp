@@ -19,10 +19,10 @@
                 }
                 session.setAttribute("sUserName", ldap.getGivenName());
                 session.setAttribute("sUserID", ldap.getUserID());
+                session.setAttribute("isLDAP", "true");
                 response.sendRedirect("calendar.jsp");
             }
         } else {
-            out.write("test");
             Connection conn = null;
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             conn = DriverManager.getConnection("jdbc:derby://localhost:1527/usermaster", "db", "db");
@@ -50,7 +50,7 @@
                     session.setAttribute("iUserType", rsdoLogin.getString("iUserType"));
                     session.setAttribute("iUserLevel", rsdoLogin.getString("iUserLevel"));
                     session.setAttribute("sUserName", sUserName);
-
+                    session.setAttribute("isLDAP", "false");
                     response.sendRedirect("calendar.jsp");
                 } else {
                     message = "Invalid username or password";

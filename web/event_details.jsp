@@ -20,6 +20,10 @@
     if (create == null || create == "null") {
         create = "";
     }
+    String start = request.getParameter("start");
+    if (start == null || start == "null") {
+        start = "";
+    }
     String type = (String) session.getAttribute("iUserType");
 %>
 <!DOCTYPE html>
@@ -27,7 +31,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel='stylesheet' type='text/css' href='css/calendar_layout.css' />
-        <title>Event Details</title>
+        <title>
+            <%
+                if (create.equals("true")) {
+                    out.write("Create Event");
+                } else {
+                    out.write("Event Details");
+                }
+            %>
+        </title>
         <style>
             #schedule {
                 background:#C7DDFF;
@@ -57,12 +69,15 @@
         </style>
         <script>
             var created = "<%=create%>";
+            var date = "<%=date%>";
 
             function edit() {
                 document.getElementById("eName").disabled = false;
                 document.getElementById("whitelist").style.visibility = "visible";
                 document.getElementById("saveText").style.visibility = "hidden";
                 document.getElementById("recorded").disabled = false;
+                document.getElementById("whiteboard").disabled = false;
+                document.getElementById("webcam").disabled = false;
                 document.getElementById("date").disabled = false;
                 text = document.getElementById("delRec").value;
                 if (text)
@@ -84,6 +99,8 @@
                 document.getElementById("whitelist").style.visibility = "hidden";
                 document.getElementById("saveText").style.visibility = "visible";
                 document.getElementById("recorded").disabled = true;
+                document.getElementById("whiteboard").disabled = true;
+                document.getElementById("webcam").disabled = true;
                 document.getElementById("date").disabled = true;
                 document.getElementById("delRec").style.visibility = "hidden";
                 document.getElementById("editMeeting").value = "Edit this meeting";
@@ -116,7 +133,14 @@
         </script>
     </head>
     <div id="header">
-        <h1>Event Details</h1>
+        <h1>  <%
+            if (create.equals("true")) {
+                out.write("Create Event");
+            } else {
+                out.write("Event Details");
+            }
+            %>
+        </h1>
         <p id="layoutdims">
         </p>
     </div>
@@ -132,11 +156,26 @@
                         <tr>
                             <td>Event Type:</td>
                             <td>
-                                Lecture
+                                <select>
+                                    <option value="Meeting">Meeting</option>
+                                    <%
+                                        if (type.equals("professor") || type.equals("admin") || type.equals("superadmin")) {
+                                            out.write("<option value=\"Lecture\">Lecture</option>");
+                                        }
+                                    %>
+                                </select>
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="checkbox" id="recorded" name="recorded" value="Recorded" checked="checked" disabled="disabled"><br></td>
+                            <td><input type="checkbox" id="webcam" name="webcam" value="Presenter webcam" checked="checked" disabled ><br></td>
+                            <td>Presenter-only webcam?</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="whiteboard" name="whiteboard" value="Public Whiteboard" checked="checked" disabled ><br></td>
+                            <td>Whiteboard</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="recorded" name="recorded" value="Recorded" checked="checked" disabled><br></td>
                             <td>Recorded</td>
                         </tr>
                         <tr>
@@ -149,8 +188,10 @@
                         <script>
             if (created !== "true")
                 document.write("<td><input type=\"text\" id =\"date\" name =\"date\" value=\"<%=date%>\" disabled> </td>");
+            else if (created === "true" && date != "")
+                document.write("<td><input type=\"text\" id =\"date\" name =\"date\" value=\"<%=date%>\" disabled> </td>");
             else
-                document.write("<td><input type=\"date\" id =\"date\" name =\"date\" value=\"<%=date%>\" disabled> </td>")
+                document.write("<td><input type=\"date\" id =\"date\" name =\"date\" disabled> </td>")
                         </script>
                         </tr>
                         <tr>
@@ -184,6 +225,12 @@
                             <td><div id="saveText" style="color:green; visibility:hidden;">Meeting settings saved</div></td>
                         </tr>
                     </table>
+                            <% if (start.equals("true")) {
+                            out.write("<br/><br/><button style=\"font-size:24pt;\" type=\"button\" name=\"start\" >Start Meeting</button><br/><br/>");
+                        } else {
+                            out.write("<br/><br/><button style=\"font-size:24pt;\" type=\"button\" name=\"start\" disabled>Start Meeting</button><br/><br/>");
+                        }
+                    %>
                 </div>
             </div>
             <div class="col2">

@@ -12,11 +12,13 @@
         <script type='text/javascript'>
             <% String type = (String) session.getAttribute("iUserType");%>
             var user = "<%=type%>";
-            function create() {
+            function create(date) {
+                if (date === undefined)
+                    date = "";
                 if (user == "student" || user == "employee" || user == "guest")
-                    window.location.replace("event_details2.jsp?create=true");
+                    window.location.replace("event_details2.jsp?create=true&date=" + date);
                 else
-                    window.location.replace("event_details.jsp?create=true");
+                    window.location.replace("event_details.jsp?create=true&date=" + date);
             }
             $(document).ready(function() {
 
@@ -45,14 +47,18 @@
                         var todayEnd = new Date(Date.today().add(1).day())
                         if (calEvent.start.between(todayStart, todayEnd))
                         {
-                            var p = confirm("Do you wish to start the meeting?");
-                            if (p)
-                                window.location.href = calEvent.link;
-                            else
-                                window.location.href = calEvent.event;
+                                window.location.href = calEvent.event+"true";
                         }
                         else
-                            window.location.href = calEvent.event;
+                            window.location.href = calEvent.event + "false";
+                    },
+                    dayClick: function(date, allDay, jsEvent, view) {
+
+                       create(date);
+
+                        // change the day's background color just for fun
+                        $(this).css('background-color', 'red');
+
                     },
                     editable: true
                 });
@@ -79,7 +85,7 @@
                                             start: new Date(test_date.getFullYear(), test_date.getMonth(), test_date.getDate(), 15, 20),
                                             allDay: false,
                                             link: "http://www.google.ca",
-                                            event: "event_details.jsp?date=" + new Date(test_date.getFullYear(), test_date.getMonth(), test_date.getDate(), 15, 20) + "&link=www.yahoo.ca",
+                                            event: "event_details.jsp?date=" + new Date(test_date.getFullYear(), test_date.getMonth(), test_date.getDate(), 15, 20) + "&link=www.yahoo.ca&start=",
                                             color: 'blue'
                                         });
                                     }
@@ -97,7 +103,7 @@
                     end: new Date(y, m, d, 17, 0),
                     allDay: false,
                     color: 'black',
-                    event: "event_details2.jsp?date=" + new Date(y, m, d, 16, 0) + "&day=" + weekday[new Date(y, m, d, 16, 0).getDay()] + "&name=" + "Meeting 1" + "&link=www.yahoo.ca",
+                    event: "event_details2.jsp?date=" + new Date(y, m, d, 16, 0) + "&day=" + weekday[new Date(y, m, d, 16, 0).getDay()] + "&name=" + "Meeting 1" + "&link=www.yahoo.ca&start=",
                     link: "http://www.google.ca"
                 });
                 events.push({
@@ -106,7 +112,7 @@
                     end: new Date(y, m, d + 2, 18, 0),
                     allDay: false,
                     color: 'black',
-                    event: "event_details2.jsp?date=" + new Date(y, m, d + 2, 17, 0) + "&day=" + weekday[new Date(y, m, d + 2, 17, 0).getDay()] + "&name=" + "Meeting 2" + "&link=www.yahoo.ca",
+                    event: "event_details2.jsp?date=" + new Date(y, m, d + 2, 17, 0) + "&day=" + weekday[new Date(y, m, d + 2, 17, 0).getDay()] + "&name=" + "Meeting 2" + "&link=www.yahoo.ca&start=",
                     link: "http://www.google.ca"
                 });
 
@@ -135,7 +141,7 @@
             <p id="layoutdims">
                 <%
                     String name = (String) session.getAttribute("sUserName");
-                    out.write("<strong>" + name +"</strong>");
+                    out.write("<strong>" + name + "</strong>");
                 %>
                 View type: 
                 <select name="view">

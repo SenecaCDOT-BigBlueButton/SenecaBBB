@@ -17,15 +17,15 @@
             settingsArray[1]=0;
             settingsArray[2]=0;
             function settings(dropdown){
+                var el = document.getElementById('frame');
                 var index = dropdown.selectedIndex;
                 var selectedValue = dropdown.options[index].value;
                 var p = document.getElementById("link");
                 var check = document.getElementById("recorded");
                 if (index !=0)
                     {
-                        p.innerHTML = "Manage " + selectedValue + " students"; 
-                        p.href="manage_students.jsp?class=" + selectedValue;
                         check.checked=settingsArray[index-1];
+                        el.src = "manage_students.jsp?class=" + selectedValue;
                     }
                 else
                     p.innerHTML ="";
@@ -60,6 +60,7 @@
                     <div id="content">
                         <input type="checkbox" name="recorded" value="ON" id="recorded" onchange="check(this)"/>Allow recording <br><br>
                           <a id="link" href="classes.jsp"></a>
+                          <iframe id="frame" src="" scrolling="auto" frameborder="0" align="center" height = "422px" width = "932px"></iframe>
                     </div>
                 </div>
                 <div class="col2">

@@ -66,7 +66,7 @@ CREATE TABLE user_role (
     PRIMARY KEY (ur_id),
   CONSTRAINT fk_predefined_role_of_user_role
     FOREIGN KEY (pr_name)
-	REFERENCES predefined_role (pr_name)
+    REFERENCES predefined_role (pr_name)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 
@@ -90,7 +90,7 @@ CREATE TABLE bbb_user (
     REFERENCES user_role (ur_id)
     # user is not deleted even if there is no role for him/her
     ON DELETE SET NULL
-	ON UPDATE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE department (
@@ -149,7 +149,7 @@ CREATE TABLE non_ldap_user (
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
     ON DELETE CASCADE
-	ON UPDATE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE meeting (
@@ -194,7 +194,7 @@ CREATE TABLE meeting_guest (
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
     ON DELETE CASCADE
-	ON UPDATE CASCADE,
+    ON UPDATE CASCADE,
   CONSTRAINT fk_meeting_of_meeting_guest
     FOREIGN KEY (ms_id, m_id) 
     REFERENCES meeting (ms_id, m_id)
@@ -212,7 +212,7 @@ CREATE TABLE meeting_attendee (
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
     ON DELETE CASCADE
-	ON UPDATE CASCADE,
+    ON UPDATE CASCADE,
   CONSTRAINT fk_meeting_schedule_of_meeting_attendee
     FOREIGN KEY (ms_id) 
     REFERENCES meeting_schedule (ms_id)
@@ -232,7 +232,7 @@ CREATE TABLE meeting_attendance (
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
     ON DELETE CASCADE
-	ON UPDATE CASCADE,
+    ON UPDATE CASCADE,
   CONSTRAINT fk_meeting_of_meeting_attendance
     FOREIGN KEY (m_id, ms_id) 
     REFERENCES meeting (m_id, ms_id)
@@ -260,7 +260,7 @@ CREATE TABLE section (
     FOREIGN KEY (sub_id) 
     REFERENCES subject (sub_id)
     ON DELETE CASCADE
-	ON UPDATE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE professor (

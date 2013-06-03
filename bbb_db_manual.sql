@@ -7,6 +7,10 @@
         meeting_schedule
         lecture
         lecture_schedule
+
+  ls_id is always put before l_id
+  ms_id is always put before m_id
+
   -Bo Li
 */
 
@@ -33,6 +37,7 @@ DROP TABLE IF EXISTS user_role CASCADE;
 DROP TABLE IF EXISTS bbb_admin CASCADE;
 DROP TABLE IF EXISTS predefined_role CASCADE;
 
+# AsOf Table
 CREATE TABLE predefined_role (
   pr_name         VARCHAR(100) NOT NULL,
   pr_defaultmask  BIT(10) NOT NULL,
@@ -43,13 +48,12 @@ CREATE TABLE predefined_role (
 # admin is future keyword, using bbb_admin instead
 CREATE TABLE bbb_admin (
   row_num         TINYINT,
-  next_m_id       MEDIUMINT UNSIGNED,
   next_ms_id      MEDIUMINT UNSIGNED,
-  next_l_id       MEDIUMINT UNSIGNED,
   next_ls_id      MEDIUMINT UNSIGNED,
   next_ur_id      MEDIUMINT UNSIGNED,
-  next_d_id       MEDIUMINT UNSIGNED,
   timeout         MEDIUMINT UNSIGNED,
+  welcome_msg     VARCHAR(500),
+  recording_msg   VARCHAR(100),
   CONSTRAINT pk_bbb_admin
     PRIMARY KEY (row_num)
 );
@@ -90,27 +94,26 @@ CREATE TABLE bbb_user (
 );
 
 CREATE TABLE department (
-  d_id            MEDIUMINT UNSIGNED,
   d_code          CHAR(5),
   d_name          VARCHAR(100) NOT NULL,
   CONSTRAINT pk_department
-    PRIMARY KEY (d_id)
+    PRIMARY KEY (d_code)
 );
 
 CREATE TABLE user_department (
   bu_id           VARCHAR(100),
-  d_id            MEDIUMINT UNSIGNED,
+  d_code          CHAR(5),
   ud_isadmin      BIT(1) NOT NULL,
   CONSTRAINT pk_user_department 
-    PRIMARY KEY (bu_id, d_id),
+    PRIMARY KEY (bu_id, d_code),
   CONSTRAINT fk_bbb_user_of_user_department
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT fk_department_of_user_department
-    FOREIGN KEY (d_id) 
-    REFERENCES department (d_id)
+    FOREIGN KEY (d_code) 
+    REFERENCES department (d_code)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
@@ -139,6 +142,7 @@ CREATE TABLE non_ldap_user (
   nu_salt         VARCHAR(100) NOT NULL,
   nu_hash         VARCHAR(100) NOT NULL,
   nu_email        VARCHAR(100) NOT NULL,
+  nu_createtime   DATETIME NOT NULL,
   CONSTRAINT pk_non_ldap_user 
     PRIMARY KEY (bu_id),
   CONSTRAINT fk_bbb_user_of_non_ldap_user
@@ -149,12 +153,14 @@ CREATE TABLE non_ldap_user (
 );
 
 CREATE TABLE meeting (
-  m_id            MEDIUMINT UNSIGNED,
   ms_id           MEDIUMINT UNSIGNED,
+  m_id            MEDIUMINT UNSIGNED,
   m_intdatetime   DATETIME NOT NULL,
   m_duration      MEDIUMINT UNSIGNED NOT NULL,
   m_iscancel      BIT(1) NOT NULL,
   m_description   VARCHAR(2000),
+  m_modpass       CHAR(15) NOT NULL,
+  m_userpass      CHAR(15) NOT NULL,
   CONSTRAINT pk_meeting 
     PRIMARY KEY (m_id, ms_id),
   CONSTRAINT fk_meeting_schedule_of_meeting
@@ -165,31 +171,33 @@ CREATE TABLE meeting (
 );
 
 CREATE TABLE meeting_presentation (
-  m_id            MEDIUMINT UNSIGNED,
   mp_title        VARCHAR(100),
+  ms_id           MEDIUMINT UNSIGNED,
+  m_id            MEDIUMINT UNSIGNED,
   CONSTRAINT pk_meeting_presentation 
-    PRIMARY KEY (m_id, mp_title),
+    PRIMARY KEY (ms_id, m_id, mp_title),
   CONSTRAINT fk_meeting_of_meeting_presentation
-    FOREIGN KEY (m_id) 
-    REFERENCES meeting (m_id)
+    FOREIGN KEY (ms_id, m_id) 
+    REFERENCES meeting (ms_id, m_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE TABLE meeting_guest (
   bu_id           VARCHAR(100),
+  ms_id           MEDIUMINT UNSIGNED,
   m_id            MEDIUMINT UNSIGNED,
   mg_ismod        BIT(1) NOT NULL,
   CONSTRAINT pk_meeting_guest 
-    PRIMARY KEY (bu_id, m_id),
+    PRIMARY KEY (bu_id, ms_id, m_id),
   CONSTRAINT fk_bbb_user_of_meeting_guest
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
     ON DELETE CASCADE
 	ON UPDATE CASCADE,
   CONSTRAINT fk_meeting_of_meeting_guest
-    FOREIGN KEY (m_id) 
-    REFERENCES meeting (m_id)
+    FOREIGN KEY (ms_id, m_id) 
+    REFERENCES meeting (ms_id, m_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
@@ -244,8 +252,6 @@ CREATE TABLE section (
   sc_id           CHAR(2),
   # semester_id is currently not part of pk for now, that may change
   semester_id     MEDIUMINT UNSIGNED NOT NULL,
-  s_modpass       VARCHAR(100) NOT NULL,
-  s_viewpass      VARCHAR(100) NOT NULL,
   s_ismuldraw     BIT(1) NOT NULL,
   s_isrecorded    BIT(1) NOT NULL,
   CONSTRAINT pk_section 
@@ -303,7 +309,7 @@ CREATE TABLE lecture_schedule (
   ls_repeats      MEDIUMINT UNSIGNED NOT NULL,
   ls_duration     MEDIUMINT UNSIGNED NOT NULL,
   CONSTRAINT pk_lecture_schedule 
-    PRIMARY KEY (ls_id, sub_id, sc_id),
+    PRIMARY KEY (ls_id),
   CONSTRAINT fk_section_of_lecture_schedule
     FOREIGN KEY (sub_id, sc_id) 
     REFERENCES section (sub_id, sc_id)
@@ -312,51 +318,47 @@ CREATE TABLE lecture_schedule (
 );
   
 CREATE TABLE lecture (
-  l_id            MEDIUMINT UNSIGNED,
   ls_id           MEDIUMINT UNSIGNED,
-  sub_id          CHAR(8),
-  sc_id           CHAR(2),
+  l_id            MEDIUMINT UNSIGNED,
   l_intdatetime   DATETIME NOT NULL,
   l_duration      MEDIUMINT UNSIGNED NOT NULL,
   l_iscancel      BIT(1) NOT NULL,
   l_description   VARCHAR(2000),
+  l_modpass       CHAR(15) NOT NULL,
+  l_userpass      CHAR(15) NOT NULL,
   #l_url          VARCHAR(100),
   CONSTRAINT pk_lecture 
-    PRIMARY KEY (l_id, ls_id, sub_id, sc_id),
+    PRIMARY KEY (l_id, ls_id),
   CONSTRAINT fk_lecture_schedule_of_lecture
-    FOREIGN KEY (sub_id, sc_id, ls_id) 
-    REFERENCES lecture_schedule (sub_id, sc_id, ls_id)
+    FOREIGN KEY (ls_id) 
+    REFERENCES lecture_schedule (ls_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE TABLE lecture_presentation (
   lp_title        VARCHAR(100),
-  l_id            MEDIUMINT UNSIGNED,
   ls_id           MEDIUMINT UNSIGNED,
-  sub_id          CHAR(8),
-  sc_id           CHAR(2),
+  l_id            MEDIUMINT UNSIGNED,
   CONSTRAINT pk_lecture_presentation 
-    PRIMARY KEY (lp_title, l_id, ls_id, sub_id, sc_id),
+    PRIMARY KEY (lp_title, l_id, ls_id),
   CONSTRAINT fk_lecture_of_lecture_presentation
-    FOREIGN KEY (sub_id, sc_id, ls_id, l_id) 
-    REFERENCES lecture (sub_id, sc_id, ls_id, l_id)
+    FOREIGN KEY (ls_id, l_id) 
+    REFERENCES lecture (ls_id, l_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE TABLE guest_lecturer (
   bu_id           VARCHAR(100),
-  l_id            MEDIUMINT UNSIGNED,
   ls_id           MEDIUMINT UNSIGNED,
-  sub_id          CHAR(8),
-  sc_id           CHAR(2),
+  l_id            MEDIUMINT UNSIGNED,
   gl_ismod        BIT(1) NOT NULL,
   CONSTRAINT pk_guest_lecturer 
-    PRIMARY KEY (bu_id, l_id, ls_id, sub_id, sc_id),
+    PRIMARY KEY (bu_id, l_id, ls_id),
   CONSTRAINT fk_lecture_of_guest_lecturer
-    FOREIGN KEY (sub_id, sc_id, ls_id, l_id) 
-    REFERENCES lecture (sub_id, sc_id, ls_id, l_id)
+    FOREIGN KEY (ls_id, l_id) 
+    REFERENCES lecture (ls_id, l_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT fk_bbb_user_of_guest_lecturer
@@ -371,19 +373,17 @@ CREATE TABLE lecture_attendance (
   bu_id           VARCHAR(100),
   ls_id           MEDIUMINT UNSIGNED,
   l_id            MEDIUMINT UNSIGNED,
-  sub_id          CHAR(8),
-  sc_id           CHAR(2),
   la_isattend     BIT(1) NOT NULL,
   CONSTRAINT pk_lecture_attendance 
-    PRIMARY KEY (bu_id, ls_id, l_id, sub_id, sc_id),
+    PRIMARY KEY (bu_id, ls_id, l_id),
   CONSTRAINT fk_bbb_user_of_lecture_attendance
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
     ON DELETE CASCADE
 	ON UPDATE CASCADE,
   CONSTRAINT fk_lecture_of_lecture_attendance
-    FOREIGN KEY (l_id, ls_id, sub_id, sc_id) 
-    REFERENCES lecture (l_id, ls_id, sub_id, sc_id)
+    FOREIGN KEY (l_id, ls_id) 
+    REFERENCES lecture (l_id, ls_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );

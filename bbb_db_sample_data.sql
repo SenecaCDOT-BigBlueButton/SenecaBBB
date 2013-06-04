@@ -1,68 +1,143 @@
 
+INSERT INTO predefined_role VALUES ('student', 1);
+INSERT INTO predefined_role VALUES ('professor', 1);
+
 INSERT INTO user_role VALUES (fn_next_ur_id(), 'student', 1);
 INSERT INTO user_role VALUES (fn_next_ur_id(), 'professor', 1);
 
-INSERT INTO bbb_user VALUES ('fardad.soleimanloo', 0, 1, NULL, NULL, 1, 1, 2);
-INSERT INTO bbb_user VALUES ('justin.robinson', 0, 1, NULL, NULL, 1, 0, 2);
-INSERT INTO bbb_user VALUES ('chad.pilkey', 0, 1, NULL, NULL, 1, 0, 2);
-INSERT INTO bbb_user VALUES ('robert.stanica', 0, 1, NULL, NULL, 1, 0, 2);
-INSERT INTO bbb_user VALUES ('bo.li', 0, 1, NULL, NULL, 1, 0, 2);
-INSERT INTO bbb_user VALUES ('gary.deng', 0, 1, NULL, NULL, 1, 0, 2);
+INSERT INTO bbb_user VALUES ('fardad.soleimanloo', 'Fardad', 0, 1, NULL, NULL, 1, 1, 2);
+INSERT INTO bbb_user VALUES ('justin.robinson', 'Justin', 0, 1, NULL, NULL, 1, 0, 2);
+INSERT INTO bbb_user VALUES ('chad.pilkey', 'Chad', 0, 1, NULL, NULL, 1, 0, 2);
+INSERT INTO bbb_user VALUES ('robert.stanica', 'Robert', 0, 1, NULL, NULL, 1, 0, 2);
+INSERT INTO bbb_user VALUES ('bo.li', 'Bo', 0, 1, NULL, NULL, 1, 0, 2);
+INSERT INTO bbb_user VALUES ('gary.deng', 'Gary', 0, 1, NULL, NULL, 1, 0, 2);
 
-INSERT INTO bbb_user VALUES ('jtrobins', 0, 1, NULL, NULL, 1, 0, 1);
-INSERT INTO bbb_user VALUES ('capilkey', 0, 1, NULL, NULL, 1, 0, 1);
-INSERT INTO bbb_user VALUES ('rwstanica', 0, 1, NULL, NULL, 1, 0, 1);
-INSERT INTO bbb_user VALUES ('bli64', 0, 1, NULL, NULL, 1, 0, 1);
-INSERT INTO bbb_user VALUES ('xdeng7', 0, 1, NULL, NULL, 1, 0, 1);
+INSERT INTO bbb_user VALUES ('jtrobins', 'Justin', 0, 1, NULL, NULL, 1, 0, 1);
+INSERT INTO bbb_user VALUES ('capilkey', 'Chad', 0, 1, NULL, NULL, 1, 0, 1);
+INSERT INTO bbb_user VALUES ('rwstanica', 'Robert', 0, 1, NULL, NULL, 1, 0, 1);
+INSERT INTO bbb_user VALUES ('bli64', 'Bo', 0, 1, NULL, NULL, 1, 0, 1);
+INSERT INTO bbb_user VALUES ('xdeng7', 'Gary', 0, 1, NULL, NULL, 1, 0, 1);
+
+INSERT INTO bbb_user VALUES ('non_ldap1', 'non_ldap1', 0, 1, NULL, NULL, 0, 0, 1);
+INSERT INTO bbb_user VALUES ('non_ldap2', 'non_ldap2', 0, 1, NULL, NULL, 0, 0, 1);
+INSERT INTO bbb_user VALUES ('non_ldap3', 'non_ldap3', 0, 1, NULL, NULL, 0, 0, 1);
+INSERT INTO bbb_user VALUES ('non_ldap4', 'non_ldap4', 0, 1, NULL, NULL, 0, 0, 1);
+INSERT INTO bbb_user VALUES ('non_ldap5', 'non_ldap5', 0, 1, NULL, NULL, 0, 0, 1);
+
+INSERT INTO non_ldap_user VALUES ('non_ldap1', 'Ldap1', 'Anon', 'abcde', 'abcde', 'ldap1@gmail.com', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('non_ldap2', 'Ldap2', 'Anon', 'abcde', 'abcde', 'ldap2@gmail.com', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('non_ldap3', 'Ldap3', 'Anon', 'abcde', 'abcde', 'ldap3@gmail.com', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('non_ldap4', 'Ldap4', 'Anon', 'abcde', 'abcde', 'ldap4@gmail.com', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('non_ldap5', 'Ldap5', 'Anon', 'abcde', 'abcde', 'ldap5@gmail.com', SYSDATE());
+
+INSERT INTO department VALUES ('ICT', 'Information & Communcations Technology');
+INSERT INTO department VALUES ('IAT', 'Information Arts & Technology');
+
+INSERT INTO user_department VALUES ('fardad.soleimanloo', 'ICT', 1);
+INSERT INTO user_department VALUES ('jtrobins', 'ICT', 0);
+INSERT INTO user_department VALUES ('capilkey', 'ICT', 0);
+INSERT INTO user_department VALUES ('rwstanica', 'ICT', 0);
+INSERT INTO user_department VALUES ('bli64', 'ICT', 0);
+INSERT INTO user_department VALUES ('xdeng7', 'ICT', 0);
 
 INSERT INTO subject VALUES ('PSY100', 'Introduction to Psychology');
-INSERT INTO section VALUES ('PSY100', 'A', 'modpass', 'viewpass', 0, CONCAT('PSY100A', YEARWEEK(SYSDATE())), 1);
-INSERT INTO section VALUES ('PSY100', 'B', 'modpass', 'viewpass', 0, CONCAT('PSY100B', YEARWEEK(SYSDATE())), 1);
+INSERT INTO section VALUES ('PSY100', 'A', '201305', 0, 1);
+INSERT INTO section VALUES ('PSY100', 'B', '201305', 0, 1);
 
 INSERT INTO subject VALUES ('PSY150', 'Organizational Behaviour');
-INSERT INTO section VALUES ('PSY150', 'A', 'modpass', 'viewpass', 0, CONCAT('PSY150A', YEARWEEK(SYSDATE())), 1);
-INSERT INTO section VALUES ('PSY150', 'B', 'modpass', 'viewpass', 0, CONCAT('PSY150B', YEARWEEK(SYSDATE())), 1);
+INSERT INTO section VALUES ('PSY150', 'A', '201305', 0, 1);
+INSERT INTO section VALUES ('PSY150', 'B', '201305', 0, 1);
 
 INSERT INTO subject VALUES ('INT222', 'Internet I - Internet Fundamentals');
-INSERT INTO section VALUES ('INT222', 'A', 'modpass', 'viewpass', 0, CONCAT('INT222A', YEARWEEK(SYSDATE())), 1);
-INSERT INTO section VALUES ('INT222', 'B', 'modpass', 'viewpass', 0, CONCAT('INT222B', YEARWEEK(SYSDATE())), 1);
+INSERT INTO section VALUES ('INT222', 'A', '201305', 0, 1);
+INSERT INTO section VALUES ('INT222', 'B', '201305', 0, 1);
 
 INSERT INTO subject VALUES ('IPC144', 'Introduction To Programming Using C');
-INSERT INTO section VALUES ('IPC144', 'A', 'modpass', 'viewpass', 0, CONCAT('IPC144A', YEARWEEK(SYSDATE())), 1);
-INSERT INTO section VALUES ('IPC144', 'B', 'modpass', 'viewpass', 0, CONCAT('IPC144B', YEARWEEK(SYSDATE())), 1);
+INSERT INTO section VALUES ('IPC144', 'A', '201305', 0, 1);
+INSERT INTO section VALUES ('IPC144', 'B', '201305', 0, 1);
 
 INSERT INTO subject VALUES ('OOP344', 'Object Oriented Programming II Using C++');
-INSERT INTO section VALUES ('OOP344', 'A', 'modpass', 'viewpass', 0, CONCAT('OOP344A', YEARWEEK(SYSDATE())), 1);
-INSERT INTO section VALUES ('OOP344', 'B', 'modpass', 'viewpass', 0, CONCAT('OOP344A', YEARWEEK(SYSDATE())), 1);
+INSERT INTO section VALUES ('OOP344', 'A', '201305', 0, 1);
+INSERT INTO section VALUES ('OOP344', 'B', '201305', 0, 1);
 
 INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'A');
 INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'B');
 
+INSERT INTO student VALUES ('jtrobins', 'OOP344', 'A', 0);
+INSERT INTO student VALUES ('bli64', 'OOP344', 'A', 0);
+INSERT INTO student VALUES ('xdeng7', 'OOP344', 'A', 0);
+INSERT INTO student VALUES ('rwstanica', 'OOP344', 'B', 0);
+INSERT INTO student VALUES ('non_ldap1', 'OOP344', 'B', 0);
+INSERT INTO student VALUES ('non_ldap2', 'OOP344', 'B', 0);
+
 INSERT INTO lecture_schedule VALUES (fn_next_ls_id(), 'OOP344', 'A', SYSDATE() + INTERVAL 1 HOUR, 50, 2, 50);
 INSERT INTO lecture_schedule VALUES (fn_next_ls_id(), 'OOP344', 'B', SYSDATE() + INTERVAL 5 HOUR, 50, 2, 50);
 
-INSERT INTO lecture VALUES (fn_next_l_id(), 1, 'OOP344', 'A', SYSDATE() + INTERVAL 1 HOUR, 50, 0, null);
-INSERT INTO lecture VALUES (fn_next_l_id(), 2, 'OOP344', 'B', SYSDATE() + INTERVAL 5 HOUR, 50, 0, null);
+INSERT INTO lecture VALUES (1, 1, SYSDATE() + INTERVAL 1 HOUR, 50, 0, 'OOP344A', 'modpass', 'userpass');
+INSERT INTO lecture VALUES (1, 2, SYSDATE() + INTERVAL 25 HOUR, 50, 0, 'OOP344A', 'modpass', 'userpass');
+INSERT INTO lecture VALUES (1, 3, SYSDATE() + INTERVAL 50 HOUR, 50, 0, 'OOP344A', 'modpass', 'userpass');
+INSERT INTO lecture VALUES (2, 1, SYSDATE() + INTERVAL 5 HOUR, 50, 0, 'OOP344B', 'modpass', 'userpass');
+INSERT INTO lecture VALUES (2, 2, SYSDATE() + INTERVAL 30 HOUR, 50, 0, 'OOP344B', 'modpass', 'userpass');
+INSERT INTO lecture VALUES (2, 3, SYSDATE() + INTERVAL 55 HOUR, 50, 0, 'OOP344B', 'modpass', 'userpass');
 
-INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 1, 1, 'OOP344', 'A');
-INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 2, 2, 'OOP344', 'B');
 
-INSERT INTO guest_lecturer VALUES ('chad.pilkey', 1, 1, 'OOP344', 'A', 1);
-INSERT INTO guest_lecturer VALUES ('chad.pilkey', 2, 2, 'OOP344', 'B', 1);
+INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 1, 1);
+INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 1, 2);
+INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 1, 3);
+INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 2, 1);
+INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 2, 2);
+INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 2, 3);
+
+INSERT INTO guest_lecturer VALUES ('chad.pilkey', 1, 1, 1);
+INSERT INTO guest_lecturer VALUES ('chad.pilkey', 2, 1, 1);
+INSERT INTO guest_lecturer VALUES ('justin.robinson', 1, 2, 1);
+INSERT INTO guest_lecturer VALUES ('justin.robinson', 2, 2, 1);
+
+INSERT INTO lecture_attendance VALUES ('jtrobins', 1, 1, 0);
+INSERT INTO lecture_attendance VALUES ('bli64', 1, 1, 0);
+INSERT INTO lecture_attendance VALUES ('xdeng7', 1, 1, 0);
+INSERT INTO lecture_attendance VALUES ('rwstanica', 2, 1, 0);
+INSERT INTO lecture_attendance VALUES ('non_ldap1', 2, 1, 0);
+INSERT INTO lecture_attendance VALUES ('non_ldap2', 2, 1, 0);
+INSERT INTO lecture_attendance VALUES ('jtrobins', 1, 2, 0);
+INSERT INTO lecture_attendance VALUES ('bli64', 1, 2, 0);
+INSERT INTO lecture_attendance VALUES ('xdeng7', 1, 2, 0);
+INSERT INTO lecture_attendance VALUES ('rwstanica', 2, 2, 0);
+INSERT INTO lecture_attendance VALUES ('non_ldap1', 2, 2, 0);
+INSERT INTO lecture_attendance VALUES ('non_ldap2', 2, 2, 0);
+INSERT INTO lecture_attendance VALUES ('jtrobins', 1, 3, 0);
+INSERT INTO lecture_attendance VALUES ('bli64', 1, 3, 0);
+INSERT INTO lecture_attendance VALUES ('xdeng7', 1, 3, 0);
+INSERT INTO lecture_attendance VALUES ('rwstanica', 2, 3, 0);
+INSERT INTO lecture_attendance VALUES ('non_ldap1', 2, 3, 0);
+INSERT INTO lecture_attendance VALUES ('non_ldap2', 2, 3, 0);
 
 INSERT INTO meeting_schedule VALUES (fn_next_ms_id(), 'Test Meeting 1', SYSDATE() + INTERVAL 1 HOUR, 50, 2, 50, 'gary.deng');
 INSERT INTO meeting_schedule VALUES (fn_next_ms_id(), 'Test Meeting 2', SYSDATE() + INTERVAL 5 HOUR, 50, 2, 50, 'bo.li');
 
-INSERT INTO meeting VALUES (fn_next_m_id(), SYSDATE() + INTERVAL 1 HOUR, 50, 0, 1);
-INSERT INTO meeting VALUES (fn_next_m_id(), SYSDATE() + INTERVAL 1 HOUR, 50, 0, 2);
+INSERT INTO meeting VALUES (1, 1, SYSDATE() + INTERVAL 1 HOUR, 50, 0, 'Schedule 1, Test Meeting 1', 'modpass', 'userpass');
+INSERT INTO meeting VALUES (1, 2, SYSDATE() + INTERVAL 25 HOUR, 50, 0, 'Schedule 1, Test Meeting 2', 'modpass', 'userpass');
+INSERT INTO meeting VALUES (2, 1, SYSDATE() + INTERVAL 5 HOUR, 50, 0, 'Schedule 2, Test Meeting 1', 'modpass', 'userpass');
+INSERT INTO meeting VALUES (2, 2, SYSDATE() + INTERVAL 30 HOUR, 50, 0, 'Schedule 2, Test Meeting 2', 'modpass', 'userpass');
 
 INSERT INTO meeting_attendee VALUES ('jtrobins', 1, 0);
 INSERT INTO meeting_attendee VALUES ('capilkey', 1, 0);
 INSERT INTO meeting_attendee VALUES ('jtrobins', 2, 0);
 INSERT INTO meeting_attendee VALUES ('capilkey', 2, 0);
 
-INSERT INTO meeting_guest VALUES ('fardad.soleimanloo', 1, 1);
-INSERT INTO meeting_guest VALUES ('fardad.soleimanloo', 2, 1);
+INSERT INTO meeting_guest VALUES ('fardad.soleimanloo', 1, 1, 1);
+INSERT INTO meeting_guest VALUES ('fardad.soleimanloo', 2, 1, 1);
 
-INSERT INTO meeting_presentation VALUES (1, 'Test Meeting Presentation');
-INSERT INTO meeting_presentation VALUES (2, 'Test Meeting Presentation');
+INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 1-1', 1, 1);
+INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 1-2', 1, 2);
+INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 2-1', 2, 1);
+INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 2-2', 2, 2);
+
+INSERT INTO meeting_attendance VALUES ('jtrobins', 1, 1, 0);
+INSERT INTO meeting_attendance VALUES ('capilkey', 1, 1, 0);
+INSERT INTO meeting_attendance VALUES ('jtrobins', 1, 2, 0);
+INSERT INTO meeting_attendance VALUES ('capilkey', 1, 2, 0);
+INSERT INTO meeting_attendance VALUES ('jtrobins', 2, 1, 0);
+INSERT INTO meeting_attendance VALUES ('capilkey', 2, 1, 0);
+INSERT INTO meeting_attendance VALUES ('jtrobins', 2, 2, 0);
+INSERT INTO meeting_attendance VALUES ('capilkey', 2, 2, 0);

@@ -25,6 +25,12 @@
         start = "";
     }
     String type = (String) session.getAttribute("iUserType");
+    String author;
+    if (type.equals("admin") || type.equals("professor")) {
+        author = "original";
+    } else {
+        author = "random";
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -70,25 +76,26 @@
         <script>
             var created = "<%=create%>";
             var date = "<%=date%>";
+            var type = "<%=type%>";
 
             function edit() {
                 document.getElementById("eName").disabled = false;
-                document.getElementById("whitelist").style.visibility = "visible";
                 document.getElementById("saveText").style.visibility = "hidden";
                 document.getElementById("recorded").disabled = false;
                 document.getElementById("whiteboard").disabled = false;
                 document.getElementById("webcam").disabled = false;
                 document.getElementById("date").disabled = false;
-                text = document.getElementById("delRec").value;
-                if (text)
+                text = document.getElementById("recURL").href;
+                if (text !== "http://localhost:8080/Integration/a")
                     document.getElementById("delRec").style.visibility = "visible";
+                console.log(text);
                 document.getElementById("editMeeting").value = "Save";
                 document.getElementById("editMeeting").onclick = save;
             }
             function deleteRec() {
                 var p = confirm("Are you sure?");
                 if (p) {
-                    document.getElementById("recURL").href = "";
+                    document.getElementById("recURL").href = "a";
                     document.getElementById("recURL").innerHTML = "";
                     document.getElementById("recorded").checked = false;
                     document.getElementById("delRec").style.visibility = "hidden";
@@ -96,7 +103,6 @@
             }
             function save() {
                 document.getElementById("eName").disabled = true;
-                document.getElementById("whitelist").style.visibility = "hidden";
                 document.getElementById("saveText").style.visibility = "visible";
                 document.getElementById("recorded").disabled = true;
                 document.getElementById("whiteboard").disabled = true;
@@ -128,6 +134,52 @@
                 {
                     document.getElementById("editMeeting").value = "Save";
                     document.getElementById("editMeeting").onclick = save;
+                }
+            }
+            function addLec()
+            {
+                area = document.getElementById("sub1");
+                el = document.createElement("input");
+                el2 = document.createElement("input");
+                el = area.appendChild(el);
+                el2 = area.appendChild(el2);
+                el.type = "text";
+                el.id = "tempBox";
+                el.focus();
+                el.name = "sub1";
+                el2.type = "button";
+                el2.id = "searchBtn";
+                el2.value = "Search";
+                el2.onclick = searchGuest;
+                document.getElementById("addGuest").value = "Save";
+                document.getElementById("addGuest").onclick = (function() {
+                    saveSection("addGuest");
+                });
+            }
+            function searchGuest()
+            {
+                value = document.getElementById("tempBox").value;
+
+            }
+            function saveSection(button) {
+                tempBox = document.getElementById("tempBox");
+                tempBtn = document.getElementById("searchBtn");
+                name = tempBox.value;
+                area = document.getElementById(tempBox.name);
+                area.removeChild(tempBox);
+                area.removeChild(tempBtn);
+                area.innerHTML += name + "<br/>";
+                document.getElementById(button).value = "Add";
+                document.getElementById(button).onclick = (function() {
+                    addLec(tempBox.name, button);
+                });
+            }
+            function cancel()
+            {
+                var p = confirm("Are you sure you want to cancel this meeting?");
+                if (p)
+                {
+                    window.location.href = "calendar.jsp";
                 }
             }
         </script>
@@ -172,7 +224,7 @@
                         </tr>
                         <tr>
                             <td><input type="checkbox" id="whiteboard" name="whiteboard" value="Public Whiteboard" checked="checked" disabled ><br></td>
-                            <td>Whiteboard</td>
+                            <td>Public Whiteboard</td>
                         </tr>
                         <tr>
                             <td><input type="checkbox" id="recorded" name="recorded" value="Recorded" checked="checked" disabled><br></td>
@@ -216,19 +268,40 @@
                             </td>
                         </tr>
                         <tr>
+                            <td></td>
+                            <td><input type="button" id="editSched" value="Edit Schedule" onclick="showSched()"/></td>
+                        </tr>
+                        <tr>
                             <td>Whitelist:</td>
-                            <td><a style="visibility:hidden;" id="whitelist" href="manage_whitelist.jsp?prevPage=event_details.jsp&date=<%=date%>&day=<%=day%>&name=<%=name%>">Manage</a></td>
+                            <td><a id="whitelist" href="manage_whitelist.jsp?prevPage=event_details.jsp&date=<%=date%>&day=<%=day%>&name=<%=name%>&author=<%=author%>">View</a></td>
                         </tr>
                         <tr>
                             <td><input type="button" id="editMeeting" onclick="edit()" value="Edit this meeting"/></td>
-                            <td><input type="button" id="editSched" value="Edit Schedule" onclick="showSched()"/></td>
                             <td><div id="saveText" style="color:green; visibility:hidden;">Meeting settings saved</div></td>
                         </tr>
+                        <tr>
+                            <td>Add Guest Lecturer:</td>
+                            <td>
+                                <div id="sub1">
+
+                                </div>
+                                <%
+                                    if (type.equals("professor") || type.equals("admin") || type.equals("superadmin")) {
+                                        out.write("<input type=\"button\" id=\"addGuest\" value=\"Add\" onclick=\"addLec()\">");
+                                    }
+                                %>
+                            </td>
+                        </tr>
                     </table>
-                            <% if (start.equals("true")) {
-                            out.write("<br/><br/><button style=\"font-size:24pt;\" type=\"button\" name=\"start\" >Start Meeting</button><br/><br/>");
+                   <% if (start.equals("true")) {
+                            out.write("<br/><br/><button style=\"font-size:24pt;\" type=\"button\" name=\"start\" >Start Meeting</button>");
                         } else {
-                            out.write("<br/><br/><button style=\"font-size:24pt;\" type=\"button\" name=\"start\" disabled>Start Meeting</button><br/><br/>");
+                            out.write("<br/><br/><button style=\"font-size:24pt;\" type=\"button\" name=\"start\" disabled>Start Meeting</button>");
+                        }
+                        if (type.equals("professor") || type.equals("admin")) {
+                            out.write("<button style=\"font-size:24pt;\" type=\"button\" onclick=\"cancel()\" id=\"cancelBtn\">Cancel Meeting</button><br/><br/>");
+                        } else {
+                            out.write("<button style=\"font-size:24pt;\" type=\"button\" onclick=\"cancel()\"id=\"cancelBtn\" disabled>Cancel Meeting</button><br/><br/>");
                         }
                     %>
                 </div>
@@ -374,8 +447,8 @@
             if (user == "student") {
                 document.getElementById("editMeeting").style.visibility = "hidden";
                 document.getElementById("editSched").style.visibility = "hidden";
+                document.getElementById("startBtn").disabled = true;
             }
-
             if (created === "true")
                 edit();
     </script>

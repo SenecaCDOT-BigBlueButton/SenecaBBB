@@ -24,6 +24,13 @@
     if (start == null || start == "null") {
         start = "";
     }
+    String type = (String) session.getAttribute("iUserType");
+    String author;
+    if (type.equals("admin") || type.equals("student")) {
+        author = "original";
+    } else {
+        author = "random";
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -73,7 +80,6 @@
 
             function edit() {
                 document.getElementById("eName").disabled = false;
-                document.getElementById("whitelist").style.visibility = "visible";
                 document.getElementById("recorded").disabled = false;
                 document.getElementById("whiteboard").disabled = false;
                 document.getElementById("webcam").disabled = false;
@@ -95,7 +101,6 @@
             }
             function save() {
                 document.getElementById("eName").disabled = true;
-                document.getElementById("whitelist").style.visibility = "hidden";
                 document.getElementById("recorded").disabled = true;
                 document.getElementById("whiteboard").disabled = true;
                 document.getElementById("webcam").disabled = true;
@@ -112,15 +117,23 @@
                 document.getElementById("delRec").disabled = true;
             }
             function hideSched(num) {
-                if (num == 1)
-                    var p = confirm("This will change the schedule for every event. Continue?")
-                if (p || num == 0)
+                if (num === 1)
+                    var p = confirm("This will change the schedule for every event. Continue?");
+                if (p || num === 0)
                 {
                     document.getElementById("schedule").style.visibility = "hidden";
                     document.getElementById("overlay").style.visibility = "hidden";
                     document.getElementById("editMeeting").disabled = false;
                     document.getElementById("editSched").disabled = false;
                     document.getElementById("delRec").disabled = false;
+                }
+            }
+            function cancel()
+            {
+                var p = confirm("Are you sure you want to cancel this meeting?");
+                if (p)
+                {
+                    window.location.href = "calendar.jsp";
                 }
             }
         </script>
@@ -159,7 +172,7 @@
                         </tr>
                         <tr>
                             <td><input type="checkbox" id="whiteboard" name="whiteboard" value="Public Whiteboard" checked="checked" disabled ><br></td>
-                            <td>Whiteboard</td>
+                            <td>Public Whiteboard</td>
                         </tr>
                         <tr>
                             <td><input type="checkbox" id="recorded" name="recorded" value="Recorded" checked="checked" disabled="disabled"><br></td>
@@ -203,18 +216,27 @@
                             </td>
                         </tr>
                         <tr>
+                            <td></td>
+                            <td><input type="button" id="editSched" value="Edit Schedule" onclick="showSched()"/></td>
+                        </tr>
+                        <tr>
                             <td>Whitelist:</td>
-                            <td><a style="visibility:hidden;" id="whitelist" href="manage_whitelist.jsp?prevPage=event_details2.jsp&date=<%=date%>&day=<%=day%>&name=<%=name%>">Manage</a></td>
+                            <td><a id="whitelist" href="manage_whitelist.jsp?prevPage=event_details2.jsp&date=<%=date%>&day=<%=day%>&name=<%=name%>&author=<%=author%>">View</a></td>
                         </tr>
                         <tr>
                             <td><input type="button" id="editMeeting" onclick="edit()" value="Edit this meeting"/></td>
-                            <td><input type="button" id="editSched" value="Edit Schedule" onclick="showSched()"/></td>
+                            <td><div id="saveText" style="color:green; visibility:hidden;">Meeting settings saved</div></td>
                         </tr>
                     </table>
                     <% if (start.equals("true")) {
-                            out.write("<br/><br/><button style=\"font-size:24pt;\" type=\"button\" name=\"start\" >Start Meeting</button><br/><br/>");
+                            out.write("<br/><br/><button style=\"font-size:24pt;\" type=\"button\" name=\"start\" >Start Meeting</button>");
                         } else {
-                            out.write("<br/><br/><button style=\"font-size:24pt;\" type=\"button\" name=\"start\" disabled>Start Meeting</button><br/><br/>");
+                            out.write("<br/><br/><button style=\"font-size:24pt;\" type=\"button\" name=\"start\" disabled>Start Meeting</button>");
+                        }
+                        if (type.equals("student") || type.equals("admin")) {
+                            out.write("<button style=\"font-size:24pt;\" type=\"button\" onclick=\"cancel()\" id=\"cancelBtn\">Cancel Meeting</button><br/><br/>");
+                        } else {
+                            out.write("<button style=\"font-size:24pt;\" type=\"button\" onclick=\"cancel()\"id=\"cancelBtn\" disabled>Cancel Meeting</button><br/><br/>");
                         }
                     %>
                 </div>

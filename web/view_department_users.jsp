@@ -39,7 +39,7 @@
                     <div id="content">
                         Search for users <input type="search" name="search" id="search"/><input type="button" name="doSearch" onclick="search()" value="Search"/><br/><br/>
                         <div id="searchResults"></div>
-                        <h2>Users in system</h2>
+                        <h2>Users in Department ICT</h2>
                         <form name="orderForm" method="post" action="">
                             Sort by: 
                             <select id="orderBy" name="view">
@@ -55,7 +55,6 @@
                                 <td>User Name</td>
                                 <td>Name</td>
                                 <td>Email</td>
-                                <td>Department</td>
                                 <td>Online</td>
                                 <td>User Type</td>
                                 <td>Ban</td>
@@ -71,7 +70,7 @@
                                 PreparedStatement psdoLogin = null;
 
                                 try {
-                                    String sqlOption = "SELECT * FROM usermaster";
+                                    String sqlOption = "SELECT * FROM usermaster where DEPARTMENT = 'ICT'";
 
                                     psdoLogin = conn.prepareStatement(sqlOption);
                                     rsdoLogin = psdoLogin.executeQuery();
@@ -82,7 +81,6 @@
                                         String sEmail = rsdoLogin.getString("sEmail");
                                         String sFirst = rsdoLogin.getString("sFirstName");
                                         String sLast = rsdoLogin.getString("sLastName");
-                                        String sDepartment = rsdoLogin.getString("DEPARTMENT");
                                         String sName = sFirst + " " + sLast;
                                         String iUserType = rsdoLogin.getString("iUserType");
                                         out.write("<td>");
@@ -93,11 +91,6 @@
                                         out.write("</td>");
                                         out.write("<td>");
                                         out.write(sEmail);
-                                        out.write("</td>");
-                                         out.write("<td>");
-                                        out.write(sDepartment);
-                                        if (sLast.equals("Butts"))
-                                            out.write("<strong> (Head)</strong>");
                                         out.write("</td>");
                                         if (iUserType.equals("employee") || iUserType.equals("professor") || iUserType.equals("superadmin")) {
                                             out.write("<td>Offline</td>");
@@ -111,7 +104,7 @@
                                         out.write("Banned: <input type=\"checkbox\"");
                                         out.write("</td>");
                                         out.write("<td><a href=\"calendar.jsp\">View</a></td>");
-                                        out.write("<td><a href=\"edit_user.jsp?create=false&user=" + sUserName + "&fname=" + sFirst + "&lname=" + sLast + "&email=" + sEmail + "&usertype=" + iUserType + "\">Edit</a></td>");
+                                        out.write("<td><a href=\"department_edit_user.jsp?create=false&user=" + sUserName + "&fname=" + sFirst + "&lname=" + sLast + "&email=" + sEmail + "&usertype=" + iUserType + "\">Edit</a></td>");
                                         out.write("</tr>");
                                     }
                                 } catch (Exception e) {

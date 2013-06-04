@@ -10,7 +10,10 @@
         <script type='text/javascript' src='fullcalendar/fullcalendar.min.js'></script>
         <script type='text/javascript' src='fullcalendar/date.js'></script>
         <script type='text/javascript'>
-            <% String type = (String) session.getAttribute("iUserType");%>
+            <%
+                String type = (String) session.getAttribute("iUserType");
+                String level = (String) session.getAttribute("iUserType");
+            %>
             var user = "<%=type%>";
             function create(date) {
                 if (date === undefined)
@@ -47,14 +50,14 @@
                         var todayEnd = new Date(Date.today().add(1).day())
                         if (calEvent.start.between(todayStart, todayEnd))
                         {
-                                window.location.href = calEvent.event+"true";
+                            window.location.href = calEvent.event + "true";
                         }
                         else
                             window.location.href = calEvent.event + "false";
                     },
                     dayClick: function(date, allDay, jsEvent, view) {
 
-                       create(date);
+                        create(date);
 
                         // change the day's background color just for fun
                         $(this).css('background-color', 'red');
@@ -121,11 +124,11 @@
                     $('#calendar').fullCalendar('renderEvent', events[0], true);
                     $('#calendar').fullCalendar('renderEvent', events[1], true);
                 }
-                function run() {
-                    var d = $('#calendar').fullCalendar('getDate');
-                    alert("The current date of the calendar is " + d);
-                }
             });
+            function run() {
+                var d = $('#calendar').fullCalendar('getDate');
+                alert("The current date of the calendar is " + d + user);
+            }
         </script>
         <style type='text/css'>
             #calendar {
@@ -156,20 +159,39 @@
         <div class="colmask leftmenu">
             <div class="colleft">
                 <div class="col1">
+                    Filter by:
+                    <select>
+                        <option>Show all</option>
+                        <option>Meetings I've created</option>
+                        <option>Meetings I'm invited to</option>
+                        <%
+                            if (level.equals("student")) {
+                                out.write("<option>My courses</option>");
+                            }
+                        %>
+                    </select>
+                    <%
+                        if (level.equals("admin")) {
+                            out.write("<a href=\"\">Advanced filter</a>");
+                        }
+                    %>
                     <input type="button" onclick="create()" value="Create Event"/> 
                     <div id='calendar'></div>
                 </div>
                 <div class="col2">
                     <a href ="settings.jsp">User Settings</a><br/><br/>
-                    <%
-                        String level = (String) session.getAttribute("iUserType");
-                        if (level.equals("professor")) {
+                    <%                            if (level.equals("professor")) {
                             out.write("<a href =\"class_settings.jsp\">Class Settings</a><br><br>");
                         }
                         if (level.equals("admin") || level.equals("superadmin")) {
                             out.write("<a href =\"manage_professors.jsp\">Manage Professors</a><br><br>");
+                            out.write("<a href =\"alternate_manage_subjects.jsp\">Manage Subjects</a><br><br>");
                             out.write("<a href =\"manage_users.jsp\">Manage Users</a><br><br>");
+                            out.write("<a href =\"system_settings.jsp\">System Settings</a><br><br>");
+                             out.write("<a href =\"manage_departments.jsp\">Manage Departments</a><br><br>");
                         }
+                        else if (level.equals("professor"))
+                            out.write("<a href =\"view_department_users.jsp\">View Department Users</a><br><br>");
                     %>
                     <a href="index.jsp?error=Logged out"><strong>Log out</strong></a>
                 </div>

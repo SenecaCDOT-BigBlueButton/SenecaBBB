@@ -17,6 +17,10 @@
     if (name == null || name == "null") {
         name = "";
     }
+    String author = request.getParameter("author");
+    if (author == null || author == "null") {
+        author = "";
+    }
     prevPage += "?date=" + date + "&day=" + day + "&name=" + name;
 %>
 <!DOCTYPE html>
@@ -168,7 +172,16 @@
                                 <tr>
                                     <td></td>
                                     <td></td>
-                                    <td><input type="button" id="saveBtn" value="Save" onclick="save()"/><div id="saveText" style="visibility:hidden; color:green">Whitelist saved.</div></td>
+                                    <td>
+                                        <%
+                                            if (author.equals("original")) {
+                                                out.write("<input type=\"button\" id=\"saveBtn\" value=\"Save\" onclick=\"save()\"/>");
+                                            } else {
+                                                out.write("<input type=\"button\" id=\"saveBtn\" value=\"Save\" onclick=\"save()\" disabled/>");
+                                            }
+                                        %>  
+                                        <div id="saveText" style="visibility:hidden; color:green">Whitelist saved.</div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

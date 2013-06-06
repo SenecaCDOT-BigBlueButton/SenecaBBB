@@ -24,11 +24,11 @@ INSERT INTO bbb_user VALUES ('non_ldap3', 'non_ldap3', 0, 1, NULL, NULL, 0, 0, 1
 INSERT INTO bbb_user VALUES ('non_ldap4', 'non_ldap4', 0, 1, NULL, NULL, 0, 0, 1);
 INSERT INTO bbb_user VALUES ('non_ldap5', 'non_ldap5', 0, 1, NULL, NULL, 0, 0, 1);
 
-INSERT INTO non_ldap_user VALUES ('non_ldap1', 'Ldap1', 'Anon', 'abcde', 'abcde', 'ldap1@gmail.com', SYSDATE());
-INSERT INTO non_ldap_user VALUES ('non_ldap2', 'Ldap2', 'Anon', 'abcde', 'abcde', 'ldap2@gmail.com', SYSDATE());
-INSERT INTO non_ldap_user VALUES ('non_ldap3', 'Ldap3', 'Anon', 'abcde', 'abcde', 'ldap3@gmail.com', SYSDATE());
-INSERT INTO non_ldap_user VALUES ('non_ldap4', 'Ldap4', 'Anon', 'abcde', 'abcde', 'ldap4@gmail.com', SYSDATE());
-INSERT INTO non_ldap_user VALUES ('non_ldap5', 'Ldap5', 'Anon', 'abcde', 'abcde', 'ldap5@gmail.com', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('non_ldap1', 'Ldap1', 'Anon', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'ldap1@gmail.com', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('non_ldap2', 'Ldap2', 'Anon', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'ldap2@gmail.com', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('non_ldap3', 'Ldap3', 'Anon', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'ldap3@gmail.com', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('non_ldap4', 'Ldap4', 'Anon', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'ldap4@gmail.com', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('non_ldap5', 'Ldap5', 'Anon', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'ldap5@gmail.com', SYSDATE());
 
 INSERT INTO department VALUES ('ICT', 'Information & Communcations Technology');
 INSERT INTO department VALUES ('IAT', 'Information Arts & Technology');

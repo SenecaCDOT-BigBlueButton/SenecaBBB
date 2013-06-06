@@ -2,8 +2,8 @@
 INSERT INTO predefined_role VALUES ('student', 1);
 INSERT INTO predefined_role VALUES ('professor', 1);
 
-INSERT INTO user_role VALUES (fn_next_ur_id(), 'student', 1);
-INSERT INTO user_role VALUES (fn_next_ur_id(), 'professor', 1);
+INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'student', 1);
+INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'professor', 1);
 
 INSERT INTO bbb_user VALUES ('fardad.soleimanloo', 'Fardad', 0, 1, NULL, NULL, 1, 1, 2);
 INSERT INTO bbb_user VALUES ('justin.robinson', 'Justin', 0, 1, NULL, NULL, 1, 0, 2);
@@ -70,8 +70,8 @@ INSERT INTO student VALUES ('rwstanica', 'OOP344', 'B', '201305', 0);
 INSERT INTO student VALUES ('non_ldap1', 'OOP344', 'B', '201305', 0);
 INSERT INTO student VALUES ('non_ldap2', 'OOP344', 'B', '201305', 0);
 
-INSERT INTO lecture_schedule VALUES (fn_next_ls_id(), 'OOP344', 'A', '201305', SYSDATE() + INTERVAL 1 HOUR, 50, 2, 50, 1);
-INSERT INTO lecture_schedule VALUES (fn_next_ls_id(), 'OOP344', 'B', '201305', SYSDATE() + INTERVAL 5 HOUR, 50, 2, 50, 1);
+INSERT INTO lecture_schedule VALUES (fn_next_id('next_ls_id'), 'OOP344', 'A', '201305', SYSDATE() + INTERVAL 1 HOUR, 50, 2, 50, 1);
+INSERT INTO lecture_schedule VALUES (fn_next_id('next_ls_id'), 'OOP344', 'B', '201305', SYSDATE() + INTERVAL 5 HOUR, 50, 2, 50, 1);
 
 INSERT INTO lecture VALUES (1, 1, SYSDATE() + INTERVAL 1 HOUR, 50, 0, 'OOP344A', 'modpass', 'userpass', 1);
 INSERT INTO lecture VALUES (1, 2, SYSDATE() + INTERVAL 25 HOUR, 50, 0, 'OOP344A', 'modpass', 'userpass', 1);
@@ -112,8 +112,8 @@ INSERT INTO lecture_attendance VALUES ('rwstanica', 2, 3, 0);
 INSERT INTO lecture_attendance VALUES ('non_ldap1', 2, 3, 0);
 INSERT INTO lecture_attendance VALUES ('non_ldap2', 2, 3, 0);
 
-INSERT INTO meeting_schedule VALUES (fn_next_ms_id(), 'Test Meeting 1', SYSDATE() + INTERVAL 1 HOUR, 50, 2, 50, 'gary.deng');
-INSERT INTO meeting_schedule VALUES (fn_next_ms_id(), 'Test Meeting 2', SYSDATE() + INTERVAL 5 HOUR, 50, 2, 50, 'bo.li');
+INSERT INTO meeting_schedule VALUES (fn_next_id('next_ms_id'), 'Test Meeting 1', SYSDATE() + INTERVAL 1 HOUR, 50, 2, 50, 'gary.deng');
+INSERT INTO meeting_schedule VALUES (fn_next_id('next_ms_id'), 'Test Meeting 2', SYSDATE() + INTERVAL 5 HOUR, 50, 2, 50, 'bo.li');
 
 INSERT INTO meeting VALUES (1, 1, SYSDATE() + INTERVAL 1 HOUR, 50, 0, 'Schedule 1, Test Meeting 1', 1, 'modpass', 'userpass');
 INSERT INTO meeting VALUES (1, 2, SYSDATE() + INTERVAL 25 HOUR, 50, 0, 'Schedule 1, Test Meeting 2', 1, 'modpass', 'userpass');

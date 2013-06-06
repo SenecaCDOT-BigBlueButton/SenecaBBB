@@ -47,15 +47,11 @@ CREATE TABLE predefined_role (
 
 # admin is future keyword, using bbb_admin instead
 CREATE TABLE bbb_admin (
-  row_num         TINYINT,
-  next_ms_id      MEDIUMINT UNSIGNED,
-  next_ls_id      MEDIUMINT UNSIGNED,
-  next_ur_id      MEDIUMINT UNSIGNED,
-  timeout         MEDIUMINT UNSIGNED,
-  welcome_msg     VARCHAR(500),
-  recording_msg   VARCHAR(100),
+  key_name        VARCHAR(50),
+  key_title       VARCHAR(100) NOT NULL,
+  key_value       VARCHAR(300) NOT NULL,
   CONSTRAINT pk_bbb_admin
-    PRIMARY KEY (row_num)
+    PRIMARY KEY (key_name)
 );
 
 CREATE TABLE user_role (

@@ -280,7 +280,7 @@
                             <td><div id="saveText" style="color:green; visibility:hidden;">Meeting settings saved</div></td>
                         </tr>
                         <tr>
-                            <td>Add Guest Lecturer:</td>
+                            <td><% if (type.equals("professor") || type.equals("professor")) out.write("Add Guest Lecturer:");%></td>
                             <td>
                                 <div id="sub1">
 
@@ -293,15 +293,11 @@
                             </td>
                         </tr>
                     </table>
-                   <% if (start.equals("true")) {
+                   <% if (start.equals("true") && type.equals("professor")) {
                             out.write("<br/><br/><button style=\"font-size:24pt;\" type=\"button\" name=\"start\" >Start Meeting</button>");
-                        } else {
-                            out.write("<br/><br/><button style=\"font-size:24pt;\" type=\"button\" name=\"start\" disabled>Start Meeting</button>");
                         }
                         if (type.equals("professor") || type.equals("admin")) {
                             out.write("<button style=\"font-size:24pt;\" type=\"button\" onclick=\"cancel()\" id=\"cancelBtn\">Cancel Meeting</button><br/><br/>");
-                        } else {
-                            out.write("<button style=\"font-size:24pt;\" type=\"button\" onclick=\"cancel()\"id=\"cancelBtn\" disabled>Cancel Meeting</button><br/><br/>");
                         }
                     %>
                 </div>

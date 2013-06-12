@@ -79,6 +79,8 @@ CREATE TABLE bbb_user (
   bu_isldap       BIT(1) NOT NULL,
   bu_issuper      BIT(1) NOT NULL,
   ur_id           MEDIUMINT UNSIGNED,
+  bu_setting      BIT(10) NOT NULL,
+  m_setting       BIT(10) NOT NULL,
   CONSTRAINT pk_user 
     PRIMARY KEY (bu_id),
   CONSTRAINT fk_user_role_of_user
@@ -158,6 +160,7 @@ CREATE TABLE meeting (
   m_isrecorded    BIT(1) NOT NULL,
   m_modpass       CHAR(15) NOT NULL,
   m_userpass      CHAR(15) NOT NULL,
+  m_setting       BIT(10) NOT NULL,
   CONSTRAINT pk_meeting 
     PRIMARY KEY (m_id, ms_id),
   CONSTRAINT fk_meeting_schedule_of_meeting
@@ -250,7 +253,8 @@ CREATE TABLE section (
   sc_semesterid   MEDIUMINT UNSIGNED,
   sc_ismuldraw    BIT(1) NOT NULL,
   sc_isrecorded   BIT(1) NOT NULL,
-  d_code          CHAR(5),
+  d_code          CHAR(5) NOT NULL,
+  sc_setting      BIT(10) NOT NULL,
   CONSTRAINT pk_section 
     PRIMARY KEY (c_id, sc_id, sc_semesterid),
   CONSTRAINT fk_course_of_section

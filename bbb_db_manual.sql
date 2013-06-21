@@ -251,8 +251,8 @@ CREATE TABLE section (
   c_id            CHAR(8),
   sc_id           CHAR(2),
   sc_semesterid   MEDIUMINT UNSIGNED,
-  sc_ismuldraw    BIT(1) NOT NULL,
-  sc_isrecorded   BIT(1) NOT NULL,
+  # sc_ismuldraw    BIT(1) NOT NULL, now part of sc_setting in professor table
+  # sc_isrecorded   BIT(1) NOT NULL, now part of sc_setting in professor table
   d_code          CHAR(5) NOT NULL,
   CONSTRAINT pk_section 
     PRIMARY KEY (c_id, sc_id, sc_semesterid),

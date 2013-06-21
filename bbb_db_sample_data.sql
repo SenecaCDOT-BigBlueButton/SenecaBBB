@@ -41,27 +41,27 @@ INSERT INTO user_department VALUES ('bli64', 'ICT', 0);
 INSERT INTO user_department VALUES ('xdeng7', 'ICT', 0);
 
 INSERT INTO course VALUES ('PSY100', 'Introduction to Psychology');
-INSERT INTO section VALUES ('PSY100', 'A', '201305', 0, 1, 'IAT', 1);
-INSERT INTO section VALUES ('PSY100', 'B', '201305', 0, 1, 'IAT', 1);
+INSERT INTO section VALUES ('PSY100', 'A', '201305', 0, 1, 'IAT');
+INSERT INTO section VALUES ('PSY100', 'B', '201305', 0, 1, 'IAT');
 
 INSERT INTO course VALUES ('PSY150', 'Organizational Behaviour');
-INSERT INTO section VALUES ('PSY150', 'A', '201305', 0, 1, 'IAT', 1);
-INSERT INTO section VALUES ('PSY150', 'B', '201305', 0, 1, 'IAT', 1);
+INSERT INTO section VALUES ('PSY150', 'A', '201305', 0, 1, 'IAT');
+INSERT INTO section VALUES ('PSY150', 'B', '201305', 0, 1, 'IAT');
 
 INSERT INTO course VALUES ('INT222', 'Internet I - Internet Fundamentals');
-INSERT INTO section VALUES ('INT222', 'A', '201305', 0, 1, 'ICT', 1);
-INSERT INTO section VALUES ('INT222', 'B', '201305', 0, 1, 'ICT', 1);
+INSERT INTO section VALUES ('INT222', 'A', '201305', 0, 1, 'ICT');
+INSERT INTO section VALUES ('INT222', 'B', '201305', 0, 1, 'ICT');
 
 INSERT INTO course VALUES ('IPC144', 'Introduction To Programming Using C');
-INSERT INTO section VALUES ('IPC144', 'A', '201305', 0, 1, 'ICT', 1);
-INSERT INTO section VALUES ('IPC144', 'B', '201305', 0, 1, 'ICT', 1);
+INSERT INTO section VALUES ('IPC144', 'A', '201305', 0, 1, 'ICT');
+INSERT INTO section VALUES ('IPC144', 'B', '201305', 0, 1, 'ICT');
 
 INSERT INTO course VALUES ('OOP344', 'Object Oriented Programming II Using C++');
-INSERT INTO section VALUES ('OOP344', 'A', '201305', 0, 1, 'ICT', 1);
-INSERT INTO section VALUES ('OOP344', 'B', '201305', 0, 1, 'ICT', 1);
+INSERT INTO section VALUES ('OOP344', 'A', '201305', 0, 1, 'ICT');
+INSERT INTO section VALUES ('OOP344', 'B', '201305', 0, 1, 'ICT');
 
-INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'A', '201305');
-INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'B', '201305');
+INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'A', '201305', 1);
+INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'B', '201305', 1);
 
 INSERT INTO student VALUES ('jtrobins', 'OOP344', 'A', '201305', 0);
 INSERT INTO student VALUES ('bli64', 'OOP344', 'A', '201305', 0);

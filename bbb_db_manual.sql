@@ -119,7 +119,7 @@ CREATE TABLE user_department (
 CREATE TABLE meeting_schedule (
   ms_id           MEDIUMINT UNSIGNED,
   ms_title        VARCHAR(100) NOT NULL,
-  ms_intdatetime  DATETIME NOT NULL,
+  ms_inidatetime  DATETIME NOT NULL,
   ms_intervals    MEDIUMINT UNSIGNED NOT NULL,
   ms_repeats      MEDIUMINT UNSIGNED NOT NULL,
   ms_duration     MEDIUMINT UNSIGNED NOT NULL,
@@ -153,7 +153,7 @@ CREATE TABLE non_ldap_user (
 CREATE TABLE meeting (
   ms_id           MEDIUMINT UNSIGNED,
   m_id            MEDIUMINT UNSIGNED,
-  m_intdatetime   DATETIME NOT NULL,
+  m_inidatetime   DATETIME NOT NULL,
   m_duration      MEDIUMINT UNSIGNED NOT NULL,
   m_iscancel      BIT(1) NOT NULL,
   m_description   VARCHAR(2000),
@@ -254,7 +254,6 @@ CREATE TABLE section (
   sc_ismuldraw    BIT(1) NOT NULL,
   sc_isrecorded   BIT(1) NOT NULL,
   d_code          CHAR(5) NOT NULL,
-  sc_setting      BIT(10) NOT NULL,
   CONSTRAINT pk_section 
     PRIMARY KEY (c_id, sc_id, sc_semesterid),
   CONSTRAINT fk_course_of_section
@@ -274,6 +273,7 @@ CREATE TABLE professor (
   c_id            CHAR(8),
   sc_id           CHAR(2),
   sc_semesterid   MEDIUMINT UNSIGNED,
+  sc_setting      BIT(10) NOT NULL,
   CONSTRAINT pk_professor 
     PRIMARY KEY (c_id, sc_id, sc_semesterid, bu_id),
   CONSTRAINT fk_section_of_professor
@@ -313,7 +313,7 @@ CREATE TABLE lecture_schedule (
   c_id            CHAR(8) NOT NULL,
   sc_id           CHAR(2) NOT NULL,
   sc_semesterid   MEDIUMINT UNSIGNED NOT NULL,
-  ls_intdatetime  DATETIME NOT NULL,
+  ls_inidatetime  DATETIME NOT NULL,
   ls_intervals    MEDIUMINT UNSIGNED NOT NULL,
   ls_repeats      MEDIUMINT UNSIGNED NOT NULL,
   ls_duration     MEDIUMINT UNSIGNED NOT NULL,
@@ -330,7 +330,7 @@ CREATE TABLE lecture_schedule (
 CREATE TABLE lecture (
   ls_id           MEDIUMINT UNSIGNED,
   l_id            MEDIUMINT UNSIGNED,
-  l_intdatetime   DATETIME NOT NULL,
+  l_inidatetime   DATETIME NOT NULL,
   l_duration      MEDIUMINT UNSIGNED NOT NULL,
   l_iscancel      BIT(1) NOT NULL,
   l_description   VARCHAR(2000),

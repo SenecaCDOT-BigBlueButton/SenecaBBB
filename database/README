@@ -53,10 +53,3 @@ mysql -u root -p
 create user 'senecaBBB'@'%' identified by 'db';
 grant all on db.* to 'senecaBBB'@'%' IDENTIFIED by 'db';
 ```
-
-9) In NetBeans, click on the Services tab then right click Databases -> New Connection 
-   and choose MySQL
-   - Host: 127.0.0.1 //if not working, use your VM IP
-   - Port: 3309
-   - Username: senecaBBB
-   - Password: db

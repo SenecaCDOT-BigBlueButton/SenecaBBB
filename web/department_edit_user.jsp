@@ -110,16 +110,6 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Department Head of:</td>
-                                    <td>
-                                        <select>
-                                            <option value='None'>None</option>
-                                            <option value='ICT' <% if (lname.equals("Butts")){out.write("selected=selected");}%>>ICT</option>
-                                            <option value='Artsy Fartsy'>Artsy Fartsy</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td>Banned:</td>
                                     <td><input type="checkbox"></td>
                                 </tr>

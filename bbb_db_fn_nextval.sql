@@ -4,57 +4,30 @@
   - Bo Li
 */
 
-INSERT INTO bbb_admin VALUES (1, 0, 0, 0, 10, 'Welcome', 'Recording');
+INSERT INTO bbb_admin VALUES ('next_ms_id', 'Next Meeting Schedule Id', '0');
+INSERT INTO bbb_admin VALUES ('next_ls_id', 'Next Lecture Schedule Id', '0');
+INSERT INTO bbb_admin VALUES ('next_ur_id', 'Next User Role Id', '0');
+INSERT INTO bbb_admin VALUES ('timeout', 'Session timeout limit', '10');
+INSERT INTO bbb_admin VALUES ('welcome_msg', 'Welcome Message', 'Welcome');
+INSERT INTO bbb_admin VALUES ('recording_msg', 'Recording Message', 'Recording');
+INSERT INTO bbb_admin VALUES ('default_meeting', 'Default meeting setting', b'1');
+INSERT INTO bbb_admin VALUES ('default_user', 'Default user setting', b'1');
+INSERT INTO bbb_admin VALUES ('default_class', 'Default class section setting', b'1');
 
-DROP FUNCTION IF EXISTS fn_next_ur_id;
-DROP FUNCTION IF EXISTS fn_next_ms_id;
-DROP FUNCTION IF EXISTS fn_next_ls_id;
-
-DELIMITER //
-CREATE FUNCTION fn_next_ur_id()
-RETURNS MEDIUMINT UNSIGNED
-BEGIN
-  DECLARE ur_id_nextval MEDIUMINT UNSIGNED;
-  UPDATE bbb_admin
-  SET next_ur_id = next_ur_id + 1
-  WHERE row_num = 1;
-  SELECT next_ur_id
-  INTO ur_id_nextval
-  FROM bbb_admin 
-  WHERE row_num = 1;
-  RETURN ur_id_nextval;
-END//
-DELIMITER ;
+DROP FUNCTION IF EXISTS fn_next_id;
 
 DELIMITER //
-CREATE FUNCTION fn_next_ms_id()
+CREATE FUNCTION fn_next_id(param1 VARCHAR(50))
 RETURNS MEDIUMINT UNSIGNED
 BEGIN
-  DECLARE ms_id_nextval MEDIUMINT UNSIGNED;
+  DECLARE id_nextval MEDIUMINT UNSIGNED;
   UPDATE bbb_admin
-  SET next_ms_id = next_ms_id + 1
-  WHERE row_num = 1;
-  SELECT next_ms_id
-  INTO ms_id_nextval
+  SET key_value = key_value + 1
+  WHERE key_name = param1;
+  SELECT key_value
+  INTO id_nextval
   FROM bbb_admin 
-  WHERE row_num = 1;
-  RETURN ms_id_nextval;
+  WHERE key_name = param1;
+  RETURN id_nextval;
 END//
 DELIMITER ;
-
-DELIMITER //
-CREATE FUNCTION fn_next_ls_id()
-RETURNS MEDIUMINT UNSIGNED
-BEGIN
-  DECLARE ls_id_nextval MEDIUMINT UNSIGNED;
-  UPDATE bbb_admin
-  SET next_ls_id = next_ls_id + 1
-  WHERE row_num = 1;
-  SELECT next_ls_id
-  INTO ls_id_nextval
-  FROM bbb_admin 
-  WHERE row_num = 1;
-  RETURN ls_id_nextval;
-END//
-DELIMITER ;
-

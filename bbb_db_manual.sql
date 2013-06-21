@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS lecture_schedule CASCADE;
 DROP TABLE IF EXISTS student CASCADE;
 DROP TABLE IF EXISTS professor CASCADE;
 DROP TABLE IF EXISTS section CASCADE;
-DROP TABLE IF EXISTS subject CASCADE;
+DROP TABLE IF EXISTS course CASCADE;
 DROP TABLE IF EXISTS meeting_attendance CASCADE;
 DROP TABLE IF EXISTS meeting_attendee CASCADE;
 DROP TABLE IF EXISTS meeting_guest CASCADE;
@@ -47,15 +47,11 @@ CREATE TABLE predefined_role (
 
 # admin is future keyword, using bbb_admin instead
 CREATE TABLE bbb_admin (
-  row_num         TINYINT,
-  next_ms_id      MEDIUMINT UNSIGNED,
-  next_ls_id      MEDIUMINT UNSIGNED,
-  next_ur_id      MEDIUMINT UNSIGNED,
-  timeout         MEDIUMINT UNSIGNED,
-  welcome_msg     VARCHAR(500),
-  recording_msg   VARCHAR(100),
+  key_name        VARCHAR(50),
+  key_title       VARCHAR(100) NOT NULL,
+  key_value       VARCHAR(300) NOT NULL,
   CONSTRAINT pk_bbb_admin
-    PRIMARY KEY (row_num)
+    PRIMARY KEY (key_name)
 );
 
 CREATE TABLE user_role (
@@ -83,6 +79,8 @@ CREATE TABLE bbb_user (
   bu_isldap       BIT(1) NOT NULL,
   bu_issuper      BIT(1) NOT NULL,
   ur_id           MEDIUMINT UNSIGNED,
+  bu_setting      BIT(10) NOT NULL,
+  m_setting       BIT(10) NOT NULL,
   CONSTRAINT pk_user 
     PRIMARY KEY (bu_id),
   CONSTRAINT fk_user_role_of_user
@@ -121,7 +119,7 @@ CREATE TABLE user_department (
 CREATE TABLE meeting_schedule (
   ms_id           MEDIUMINT UNSIGNED,
   ms_title        VARCHAR(100) NOT NULL,
-  ms_intdatetime  DATETIME NOT NULL,
+  ms_inidatetime  DATETIME NOT NULL,
   ms_intervals    MEDIUMINT UNSIGNED NOT NULL,
   ms_repeats      MEDIUMINT UNSIGNED NOT NULL,
   ms_duration     MEDIUMINT UNSIGNED NOT NULL,
@@ -155,12 +153,14 @@ CREATE TABLE non_ldap_user (
 CREATE TABLE meeting (
   ms_id           MEDIUMINT UNSIGNED,
   m_id            MEDIUMINT UNSIGNED,
-  m_intdatetime   DATETIME NOT NULL,
+  m_inidatetime   DATETIME NOT NULL,
   m_duration      MEDIUMINT UNSIGNED NOT NULL,
   m_iscancel      BIT(1) NOT NULL,
   m_description   VARCHAR(2000),
+  m_isrecorded    BIT(1) NOT NULL,
   m_modpass       CHAR(15) NOT NULL,
   m_userpass      CHAR(15) NOT NULL,
+  m_setting       BIT(10) NOT NULL,
   CONSTRAINT pk_meeting 
     PRIMARY KEY (m_id, ms_id),
   CONSTRAINT fk_meeting_schedule_of_meeting
@@ -240,38 +240,45 @@ CREATE TABLE meeting_attendance (
     ON UPDATE CASCADE
 );
 
-CREATE TABLE subject (
-  sub_id          CHAR(8),
-  sub_name        VARCHAR(100) NOT NULL,
-  CONSTRAINT pk_subject 
-    PRIMARY KEY (sub_id)
+CREATE TABLE course (
+  c_id            CHAR(8),
+  c_name          VARCHAR(100) NOT NULL,
+  CONSTRAINT pk_course 
+    PRIMARY KEY (c_id)
 );
 
 CREATE TABLE section (
-  sub_id          CHAR(8),
+  c_id            CHAR(8),
   sc_id           CHAR(2),
-  # semester_id is currently not part of pk for now, that may change
-  semester_id     MEDIUMINT UNSIGNED NOT NULL,
-  s_ismuldraw     BIT(1) NOT NULL,
-  s_isrecorded    BIT(1) NOT NULL,
+  sc_semesterid   MEDIUMINT UNSIGNED,
+  sc_ismuldraw    BIT(1) NOT NULL,
+  sc_isrecorded   BIT(1) NOT NULL,
+  d_code          CHAR(5) NOT NULL,
   CONSTRAINT pk_section 
-    PRIMARY KEY (sub_id, sc_id),
-  CONSTRAINT fk_subject_of_section
-    FOREIGN KEY (sub_id) 
-    REFERENCES subject (sub_id)
+    PRIMARY KEY (c_id, sc_id, sc_semesterid),
+  CONSTRAINT fk_course_of_section
+    FOREIGN KEY (c_id) 
+    REFERENCES course (c_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT fk_department_of_section
+    FOREIGN KEY (d_code) 
+    REFERENCES department (d_code)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE TABLE professor (
   bu_id           VARCHAR(100),
-  sub_id          CHAR(8),
+  c_id            CHAR(8),
   sc_id           CHAR(2),
+  sc_semesterid   MEDIUMINT UNSIGNED,
+  sc_setting      BIT(10) NOT NULL,
   CONSTRAINT pk_professor 
-    PRIMARY KEY (sub_id, sc_id, bu_id),
+    PRIMARY KEY (c_id, sc_id, sc_semesterid, bu_id),
   CONSTRAINT fk_section_of_professor
-    FOREIGN KEY (sub_id, sc_id) 
-    REFERENCES section (sub_id, sc_id)
+    FOREIGN KEY (c_id, sc_id, sc_semesterid) 
+    REFERENCES section (c_id, sc_id, sc_semesterid)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT fk_bbb_user_of_professor
@@ -283,14 +290,15 @@ CREATE TABLE professor (
 
 CREATE TABLE student (
   bu_id           VARCHAR(100), 
-  sub_id          CHAR(8),
+  c_id            CHAR(8),
   sc_id           CHAR(2),
+  sc_semesterid   MEDIUMINT UNSIGNED,
   s_isbanned      BIT(1) NOT NULL,
   CONSTRAINT pk_student 
-    PRIMARY KEY (sub_id, sc_id, bu_id),
+    PRIMARY KEY (c_id, sc_id, sc_semesterid, bu_id),
   CONSTRAINT fk_section_of_student
-    FOREIGN KEY (sub_id, sc_id) 
-    REFERENCES section (sub_id, sc_id)
+    FOREIGN KEY (c_id, sc_id, sc_semesterid) 
+    REFERENCES section (c_id, sc_id, sc_semesterid)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT fk_bbb_user_of_student
@@ -302,17 +310,19 @@ CREATE TABLE student (
 
 CREATE TABLE lecture_schedule (
   ls_id           MEDIUMINT UNSIGNED,
-  sub_id          CHAR(8),
-  sc_id           CHAR(2),
-  ls_intdatetime  DATETIME NOT NULL,
+  c_id            CHAR(8) NOT NULL,
+  sc_id           CHAR(2) NOT NULL,
+  sc_semesterid   MEDIUMINT UNSIGNED NOT NULL,
+  ls_inidatetime  DATETIME NOT NULL,
   ls_intervals    MEDIUMINT UNSIGNED NOT NULL,
   ls_repeats      MEDIUMINT UNSIGNED NOT NULL,
   ls_duration     MEDIUMINT UNSIGNED NOT NULL,
+  ls_isrecorded   MEDIUMINT UNSIGNED,
   CONSTRAINT pk_lecture_schedule 
     PRIMARY KEY (ls_id),
   CONSTRAINT fk_section_of_lecture_schedule
-    FOREIGN KEY (sub_id, sc_id) 
-    REFERENCES section (sub_id, sc_id)
+    FOREIGN KEY (c_id, sc_id, sc_semesterid) 
+    REFERENCES section (c_id, sc_id, sc_semesterid)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
@@ -320,12 +330,13 @@ CREATE TABLE lecture_schedule (
 CREATE TABLE lecture (
   ls_id           MEDIUMINT UNSIGNED,
   l_id            MEDIUMINT UNSIGNED,
-  l_intdatetime   DATETIME NOT NULL,
+  l_inidatetime   DATETIME NOT NULL,
   l_duration      MEDIUMINT UNSIGNED NOT NULL,
   l_iscancel      BIT(1) NOT NULL,
   l_description   VARCHAR(2000),
   l_modpass       CHAR(15) NOT NULL,
   l_userpass      CHAR(15) NOT NULL,
+  l_isrecorded    MEDIUMINT UNSIGNED,
   #l_url          VARCHAR(100),
   CONSTRAINT pk_lecture 
     PRIMARY KEY (l_id, ls_id),

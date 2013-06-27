@@ -315,7 +315,7 @@ CREATE TABLE lecture_schedule (
   ls_intervals    MEDIUMINT UNSIGNED NOT NULL,
   ls_repeats      MEDIUMINT UNSIGNED NOT NULL,
   ls_duration     MEDIUMINT UNSIGNED NOT NULL,
-  ls_isrecorded   MEDIUMINT UNSIGNED,
+  #ls_isrecorded   BIT(1), part of sc_setting
   CONSTRAINT pk_lecture_schedule 
     PRIMARY KEY (ls_id),
   CONSTRAINT fk_section_of_lecture_schedule
@@ -334,7 +334,7 @@ CREATE TABLE lecture (
   l_description   VARCHAR(2000),
   l_modpass       CHAR(15) NOT NULL,
   l_userpass      CHAR(15) NOT NULL,
-  l_isrecorded    MEDIUMINT UNSIGNED,
+  #l_isrecorded    BIT(1), part of sc_setting
   #l_url          VARCHAR(100),
   CONSTRAINT pk_lecture 
     PRIMARY KEY (l_id, ls_id),

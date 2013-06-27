@@ -1,28 +1,30 @@
 
-INSERT INTO predefined_role VALUES ('student', 1);
-INSERT INTO predefined_role VALUES ('professor', 1);
+INSERT INTO predefined_role VALUES ('employee', b'11');
+INSERT INTO predefined_role VALUES ('student', b'01');
+INSERT INTO predefined_role VALUES ('guest', b'00');
 
-INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'student', 1);
-INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'professor', 1);
+INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'employee', b'11');
+INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'student', b'01');
+INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'guest', b'00');
 
-INSERT INTO bbb_user VALUES ('fardad.soleimanloo', 'Fardad', 0, 1, NULL, NULL, 1, 1, 2, 1, 1);
-INSERT INTO bbb_user VALUES ('justin.robinson', 'Justin', 0, 1, NULL, NULL, 1, 0, 2, 1, 1);
-INSERT INTO bbb_user VALUES ('chad.pilkey', 'Chad', 0, 1, NULL, NULL, 1, 0, 2, 1, 1);
-INSERT INTO bbb_user VALUES ('robert.stanica', 'Robert', 0, 1, NULL, NULL, 1, 0, 2, 1, 1);
-INSERT INTO bbb_user VALUES ('bo.li', 'Bo', 0, 1, NULL, NULL, 1, 0, 2, 1, 1);
-INSERT INTO bbb_user VALUES ('gary.deng', 'Gary', 0, 1, NULL, NULL, 1, 0, 2, 1, 1);
+INSERT INTO bbb_user VALUES ('fardad.soleimanloo', 'Fardad', 0, 1, NULL, NULL, 1, 1, 2, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('justin.robinson', 'Justin', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('chad.pilkey', 'Chad', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('robert.stanica', 'Robert', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('bo.li', 'Bo', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('gary.deng', 'Gary', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
 
-INSERT INTO bbb_user VALUES ('jtrobins', 'Justin', 0, 1, NULL, NULL, 1, 0, 1, 1, 1);
-INSERT INTO bbb_user VALUES ('capilkey', 'Chad', 0, 1, NULL, NULL, 1, 0, 1, 1, 1);
-INSERT INTO bbb_user VALUES ('rwstanica', 'Robert', 0, 1, NULL, NULL, 1, 0, 1, 1, 1);
-INSERT INTO bbb_user VALUES ('bli64', 'Bo', 0, 1, NULL, NULL, 1, 0, 1, 1, 1);
-INSERT INTO bbb_user VALUES ('xdeng7', 'Gary', 0, 1, NULL, NULL, 1, 0, 1, 1, 1);
+INSERT INTO bbb_user VALUES ('jtrobins', 'Justin', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('capilkey', 'Chad', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('rwstanica', 'Robert', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('bli64', 'Bo', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('xdeng7', 'Gary', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
 
-INSERT INTO bbb_user VALUES ('non_ldap1', 'non_ldap1', 0, 1, NULL, NULL, 0, 0, 1, 1, 1);
-INSERT INTO bbb_user VALUES ('non_ldap2', 'non_ldap2', 0, 1, NULL, NULL, 0, 0, 1, 1, 1);
-INSERT INTO bbb_user VALUES ('non_ldap3', 'non_ldap3', 0, 1, NULL, NULL, 0, 0, 1, 1, 1);
-INSERT INTO bbb_user VALUES ('non_ldap4', 'non_ldap4', 0, 1, NULL, NULL, 0, 0, 1, 1, 1);
-INSERT INTO bbb_user VALUES ('non_ldap5', 'non_ldap5', 0, 1, NULL, NULL, 0, 0, 1, 1, 1);
+INSERT INTO bbb_user VALUES ('non_ldap1', 'non_ldap1', 0, 1, NULL, NULL, 0, 0, 3, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('non_ldap2', 'non_ldap2', 0, 1, NULL, NULL, 0, 0, 3, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('non_ldap3', 'non_ldap3', 0, 1, NULL, NULL, 0, 0, 3, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('non_ldap4', 'non_ldap4', 0, 1, NULL, NULL, 0, 0, 3, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('non_ldap5', 'non_ldap5', 0, 1, NULL, NULL, 0, 0, 3, b'001', b'00110');
 
 INSERT INTO non_ldap_user VALUES ('non_ldap1', 'Ldap1', 'Anon', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'ldap1@gmail.com', SYSDATE());
 INSERT INTO non_ldap_user VALUES ('non_ldap2', 'Ldap2', 'Anon', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'ldap2@gmail.com', SYSDATE());
@@ -60,8 +62,10 @@ INSERT INTO course VALUES ('OOP344', 'Object Oriented Programming II Using C++')
 INSERT INTO section VALUES ('OOP344', 'A', '201305', 'ICT');
 INSERT INTO section VALUES ('OOP344', 'B', '201305', 'ICT');
 
-INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'A', '201305', 1);
-INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'B', '201305', 1);
+INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'A', '201305', b'00110');
+INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'B', '201305', b'00110');
+INSERT INTO professor VALUES ('bo.li', 'INT222', 'A', '201305', b'00110');
+INSERT INTO professor VALUES ('bo.li', 'INT222', 'B', '201305', b'00110');
 
 INSERT INTO student VALUES ('jtrobins', 'OOP344', 'A', '201305', 0);
 INSERT INTO student VALUES ('bli64', 'OOP344', 'A', '201305', 0);
@@ -115,10 +119,10 @@ INSERT INTO lecture_attendance VALUES ('non_ldap2', 2, 3, 0);
 INSERT INTO meeting_schedule VALUES (fn_next_id('next_ms_id'), 'Test Meeting 1', SYSDATE() + INTERVAL 1 HOUR, 50, 2, 50, 'gary.deng');
 INSERT INTO meeting_schedule VALUES (fn_next_id('next_ms_id'), 'Test Meeting 2', SYSDATE() + INTERVAL 5 HOUR, 50, 2, 50, 'bo.li');
 
-INSERT INTO meeting VALUES (1, 1, SYSDATE() + INTERVAL 1 HOUR, 50, 0, 'Schedule 1, Test Meeting 1', 1, 'modpass', 'userpass', 1);
-INSERT INTO meeting VALUES (1, 2, SYSDATE() + INTERVAL 25 HOUR, 50, 0, 'Schedule 1, Test Meeting 2', 1, 'modpass', 'userpass', 1);
-INSERT INTO meeting VALUES (2, 1, SYSDATE() + INTERVAL 5 HOUR, 50, 0, 'Schedule 2, Test Meeting 1', 1, 'modpass', 'userpass', 1);
-INSERT INTO meeting VALUES (2, 2, SYSDATE() + INTERVAL 30 HOUR, 50, 0, 'Schedule 2, Test Meeting 2', 1, 'modpass', 'userpass', 1);
+INSERT INTO meeting VALUES (1, 1, SYSDATE() + INTERVAL 1 HOUR, 50, 0, 'Schedule 1, Test Meeting 1', 'modpass', 'userpass', 1);
+INSERT INTO meeting VALUES (1, 2, SYSDATE() + INTERVAL 25 HOUR, 50, 0, 'Schedule 1, Test Meeting 2', 'modpass', 'userpass', 1);
+INSERT INTO meeting VALUES (2, 1, SYSDATE() + INTERVAL 5 HOUR, 50, 0, 'Schedule 2, Test Meeting 1', 'modpass', 'userpass', 1);
+INSERT INTO meeting VALUES (2, 2, SYSDATE() + INTERVAL 30 HOUR, 50, 0, 'Schedule 2, Test Meeting 2', 'modpass', 'userpass', 1);
 
 INSERT INTO meeting_attendee VALUES ('jtrobins', 1, 0);
 INSERT INTO meeting_attendee VALUES ('capilkey', 1, 0);

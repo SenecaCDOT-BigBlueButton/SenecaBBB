@@ -3,9 +3,7 @@
   all column name that has a '_is' part is binary and uses BIT(1) for column type
   this script uses table 'bbb_admin' to generate primary keys for tables:
         user_role
-        meeting
         meeting_schedule
-        lecture
         lecture_schedule
 
   ls_id is always put before l_id
@@ -157,7 +155,7 @@ CREATE TABLE meeting (
   m_duration      MEDIUMINT UNSIGNED NOT NULL,
   m_iscancel      BIT(1) NOT NULL,
   m_description   VARCHAR(2000),
-  m_isrecorded    BIT(1) NOT NULL,
+  #m_isrecorded    BIT(1) NOT NULL, now part of the m_setting
   m_modpass       CHAR(15) NOT NULL,
   m_userpass      CHAR(15) NOT NULL,
   m_setting       BIT(10) NOT NULL,

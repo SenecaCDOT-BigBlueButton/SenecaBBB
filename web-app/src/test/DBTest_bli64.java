@@ -5,7 +5,7 @@ import dao.*;
 
 public class DBTest_bli64 {
 
-    public static void main(String[] args) {
+    public DBTest_bli64() {
         ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
         User userTest = new User();
         Meeting meetingTest = new Meeting();
@@ -20,6 +20,7 @@ public class DBTest_bli64 {
         else {
             System.out.println(userTest.getErrLog() + "\n");
         }
+        
         
         //General Test: close and open connection
         userTest.closeConnection();

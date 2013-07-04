@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
-http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-    version="2.4">
-  <description>MySQL Test App</description>
-  <resource-ref>
-      <description>DB Connection</description>
-      <res-ref-name>jdbc/TestDB</res-ref-name>
-      <res-type>javax.sql.DataSource</res-type>
-      <res-auth>Container</res-auth>
-  </resource-ref>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:javaee="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+  <javaee:description>MySQL Test App</javaee:description>
+  <javaee:resource-ref>
+    <javaee:description>DB Connection</javaee:description>
+    <javaee:res-ref-name>jdbc/TestDB</javaee:res-ref-name>
+    <javaee:res-type>javax.sql.DataSource</javaee:res-type>
+    <javaee:res-auth>Container</javaee:res-auth>
+  </javaee:resource-ref>
 </web-app>

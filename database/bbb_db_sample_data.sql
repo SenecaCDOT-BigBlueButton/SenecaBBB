@@ -7,18 +7,18 @@ INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'employee', b'11');
 INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'student', b'01');
 INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'guest', b'00');
 
-INSERT INTO bbb_user VALUES ('fardad.soleimanloo', 'Fardad', 0, 1, NULL, NULL, 1, 1, 2, b'001', b'00110');
-INSERT INTO bbb_user VALUES ('justin.robinson', 'Justin', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
-INSERT INTO bbb_user VALUES ('chad.pilkey', 'Chad', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
-INSERT INTO bbb_user VALUES ('robert.stanica', 'Robert', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
-INSERT INTO bbb_user VALUES ('bo.li', 'Bo', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
-INSERT INTO bbb_user VALUES ('gary.deng', 'Gary', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('fardad.soleimanloo', 'Fardad', 0, 1, NULL, NULL, 1, 1, 1, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('justin.robinson', 'Justin', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('chad.pilkey', 'Chad', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('robert.stanica', 'Robert', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('bo.li', 'Bo', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('gary.deng', 'Gary', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
 
-INSERT INTO bbb_user VALUES ('jtrobins', 'Justin', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
-INSERT INTO bbb_user VALUES ('capilkey', 'Chad', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
-INSERT INTO bbb_user VALUES ('rwstanica', 'Robert', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
-INSERT INTO bbb_user VALUES ('bli64', 'Bo', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
-INSERT INTO bbb_user VALUES ('xdeng7', 'Gary', 0, 1, NULL, NULL, 1, 0, 1, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('jtrobins', 'Justin', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('capilkey', 'Chad', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('rwstanica', 'Robert', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('bli64', 'Bo', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
+INSERT INTO bbb_user VALUES ('xdeng7', 'Gary', 0, 1, NULL, NULL, 1, 0, 2, b'001', b'00110');
 
 INSERT INTO bbb_user VALUES ('non_ldap1', 'non_ldap1', 0, 1, NULL, NULL, 0, 0, 3, b'001', b'00110');
 INSERT INTO bbb_user VALUES ('non_ldap2', 'non_ldap2', 0, 1, NULL, NULL, 0, 0, 3, b'001', b'00110');

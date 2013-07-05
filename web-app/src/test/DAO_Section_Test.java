@@ -4,36 +4,39 @@ import java.util.ArrayList;
 import dao.*;
 
 public class DAO_Section_Test {
+    static ArrayList<ArrayList<String>> _result = null;
+    static Section _section = null;
+    static int _counter;
 
     public DAO_Section_Test() {
-        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
-        Section sectionTest = new Section();
-
+        _result = new ArrayList<ArrayList<String>>();
+        _section = new Section();
+        _counter = 1;
+        
         //Section Test 1
-        if (sectionTest.getSectionInfo(result)) {
-            System.out.println(sectionTest.getQuery());
-            printData(result);
-        }
-        else {
-            System.out.println(sectionTest.getErrLog() + "\n");
-        }
+        display(_section.getSectionInfo(_result));
         
         //Section Test 2
-        if (sectionTest.getSectionInfo(result, "PSY100", "A", "201305")) {
-            System.out.println(sectionTest.getQuery());
-            printData(result);
-        }
-        else {
-            System.out.println(sectionTest.getErrLog() + "\n");
-        }
+        display(_section.getSectionInfo(_result, "PSY100", "A", "201305"));
         
-        //Clean sectionTest
-        if (!sectionTest.clean()) {
-            System.out.println(sectionTest.getErrLog() + "\n");
+        //Clean
+        if (!_section.clean()) {
+            System.out.println(_section.getErrLog() + "\n");
         }
         
         //Close connection at end
-        sectionTest.closeConnection();
+        _section.closeConnection();
+    }
+    
+    public static void display (boolean flag) {
+        System.out.println("Section Test " + _counter + ": " + _section.getQuery());
+        _counter++;
+        if (flag) {
+            printData(_result);
+        }
+        else {
+            System.out.println(_section.getErrLog() + "\n");
+        }
     }
     
     public static void printData(ArrayList<ArrayList<String>> result) {
@@ -46,7 +49,6 @@ public class DAO_Section_Test {
             System.out.println();
         }
         System.out.println();
-        result.clear();
     }
 
 }

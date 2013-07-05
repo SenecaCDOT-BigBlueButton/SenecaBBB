@@ -33,6 +33,29 @@ public class User {
         return _query;
     }
     
+    /** the following are Query classes */
+    
+    public boolean getHash(ArrayList<ArrayList<String>> result, String bu_id) {
+        _query = "SELECT non_ldap_user.nu_hash "
+                + "FROM non_ldap_user "
+                + "WHERE bu_id = '" + bu_id + "'";
+        return _dbQuery.queryDB(result, _query);
+    }
+
+    public boolean getSalt(ArrayList<ArrayList<String>> result, String bu_id) {
+        _query = "SELECT non_ldap_user.nu_salt "
+                + "FROM non_ldap_user "
+                + "WHERE bu_id = '" + bu_id + "'";
+        return _dbQuery.queryDB(result, _query);
+    }
+
+    public boolean getSaltAndHash(ArrayList<ArrayList<String>> result, String bu_id) {
+        _query = "SELECT non_ldap_user.nu_salt, non_ldap_user.nu_hash "
+                + "FROM non_ldap_user "
+                + "WHERE bu_id = '" + bu_id + "'";
+        return _dbQuery.queryDB(result, _query);
+    }
+
     /**
      * Getting all data of all bbb_users
      * Fields:
@@ -76,10 +99,42 @@ public class User {
         return _dbQuery.queryDB(result, _query);
     }
     
-    public boolean getSaltAndHash(ArrayList<ArrayList<String>> result, String bu_id) {
-        _query = "SELECT non_ldap_user.nu_salt, non_ldap_user.nu_hash "
+    public boolean getName(ArrayList<ArrayList<String>> result, String bu_id) {
+        _query = "SELECT nu_name "
                 + "FROM non_ldap_user "
                 + "WHERE bu_id = '" + bu_id + "'";
+        return _dbQuery.queryDB(result, _query);
+    }
+    
+    public boolean getLastName(ArrayList<ArrayList<String>> result, String bu_id) {
+        _query = "SELECT nu_lastname "
+                + "FROM non_ldap_user "
+                + "WHERE bu_id = '" + bu_id + "'";
+        return _dbQuery.queryDB(result, _query);
+    }
+    
+    public boolean getNickName(ArrayList<ArrayList<String>> result, String bu_id) {
+        _query = "SELECT bu_nick "
+                + "FROM bbb_user "
+                + "WHERE bu_id = '" + bu_id + "'";
+        return _dbQuery.queryDB(result, _query);
+    }
+    
+    public boolean getRoleName(ArrayList<ArrayList<String>> result, String bu_id) {
+        _query = "SELECT user_role.pr_name "
+                + "FROM user_role "
+                + "INNER JOIN bbb_user "
+                + "ON user_role.ur_id = bbb_user.ur_id "
+                + "WHERE bbb_user.bu_id = '" + bu_id + "'";
+        return _dbQuery.queryDB(result, _query);
+    }
+    
+    public boolean getDepartment(ArrayList<ArrayList<String>> result, String bu_id) {
+        _query = "SELECT department.d_code, department.d_name "
+                + "FROM department "
+                + "INNER JOIN user_department "
+                + "ON department.d_code = user_department.d_code "
+                + "WHERE user_department.bu_id = '" + bu_id + "'";
         return _dbQuery.queryDB(result, _query);
     }
 }

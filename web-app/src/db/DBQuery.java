@@ -81,6 +81,7 @@ public class DBQuery {
                 try {
                     _rs = _stmt.executeQuery();
                     int colCount = _rs.getMetaData().getColumnCount();
+                    result.clear();
                     while (_rs.next()) {
                         ArrayList<String> row = new ArrayList<String>();
                         for (int i=1; i<=colCount; i++) {
@@ -88,7 +89,7 @@ public class DBQuery {
                         }
                         result.add(row);
                     }
-                } 
+                }
                 catch (SQLException e) {
                     _errLog = "SQLException: problem executing query statement";
                     _flag = false;

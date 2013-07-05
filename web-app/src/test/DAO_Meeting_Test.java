@@ -4,35 +4,38 @@ import java.util.ArrayList;
 import dao.*;
 
 public class DAO_Meeting_Test {
+    static ArrayList<ArrayList<String>> _result = null;
+    static Meeting _meeting = null;
+    static int _counter;
 
     public DAO_Meeting_Test() {
-        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
-        Meeting meetingTest = new Meeting();
-
+        _result = new ArrayList<ArrayList<String>>();
+        _meeting = new Meeting();
+        _counter = 1;
+        
         //Meeting Test 1
-        if (meetingTest.getMeetingInfo(result)) {
-            System.out.println(meetingTest.getQuery());
-            printData(result);
-        }
-        else {
-            System.out.println(meetingTest.getErrLog() + "\n");
-        }
+        display(_meeting.getMeetingInfo(_result));
         
         //Meeting Test 2
-        if (meetingTest.getMeetingInfo(result, "1", "1")) {
-            System.out.println(meetingTest.getQuery());
-            printData(result);
+        display(_meeting.getMeetingInfo(_result, "1", "1"));
+        
+        //Clean
+        if (!_meeting.clean()) {
+            System.out.println(_meeting.getErrLog() + "\n");
+        }
+       
+        _meeting.closeConnection();
+    }
+    
+    public static void display (boolean flag) {
+        System.out.println("Meeting Test " + _counter + ": " + _meeting.getQuery());
+        _counter++;
+        if (flag) {
+            printData(_result);
         }
         else {
-            System.out.println(meetingTest.getErrLog() + "\n");
+            System.out.println(_meeting.getErrLog() + "\n");
         }
-        
-        //Clean meetingTest
-        if (!meetingTest.clean()) {
-            System.out.println(meetingTest.getErrLog() + "\n");
-        }
-        
-        meetingTest.closeConnection();
     }
     
     public static void printData(ArrayList<ArrayList<String>> result) {
@@ -45,7 +48,6 @@ public class DAO_Meeting_Test {
             System.out.println();
         }
         System.out.println();
-        result.clear();
     }
 
 }

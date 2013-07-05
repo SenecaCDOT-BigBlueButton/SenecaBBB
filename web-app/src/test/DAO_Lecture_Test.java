@@ -4,36 +4,39 @@ import java.util.ArrayList;
 import dao.*;
 
 public class DAO_Lecture_Test {
+    static ArrayList<ArrayList<String>> _result = null;
+    static Lecture _lecture = null;
+    static int _counter;
 
     public DAO_Lecture_Test() {
-        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
-        Lecture lectureTest = new Lecture();
+        _result = new ArrayList<ArrayList<String>>();
+        _lecture = new Lecture();
+        _counter = 1;
         
         //Lecture Test 1
-        if (lectureTest.getLectureInfo(result)) {
-            System.out.println(lectureTest.getQuery());
-            printData(result);
-        }
-        else {
-            System.out.println(lectureTest.getErrLog() + "\n");
-        }
+        display(_lecture.getLectureInfo(_result));
         
         //Lecture Test 2
-        if (lectureTest.getLectureInfo(result, "1", "1")) {
-            System.out.println(lectureTest.getQuery());
-            printData(result);
-        }
-        else {
-            System.out.println(lectureTest.getErrLog() + "\n");
-        }
+        display(_lecture.getLectureInfo(_result, "1", "1"));
         
-        //Clean lectureTest
-        if (!lectureTest.clean()) {
-            System.out.println(lectureTest.getErrLog() + "\n");
+        //Clean
+        if (!_lecture.clean()) {
+            System.out.println(_lecture.getErrLog() + "\n");
         }
         
         //Close connection at end
-        lectureTest.closeConnection();
+        _lecture.closeConnection();
+    }
+    
+    public static void display (boolean flag) {
+        System.out.println("Lecture Test " + _counter + ": " + _lecture.getQuery());
+        _counter++;
+        if (flag) {
+            printData(_result);
+        }
+        else {
+            System.out.println(_lecture.getErrLog() + "\n");
+        }
     }
     
     public static void printData(ArrayList<ArrayList<String>> result) {
@@ -46,7 +49,6 @@ public class DAO_Lecture_Test {
             System.out.println();
         }
         System.out.println();
-        result.clear();
     }
 
 }

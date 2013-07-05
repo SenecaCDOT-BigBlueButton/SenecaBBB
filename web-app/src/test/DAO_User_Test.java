@@ -4,49 +4,70 @@ import java.util.ArrayList;
 import dao.*;
 
 public class DAO_User_Test {
+    static ArrayList<ArrayList<String>> _result = null;
+    static User _user = null;
+    static int _counter;
 
     public DAO_User_Test() {
-        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
-        User userTest = new User();
-
-        //User Test 1
-        if (userTest.getUserInfo(result)) {
-            System.out.println(userTest.getQuery());
-            printData(result);
-        }
-        else {
-            System.out.println(userTest.getErrLog() + "\n");
-        }
+        _user = new User();
+        _result = new ArrayList<ArrayList<String>>();
+        _counter = 1;
         
+        //User Test 1
+        display(_user.getUserInfo(_result));
+
         //General Test: close and open connection
-        userTest.closeConnection();
-        userTest.openConnection();
+        _user.closeConnection();
+        _user.openConnection();
 
         //User Test 2
-        if (userTest.getUserInfo(result, "bli64")) {
-            System.out.println(userTest.getQuery());
-            printData(result);
-        }
-        else {
-            System.out.println(userTest.getErrLog() + "\n");
-        }
+        display(_user.getUserInfo(_result, "bli64"));
         
         //User Test 3
-        if (userTest.getSaltAndHash(result, "non_ldap1")) {
-            System.out.println(userTest.getQuery());
-            printData(result);
-        }
-        else {
-            System.out.println(userTest.getErrLog() + "\n");
-        }
+        display(_user.getSaltAndHash(_result, "non_ldap1"));
         
-        //Clean userTest
-        if (!userTest.clean()) {
-            System.out.println(userTest.getErrLog() + "\n");
+        //User Test 4
+        display(_user.getSalt(_result, "non_ldap1"));
+        
+        //User Test 5
+        display(_user.getHash(_result, "non_ldap1"));
+        
+        //User Test 6
+        display(_user.getName(_result, "non_ldap1"));
+        
+        //User Test 7
+        display(_user.getName(_result, "non_ldap1"));
+        
+        //User Test 8
+        display(_user.getLastName(_result, "non_ldap1"));
+        
+        //User Test 9
+        display(_user.getNickName(_result, "bo.li"));
+        
+        //User Test 10
+        display(_user.getRoleName(_result, "bo.li"));
+        
+        //User Test 11
+        display(_user.getDepartment(_result, "bli64"));
+         
+        //Clean
+        if (!_user.clean()) {
+            System.out.println(_user.getErrLog() + "\n");
         }
         
         //Close connection at end
-        userTest.closeConnection();
+        _user.closeConnection();
+    }
+    
+    public static void display (boolean flag) {
+        System.out.println("User Test " + _counter + ": " + _user.getQuery());
+        _counter++;
+        if (flag) {
+            printData(_result);
+        }
+        else {
+            System.out.println(_user.getErrLog() + "\n");
+        }
     }
     
     public static void printData(ArrayList<ArrayList<String>> result) {
@@ -59,7 +80,6 @@ public class DAO_User_Test {
             System.out.println();
         }
         System.out.println();
-        result.clear();
     }
 
 }

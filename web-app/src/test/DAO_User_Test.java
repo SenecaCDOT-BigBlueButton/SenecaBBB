@@ -24,31 +24,43 @@ public class DAO_User_Test {
         display(_user.getUserInfo(_result, "bli64"));
         
         //User Test 3
-        display(_user.getSaltAndHash(_result, "non_ldap1"));
+        display(_user.getUserInfo(_result, 1, 5));
         
         //User Test 4
-        display(_user.getSalt(_result, "non_ldap1"));
+        display(_user.getUserInfo(_result, 2, 5));
         
         //User Test 5
-        display(_user.getHash(_result, "non_ldap1"));
+        display(_user.getSaltAndHash(_result, "non_ldap1"));
         
         //User Test 6
-        display(_user.getName(_result, "non_ldap1"));
+        display(_user.getSalt(_result, "non_ldap1"));
         
         //User Test 7
-        display(_user.getName(_result, "non_ldap1"));
+        display(_user.getHash(_result, "non_ldap1"));
         
         //User Test 8
-        display(_user.getLastName(_result, "non_ldap1"));
+        display(_user.getName(_result, "non_ldap1"));
         
         //User Test 9
-        display(_user.getNickName(_result, "bo.li"));
+        display(_user.getName(_result, "non_ldap1"));
         
         //User Test 10
-        display(_user.getRoleName(_result, "bo.li"));
+        display(_user.getLastName(_result, "non_ldap1"));
         
         //User Test 11
+        display(_user.getNickName(_result, "bo.li"));
+        
+        //User Test 12
+        display(_user.getRoleName(_result, "bo.li"));
+        
+        //User Test 13
         display(_user.getDepartment(_result, "bli64"));
+        
+        //User Test 14
+        display(_user.getUserSetting(_result, "bli64"));
+        
+      //User Test 14
+        //display(_user.getUserMeetingSetting(_result, "bli64"));
          
         //Clean
         if (!_user.clean()) {

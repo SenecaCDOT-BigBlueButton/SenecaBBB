@@ -16,10 +16,6 @@ public class DAO_User_Test {
         //User Test 1
         display(_user.getUserInfo(_result));
 
-        //General Test: close and open connection
-        _user.closeConnection();
-        _user.openConnection();
-
         //User Test 2
         display(_user.getUserInfo(_result, "bli64"));
         
@@ -66,9 +62,6 @@ public class DAO_User_Test {
         if (!_user.clean()) {
             System.out.println(_user.getErrLog() + "\n");
         }
-        
-        //Close connection at end
-        _user.closeConnection();
     }
     
     public static void display (boolean flag) {

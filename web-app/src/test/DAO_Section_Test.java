@@ -23,9 +23,6 @@ public class DAO_Section_Test {
         if (!_section.clean()) {
             System.out.println(_section.getErrLog() + "\n");
         }
-        
-        //Close connection at end
-        _section.closeConnection();
     }
     
     public static void display (boolean flag) {

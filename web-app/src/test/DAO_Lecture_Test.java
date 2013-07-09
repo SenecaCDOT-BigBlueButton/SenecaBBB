@@ -23,9 +23,6 @@ public class DAO_Lecture_Test {
         if (!_lecture.clean()) {
             System.out.println(_lecture.getErrLog() + "\n");
         }
-        
-        //Close connection at end
-        _lecture.closeConnection();
     }
     
     public static void display (boolean flag) {

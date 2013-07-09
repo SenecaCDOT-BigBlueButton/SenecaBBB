@@ -5,7 +5,7 @@
 
 <%@ page language="java" import="java.sql.*" errorPage=""%>
 <%
-	// Gets inserted user and password.
+    // Gets inserted user and password.
 	String userID = request.getParameter("SenecaLDAPBBBLogin");
 	String password = request.getParameter("SenecaLDAPBBBLoginPass");
 

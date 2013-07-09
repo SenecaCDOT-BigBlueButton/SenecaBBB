@@ -23,8 +23,6 @@ public class DAO_Meeting_Test {
         if (!_meeting.clean()) {
             System.out.println(_meeting.getErrLog() + "\n");
         }
-       
-        _meeting.closeConnection();
     }
     
     public static void display (boolean flag) {

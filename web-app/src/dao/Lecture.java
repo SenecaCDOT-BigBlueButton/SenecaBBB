@@ -15,12 +15,7 @@ public class Lecture {
         return _dbQuery.closeQuery();
     }
     
-    /** this closes the single DB connection, caution when calling this */
-    public boolean closeConnection() {
-        return _dbQuery.closeConnection();
-    }
-    
-    /** use this method if closeConnection() is called and you need to reestablish connection */
+    /** use this method if you need to reestablish connection */
     public void openConnection() {
         _dbQuery.openConnection();
     }

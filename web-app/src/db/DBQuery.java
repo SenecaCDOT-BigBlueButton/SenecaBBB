@@ -12,8 +12,6 @@ public class DBQuery {
     private ResultSet _rs = null;
     private Connection _conn = null;
     private String _errLog = null;
-    private boolean _flag = true;
-    private boolean _isClosed = false; //separate flag for closeQuery() method
 
     public DBQuery() {
         _db = DBConnection.getInstance();
@@ -21,13 +19,13 @@ public class DBQuery {
     }
 
     public boolean closeQuery() {
-        _isClosed = true;
+        boolean isClosed = true;
         if (_rs != null) {
             try {
                 _rs.close();
             } 
             catch (SQLException e) {
-                _isClosed = false;
+                isClosed = false;
                 _errLog = "SQLException: fail to close ResultSet";
             }
         }    
@@ -36,19 +34,23 @@ public class DBQuery {
                 _stmt.close();
             } 
             catch (SQLException e) {
-                _isClosed = false;
+                isClosed = false;
                 _errLog = "SQLException: fail to close PreparedStatement";
             }
         }
-        return _isClosed;
-    }
-
-    /** This closes the single DB connection, try not to use this method */
-    public boolean closeConnection() {
-        return _db.closeConnection();
+        if (_conn != null) {
+            try {
+                _conn.close();
+            } 
+            catch (SQLException e) {
+                isClosed = false;
+                _errLog = "SQLException: fail to close Connection";
+            }
+        }
+        return isClosed;
     }
     
-    /** Use this method if closeConnection() is called and you need to reestablish connection */
+    /** Use this method if you need to reestablish connection */
     public void openConnection() {
         _conn = _db.openConnection();
     }
@@ -63,21 +65,21 @@ public class DBQuery {
     }
 
     public boolean queryDB(ArrayList<ArrayList<String>> result, String query) {
+        boolean flag = true;
         // Executes all SQLQueries
         if (!_db.getConnectionStatus()) {
             _errLog = "SQLException: Bad or No Connection";
-            _flag = false;
+            flag = false;
         }
         else {
-            _flag = true;
             try {
                 _stmt = _conn.prepareStatement(query);
             }
             catch (SQLException e) {
                 _errLog = "SQLException: problem preparing query statement";
-                _flag = false;
+                flag = false;
             }
-            if (_flag) {
+            if (flag) {
                 try {
                     _rs = _stmt.executeQuery();
                     int colCount = _rs.getMetaData().getColumnCount();
@@ -92,10 +94,10 @@ public class DBQuery {
                 }
                 catch (SQLException e) {
                     _errLog = "SQLException: problem executing query statement";
-                    _flag = false;
+                    flag = false;
                 }
             }
         }
-        return _flag;
+        return flag;
     }
 }

@@ -5,12 +5,13 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import snaq.db.ConnectionPool;
+import com.jolbox.bonecp.BoneCP;
+import com.jolbox.bonecp.BoneCPConfig;
+
 
 public class DBConnection {
     private static DBConnection _dbSingleton = null;
-    private static ConnectionPool _pool = null;
-    private long _idleTimeout;
+    private static BoneCP _pool = null;
     private boolean _flag = true; //true: connection open, false: bad or no connection
 
     /** A private Constructor prevents any other class from instantiating. */
@@ -37,30 +38,36 @@ public class DBConnection {
             _flag = false;
         }
         if (_flag) {
-            String name = "Local"; // Pool name.
-            int minPool = 1; // Minimum number of pooled connections, or 0 for none.
-            int maxPool = 3; // Maximum number of pooled connections, or 0 for none.
-            int maxSize = 10; // Maximum number of possible connections, or 0 for no limit.
-            _idleTimeout = 30; // Idle timeout (seconds) for idle pooled connections, or 0 for no timeout.
-            String url = "jdbc:mysql://localhost:3309/db"; // JDBC connection URL.
-            String username = "senecaBBB"; // Database username.
-            String password = "db"; // Password for the database username supplied.
             try {
-                _pool = new ConnectionPool(name, minPool, maxPool, maxSize, _idleTimeout, url, username, password);
+                BoneCPConfig config = new BoneCPConfig();
+                config.setJdbcUrl("jdbc:mysql://localhost:3309/db");
+                config.setUsername("senecaBBB"); 
+                config.setPassword("db");
+                config.setMinConnectionsPerPartition(5);
+                config.setMaxConnectionsPerPartition(10);
+                config.setPartitionCount(5);
+                _pool = new BoneCP(config); // setup the connection pool
             }
-            finally {
-                _pool.registerShutdownHook(); 
+            catch (SQLException e) {
+                _flag = false;
             }
         }
     }
     
     public Connection openConnection() {
         Connection conn = null;
-        try {
-            conn = _pool.getConnection(_idleTimeout);
-            _flag = true;
-        } 
-        catch (SQLException e) {
+        System.out.println("connection created: " + _pool.getTotalCreatedConnections()); //debug
+        System.out.println("connection leased: " + _pool.getTotalLeased()); //debug
+        System.out.println("connection free: " + _pool.getTotalFree()); //debug
+        if (_pool.getTotalFree() > 0) {
+            try {
+                conn = _pool.getConnection();
+                _flag = true;
+            } catch (SQLException e) {
+                _flag = false;
+            }
+        }
+        else {
             _flag = false;
         }
         return conn;

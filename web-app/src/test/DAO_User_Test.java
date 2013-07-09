@@ -7,6 +7,7 @@ public class DAO_User_Test {
     static ArrayList<ArrayList<String>> _result = null;
     static User _user = null;
     static int _counter;
+    public static final int TEN_SECONDS = 20000;
 
     public DAO_User_Test() {
         _user = new User();
@@ -21,7 +22,7 @@ public class DAO_User_Test {
         
         //User Test 3
         display(_user.getUserInfo(_result, 1, 5));
-        
+ 
         //User Test 4
         display(_user.getUserInfo(_result, 2, 5));
         

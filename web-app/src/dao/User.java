@@ -9,19 +9,10 @@ public class User {
     private DBQuery _dbQuery = null;
     private String _query = null;
 
-    public User() {
-        _dbQuery = new DBQuery();
+    public User(DBQuery source) {
+        _dbQuery = source;
     }
-    
-    public boolean clean() {
-        return _dbQuery.closeQuery();
-    }
-    
-    /** use this method if you need to reestablish connection */
-    public void openConnection() {
-        _dbQuery.openConnection();
-    }
-    
+      
     public String getErrLog() {
         return _dbQuery.getErrLog();
     }

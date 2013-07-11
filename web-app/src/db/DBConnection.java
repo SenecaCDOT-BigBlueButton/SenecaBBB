@@ -12,10 +12,11 @@ import com.jolbox.bonecp.BoneCPConfig;
 public class DBConnection {
     private static DBConnection _dbSingleton = null;
     private static BoneCP _pool = null;
-    private boolean _flag = true; //true: connection open, false: bad or no connection
+    private boolean _flag; //true: connection pool success, false: connection pool failed
 
     /** A private Constructor prevents any other class from instantiating. */
     private DBConnection() {
+        _flag = true;
         Class<?> c = null;
         try {
             c = Class.forName("com.mysql.jdbc.Driver");
@@ -44,7 +45,7 @@ public class DBConnection {
                 config.setUsername("senecaBBB"); 
                 config.setPassword("db");
                 config.setMinConnectionsPerPartition(5);
-                config.setMaxConnectionsPerPartition(10);
+                config.setMaxConnectionsPerPartition(30);
                 config.setPartitionCount(5);
                 _pool = new BoneCP(config); // setup the connection pool
             }
@@ -56,19 +57,17 @@ public class DBConnection {
     
     public Connection openConnection() {
         Connection conn = null;
-        System.out.println("connection created: " + _pool.getTotalCreatedConnections()); //debug
-        System.out.println("connection leased: " + _pool.getTotalLeased()); //debug
-        System.out.println("connection free: " + _pool.getTotalFree()); //debug
-        if (_pool.getTotalFree() > 0) {
+        if (_flag) {
+            System.out.println("connection created: " + _pool.getTotalCreatedConnections()); //debug
+            System.out.println("connection leased: " + _pool.getTotalLeased()); //debug
+            System.out.println("connection free: " + _pool.getTotalFree()); //debug
             try {
                 conn = _pool.getConnection();
                 _flag = true;
             } catch (SQLException e) {
+                conn = null; //To be safe, since I don't know the actual behavior of getConnection
                 _flag = false;
             }
-        }
-        else {
-            _flag = false;
         }
         return conn;
     }
@@ -79,9 +78,5 @@ public class DBConnection {
             _dbSingleton = new DBConnection();
         }
         return _dbSingleton;
-    }
-
-    public boolean getConnectionStatus() {
-        return _flag;
     }
 }

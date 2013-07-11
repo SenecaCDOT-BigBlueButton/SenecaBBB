@@ -1,16 +1,16 @@
 package test;
 
 import java.util.ArrayList;
+import db.DBQuery;
 import dao.*;
 
 public class DAO_User_Test {
     static ArrayList<ArrayList<String>> _result = null;
     static User _user = null;
     static int _counter;
-    public static final int TEN_SECONDS = 20000;
 
-    public DAO_User_Test() {
-        _user = new User();
+    public DAO_User_Test(DBQuery source) {
+        _user = new User(source);
         _result = new ArrayList<ArrayList<String>>();
         _counter = 1;
         
@@ -58,11 +58,7 @@ public class DAO_User_Test {
         
       //User Test 14
         //display(_user.getUserMeetingSetting(_result, "bli64"));
-         
-        //Clean
-        if (!_user.clean()) {
-            System.out.println(_user.getErrLog() + "\n");
-        }
+
     }
     
     public static void display (boolean flag) {

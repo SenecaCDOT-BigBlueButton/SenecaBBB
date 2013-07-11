@@ -2,15 +2,16 @@ package test;
 
 import java.util.ArrayList;
 import dao.*;
+import db.DBQuery;
 
 public class DAO_Section_Test {
     static ArrayList<ArrayList<String>> _result = null;
     static Section _section = null;
     static int _counter;
 
-    public DAO_Section_Test() {
+    public DAO_Section_Test(DBQuery source) {
         _result = new ArrayList<ArrayList<String>>();
-        _section = new Section();
+        _section = new Section(source);
         _counter = 1;
         
         //Section Test 1
@@ -19,10 +20,6 @@ public class DAO_Section_Test {
         //Section Test 2
         display(_section.getSectionInfo(_result, "PSY100", "A", "201305"));
         
-        //Clean
-        if (!_section.clean()) {
-            System.out.println(_section.getErrLog() + "\n");
-        }
     }
     
     public static void display (boolean flag) {

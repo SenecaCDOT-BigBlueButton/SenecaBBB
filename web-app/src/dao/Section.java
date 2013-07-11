@@ -7,17 +7,8 @@ public class Section {
     private DBQuery _dbQuery = null;
     private String _query = null;
 
-    public Section() {
-        _dbQuery = new DBQuery();
-    }
-    
-    public boolean clean() {
-        return _dbQuery.closeQuery();
-    }
-    
-    /** use this method if you need to reestablish connection */
-    public void openConnection() {
-        _dbQuery.openConnection();
+    public Section(DBQuery source) {
+        _dbQuery = source;
     }
     
     public String getErrLog() {

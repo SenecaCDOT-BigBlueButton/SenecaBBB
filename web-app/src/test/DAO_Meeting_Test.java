@@ -2,15 +2,16 @@ package test;
 
 import java.util.ArrayList;
 import dao.*;
+import db.DBQuery;
 
 public class DAO_Meeting_Test {
     static ArrayList<ArrayList<String>> _result = null;
     static Meeting _meeting = null;
     static int _counter;
 
-    public DAO_Meeting_Test() {
+    public DAO_Meeting_Test(DBQuery source) {
         _result = new ArrayList<ArrayList<String>>();
-        _meeting = new Meeting();
+        _meeting = new Meeting(source);
         _counter = 1;
         
         //Meeting Test 1
@@ -19,10 +20,6 @@ public class DAO_Meeting_Test {
         //Meeting Test 2
         display(_meeting.getMeetingInfo(_result, "1", "1"));
         
-        //Clean
-        if (!_meeting.clean()) {
-            System.out.println(_meeting.getErrLog() + "\n");
-        }
     }
     
     public static void display (boolean flag) {

@@ -1,17 +1,22 @@
 package test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import db.DBQuery;
 import dao.*;
 
 public class DAO_User_Test {
     static ArrayList<ArrayList<String>> _result = null;
+    static HashMap<String, Integer> _hm = null;
     static User _user = null;
     static int _counter;
 
     public DAO_User_Test(DBQuery source) {
         _user = new User(source);
         _result = new ArrayList<ArrayList<String>>();
+        
         _counter = 1;
         
         //User Test 1
@@ -80,6 +85,16 @@ public class DAO_User_Test {
                 System.out.print(result.get(i).get(j) + "\t");
             }
             System.out.println();
+        }
+        System.out.println();
+    }
+    
+    public static void printData(HashMap<String, Integer> result) {
+        Iterator<String> iter = result.keySet().iterator();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            Integer val = result.get(key);
+            System.out.println(key + ": " + val);
         }
         System.out.println();
     }

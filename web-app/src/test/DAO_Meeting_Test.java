@@ -1,6 +1,9 @@
 package test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import dao.*;
 import db.DBQuery;
 
@@ -45,4 +48,13 @@ public class DAO_Meeting_Test {
         System.out.println();
     }
 
+    public static void printData(HashMap<String, Integer> result) {
+        Iterator<String> iter = result.keySet().iterator();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            Integer val = result.get(key);
+            System.out.println(key + ": " + val);
+        }
+        System.out.println();
+    }
 }

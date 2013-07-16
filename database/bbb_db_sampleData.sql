@@ -62,8 +62,8 @@ INSERT INTO section VALUES ('OOP344', 'B', '201305', 'ICT');
 
 INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'A', '201305', b'0011110');
 INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'B', '201305', b'0011110');
-INSERT INTO professor VALUES ('bo.li', 'INT222', 'A', '201305', b'00110');
-INSERT INTO professor VALUES ('bo.li', 'INT222', 'B', '201305', b'00110');
+INSERT INTO professor VALUES ('bo.li', 'INT222', 'A', '201305', b'0011110');
+INSERT INTO professor VALUES ('bo.li', 'INT222', 'B', '201305', b'0011110');
 
 INSERT INTO student VALUES ('jtrobins', 'OOP344', 'A', '201305', 0);
 INSERT INTO student VALUES ('bli64', 'OOP344', 'A', '201305', 0);

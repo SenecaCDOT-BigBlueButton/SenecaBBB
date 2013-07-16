@@ -53,7 +53,7 @@ CREATE TABLE bbb_admin (
 );
 
 CREATE TABLE user_role (
-  ur_id           MEDIUMINT UNSIGNED,
+  ur_id           INT UNSIGNED,
   pr_name         VARCHAR(100) NOT NULL,
   ur_rolemask     BIT(10) NOT NULL,
   CONSTRAINT pk_user_role 
@@ -76,7 +76,7 @@ CREATE TABLE bbb_user (
   bu_lastlogin    DATETIME,
   bu_isldap       BIT(1) NOT NULL,
   bu_issuper      BIT(1) NOT NULL,
-  ur_id           MEDIUMINT UNSIGNED,
+  ur_id           INT UNSIGNED,
   bu_setting      BIT(10) NOT NULL,
   m_setting       BIT(10) NOT NULL,
   CONSTRAINT pk_user 
@@ -115,12 +115,12 @@ CREATE TABLE user_department (
 );
 
 CREATE TABLE meeting_schedule (
-  ms_id           MEDIUMINT UNSIGNED,
+  ms_id           INT UNSIGNED,
   ms_title        VARCHAR(100) NOT NULL,
   ms_inidatetime  DATETIME NOT NULL,
-  ms_intervals    MEDIUMINT UNSIGNED NOT NULL,
-  ms_repeats      MEDIUMINT UNSIGNED NOT NULL,
-  ms_duration     MEDIUMINT UNSIGNED NOT NULL,
+  ms_intervals    INT UNSIGNED NOT NULL,
+  ms_repeats      INT UNSIGNED NOT NULL,
+  ms_duration     INT UNSIGNED NOT NULL,
   bu_id           VARCHAR(100) NOT NULL,
   CONSTRAINT pk_meeting_schedule 
     PRIMARY KEY (ms_id),
@@ -149,10 +149,10 @@ CREATE TABLE non_ldap_user (
 );
 
 CREATE TABLE meeting (
-  ms_id           MEDIUMINT UNSIGNED,
-  m_id            MEDIUMINT UNSIGNED,
+  ms_id           INT UNSIGNED,
+  m_id            INT UNSIGNED,
   m_inidatetime   DATETIME NOT NULL,
-  m_duration      MEDIUMINT UNSIGNED NOT NULL,
+  m_duration      INT UNSIGNED NOT NULL,
   m_iscancel      BIT(1) NOT NULL,
   m_description   VARCHAR(2000),
   #m_isrecorded    BIT(1) NOT NULL, now part of the m_setting
@@ -170,8 +170,8 @@ CREATE TABLE meeting (
 
 CREATE TABLE meeting_presentation (
   mp_title        VARCHAR(100),
-  ms_id           MEDIUMINT UNSIGNED,
-  m_id            MEDIUMINT UNSIGNED,
+  ms_id           INT UNSIGNED,
+  m_id            INT UNSIGNED,
   CONSTRAINT pk_meeting_presentation 
     PRIMARY KEY (ms_id, m_id, mp_title),
   CONSTRAINT fk_meeting_of_meeting_presentation
@@ -183,8 +183,8 @@ CREATE TABLE meeting_presentation (
 
 CREATE TABLE meeting_guest (
   bu_id           VARCHAR(100),
-  ms_id           MEDIUMINT UNSIGNED,
-  m_id            MEDIUMINT UNSIGNED,
+  ms_id           INT UNSIGNED,
+  m_id            INT UNSIGNED,
   mg_ismod        BIT(1) NOT NULL,
   CONSTRAINT pk_meeting_guest 
     PRIMARY KEY (bu_id, ms_id, m_id),
@@ -202,7 +202,7 @@ CREATE TABLE meeting_guest (
 
 CREATE TABLE meeting_attendee (
   bu_id           VARCHAR(100),
-  ms_id           MEDIUMINT UNSIGNED,
+  ms_id           INT UNSIGNED,
   ma_ismod        BIT(1) NOT NULL,
   CONSTRAINT pk_meeting_attendee 
     PRIMARY KEY (bu_id, ms_id),
@@ -221,8 +221,8 @@ CREATE TABLE meeting_attendee (
 # may not be used in Integration v1.0
 CREATE TABLE meeting_attendance (
   bu_id           VARCHAR(100),
-  ms_id           MEDIUMINT UNSIGNED,
-  m_id            MEDIUMINT UNSIGNED,
+  ms_id           INT UNSIGNED,
+  m_id            INT UNSIGNED,
   mac_isattend    BIT(1) NOT NULL,
   CONSTRAINT pk_meeting_attendance 
     PRIMARY KEY (bu_id, ms_id, m_id),
@@ -248,7 +248,7 @@ CREATE TABLE course (
 CREATE TABLE section (
   c_id            CHAR(8),
   sc_id           CHAR(2),
-  sc_semesterid   MEDIUMINT UNSIGNED,
+  sc_semesterid   INT UNSIGNED,
   # sc_ismuldraw    BIT(1) NOT NULL, now part of sc_setting in professor table
   # sc_isrecorded   BIT(1) NOT NULL, now part of sc_setting in professor table
   d_code          CHAR(5) NOT NULL,
@@ -270,7 +270,7 @@ CREATE TABLE professor (
   bu_id           VARCHAR(100),
   c_id            CHAR(8),
   sc_id           CHAR(2),
-  sc_semesterid   MEDIUMINT UNSIGNED,
+  sc_semesterid   INT UNSIGNED,
   sc_setting      BIT(10) NOT NULL,
   CONSTRAINT pk_professor 
     PRIMARY KEY (c_id, sc_id, sc_semesterid, bu_id),
@@ -290,7 +290,7 @@ CREATE TABLE student (
   bu_id           VARCHAR(100), 
   c_id            CHAR(8),
   sc_id           CHAR(2),
-  sc_semesterid   MEDIUMINT UNSIGNED,
+  sc_semesterid   INT UNSIGNED,
   s_isbanned      BIT(1) NOT NULL,
   CONSTRAINT pk_student 
     PRIMARY KEY (c_id, sc_id, sc_semesterid, bu_id),
@@ -307,14 +307,14 @@ CREATE TABLE student (
 );
 
 CREATE TABLE lecture_schedule (
-  ls_id           MEDIUMINT UNSIGNED,
+  ls_id           INT UNSIGNED,
   c_id            CHAR(8) NOT NULL,
   sc_id           CHAR(2) NOT NULL,
-  sc_semesterid   MEDIUMINT UNSIGNED NOT NULL,
+  sc_semesterid   INT UNSIGNED NOT NULL,
   ls_inidatetime  DATETIME NOT NULL,
-  ls_intervals    MEDIUMINT UNSIGNED NOT NULL,
-  ls_repeats      MEDIUMINT UNSIGNED NOT NULL,
-  ls_duration     MEDIUMINT UNSIGNED NOT NULL,
+  ls_intervals    INT UNSIGNED NOT NULL,
+  ls_repeats      INT UNSIGNED NOT NULL,
+  ls_duration     INT UNSIGNED NOT NULL,
   #ls_isrecorded   BIT(1), part of sc_setting
   CONSTRAINT pk_lecture_schedule 
     PRIMARY KEY (ls_id),
@@ -326,10 +326,10 @@ CREATE TABLE lecture_schedule (
 );
   
 CREATE TABLE lecture (
-  ls_id           MEDIUMINT UNSIGNED,
-  l_id            MEDIUMINT UNSIGNED,
+  ls_id           INT UNSIGNED,
+  l_id            INT UNSIGNED,
   l_inidatetime   DATETIME NOT NULL,
-  l_duration      MEDIUMINT UNSIGNED NOT NULL,
+  l_duration      INT UNSIGNED NOT NULL,
   l_iscancel      BIT(1) NOT NULL,
   l_description   VARCHAR(2000),
   l_modpass       CHAR(15) NOT NULL,
@@ -347,8 +347,8 @@ CREATE TABLE lecture (
 
 CREATE TABLE lecture_presentation (
   lp_title        VARCHAR(100),
-  ls_id           MEDIUMINT UNSIGNED,
-  l_id            MEDIUMINT UNSIGNED,
+  ls_id           INT UNSIGNED,
+  l_id            INT UNSIGNED,
   CONSTRAINT pk_lecture_presentation 
     PRIMARY KEY (lp_title, l_id, ls_id),
   CONSTRAINT fk_lecture_of_lecture_presentation
@@ -360,8 +360,8 @@ CREATE TABLE lecture_presentation (
 
 CREATE TABLE guest_lecturer (
   bu_id           VARCHAR(100),
-  ls_id           MEDIUMINT UNSIGNED,
-  l_id            MEDIUMINT UNSIGNED,
+  ls_id           INT UNSIGNED,
+  l_id            INT UNSIGNED,
   gl_ismod        BIT(1) NOT NULL,
   CONSTRAINT pk_guest_lecturer 
     PRIMARY KEY (bu_id, l_id, ls_id),
@@ -380,8 +380,8 @@ CREATE TABLE guest_lecturer (
 # may not be used in Integration v1.0
 CREATE TABLE lecture_attendance (
   bu_id           VARCHAR(100),
-  ls_id           MEDIUMINT UNSIGNED,
-  l_id            MEDIUMINT UNSIGNED,
+  ls_id           INT UNSIGNED,
+  l_id            INT UNSIGNED,
   la_isattend     BIT(1) NOT NULL,
   CONSTRAINT pk_lecture_attendance 
     PRIMARY KEY (bu_id, ls_id, l_id),

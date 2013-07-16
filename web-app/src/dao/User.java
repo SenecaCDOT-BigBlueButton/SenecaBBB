@@ -151,11 +151,17 @@ public class User {
         return _dbQuery.queryDB(result, _query);
     }
     
-    public boolean getUserSetting(ArrayList<ArrayList<String>> result, String bu_id) {
+    public boolean getUserSetting(HashMap<String, Integer> result, String bu_id) {
         _query = "SELECT bu_setting "
                 + "FROM bbb_user "
                 + "WHERE bu_id = '" + bu_id + "'";
-        boolean flag =_dbQuery.queryDB(result, _query);
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbQuery.queryDB(tempResult, _query);
+        int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+        result.clear();
+        result.put("autoShareWebcam", (value & (1<<2)) == 0 ? 0:1);
+        result.put("autoShareAudio", (value & (1<<1)) == 0 ? 0:1);
+        result.put("showLanguageSelector", (value & 1) == 0 ? 0:1);
         return flag;
     }
     
@@ -166,8 +172,30 @@ public class User {
         ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
         boolean flag =_dbQuery.queryDB(tempResult, _query);
         int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
-        
+        result.clear();
+        result.put("isRecorded", (value & (1<<6)) == 0 ? 0:1);
+        result.put("isMultiWhiteboard", (value & (1<<5)) == 0 ? 0:1);
+        result.put("isPrivateChatEnabled", (value & (1<<4)) == 0 ? 0:1);
+        result.put("isViewerWebcamEnabled", (value & (1<<3)) == 0 ? 0:1);
+        result.put("layout", (value & (1<<2)) + (value & (1<<1)) + (value & 1));
         return flag;
     }
+    
+    public boolean getSectionSetting(HashMap<String, Integer> result, String bu_id) {
+        _query = "SELECT sc_setting "
+                + "FROM professor "
+                + "WHERE bu_id = '" + bu_id + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbQuery.queryDB(tempResult, _query);
+        int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+        result.clear();
+        result.put("isRecorded", (value & (1<<6)) == 0 ? 0:1);
+        result.put("isMultiWhiteboard", (value & (1<<5)) == 0 ? 0:1);
+        result.put("isPrivateChatEnabled", (value & (1<<4)) == 0 ? 0:1);
+        result.put("isViewerWebcamEnabled", (value & (1<<3)) == 0 ? 0:1);
+        result.put("layout", (value & (1<<2)) + (value & (1<<1)) + (value & 1));
+        return flag;
+    }
+    
     
 }

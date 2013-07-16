@@ -16,7 +16,7 @@ public class DAO_User_Test {
     public DAO_User_Test(DBQuery source) {
         _user = new User(source);
         _result = new ArrayList<ArrayList<String>>();
-        
+        _hm = new HashMap<String, Integer>();
         _counter = 1;
         
         //User Test 1
@@ -59,10 +59,16 @@ public class DAO_User_Test {
         display(_user.getDepartment(_result, "bli64"));
         
         //User Test 14
-        display(_user.getUserSetting(_result, "bli64"));
+        displayMap(_user.getUserSetting(_hm, "bli64"));
         
-      //User Test 14
-        //display(_user.getUserMeetingSetting(_result, "bli64"));
+        //User Test 15
+        displayMap(_user.getUserMeetingSetting(_hm, "bli64"));
+        
+        //User Test 16
+        displayMap(_user.getSectionSetting(_hm, "bo.li"));
+        
+        //User Test 17
+        displayMap(_user.getSectionSetting(_hm, "fardad.soleimanloo"));
 
     }
     
@@ -71,6 +77,17 @@ public class DAO_User_Test {
         _counter++;
         if (flag) {
             printData(_result);
+        }
+        else {
+            System.out.println(_user.getErrLog() + "\n");
+        }
+    }
+    
+    public static void displayMap (boolean flag) {
+        System.out.println("User Test " + _counter + ": " + _user.getQuery());
+        _counter++;
+        if (flag) {
+            printData(_hm);
         }
         else {
             System.out.println(_user.getErrLog() + "\n");

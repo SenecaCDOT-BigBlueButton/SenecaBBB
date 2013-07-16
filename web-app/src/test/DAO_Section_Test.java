@@ -9,11 +9,13 @@ import db.DBQuery;
 
 public class DAO_Section_Test {
     static ArrayList<ArrayList<String>> _result = null;
+    static HashMap<String, Integer> _hm = null;
     static Section _section = null;
     static int _counter;
 
     public DAO_Section_Test(DBQuery source) {
         _result = new ArrayList<ArrayList<String>>();
+        _hm = new HashMap<String, Integer>();
         _section = new Section(source);
         _counter = 1;
         
@@ -30,6 +32,17 @@ public class DAO_Section_Test {
         _counter++;
         if (flag) {
             printData(_result);
+        }
+        else {
+            System.out.println(_section.getErrLog() + "\n");
+        }
+    }
+    
+    public static void displayMap (boolean flag) {
+        System.out.println("User Test " + _counter + ": " + _section.getQuery());
+        _counter++;
+        if (flag) {
+            printData(_hm);
         }
         else {
             System.out.println(_section.getErrLog() + "\n");

@@ -6,14 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class DBQuery {
+public class DBAccess {
     private DBConnection _db = null;
     private PreparedStatement _stmt = null;
     private ResultSet _rs = null;
     private Connection _conn = null;
     private String _errLog = null;
 
-    public DBQuery() {
+    public DBAccess() {
         _db = DBConnection.getInstance();
     }
     
@@ -47,9 +47,14 @@ public class DBQuery {
         return _errLog;
     }
 
+    /**
+     * Executes all queries 
+     * @param result
+     * @param query
+     * @return
+     */
     public boolean queryDB(ArrayList<ArrayList<String>> result, String query) {
         boolean flag = openConnection();
-        // Executes all SQLQueries
         if (!flag) {
             _errLog = "SQLException: Bad or No Connection";
         }
@@ -69,6 +74,34 @@ public class DBQuery {
             }
             catch (SQLException e) {
                 _errLog = "SQLException: problem with query statement";
+                flag = false;
+            }
+            finally {
+               flag = closeConnection() && flag; 
+            }
+        }
+        return flag;
+    }
+    
+    /**
+     * Execute SQL Data Manipulation Language (DML) statement, 
+     * such as INSERT, UPDATE or DELETE; or an SQL statement that returns nothing, 
+     * such as a DDL statements
+     * @param statement
+     * @return
+     */
+    public boolean updateDB(String statement) {
+        boolean flag = openConnection();
+        if (!flag) {
+            _errLog = "SQLException: Bad or No Connection";
+        }
+        else {
+            try {
+                _stmt = _conn.prepareStatement(statement);
+                _stmt.executeUpdate();
+            }
+            catch (SQLException e) {
+                _errLog = "SQLException: problem with SQL statement";
                 flag = false;
             }
             finally {

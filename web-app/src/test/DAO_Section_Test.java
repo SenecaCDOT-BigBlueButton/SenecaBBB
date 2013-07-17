@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import dao.*;
-import db.DBQuery;
+import db.DBAccess;
 
 public class DAO_Section_Test {
     static ArrayList<ArrayList<String>> _result = null;
@@ -13,40 +13,35 @@ public class DAO_Section_Test {
     static Section _section = null;
     static int _counter;
 
-    public DAO_Section_Test(DBQuery source) {
+    public DAO_Section_Test(DBAccess source) {
         _result = new ArrayList<ArrayList<String>>();
         _hm = new HashMap<String, Integer>();
         _section = new Section(source);
         _counter = 1;
         
-        //Section Test 1
         display(_section.getSectionInfo(_result));
         
-        //Section Test 2
         display(_section.getSectionInfo(_result, "PSY100", "A", "201305"));
         
     }
     
     public static void display (boolean flag) {
-        System.out.println("Section Test " + _counter + ": " + _section.getQuery());
+        System.out.println("+++ Section Test " + _counter + ": " + _section.getSQL());
         _counter++;
         if (flag) {
-            printData(_result);
+            if (_section.getSQL().substring(0, 6).equals("SELECT")) {
+                if(!_result.isEmpty()) {
+                    printData(_result);
+                }
+                else {
+                    printData(_hm);
+                }
+            }
         }
         else {
             System.out.println(_section.getErrLog() + "\n");
         }
-    }
-    
-    public static void displayMap (boolean flag) {
-        System.out.println("User Test " + _counter + ": " + _section.getQuery());
-        _counter++;
-        if (flag) {
-            printData(_hm);
-        }
-        else {
-            System.out.println(_section.getErrLog() + "\n");
-        }
+        System.out.println();
     }
     
     public static void printData(ArrayList<ArrayList<String>> result) {

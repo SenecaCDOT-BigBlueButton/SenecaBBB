@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import db.DBQuery;
+import db.DBAccess;
 import dao.*;
 
 public class DAO_User_Test {
@@ -13,85 +13,77 @@ public class DAO_User_Test {
     static User _user = null;
     static int _counter;
 
-    public DAO_User_Test(DBQuery source) {
+    public DAO_User_Test(DBAccess source) {
         _user = new User(source);
         _result = new ArrayList<ArrayList<String>>();
         _hm = new HashMap<String, Integer>();
         _counter = 1;
         
-        //User Test 1
         display(_user.getUserInfo(_result));
 
-        //User Test 2
         display(_user.getUserInfo(_result, "bli64"));
         
-        //User Test 3
         display(_user.getUserInfo(_result, 1, 5));
  
-        //User Test 4
         display(_user.getUserInfo(_result, 2, 5));
         
-        //User Test 5
-        display(_user.getSaltAndHash(_result, "non_ldap1"));
+        display(_user.getSaltAndHash(_result, "non_ldap5"));
+
+        display(_user.setSalt("non_ldap1", "newsalt"));
         
-        //User Test 6
         display(_user.getSalt(_result, "non_ldap1"));
         
-        //User Test 7
         display(_user.getHash(_result, "non_ldap1"));
         
-        //User Test 8
         display(_user.getName(_result, "non_ldap1"));
         
-        //User Test 9
-        display(_user.getName(_result, "non_ldap1"));
-        
-        //User Test 10
         display(_user.getLastName(_result, "non_ldap1"));
         
-        //User Test 11
         display(_user.getNickName(_result, "bo.li"));
         
-        //User Test 12
         display(_user.getRoleName(_result, "bo.li"));
         
-        //User Test 13
         display(_user.getDepartment(_result, "bli64"));
         
-        //User Test 14
-        displayMap(_user.getUserSetting(_hm, "bli64"));
+        display(_user.getUserSetting(_hm, "bli64"));
         
-        //User Test 15
-        displayMap(_user.getUserMeetingSetting(_hm, "bli64"));
+        display(_user.getUserMeetingSetting(_hm, "bli64"));
         
-        //User Test 16
-        displayMap(_user.getSectionSetting(_hm, "bo.li"));
+        display(_user.getSectionSetting(_hm, "bo.li"));
         
-        //User Test 17
-        displayMap(_user.getSectionSetting(_hm, "fardad.soleimanloo"));
+        display(_user.getSectionSetting(_hm, "fardad.soleimanloo"));
+        
+        display(_user.isActive(_result, "bli64"));
+        
+        display(_user.isBannedFromSection(_result, "bli64", "OOP344", "A", "201305"));
+        
+        display(_user.isBannedFromSystem(_result, "bli64"));
+        
+        display(_user.getComment(_result, "bli64"));
+        
+        display(_user.isDepartmentAdmin(_result, "fardad.soleimanloo", "ICT"));
+        
+        display(_user.isSuperAdmin(_result, "fardad.soleimanloo"));
 
     }
     
     public static void display (boolean flag) {
-        System.out.println("User Test " + _counter + ": " + _user.getQuery());
+        System.out.println("+++ User Test " + _counter + ": " + _user.getSQL());
         _counter++;
         if (flag) {
-            printData(_result);
+            if (_user.getSQL().substring(0, 6).equals("SELECT")) {
+                if(!_result.isEmpty()) {
+                    printData(_result);
+                }
+                else {
+                    printData(_hm);
+                }
+            }
         }
         else {
             System.out.println(_user.getErrLog() + "\n");
         }
-    }
-    
-    public static void displayMap (boolean flag) {
-        System.out.println("User Test " + _counter + ": " + _user.getQuery());
-        _counter++;
-        if (flag) {
-            printData(_hm);
-        }
-        else {
-            System.out.println(_user.getErrLog() + "\n");
-        }
+        System.out.println();
     }
     
     public static void printData(ArrayList<ArrayList<String>> result) {
@@ -103,7 +95,7 @@ public class DAO_User_Test {
             }
             System.out.println();
         }
-        System.out.println();
+        result.clear();
     }
     
     public static void printData(HashMap<String, Integer> result) {
@@ -113,7 +105,7 @@ public class DAO_User_Test {
             Integer val = result.get(key);
             System.out.println(key + ": " + val);
         }
-        System.out.println();
+        result.clear();
     }
 
 }

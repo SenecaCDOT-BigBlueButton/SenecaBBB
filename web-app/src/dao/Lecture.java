@@ -1,43 +1,50 @@
 package dao;
 
 import java.util.ArrayList;
-import db.DBQuery;
+import db.DBAccess;
+import references.settings;
 
 public class Lecture {
-    private DBQuery _dbQuery = null;
-    private String _query = null;
+    private DBAccess _dbAccess = null;
+    private String _sql = null;
 
-    public Lecture(DBQuery source) {
-        _dbQuery = source;
+    public Lecture(DBAccess source) {
+        _dbAccess = source;
     }
     
     public String getErrLog() {
-        return _dbQuery.getErrLog();
+        return _dbAccess.getErrLog();
     }
     
-    public String getQuery() {
-        return _query;
+    public String getSQL() {
+        return _sql;
     }
     
-    /** the following are Query classes */
+    /** 
+     * the following are query (SELECT) classes
+     * that begin with 'get' or 'is'
+     * Examples:
+     *  getHash
+     *  isActive 
+     */
     
     public boolean getLectureInfo(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
-        _query = "SELECT lecture.*, lecture_presentation.lp_title "
+        _sql = "SELECT lecture.*, lecture_presentation.lp_title "
                 + "FROM lecture "
                 + "INNER JOIN lecture_presentation " 
                 + "ON lecture.ls_id = lecture_presentation.ls_id "
                 + "AND lecture.l_id = lecture_presentation.l_id "
                 + "WHERE lecture.ls_id = '" + ls_id + "' "
                 + "AND lecture.l_id = '" + l_id + "'";
-        return _dbQuery.queryDB(result, _query);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     public boolean getLectureInfo(ArrayList<ArrayList<String>> result) {
-        _query = "SELECT lecture.*, lecture_presentation.lp_title "
+        _sql = "SELECT lecture.*, lecture_presentation.lp_title "
                 + "FROM lecture "
                 + "INNER JOIN lecture_presentation " 
                 + "ON lecture.ls_id = lecture_presentation.ls_id "
                 + "AND lecture.l_id = lecture_presentation.l_id";
-        return _dbQuery.queryDB(result, _query);
+        return _dbAccess.queryDB(result, _sql);
     }
 }

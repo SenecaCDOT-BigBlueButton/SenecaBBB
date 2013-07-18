@@ -273,4 +273,11 @@ public class User {
                 + "WHERE bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
+    
+    public boolean setHash(String bu_id, String nu_hash) {
+        _sql = "UPDATE non_ldap_user "
+                + "SET nu_hash = '" + nu_hash +"' "
+                + "WHERE bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
 }

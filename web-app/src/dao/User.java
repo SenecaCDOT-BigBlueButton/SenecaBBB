@@ -6,6 +6,13 @@ import java.util.HashMap;
 import db.DBAccess;
 import references.settings;
 
+/**
+ * For the parameters, please use DB column names
+ * Example: setNickName(String bu_id, String bu_nick) 
+ *          bu_id and bu_nick are both DB column names        
+ * @author Bo Li
+ *
+ */
 public class User {
     private DBAccess _dbAccess = null;
     private String _sql = null;
@@ -140,8 +147,8 @@ public class User {
         return _dbAccess.queryDB(result, _sql);
     }
 
-    public boolean getRoleName(ArrayList<ArrayList<String>> result, String bu_id) {
-        _sql = "SELECT user_role.pr_name "
+    public boolean getRoleInfo(ArrayList<ArrayList<String>> result, String bu_id) {
+        _sql = "SELECT user_role.ur_id, user_role.pr_name "
                 + "FROM user_role "
                 + "INNER JOIN bbb_user "
                 + "ON user_role.ur_id = bbb_user.ur_id "
@@ -269,15 +276,43 @@ public class User {
 
     public boolean setSalt(String bu_id, String nu_salt) {
         _sql = "UPDATE non_ldap_user "
-                + "SET nu_salt = '" + nu_salt +"' "
+                + "SET nu_salt = '" + nu_salt + "' "
                 + "WHERE bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     
     public boolean setHash(String bu_id, String nu_hash) {
         _sql = "UPDATE non_ldap_user "
-                + "SET nu_hash = '" + nu_hash +"' "
+                + "SET nu_hash = '" + nu_hash + "' "
                 + "WHERE bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
+    
+    public boolean setName(String bu_id, String nu_name) {
+        _sql = "UPDATE non_ldap_user "
+                + "SET nu_name = '" +  nu_name + "' "
+                + "WHERE bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setLastName(String bu_id, String nu_lastname) {
+        _sql = "UPDATE non_ldap_user "
+                + "SET nu_lastname = '" +  nu_lastname + "' "
+                + "WHERE bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setNickName(String bu_id, String bu_nick) {
+        _sql = "UPDATE bbb_user "
+                + "SET bu_nick = '" +  bu_nick + "' "
+                + "WHERE bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setRoleName(String pr_name_old, String pr_name_new) {
+        _sql = "UPDATE predefined_role "
+                + "SET pr_name = '" +  pr_name_new + "' "
+                + "WHERE pr_name = '" + pr_name_old + "'";
+        return _dbAccess.updateDB(_sql);
+    } 
 }

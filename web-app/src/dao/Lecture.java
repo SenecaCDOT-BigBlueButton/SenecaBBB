@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import db.DBAccess;
 import references.settings;
 
+/**
+ * For the parameters, please use DB column names
+ * Example: setNickName(String bu_id, String bu_nick) 
+ *          bu_id and bu_nick are both DB column names        
+ * @author
+ *
+ */
 public class Lecture {
     private DBAccess _dbAccess = null;
     private String _sql = null;

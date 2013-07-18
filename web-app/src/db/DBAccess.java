@@ -6,6 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * One DBAccess object is created per session by using Bean:
+ * <jsp:useBean id="db" scope="session" class="db.DBAccess" />
+ * each dao object takes the DBAccess object into its constructor
+ * @author Bo Li
+ *
+ */
 public class DBAccess {
     private DBConnection _db = null;
     private PreparedStatement _stmt = null;

@@ -33,7 +33,9 @@ public class DAO_User_Test {
         
         display(_user.getSalt(_result, "non_ldap1"));
         
-        display(_user.getHash(_result, "non_ldap1"));
+        display(_user.setHash("non_ldap4", "new hash"));
+        
+        display(_user.getHash(_result, "non_ldap4"));
         
         display(_user.getName(_result, "non_ldap1"));
         

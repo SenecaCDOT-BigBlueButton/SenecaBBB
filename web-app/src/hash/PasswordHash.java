@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import db.DBConnection;
+import db.DBQuery;
 
 /*
  * PBKDF2 salted password hashing.
@@ -27,7 +27,13 @@ public class PasswordHash {
 	public static final int ITERATION_INDEX = 0;
 	public static final int SALT_INDEX = 1;
 	public static final int PBKDF2_INDEX = 2;
-
+	
+	private DBQuery conn;
+	
+	public void giveConnection (DBQuery _conn) {
+		conn = _conn;
+	}
+	
 	/**
 	 * Returns a salted PBKDF2 hash of the password.
 	 * 
@@ -91,10 +97,11 @@ public class PasswordHash {
 		// DBConnection conn = new DBConnection();
 		// conn.getDbConnection();
 		//DBConnection conn = DBConnection.getInstance();
-		DBConnection.openConnection();
+		conn.openConnection();
 		System.out.println(this.createRandomSalt());
+		//Create new instance of user and call getSalt and getHash methods in there
 		try {
-			ResultSet resultSet = DBConnection.getInstance().getSaltAndHash(userID);
+			ResultSet resultSet = conn.getInstance().getSaltAndHash(userID);
 			if (resultSet.next()) {
 				// Gets salt and hash from database
 				salt = resultSet.getString("nu_salt").getBytes();
@@ -108,7 +115,7 @@ public class PasswordHash {
 		}
 
 		// Number of Connections
-		ResultSet connections = DBConnection.getInstance().getNumberOfConnections();
+		ResultSet connections = conn.getInstance().getNumberOfConnections();
 		while (connections.next()) {
 			System.out.println(connections.getRow());
 		}

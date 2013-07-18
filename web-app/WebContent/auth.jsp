@@ -1,7 +1,10 @@
-<%@page import="db.DBConnection"%>
+
 <%@page import="hash.PasswordHash"%>
+<%@page import="dao.User"%>
+<%@page import="java.util.ArrayList"%>
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />
+<jsp:useBean id="dbquery" class="db.DBQuery" scope="session" />
 
 <%@ page language="java" import="java.sql.*" errorPage=""%>
 <%
@@ -37,13 +40,14 @@
 		else if (hash.validatePassword(password.toCharArray(), userID)) {
 
 			/* User is authenticated */
-			DBConnection conn = DBConnection.getInstance();
-			ResultSet rsdoLogin = conn.getUserInfo(userID);
-			if (rsdoLogin.next()) {
+			User user = new User(dbquery);
+			ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+			if (user.getUserInfo(result, userID)) {
+				ArrayList<String> userInfo = result.get(0);
 				session.setAttribute("sUserID", userID);
-				session.setAttribute("sUserName", rsdoLogin.getString("nu_name") + " " + rsdoLogin.getString("nu_lastname"));
-				session.setAttribute("iUserLevel", rsdoLogin.getString("pr_name"));
-				session.setAttribute("iUserType", rsdoLogin.getString("pr_name"));
+				session.setAttribute("sUserName", userInfo.get(userInfo.indexOf("nu_name")) + " " + userInfo.get(userInfo.indexOf("nu_lastname")));
+				session.setAttribute("iUserLevel", userInfo.get(userInfo.indexOf("pr_name")));
+				session.setAttribute("iUserType", userInfo.get(userInfo.indexOf("pr_name")));
 				session.setAttribute("isLDAP", "false");
 				response.sendRedirect("calendar.jsp");
 				String message = "User login successfully.";
@@ -52,7 +56,7 @@
 				response.sendRedirect("index.jsp?error=" + message);
 			}
 		} else {
-			DBConnection.getInstance().closeConnection();
+			dbquery.closeConnection();
 		}
 	} else {
 		String message = "Invalid username and/or password.";

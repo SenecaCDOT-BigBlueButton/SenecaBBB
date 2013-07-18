@@ -1,5 +1,7 @@
 /**
- * place to put the setting names
+ * Please use the values stored in these arrays when constructing setting HashMaps
+ * For example:
+ * result.put(settings.meeting_setting[0], "1");
  */
 package references;
 

@@ -314,5 +314,15 @@ public class User {
                 + "SET pr_name = '" +  pr_name_new + "' "
                 + "WHERE pr_name = '" + pr_name_old + "'";
         return _dbAccess.updateDB(_sql);
-    } 
+    }
+    
+    public boolean setDepartmentInfo(String d_code_old, String d_code_new, String d_name) {
+        _sql = "UPDATE department "
+                + "SET d_code = '" +  d_code_new + "', "
+                + "d_name='" + d_name + "' "
+                + "WHERE d_code = '" + d_code_old + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    
 }

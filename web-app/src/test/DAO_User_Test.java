@@ -19,6 +19,8 @@ public class DAO_User_Test {
         _hm = new HashMap<String, Integer>();
         _counter = 1;
         
+        display(_user.setDepartmentInfo("ICT", "XC", "New"));
+        
         display(_user.setName("non_ldap1", "Wing"));
         
         display(_user.setLastName("non_ldap1", "Chen"));

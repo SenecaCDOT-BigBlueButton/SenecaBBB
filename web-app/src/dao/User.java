@@ -199,10 +199,14 @@ public class User {
         return flag;
     }
 
-    public boolean getSectionSetting(HashMap<String, Integer> result, String bu_id) {
+    public boolean getSectionSetting(HashMap<String, Integer> result, 
+            String bu_id, String c_id, String sc_id, String sc_semesterid) {
         _sql = "SELECT sc_setting "
                 + "FROM professor "
-                + "WHERE bu_id = '" + bu_id + "'";
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "AND c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
         ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
         boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
@@ -231,7 +235,8 @@ public class User {
         return _dbAccess.queryDB(result, _sql);
     }
 
-    public boolean isBannedFromSection(ArrayList<ArrayList<String>> result, String bu_id, String c_id, String sc_id, String sc_semesterid) {
+    public boolean isBannedFromSection(ArrayList<ArrayList<String>> result, 
+            String bu_id, String c_id, String sc_id, String sc_semesterid) {
         _sql = "SELECT s_isbanned "
                 + "FROM student "
                 + "WHERE bu_id = '" + bu_id + "' "
@@ -316,12 +321,61 @@ public class User {
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean setDepartmentInfo(String d_code_old, String d_code_new, String d_name) {
+    /*public boolean setDepartmentInfo(String d_code_old, String d_code_new, String d_name) {
         _sql = "UPDATE department "
                 + "SET d_code = '" +  d_code_new + "', "
                 + "d_name='" + d_name + "' "
                 + "WHERE d_code = '" + d_code_old + "'";
         return _dbAccess.updateDB(_sql);
+    }*/
+    
+    public boolean setUserSetting(HashMap<String, Integer> map, String bu_id) {
+        int value;
+        value = (map.get(settings.bu_setting[0]) << 2)
+                + (map.get(settings.bu_setting[1]) << 1)
+                + (map.get(settings.bu_setting[2]));
+        _sql = "UPDATE bbb_user "
+                + "SET bu_setting = " + value + " "
+                + "WHERE bu_id='" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setUserMeetingSetting(HashMap<String, Integer> map, String bu_id) {
+        int value;
+        value = (map.get(settings.meeting_setting[0]) << 6)
+                + (map.get(settings.meeting_setting[1]) << 5)
+                + (map.get(settings.meeting_setting[2]) << 4)
+                + (map.get(settings.meeting_setting[3]) << 3)
+                + (map.get(settings.meeting_setting[4]));
+        _sql = "UPDATE bbb_user "
+                + "SET m_setting = " + value + " "
+                + "WHERE bu_id='" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setSectionSetting(HashMap<String, Integer> map, 
+            String bu_id, String c_id, String sc_id, String sc_semesterid) {
+        int value;
+        value = (map.get(settings.section_setting[0]) << 6)
+                + (map.get(settings.section_setting[1]) << 5)
+                + (map.get(settings.section_setting[2]) << 4)
+                + (map.get(settings.section_setting[3]) << 3)
+                + (map.get(settings.section_setting[4]));
+        _sql = "UPDATE professor "
+                + "SET sc_setting = " + value + " "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "AND c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean defaultUserSetting(String bu_id) {
+        _sql = "UPDATE bbb_user as a "
+                + "CROSS JOIN (SELECT key_value FROM bbb_admin WHERE key_name='default_user') as b "
+                + "SET a.bu_setting = b.key_value "
+                + "WHERE bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);   
     }
     
     

@@ -38,9 +38,9 @@ create database db;
 
 6) Download the MySQL script files and run them (from terminal)
 ```
-mysql -u root -p db < bbb_db_manual.sql
-mysql -u root -p db < bbb_db_fn_nextval.sql
-mysql -u root -p db < bbb_db_sample_data.sql
+mysql -u root -p db < bbb_db_creation.sql
+mysql -u root -p db < bbb_db_init.sql
+mysql -u root -p db < bbb_db_sampleData.sql
 ```
 
 7) Connect to mysql-server again
@@ -53,3 +53,4 @@ mysql -u root -p
 create user 'senecaBBB'@'%' identified by 'db';
 grant all on db.* to 'senecaBBB'@'%' IDENTIFIED by 'db';
 ```
+

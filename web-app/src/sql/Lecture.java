@@ -1,8 +1,11 @@
-package dao;
+package sql;
+
+
+import helper.Settings;
 
 import java.util.ArrayList;
+
 import db.DBAccess;
-import references.settings;
 
 /**
  * For the parameters, please use DB column names
@@ -11,7 +14,7 @@ import references.settings;
  * @author
  *
  */
-public class Lecture {
+public class Lecture implements Sql {
     private DBAccess _dbAccess = null;
     private String _sql = null;
 

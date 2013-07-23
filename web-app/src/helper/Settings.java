@@ -1,9 +1,11 @@
 /**
- * place to put the setting names
+ * Please use the values stored in these arrays when constructing setting HashMaps
+ * For example:
+ * result.put(settings.meeting_setting[0], "1");
  */
-package references;
+package helper;
 
-public class settings {
+public class Settings {
 
     public static final String[] bu_setting = {"autoShareWebcam", "autoShareAudio", "showLanuageSelector"};
     public static final String[] meeting_setting = {"isRecorded", "isMultiWhiteboard", "isPrivateChatEnabled", "isViewerWebcamEnabled", "layout"};

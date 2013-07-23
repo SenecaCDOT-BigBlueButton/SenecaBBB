@@ -6,10 +6,13 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+import dao.User;
+import db.DBAccess;
 import db.DBConnection;
 
 /*
@@ -27,6 +30,8 @@ public class PasswordHash {
 	public static final int ITERATION_INDEX = 0;
 	public static final int SALT_INDEX = 1;
 	public static final int PBKDF2_INDEX = 2;
+	
+	private DBAccess dbaccess = new DBAccess();
 
 	/**
 	 * Returns a salted PBKDF2 hash of the password.
@@ -84,35 +89,32 @@ public class PasswordHash {
 			throws NoSuchAlgorithmException, InvalidKeySpecException,
 			SQLException, InstantiationException, IllegalAccessException,
 			ClassNotFoundException {
-		String tempHash = "";
+		String tempHash = "a";
 		byte[] salt = null;
 		String hash = "";
-
-		// DBConnection conn = new DBConnection();
-		// conn.getDbConnection();
-		//DBConnection conn = DBConnection.getInstance();
-		DBConnection.openConnection();
-		System.out.println(this.createRandomSalt());
+		User user = new User(dbaccess);
+		ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 		try {
-			ResultSet resultSet = DBConnection.getInstance().getSaltAndHash(userID);
-			if (resultSet.next()) {
+			user.getSaltAndHash(result, userID);
+			if (!result.isEmpty()) {
+				ArrayList<String> userInfo = result.get(0);
 				// Gets salt and hash from database
-				salt = resultSet.getString("nu_salt").getBytes();
-				hash = resultSet.getString("nu_hash");
+				salt = userInfo.get(0).toString().getBytes();
+				hash = userInfo.get(1).toString();
+				// Creates a hash using the typed password and the real salt
+				// returned from database for the entered user.
+				tempHash = createHash(password, salt);
 			}
-			// Creates a hash using the typed password and the real salt
-			// returned from database for the entered user.
-			tempHash = createHash(password, salt);
 		} catch (Exception error) {
 			error.printStackTrace();
 		}
-
-		// Number of Connections
+		/* Number of Connections
 		ResultSet connections = DBConnection.getInstance().getNumberOfConnections();
 		while (connections.next()) {
 			System.out.println(connections.getRow());
 		}
-
+		*/
+		dbaccess.closeConnection();
 		return hash.equals(tempHash);
 	}
 	

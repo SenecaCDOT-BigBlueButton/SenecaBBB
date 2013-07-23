@@ -11,10 +11,8 @@
     // Gets inserted user and password.
 	String userID = request.getParameter("SenecaLDAPBBBLogin");
 	String password = request.getParameter("SenecaLDAPBBBLoginPass");
-
 	// Checks if user and password fields are not empty.
 	if (userID != null && password != null) {
-
 		// Checks if user is registed on Seneca's database
 		if (ldap.search(request.getParameter("SenecaLDAPBBBLogin"), request.getParameter("SenecaLDAPBBBLoginPass"))) {
 			if (ldap.getAccessLevel() < 0) {
@@ -34,11 +32,11 @@
 				session.setAttribute("sUserName", ldap.getGivenName());
 				session.setAttribute("isLDAP", "true");
 				response.sendRedirect("calendar.jsp");
+				dbaccess.closeConnection();
 			}
 		}
 		// Checks if user is registed on database.
 		else if (hash.validatePassword(password.toCharArray(), userID)) {
-
 			/* User is authenticated */
 			User user = new User(dbaccess);
 			DBConnection conn = DBConnection.getInstance();
@@ -46,21 +44,21 @@
 			if (user.getUserInfo(result, userID)) {
 				ArrayList<String> userInfo = result.get(0);
 				session.setAttribute("sUserID", userID);
-				session.setAttribute("sUserID", userID);
-				session.setAttribute("sUserName", userInfo.get(userInfo.indexOf("nu_name")) + " " + userInfo.get(userInfo.indexOf("nu_lastname")));
-				session.setAttribute("iUserLevel", userInfo.get(userInfo.indexOf("pr_name")));
-				session.setAttribute("iUserType", userInfo.get(userInfo.indexOf("pr_name")));
+				session.setAttribute("sUserName", userInfo.get(11) + " " + userInfo.get(12));
+				session.setAttribute("iUserLevel", userInfo.get(15));
+				session.setAttribute("iUserType", userInfo.get(15));
 				session.setAttribute("isLDAP", "false");
 				response.sendRedirect("calendar.jsp");
 				String message = "User login successfully.";
-			} else {
-				String message = "Invalid username and/or password.";
-				response.sendRedirect("index.jsp?error=" + message);
-			}
+				dbaccess.closeConnection();
+			} 
 		} else {
+			String message = "Invalid username and/or password.";
+			response.sendRedirect("index.jsp?error=" + message);
 			dbaccess.closeConnection();
 		}
 	} else {
 		String message = "Invalid username and/or password.";
+		response.sendRedirect("index.jsp?error=" + message);
 	}
 %>

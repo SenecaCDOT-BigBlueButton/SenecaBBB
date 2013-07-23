@@ -26,13 +26,13 @@
 		return s.replace(/^\s*/, "").replace(/\s*$/, "");
 	}
 	function validate() {
-		if (trim(document.formLogin.username.value) == "") {
+		if (trim(document.getElementById("SenecaLDAPBBBLogin").value) == "") {
 			alert("Login empty");
-			document.formLogin.username.focus();
+			document.getElementById("SenecaLDAPBBBLogin").focus();
 			return false;
-		} else if (trim(document.formLogin.password.value) == "") {
+		} else if (trim(document.getElementById("SenecaLDAPBBBLoginPass").value) == "") {
 			alert("Password empty");
-			document.formLogin.password.focus();
+			document.getElementById("SenecaLDAPBBBLoginPass").focus();
 			return false;
 		}
 	}
@@ -48,7 +48,7 @@
 	<div id="page">
   <header id="header"><img src="images/logo.png" alt="Logo" title="Seneca College of Applied Arts and Technology"/> </header>
   <section id="login">
-	<form id="login" name="formLogin" action="auth.jsp"	onSubmit="return validate();" method="post">
+	<form id="login" name="formLogin" action="auth.jsp" onSubmit="return validate();" method="post">
 	  <article >
         <div class="content">
           <div class="component">

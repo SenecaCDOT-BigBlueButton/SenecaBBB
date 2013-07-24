@@ -4,16 +4,14 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import dao.User;
+import sql.User;
 import db.DBAccess;
-import db.DBConnection;
 
 /*
  * PBKDF2 salted password hashing.

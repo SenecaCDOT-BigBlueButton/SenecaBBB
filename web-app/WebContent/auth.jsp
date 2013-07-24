@@ -1,6 +1,6 @@
 <%@page import="db.DBConnection"%>
 <%@page import="hash.PasswordHash"%>
-<%@page import="dao.User"%>
+<%@page import="sql.User"%>
 <%@page import="java.util.ArrayList"%>
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />

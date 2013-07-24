@@ -1,10 +1,6 @@
 package test;
 
-
-import helper.*;
-
 import sql.*;
-
 import db.DBAccess;
 
 public class Test_User extends Test_Helper {

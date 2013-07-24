@@ -32,14 +32,12 @@
 				session.setAttribute("sUserName", ldap.getGivenName());
 				session.setAttribute("isLDAP", "true");
 				response.sendRedirect("calendar.jsp");
-				dbaccess.closeConnection();
 			}
 		}
 		// Checks if user is registed on database.
 		else if (hash.validatePassword(password.toCharArray(), userID)) {
 			/* User is authenticated */
 			User user = new User(dbaccess);
-			DBConnection conn = DBConnection.getInstance();
 			ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 			if (user.getUserInfo(result, userID)) {
 				ArrayList<String> userInfo = result.get(0);
@@ -50,12 +48,10 @@
 				session.setAttribute("isLDAP", "false");
 				response.sendRedirect("calendar.jsp");
 				String message = "User login successfully.";
-				dbaccess.closeConnection();
 			} 
 		} else {
 			String message = "Invalid username and/or password.";
 			response.sendRedirect("index.jsp?error=" + message);
-			dbaccess.closeConnection();
 		}
 	} else {
 		String message = "Invalid username and/or password.";

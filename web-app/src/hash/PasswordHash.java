@@ -107,13 +107,6 @@ public class PasswordHash {
 		} catch (Exception error) {
 			error.printStackTrace();
 		}
-		/* Number of Connections
-		ResultSet connections = DBConnection.getInstance().getNumberOfConnections();
-		while (connections.next()) {
-			System.out.println(connections.getRow());
-		}
-		*/
-		dbaccess.closeConnection();
 		return hash.equals(tempHash);
 	}
 	

@@ -15,7 +15,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
-<title>Seneca | Conferece Management System</title>
+<title>Seneca | Conference Management System</title>
 <link rel="shortcut icon" href="http://www.cssreset.com/favicon.png" />
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>

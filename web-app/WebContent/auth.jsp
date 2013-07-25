@@ -2,6 +2,7 @@
 <%@page import="hash.PasswordHash"%>
 <%@page import="sql.User"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="helper.MyBoolean"%>
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
@@ -38,13 +39,21 @@
 		else if (hash.validatePassword(password.toCharArray(), userID)) {
 			/* User is authenticated */
 			User user = new User(dbaccess);
+			MyBoolean prof = new MyBoolean();
 			ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 			if (user.getUserInfo(result, userID)) {
 				ArrayList<String> userInfo = result.get(0);
 				session.setAttribute("sUserID", userID);
 				session.setAttribute("sUserName", userInfo.get(11) + " " + userInfo.get(12));
-				session.setAttribute("iUserLevel", userInfo.get(15));
-				session.setAttribute("iUserType", userInfo.get(15));
+				user.isProfessor(prof, userID);
+				if (prof.get_value()) {
+					session.setAttribute("iUserLevel", "professor");
+					session.setAttribute("iUserType", "professor");
+				}
+				else {
+					session.setAttribute("iUserLevel", userInfo.get(15));
+					session.setAttribute("iUserType", userInfo.get(15));
+				}
 				session.setAttribute("isLDAP", "false");
 				response.sendRedirect("calendar.jsp");
 				String message = "User login successfully.";

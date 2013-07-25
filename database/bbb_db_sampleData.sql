@@ -74,8 +74,8 @@ INSERT INTO professor VALUES ('chad.pilkey', 'PSY100', 'A', '201305', b'0011110'
 INSERT INTO professor VALUES ('chad.pilkey', 'PSY100', 'B', '201305', b'0011110');
 INSERT INTO professor VALUES ('justin.robinson', 'IPC144', 'A', '201305', b'0011110');
 INSERT INTO professor VALUES ('justin.robinson', 'IPC144', 'B', '201305', b'0011110');
-INSERT INTO professor VALUES ('chad.pilkey', 'PSY150', 'A', '201305', b'0011110');
-INSERT INTO professor VALUES ('chad.pilkey', 'PSY150', 'B', '201305', b'0011110');
+INSERT INTO professor VALUES ('non_ldap2', 'PSY150', 'A', '201305', b'0011110');
+INSERT INTO professor VALUES ('non_ldap2', 'PSY150', 'B', '201305', b'0011110');
 
 INSERT INTO student VALUES ('jtrobins', 'OOP344', 'A', '201305', 0);
 INSERT INTO student VALUES ('bli64', 'OOP344', 'A', '201305', 0);

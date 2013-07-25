@@ -19,6 +19,7 @@ public class DBAccess {
     private ResultSet _rs = null;
     private Connection _conn = null;
     private String _errLog = null;
+    private boolean _flag = true; 
 
     public DBAccess() {
         _db = DBConnection.getInstance();
@@ -55,66 +56,81 @@ public class DBAccess {
     }
 
     /**
-     * Executes all queries 
+     * Executes all queries<p>
+     * Note that once _flag is set to false, it must be manually set back to
+     * true by the resetFlag() function before further SQL statement can be executed 
      * @param result
      * @param query
      * @return
      */
     public boolean queryDB(ArrayList<ArrayList<String>> result, String query) {
-        boolean flag = openConnection();
-        if (!flag) {
-            _errLog = "SQLException: Bad or No Connection";
-        }
-        else {
-            try {
-                result.clear();
-                _stmt = _conn.prepareStatement(query);
-                _rs = _stmt.executeQuery();
-                int colCount = _rs.getMetaData().getColumnCount();
-                while (_rs.next()) {
-                    ArrayList<String> row = new ArrayList<String>();
-                    for (int i=1; i<=colCount; i++) {
-                        row.add(_rs.getString(i));
+        result.clear();
+        if(_flag) { //statement do no execute if there is previous error
+            _flag = openConnection();
+            if (!_flag) { //check connection error
+                _errLog = "SQLException: Bad or No Connection";
+            }
+            else {
+                try {
+                    _stmt = _conn.prepareStatement(query);
+                    _rs = _stmt.executeQuery();
+                    int colCount = _rs.getMetaData().getColumnCount();
+                    while (_rs.next()) {
+                        ArrayList<String> row = new ArrayList<String>();
+                        for (int i=1; i<=colCount; i++) {
+                            row.add(_rs.getString(i));
+                        }
+                        result.add(row);
                     }
-                    result.add(row);
+                }
+                catch (SQLException e) {
+                    _errLog = "SQLException: " + e.getMessage();
+                    //_errLog = "SQLException: problem with query statement";
+                    _flag = false;
+                }
+                finally {
+                    _flag = closeConnection() && _flag; 
                 }
             }
-            catch (SQLException e) {
-                _errLog = "SQLException: problem with query statement";
-                flag = false;
-            }
-            finally {
-               flag = closeConnection() && flag; 
-            }
         }
-        return flag;
+        else {
+            _errLog += "\nThere is an error with a previous SQL execution";
+        }
+        return _flag;
     }
     
     /**
      * Execute SQL Data Manipulation Language (DML) statement, 
      * such as INSERT, UPDATE or DELETE; or an SQL statement that returns nothing, 
-     * such as a DDL statements
+     * such as a DDL statements<p>
+     * Note that once _flag is set to false, it must be manually set back to
+     * true by the resetFlag() function before further SQL statement can be executed 
      * @param statement
      * @return
      */
     public boolean updateDB(String statement) {
-        boolean flag = openConnection();
-        if (!flag) {
-            _errLog = "SQLException: Bad or No Connection";
+        if(_flag) { //statement do no execute if there is previous error
+            _flag = openConnection();
+            if (!_flag) {
+                _errLog = "SQLException: Bad or No Connection";
+            }
+            else {
+                try {
+                    _stmt = _conn.prepareStatement(statement);
+                    _stmt.executeUpdate();
+                }
+                catch (SQLException e) {
+                    _errLog = "SQLException: problem with SQL statement";
+                    _flag = false;
+                }
+                finally {
+                    _flag = closeConnection() && _flag; 
+                }
+            }
         }
         else {
-            try {
-                _stmt = _conn.prepareStatement(statement);
-                _stmt.executeUpdate();
-            }
-            catch (SQLException e) {
-                _errLog = "SQLException: problem with SQL statement";
-                flag = false;
-            }
-            finally {
-               flag = closeConnection() && flag; 
-            }
+            _errLog += "\nThere is an error with a previous SQL execution"; 
         }
-        return flag;
+        return _flag;
     }
 }

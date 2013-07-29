@@ -6,8 +6,8 @@
         <link rel='stylesheet' type='text/css' href='css/calendar_layout.css' />
         <link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.css' />
         <link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.print.css' media='print' />
-        <script type='text/javascript' src='js/jquery-1.8.1.min.js'></script>
-        <script type='text/javascript' src='js/jquery-ui-1.8.23.custom.min.js'></script>
+        <script type='text/javascript' src='js/jquery-1.9.1.min.js'></script>
+        <script type='text/javascript' src='js/jquery-ui-1.10.2.custom.min.js'></script>
         <script type='text/javascript' src='fullcalendar/fullcalendar.min.js'></script>
         <script type='text/javascript' src='fullcalendar/date.js'></script>
         <script type='text/javascript'>

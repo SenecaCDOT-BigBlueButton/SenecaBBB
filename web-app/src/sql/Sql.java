@@ -22,4 +22,10 @@ public interface Sql {
     
     public String getSQL();
     
+    /**
+     * This MUST be called after an error is caught,
+     * else no other SQL statements would run
+     */
+    public boolean resetFlag();
+    
 }

@@ -37,6 +37,8 @@ public class Test_Meeting extends Test_Helper {
             
             display(_meeting.getMeetingUserPass(_result, 1, 1));
             
+            _meeting.resetFlag();
+            
             display(_meeting.getIsMeetingCancelled(_result, 1, 1));
         }
         

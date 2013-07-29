@@ -39,6 +39,15 @@ public class Section implements Sql {
         return _sql;
     }
     
+    /**
+     * This MUST be called after an error is caught,
+     * else no other SQL statements would run
+     * @return
+     */
+    public boolean resetFlag() {
+        return _dbAccess.resetFlag();
+    }
+    
     /** 
      * the following are query (SELECT) classes
      * that begin with 'get' or 'is'

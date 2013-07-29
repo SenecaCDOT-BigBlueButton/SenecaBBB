@@ -54,6 +54,16 @@ public class DBAccess {
     public String getErrLog() {
         return _errLog;
     }
+    
+    /**
+     * This MUST be called after an error is caught,
+     * else no other SQL statements would run
+     * @return
+     */
+    public boolean resetFlag() {
+        _flag = true;
+        return _flag;
+    }
 
     /**
      * Executes all queries<p>
@@ -85,16 +95,12 @@ public class DBAccess {
                 }
                 catch (SQLException e) {
                     _errLog = "SQLException: " + e.getMessage();
-                    //_errLog = "SQLException: problem with query statement";
                     _flag = false;
                 }
                 finally {
                     _flag = closeConnection() && _flag; 
                 }
             }
-        }
-        else {
-            _errLog += "\nThere is an error with a previous SQL execution";
         }
         return _flag;
     }

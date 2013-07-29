@@ -38,6 +38,15 @@ public class Meeting implements Sql {
     public String getSQL() {
         return _sql;
     }
+    
+    /**
+     * This MUST be called after an error is caught,
+     * else no other SQL statements would run
+     * @return
+     */
+    public boolean resetFlag() {
+        return _dbAccess.resetFlag();
+    }
 
     /**
      * Getting all data on a particular meeting
@@ -94,7 +103,7 @@ public class Meeting implements Sql {
      * @return
      */
     public boolean getMeetingInitialDatetime(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
-        _sql = "SELECT m_inidatetime "
+        _sql = "SELdECT m_inidatetime "
                 + "FROM meeting "
                 + "WHERE ms_id = " + ms_id + " "
                 + "AND m_id = " + m_id;
@@ -154,10 +163,15 @@ public class Meeting implements Sql {
      * @return
      */
     public boolean getMeetingUserPass(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
-        _sql = "SELfECT m_userpass "
+        _sql = "SELECT m_userpass "
                 + "FROM meeting "
                 + "WHERE ms_id = " + ms_id + " "
                 + "AND m_id = " + m_id;
         return _dbAccess.queryDB(result, _sql);
-    }    
+    }
+    
+    public boolean createMeeting(int ms_id, int m_id, String inidatetime, 
+            int m_duration, String m_description, String m_modpass, String m_userpass) {
+        return _dbAccess.updateDB(_sql);
+    }
 }

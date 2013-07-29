@@ -6,6 +6,7 @@
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
+<jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 
 <%@ page language="java" import="java.sql.*" errorPage=""%>
 <%
@@ -20,18 +21,15 @@
 				response.sendRedirect("banned.jsp");
 			} else {
 				if (ldap.getAccessLevel() == 10) {
-					session.setAttribute("iUserType", "student");
-					session.setAttribute("iUserLevel", "student");
+					usersession.setUserLevel("student");
 				} else if (ldap.getAccessLevel() == 20) {
-					session.setAttribute("iUserType", "employee");
-					session.setAttribute("iUserLevel", "employee");
+					usersession.setUserLevel("employee");
 				} else if (ldap.getAccessLevel() == 30) {
-					session.setAttribute("iUserType", "professor");
-					session.setAttribute("iUserLevel", "professor");
+					usersession.setUserLevel("professor");
 				}
-				session.setAttribute("sUserID", ldap.getUserID());
-				session.setAttribute("sUserName", ldap.getGivenName());
-				session.setAttribute("isLDAP", "true");
+				usersession.setUserId(ldap.getUserID());
+				usersession.setGivenName(ldap.getGivenName());
+				usersession.setLDAP(true);
 				response.sendRedirect("calendar.jsp");
 			}
 		}
@@ -43,18 +41,16 @@
 			ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 			if (user.getUserInfo(result, userID)) {
 				ArrayList<String> userInfo = result.get(0);
-				session.setAttribute("sUserID", userID);
-				session.setAttribute("sUserName", userInfo.get(11) + " " + userInfo.get(12));
+				usersession.setUserLevel(userID);
+				usersession.setGivenName(userInfo.get(11) + " " + userInfo.get(12));
 				user.isProfessor(prof, userID);
 				if (prof.get_value()) {
-					session.setAttribute("iUserLevel", "professor");
-					session.setAttribute("iUserType", "professor");
+					usersession.setUserLevel("professor");
 				}
 				else {
-					session.setAttribute("iUserLevel", userInfo.get(15));
-					session.setAttribute("iUserType", userInfo.get(15));
+					usersession.setUserLevel(userInfo.get(15));
 				}
-				session.setAttribute("isLDAP", "false");
+				usersession.setLDAP(false);
 				response.sendRedirect("calendar.jsp");
 				String message = "User login successfully.";
 			} 

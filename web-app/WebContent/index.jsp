@@ -6,8 +6,6 @@
 	if (error == null || error == "null") {
 		error = "";
 	} else {
-		//DBConnection.getInstance().closeConnection();
-		//DBConnection conn = DBConnection.getInstance();
 		System.out.println("error=Logged out");
 	}
 %>

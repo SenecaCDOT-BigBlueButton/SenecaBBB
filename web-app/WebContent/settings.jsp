@@ -1,10 +1,16 @@
+<%@page import="db.DBConnection"%>
+<%@page import="sql.User"%>
+<%@page import="java.util.*"%>
+<%@page import="helper.MyBoolean"%>
+<jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
+<jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seneca | Conferece Management System</title>
+<title>Seneca | Conference Management System</title>
 <link rel="shortcut icon" href="http://www.cssreset.com/favicon.png" />
 <!--<link href="css/style.css" rel="stylesheet" type="text/css" media="screen and (min-width:1280px)">-->
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all">
@@ -15,23 +21,31 @@
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
 <script type="text/javascript" src="js/component.js"></script>
 <script type="text/javascript" src="js/componentStepper.js"></script>
-</head><body>
+<%
+	String userId = usersession.getUserId();
+	User user = new User(dbaccess);
+	MyBoolean prof = new MyBoolean();
+	
+	System.out.println(usersession.getNick());
+%>
+</head>
+<body>
 <div id="page">
   <header id="header"><img src="images/logo.png" alt="Seneca College of Applied Arts and Technology" tabindex="1" title="Seneca College of Applied Arts and Technology"/>
     <nav>
       <ul>
-        <li><a href="#" tabindex="4" title="Logout">Logout</a></li>
+        <li><a href="index.jsp?error=Logged out" tabindex="4" title="Logout">Logout</a></li>
         <li class="divisor">|</li>
         <li><a href="settings.html" tabindex="3" title="User settings">Settings</a></li>
         <li class="divisor">|</li>
-        <li><a href="#" tabindex="2" title="View user info">Ystallonne Alves</a></li>
+        <li><a href="#" tabindex="2" title="View user info"><%=usersession.getGivenName() %></a></li>
       </ul>
     </nav>
   </header>
 	<jsp:include page="menu.jsp"/>
   <section>
     <header>
-      <p><a href="index.html" tabindex="13">home</a> » <a href="settings.html" tabindex="14">settings</a></p>
+      <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="settings.html" tabindex="14">settings</a></p>
       <h1>Settings</h1>
     </header>
     <form>
@@ -42,11 +56,7 @@
         <div class="content">
           <div class="component">
             <label for="nickname" class="label">Nickname:</label>
-            <input type="text" name="nickname" id="nickname" class="input" tabindex="15" title="Nickname">
-          </div>
-          <div class="component">
-            <label for="alternativeEmail" class="label">Alternative e-mail:</label>
-            <input type="text" name="alternativeEmail" id="alternativeEmail" class="input" tabindex="16" title="Alternative e-mail">
+            <input type="text" name="nickname" id="nickname" class="input" tabindex="15" title="Nickname" value=<%=usersession.getNick() %>>
           </div>
           <div class="component">
             <div class="checkbox" title="Automatically activate microphone"> <span class="box" role="checkbox" aria-checked="true" tabindex="17" aria-labelledby="setting1"></span>

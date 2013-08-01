@@ -101,7 +101,6 @@ $(document).ready(function() {
 							$("#selectDayoftheWeek").css("display", "none");
 							$("#selectDayoftheMonth").css("display", "block");
 							break;
-						case "Day of the month":
 						case "Day of the first week":
 						case "Day of the second week":
 						case "Day of the third week":
@@ -364,7 +363,7 @@ $(document).ready(function() {
 
 	 	/* MENU - CLICK EVENT */
 		$("aside nav #home").click(function () {
-			$(location).attr('href', "index.html");
+			$(location).attr('href', "calendar.jsp");
 		});
 		
 		$("aside nav #createEvent").click(function () {

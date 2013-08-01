@@ -358,6 +358,23 @@ public class User implements Sql {
         }
         return flag;
     }
+    
+    public boolean getDefaultUserSetting(HashMap<String, Integer> result) {
+        _sql = "SELECT key_value "
+                + "FROM bbb_admin "
+        		+ "WHERE key_name = 'default_user'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+            System.out.println("here");
+            result.clear();
+            result.put(Settings.bu_setting[0], (value & (1<<2)) == 0 ? 0:1);
+            result.put(Settings.bu_setting[1], (value & (1<<1)) == 0 ? 0:1);
+            result.put(Settings.bu_setting[2], (value & 1) == 0 ? 0:1);
+        }
+        return flag;
+    }
 
     public boolean getUserMeetingSetting(HashMap<String, Integer> result, String bu_id) {
         _sql = "SELECT m_setting "
@@ -399,6 +416,11 @@ public class User implements Sql {
         return flag;
     }
 
+    /*
+     * [0] guestAccountCreation
+     * [1] recordableMeetings
+     * [2] nickname
+     */
     public boolean getUserRoleSetting(HashMap<String, Integer> result, int ur_id) {
         _sql = "SELECT ur_rolemask "
                 + "FROM user_role "
@@ -408,8 +430,9 @@ public class User implements Sql {
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
             result.clear();
-            result.put(Settings.ur_rolemask[0], (value & (1<<1)) == 0 ? 0:1);
-            result.put(Settings.ur_rolemask[1], (value & 1) == 0 ? 0:1);
+            result.put(Settings.ur_rolemask[0], (value & (1<<2)) == 0 ? 0:1);
+            result.put(Settings.ur_rolemask[1], (value & (1<<1)) == 0 ? 0:1);
+            result.put(Settings.ur_rolemask[2], (value & 1) == 0 ? 0:1);
         }
         return flag;
     }
@@ -432,6 +455,19 @@ public class User implements Sql {
     public boolean isProfessor(MyBoolean bool, String bu_id) {
         _sql = "SELECT 1 "
                 + "FROM professor "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "LIMIT 1";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isDepartmentAdmin(MyBoolean bool, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM user_department "
                 + "WHERE bu_id = '" + bu_id + "' "
                 + "LIMIT 1";
         ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();

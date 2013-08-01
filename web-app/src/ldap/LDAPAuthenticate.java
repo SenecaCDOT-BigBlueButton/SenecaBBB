@@ -267,9 +267,10 @@ public class LDAPAuthenticate {
                 }
 
                 //prints out all possible attributes
-                for (NamingEnumeration<?> i = at.getAll(); i.hasMore();) {
-                    System.out.println((Attribute) i.next());
-                }
+//                for (NamingEnumeration<?> i = at.getAll(); i.hasMore();) {
+//                    System.out.println((Attribute) i.next());
+//                }
+            	String mail= at.get("mail").toString().split(": ")[1];
 
                 authenticated = "true"; //TODO
                 calculateAccessLevel();
@@ -309,9 +310,7 @@ public class LDAPAuthenticate {
                 Attributes at = sr.getAttributes();
 
                 //System.out.println("position=" +position);
-                for (NamingEnumeration<?> i = at.getAll(); i.hasMore();) {
-                    System.out.println((Attribute) i.next());
-                }
+          
 
                 position = ((sr.getName().split(","))[1].split("="))[1];
                 userID = at.get(userIDField).toString().split(": ")[1];
@@ -320,6 +319,7 @@ public class LDAPAuthenticate {
                 return true;
             } catch (NamingException e) {
             } catch (Exception e) {
+            	e.printStackTrace();
             }
         }
 

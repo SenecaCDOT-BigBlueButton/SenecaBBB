@@ -10,6 +10,6 @@ public class Settings {
     public static final String[] bu_setting = {"autoShareWebcam", "autoShareAudio", "showLanuageSelector"};
     public static final String[] meeting_setting = {"isRecorded", "isMultiWhiteboard", "isPrivateChatEnabled", "isViewerWebcamEnabled", "layout"};
     public static final String[] section_setting = {"isRecorded", "isMultiWhiteboard", "isPrivateChatEnabled", "isViewerWebcamEnabled", "layout"};
-    public static final String[] ur_rolemask = {"guestAccountCreation", "recordableMeetings"};
+    public static final String[] ur_rolemask = {"recordableMeetings", "guestAccountCreation", "nickname"};
 
 }

@@ -12,7 +12,7 @@ public class Test_User extends Test_Helper {
      * _group[3]: 'is' testing for existence
      * _group[4]: create or remove rows
      */
-    static int[] _group = {0, 0, 1, 1, 0};
+    static int[] _group = {1, 0, 0, 0, 1};
     
     public Test_User(DBAccess source) {
         super();
@@ -184,10 +184,10 @@ public class Test_User extends Test_Helper {
         }
 
         if (_group[4] == 1) {
+            
+            display(_user.createUser("test10", "", true, 1));
 
-            display(_user.createUser("test5", "comment", true, 1));
-
-            display(_user.getUserInfo(_result, "test5"));
+            display(_user.getUserInfo(_result, "test10"));
 
             display(_user.createUser("nutest1", "comment", false, 3));
             

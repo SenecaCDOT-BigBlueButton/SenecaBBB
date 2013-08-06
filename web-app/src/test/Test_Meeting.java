@@ -40,6 +40,8 @@ public class Test_Meeting extends Test_Helper {
             _meeting.resetFlag();
             
             display(_meeting.getIsMeetingCancelled(_result, 1, 1));
+            
+            display(_meeting.gettest(_result));
         }
         
     }

@@ -126,16 +126,13 @@ public class DBAccess {
                     _stmt.executeUpdate();
                 }
                 catch (SQLException e) {
-                    _errLog = "SQLException: problem with SQL statement";
+                    _errLog = "SQLException: " + e.getMessage();
                     _flag = false;
                 }
                 finally {
                     _flag = closeConnection() && _flag; 
                 }
             }
-        }
-        else {
-            _errLog += "\nThere is an error with a previous SQL execution"; 
         }
         return _flag;
     }

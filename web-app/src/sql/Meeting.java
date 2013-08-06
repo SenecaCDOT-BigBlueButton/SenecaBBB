@@ -103,7 +103,7 @@ public class Meeting implements Sql {
      * @return
      */
     public boolean getMeetingInitialDatetime(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
-        _sql = "SELdECT m_inidatetime "
+        _sql = "SELECT m_inidatetime "
                 + "FROM meeting "
                 + "WHERE ms_id = " + ms_id + " "
                 + "AND m_id = " + m_id;

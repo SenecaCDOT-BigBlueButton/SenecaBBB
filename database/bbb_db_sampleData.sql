@@ -84,16 +84,8 @@ INSERT INTO student VALUES ('rwstanica', 'OOP344', 'B', '201305', 0);
 INSERT INTO student VALUES ('non_ldap1', 'OOP344', 'B', '201305', 0);
 INSERT INTO student VALUES ('non_ldap2', 'OOP344', 'B', '201305', 0);
 
-INSERT INTO lecture_schedule VALUES (fn_next_id('next_ls_id'), 'OOP344', 'A', '201305', SYSDATE() + INTERVAL 1 HOUR, 50, 2, 50);
-INSERT INTO lecture_schedule VALUES (fn_next_id('next_ls_id'), 'OOP344', 'B', '201305', SYSDATE() + INTERVAL 5 HOUR, 50, 2, 50);
-
-INSERT INTO lecture VALUES (1, 1, SYSDATE() + INTERVAL 1 HOUR, 50, 0, 'OOP344A', 'modpass', 'userpass');
-INSERT INTO lecture VALUES (1, 2, SYSDATE() + INTERVAL 25 HOUR, 50, 0, 'OOP344A', 'modpass', 'userpass');
-INSERT INTO lecture VALUES (1, 3, SYSDATE() + INTERVAL 50 HOUR, 50, 0, 'OOP344A', 'modpass', 'userpass');
-INSERT INTO lecture VALUES (2, 1, SYSDATE() + INTERVAL 5 HOUR, 50, 0, 'OOP344B', 'modpass', 'userpass');
-INSERT INTO lecture VALUES (2, 2, SYSDATE() + INTERVAL 30 HOUR, 50, 0, 'OOP344B', 'modpass', 'userpass');
-INSERT INTO lecture VALUES (2, 3, SYSDATE() + INTERVAL 55 HOUR, 50, 0, 'OOP344B', 'modpass', 'userpass');
-
+CALL sp_create_ls('OOP344', 'A', '201305', '2013-07-01 10:00:00', 7, 10, 50, 'OOP344A');
+CALL sp_create_ls('OOP344', 'B', '201305', '2013-07-03 10:00:00', 7, 10, 50, 'OOP344B');
 
 INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 1, 1);
 INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 1, 2);
@@ -126,13 +118,8 @@ INSERT INTO lecture_attendance VALUES ('rwstanica', 2, 3, 0);
 INSERT INTO lecture_attendance VALUES ('non_ldap1', 2, 3, 0);
 INSERT INTO lecture_attendance VALUES ('non_ldap2', 2, 3, 0);
 
-INSERT INTO meeting_schedule VALUES (fn_next_id('next_ms_id'), 'Test Meeting 1', SYSDATE() + INTERVAL 1 HOUR, 50, 2, 50, 'gary.deng');
-INSERT INTO meeting_schedule VALUES (fn_next_id('next_ms_id'), 'Test Meeting 2', SYSDATE() + INTERVAL 5 HOUR, 50, 2, 50, 'bo.li');
-
-INSERT INTO meeting VALUES (1, 1, SYSDATE() + INTERVAL 1 HOUR, 50, 0, 'Schedule 1, Test Meeting 1', 'modpass', 'userpass', b'0011001');
-INSERT INTO meeting VALUES (1, 2, SYSDATE() + INTERVAL 25 HOUR, 50, 0, 'Schedule 1, Test Meeting 2', 'modpass', 'userpass', b'0011001');
-INSERT INTO meeting VALUES (2, 1, SYSDATE() + INTERVAL 5 HOUR, 50, 0, 'Schedule 2, Test Meeting 1', 'modpass', 'userpass', b'0011001');
-INSERT INTO meeting VALUES (2, 2, SYSDATE() + INTERVAL 30 HOUR, 50, 0, 'Schedule 2, Test Meeting 2', 'modpass', 'userpass', b'0011001');
+CALL sp_create_ms('Test Meeting Schedule 1', '2013-07-01 10:00:00', 7, 10, 50, 'Test Meeting 2 description', 'bo.li');
+CALL sp_create_ms('Test Meeting Schedule 2', '2013-07-22 13:00:00', 7, 10, 50, 'Test Meeting 2 description', 'bli64');
 
 INSERT INTO meeting_attendee VALUES ('jtrobins', 1, 0);
 INSERT INTO meeting_attendee VALUES ('capilkey', 1, 0);

@@ -6,14 +6,6 @@ import db.DBAccess;
 
 public class Test_Meeting extends Test_Helper {
     static Meeting _meeting = null;
-    /**
-     * _group[0]: regular queries only
-     * _group[1]: update then query
-     * _group[2]: set and get settings
-     * _group[3]: 'is' testing for existence
-     * _group[4]: create or remove rows
-     */
-    static int[] _group = {1, 0, 0, 0, 0};
 
     public Test_Meeting(DBAccess source) {
         super();
@@ -21,24 +13,47 @@ public class Test_Meeting extends Test_Helper {
         _test = _meeting;
         _counter = 1;
         
-        if(_group[0] == 1) {
+        _meeting.resetErrorFlag();
+
+        display(_meeting.getMeetingInfo(_result, 1, 1));
+
+        display(_meeting.getMeetingDescription(_result, 1, 1));
+
+        display(_meeting.getMeetingInitialDatetime(_result, 1, 1));
+
+        display(_meeting.getMeetingDuration(_result, 1, 1));
+
+        display(_meeting.getMeetingModPass(_result, 1, 1));
+
+        display(_meeting.getMeetingUserPass(_result, 1, 1));
+
+        display(_meeting.getIsMeetingCancelled(_result, 1, 1));
         
-            display(_meeting.getMeetingInfo(_result));
+        display(_meeting.getMeetingPresentation(_result, 1, 1));
         
-            display(_meeting.getMeetingInfo(_result, 1, 1));
-            
-            display(_meeting.getMeetingDescription(_result, 1, 1));
-            
-            display(_meeting.getMeetingInitialDatetime(_result, 1, 1));
-            
-            display(_meeting.getMeetingDuration(_result, 1, 1));
-            
-            display(_meeting.getMeetingModPass(_result, 1, 1));
-            
-            display(_meeting.getMeetingUserPass(_result, 1, 1));
-            
-            display(_meeting.getIsMeetingCancelled(_result, 1, 1));
-        }
+        display(_meeting.getMeetingAttendee(_result, 1));
         
+        display(_meeting.getMeetingAttendance(_result, 1, 1));
+        
+        display(_meeting.getMeetingSetting(_hm, 1, 1));
+        
+        display(_meeting.getMeetingSetting(_hm, 1, 2));
+        
+        display(_meeting.updateMeetingDuration(2, 1, 8, 150));
+        
+        display(_meeting.updateMeetingTime(2, 1, 8, "05:05:05"));
+        
+        display(_meeting.updateMeetingRepeats(1, 15));
+        
+        display(_meeting.getMeetingInfo(_result, 1));
+        
+        display(_meeting.updateMeetingRepeats(1, 8));
+        
+        display(_meeting.getMeetingInfo(_result, 1));
+        
+        display(_meeting.updateMeetingRepeats(1, 2));
+        
+        display(_meeting.getMeetingInfo(_result, 1));
+
     }
 }

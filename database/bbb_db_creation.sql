@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS predefined_role CASCADE;
 # AsOf Table
 CREATE TABLE predefined_role (
   pr_name         VARCHAR(100) NOT NULL,
-  pr_defaultmask  BIT(10) NOT NULL,
+  pr_defaultmask  BIT(20) NOT NULL,
   CONSTRAINT pk_predefined_role
     PRIMARY KEY (pr_name)
 );
@@ -55,7 +55,7 @@ CREATE TABLE bbb_admin (
 CREATE TABLE user_role (
   ur_id           INT UNSIGNED,
   pr_name         VARCHAR(100) NOT NULL,
-  ur_rolemask     BIT(10) NOT NULL,
+  ur_rolemask     BIT(20) NOT NULL,
   CONSTRAINT pk_user_role 
     PRIMARY KEY (ur_id),
   CONSTRAINT fk_predefined_role_of_user_role
@@ -77,8 +77,8 @@ CREATE TABLE bbb_user (
   bu_isldap       BIT(1) NOT NULL,
   bu_issuper      BIT(1) NOT NULL,
   ur_id           INT UNSIGNED,
-  bu_setting      BIT(10) NOT NULL,
-  m_setting       BIT(10) NOT NULL,
+  bu_setting      BIT(20) NOT NULL,
+  m_setting       BIT(20) NOT NULL,
   CONSTRAINT pk_user 
     PRIMARY KEY (bu_id),
   CONSTRAINT fk_user_role_of_user
@@ -158,7 +158,7 @@ CREATE TABLE meeting (
   #m_isrecorded    BIT(1) NOT NULL, now part of the m_setting
   m_modpass       CHAR(15) NOT NULL,
   m_userpass      CHAR(15) NOT NULL,
-  m_setting       BIT(10) NOT NULL,
+  m_setting       BIT(20) NOT NULL,
   CONSTRAINT pk_meeting 
     PRIMARY KEY (m_id, ms_id),
   CONSTRAINT fk_meeting_schedule_of_meeting
@@ -271,7 +271,7 @@ CREATE TABLE professor (
   c_id            CHAR(8),
   sc_id           CHAR(2),
   sc_semesterid   INT UNSIGNED,
-  sc_setting      BIT(10) NOT NULL,
+  sc_setting      BIT(20) NOT NULL,
   CONSTRAINT pk_professor 
     PRIMARY KEY (c_id, sc_id, sc_semesterid, bu_id),
   CONSTRAINT fk_section_of_professor

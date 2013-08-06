@@ -16,11 +16,13 @@ import db.DBAccess;
  * 1. (get): simple query<p>
  * 2. (is): query that use SELECT 1 to check existence<p>
  * 3. (default): UPDATE statement that set targeted data back to default values<p>
- * 4. (set): normal UPDATE statement for single field (column)<p>
- * 5. (update): normal UPDATE statement for multiple fields (columns)<p>
- * 6. (create): INSERT INTO<p>
- * 7. (delete): DELETE<p>
- * @author Bo Li
+ * 4. (set): normal UPDATE statement, single column<p>
+ * 5. (setMul): UPDATE statement, multi column<p>
+ * 6. (update): UPDATE multiple tables using MySQL Stored Procedure (SP)
+ *    if the method needs to be changed, edit would like be done in SQL script: bbb_db_init.sql<p>
+ * 7. (create): INSERT INTO<p>
+ * 8. (delete): DELETE<p>
+ * @author Kelan (Bo) Li
  *
  */
 public class Lecture implements Sql {
@@ -44,7 +46,7 @@ public class Lecture implements Sql {
      * else no other SQL statements would run
      * @return
      */
-    public boolean resetFlag() {
+    public boolean resetErrorFlag() {
         return _dbAccess.resetFlag();
     }
     

@@ -123,21 +123,29 @@ CALL sp_create_ms('Test Meeting Schedule 2', '2013-07-22 13:00:00', 7, 10, 50, '
 
 INSERT INTO meeting_attendee VALUES ('jtrobins', 1, 0);
 INSERT INTO meeting_attendee VALUES ('capilkey', 1, 0);
+INSERT INTO meeting_attendee VALUES ('non_ldap2', 1, 1);
 INSERT INTO meeting_attendee VALUES ('jtrobins', 2, 0);
 INSERT INTO meeting_attendee VALUES ('capilkey', 2, 0);
+INSERT INTO meeting_attendee VALUES ('non_ldap3', 2, 1);
 
 INSERT INTO meeting_guest VALUES ('fardad.soleimanloo', 1, 1, 1);
 INSERT INTO meeting_guest VALUES ('fardad.soleimanloo', 2, 1, 1);
 
-INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 1-1', 1, 1);
-INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 1-2', 1, 2);
-INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 2-1', 2, 1);
-INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 2-2', 2, 2);
+INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 1-1-1', 1, 1);
+INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 1-1-2', 1, 1);
+INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 1-2-1', 1, 2);
+INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 1-2-2', 1, 2);
+INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 2-1-1', 2, 1);
+INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 2-1-2', 2, 1);
+INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 2-2-1', 2, 2);
+INSERT INTO meeting_presentation VALUES ('Test Meeting Presentation 2-2-2', 2, 2);
 
 INSERT INTO meeting_attendance VALUES ('jtrobins', 1, 1, 0);
 INSERT INTO meeting_attendance VALUES ('capilkey', 1, 1, 0);
+INSERT INTO meeting_attendance VALUES ('bli64', 1, 1, 1);
 INSERT INTO meeting_attendance VALUES ('jtrobins', 1, 2, 0);
 INSERT INTO meeting_attendance VALUES ('capilkey', 1, 2, 0);
+INSERT INTO meeting_attendance VALUES ('bli64', 1, 2, 1);
 INSERT INTO meeting_attendance VALUES ('jtrobins', 2, 1, 0);
 INSERT INTO meeting_attendance VALUES ('capilkey', 2, 1, 0);
 INSERT INTO meeting_attendance VALUES ('jtrobins', 2, 2, 0);

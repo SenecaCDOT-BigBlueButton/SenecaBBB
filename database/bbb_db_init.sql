@@ -13,8 +13,11 @@ INSERT INTO bbb_admin VALUES ('timeout', 'Session timeout limit', '10');
 INSERT INTO bbb_admin VALUES ('welcome_msg', 'Welcome Message', 'Welcome');
 INSERT INTO bbb_admin VALUES ('recording_msg', 'Recording Message', 'Recording');
 INSERT INTO bbb_admin VALUES ('default_meeting', 'Default meeting setting', b'0011001');
+INSERT INTO bbb_admin VALUES ('default_meeting_hr', 'Default meeting setting in readable format', 25);
 INSERT INTO bbb_admin VALUES ('default_user', 'Default user setting', b'001');
+INSERT INTO bbb_admin VALUES ('default_user_hr', 'Default user setting in readable format', 1);
 INSERT INTO bbb_admin VALUES ('default_class', 'Default class section setting', b'0011110');
+INSERT INTO bbb_admin VALUES ('default_class_hr', 'Default class section setting in readable format', 30);
 
 DROP FUNCTION IF EXISTS fn_next_id;
 DROP PROCEDURE IF EXISTS sp_create_ms;

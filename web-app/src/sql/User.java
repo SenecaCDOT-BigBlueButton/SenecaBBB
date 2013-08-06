@@ -18,11 +18,13 @@ import db.DBAccess;
  * 1. (get): simple query<p>
  * 2. (is): query that use SELECT 1 to check existence<p>
  * 3. (default): UPDATE statement that set targeted data back to default values<p>
- * 4. (set): normal UPDATE statement for single field (column)<p>
- * 5. (update): normal UPDATE statement for multiple fields (columns)<p>
- * 6. (create): INSERT INTO<p>
- * 7. (delete): DELETE<p>
- * @author Bo Li
+ * 4. (set): normal UPDATE statement, single column<p>
+ * 5. (setMul): UPDATE statement, multi column<p>
+ * 6. (update): UPDATE multiple tables using MySQL Stored Procedure (SP)
+ *    if the method needs to be changed, edit would like be done in SQL script: bbb_db_init.sql<p>
+ * 7. (create): INSERT INTO<p>
+ * 8. (delete): DELETE<p>
+ * @author Kelan (Bo) Li
  *
  */
 public class User implements Sql {
@@ -46,7 +48,7 @@ public class User implements Sql {
      * else no other SQL statements would run
      * @return
      */
-    public boolean resetFlag() {
+    public boolean resetErrorFlag() {
         return _dbAccess.resetFlag();
     }
     
@@ -97,8 +99,8 @@ public class User implements Sql {
     }
 
     /**
-     * Getting all data of all bbb_users
-     * Fields:
+     * Getting all data of all bbb_users<p>
+     * Fields:<p>
      * (0)bu_id (1)bu_nick (2)bu_isbanned (3)bu_isactive (4)bu_comment (5)bu_lastlogin (6)bu_isldap (7)bu_issuper
      * (8)ur_id (9)bu_setting (10)bbb_user.m_setting (11)nu_name (12)nu_lastname (13)nu_email (14)nu_createtime
      * (15)pr_name (16)ur_rolemask 
@@ -118,8 +120,8 @@ public class User implements Sql {
     }
 
     /**
-     * Getting all data of all bbb_users limited by page
-     * Fields:
+     * Getting all data of all bbb_users limited by page<p>
+     * Fields:<p>
      * (0)bu_id (1)bu_nick (2)bu_isbanned (3)bu_isactive (4)bu_comment (5)bu_lastlogin (6)bu_isldap (7)bu_issuper
      * (8)ur_id (9)bu_setting (10)bbb_user.m_setting (11)nu_name (12)nu_lastname (13)nu_email (14)nu_createtime
      * (15)pr_name (16)ur_rolemask 
@@ -143,8 +145,8 @@ public class User implements Sql {
     }
 
     /**
-     * Getting all data related to a bbb_user
-     * Fields:
+     * Getting all data related to a bbb_user<p>
+     * Fields:<p>
      * (0)bu_id (1)bu_nick (2)bu_isbanned (3)bu_isactive (4)bu_comment (5)bu_lastlogin (6)bu_isldap (7)bu_issuper
      * (8)ur_id (9)bu_setting (10)bbb_user.m_setting (11)nu_name (12)nu_lastname (13)nu_email (14)nu_createtime
      * (15)pr_name (16)ur_rolemask 

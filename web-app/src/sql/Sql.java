@@ -47,10 +47,4 @@ public class Sql {
     public boolean resetErrorFlag() {
         return _dbAccess.resetFlag();
     }
-    
-    public boolean getMeetingInfo(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
-        _sql = "SELECT * "
-                + "FROM bbb_admin";
-        return _dbAccess.queryDB(result, _sql);
-    }
 }

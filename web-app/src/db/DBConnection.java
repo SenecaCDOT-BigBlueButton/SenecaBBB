@@ -58,7 +58,7 @@ public class DBConnection {
     public Connection openConnection() {
         Connection conn = null;
         if (_flag) {
-            System.out.println("Connections (created/leased/free): " 
+            System.out.println("Connections (Created/Leased/Free): " 
                     + _pool.getTotalCreatedConnections() + "/"
                     + _pool.getTotalLeased() + "/"
                     + _pool.getTotalFree()); //debug

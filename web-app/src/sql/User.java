@@ -362,12 +362,11 @@ public class User implements Sql {
     public boolean getDefaultUserSetting(HashMap<String, Integer> result) {
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
-        		+ "WHERE key_name = 'default_user'";
+        		+ "WHERE key_name = 'default_user_hr'";
         ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
         boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
-            System.out.println("here");
             result.clear();
             result.put(Settings.bu_setting[0], (value & (1<<2)) == 0 ? 0:1);
             result.put(Settings.bu_setting[1], (value & (1<<1)) == 0 ? 0:1);
@@ -394,6 +393,24 @@ public class User implements Sql {
         return flag;
     }
 
+    public boolean getDefaultMeetingSetting(HashMap<String, Integer> result) {
+        _sql = "SELECT key_value "
+                + "FROM bbb_admin "
+                + "WHERE key_name = 'default_meeting_hr'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+            result.clear();
+            result.put(Settings.meeting_setting[0], (value & (1<<6)) == 0 ? 0:1);
+            result.put(Settings.meeting_setting[1], (value & (1<<5)) == 0 ? 0:1);
+            result.put(Settings.meeting_setting[2], (value & (1<<4)) == 0 ? 0:1);
+            result.put(Settings.meeting_setting[3], (value & (1<<3)) == 0 ? 0:1);
+            result.put(Settings.meeting_setting[4], (value & (1<<2)) + (value & (1<<1)) + (value & 1));
+        }
+        return flag;
+    }
+    
     public boolean getSectionSetting(HashMap<String, Integer> result, 
             String bu_id, String c_id, String sc_id, String sc_semesterid) {
         _sql = "SELECT sc_setting "
@@ -415,12 +432,25 @@ public class User implements Sql {
         }
         return flag;
     }
-
-    /*
-     * [0] guestAccountCreation
-     * [1] recordableMeetings
-     * [2] nickname
-     */
+    
+    public boolean getDefaultSectionSetting(HashMap<String, Integer> result) {
+        _sql = "SELECT key_value "
+                + "FROM bbb_admin "
+                + "WHERE key_name = 'default_class_hr'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+            result.clear();
+            result.put(Settings.section_setting[0], (value & (1<<6)) == 0 ? 0:1);
+            result.put(Settings.section_setting[1], (value & (1<<5)) == 0 ? 0:1);
+            result.put(Settings.section_setting[2], (value & (1<<4)) == 0 ? 0:1);
+            result.put(Settings.section_setting[3], (value & (1<<3)) == 0 ? 0:1);
+            result.put(Settings.section_setting[4], (value & (1<<2)) + (value & (1<<1)) + (value & 1));
+        }
+        return flag;
+    }
+    
     public boolean getUserRoleSetting(HashMap<String, Integer> result, int ur_id) {
         _sql = "SELECT ur_rolemask "
                 + "FROM user_role "
@@ -436,14 +466,6 @@ public class User implements Sql {
         }
         return flag;
     }
-    
-    /*public boolean setDepartmentInfo(String d_code_old, String d_code_new, String d_name) {
-        _sql = "UPDATE department "
-                + "SET d_code = '" +  d_code_new + "', "
-                + "d_name='" + d_name + "' "
-                + "WHERE d_code = '" + d_code_old + "'";
-        return _dbAccess.updateDB(_sql);
-    }*/
     
     /**
      * the following queries used to test the exist of a value in a table
@@ -492,7 +514,7 @@ public class User implements Sql {
     }
     
     /**
-     * the following are UPDATE methods that begin wih 'default'
+     * the following are UPDATE methods that begin with 'default'
      */
     
     public boolean defaultUserSetting(String bu_id) {

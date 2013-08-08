@@ -19,10 +19,10 @@ import db.DBAccess;
  * 3. (default): UPDATE statement that set targeted data back to default values<p>
  * 4. (set): normal UPDATE statement, single column<p>
  * 5. (setMul): UPDATE statement, multi column<p>
- * 6. (update): UPDATE multiple tables using MySQL Stored Procedure (SP)
+ * 6. (update): UPDATE multiple tables using MySQL Stored Procedure (SP) or complex SQL statements
  *    if the method needs to be changed, edit would like be done in SQL script: bbb_db_init.sql<p>
  * 7. (create): INSERT INTO<p>
- * 8. (delete): DELETE<p>
+ * 8. (remove): DELETE<p>
  * @author Kelan (Bo) Li
  *
  */
@@ -230,6 +230,21 @@ public class Meeting implements Sql {
     }
     
     /**
+     * (0)bu_id (1)ma_ismod
+     * @param result
+     * @param ms_id
+     * @param bu_id
+     * @return
+     */
+    public boolean getMeetingAttendee(ArrayList<ArrayList<String>> result, int ms_id, String bu_id) {
+        _sql = "SELECT bu_id, ma_ismod "
+                + "FROM meeting_attendee "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
      * (0)bu_id (1)mac_isattend
      * @param result
      * @param ms_id
@@ -240,6 +255,54 @@ public class Meeting implements Sql {
                 + "FROM meeting_attendance "
                 + "WHERE ms_id = " + ms_id + " "
                 + "AND m_id = " + m_id;
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * (0)bu_id (1)mac_isattend
+     * @param result
+     * @param ms_id
+     * @param bu_id
+     * @return
+     */
+    public boolean getMeetingAttendance(ArrayList<ArrayList<String>> result, int ms_id, int m_id, String bu_id) {
+        _sql = "SELECT bu_id, mac_isattend "
+                + "FROM meeting_attendance "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND m_id = " + m_id + " "
+                + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * (0)bu_id (1)mg_ismod
+     * @param result
+     * @param ms_id
+     * @param m_id
+     * @return
+     */
+    public boolean getMeetingGuest(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
+        _sql = "SELECT bu_id, mg_ismod "
+                + "FROM meeting_guest "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND m_id = " + m_id;
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * (0)bu_id (1)mg_ismod
+     * @param result
+     * @param ms_id
+     * @param m_id
+     * @param bu_id
+     * @return
+     */
+    public boolean getMeetingGuest(ArrayList<ArrayList<String>> result, int ms_id, int m_id, String bu_id) {
+        _sql = "SELECT bu_id, mg_ismod "
+                + "FROM meeting_guest "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND m_id = " + m_id + " "
+                + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -260,6 +323,75 @@ public class Meeting implements Sql {
             result.put(Settings.meeting_setting[4], (value & (1<<2)) + (value & (1<<1)) + (value & 1));
         }
         return flag;
+    }
+    
+    public boolean defaultMeetingSetting(int ms_id, int m_id) {
+        _sql = "UPDATE meeting as a "
+                + "CROSS JOIN (SELECT key_value FROM bbb_admin WHERE key_name='default_meeting') as b "
+                + "SET a.m_setting = b.key_value "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND m_id = " + m_id;
+        return _dbAccess.updateDB(_sql);   
+    }
+    
+    public boolean setMeetingSetting(HashMap<String, Integer> map, int ms_id, int m_id) {
+        int value;
+        value = (map.get(Settings.meeting_setting[0]) << 6)
+                + (map.get(Settings.meeting_setting[1]) << 5)
+                + (map.get(Settings.meeting_setting[2]) << 4)
+                + (map.get(Settings.meeting_setting[3]) << 3)
+                + (map.get(Settings.meeting_setting[4]));
+        _sql = "UPDATE meeting "
+                + "SET m_setting = " + value + " "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND m_id = " + m_id;
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setMeetingDescription(int ms_id, int m_id, String m_description) {
+        _sql = "UPDATE meeting "
+                + "SET m_description = '" + m_description + "' "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND m_id = " + m_id;
+        return _dbAccess.updateDB(_sql);
+    }
+      
+    public boolean setMeetingIsCancel(int ms_id, int m_id, boolean m_iscancel) {
+        int flag = (m_iscancel == true) ? 1 : 0;
+        _sql = "UPDATE meeting "
+                + "SET m_iscancel = " + flag + " "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND m_id = " + m_id;
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setMeetingAttendance(String bu_id, int ms_id, int m_id, boolean mac_isattend) {
+        int flag = (mac_isattend == true) ? 1 : 0;
+        _sql = "UPDATE meeting_attendance "
+                + "SET mac_isattend = " + flag + " "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND m_id = " + m_id + " "
+                + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setMeetingGuestIsMod(String bu_id, int ms_id, int m_id, boolean mg_ismod) {
+        int flag = (mg_ismod == true) ? 1 : 0;
+        _sql = "UPDATE meeting_guest "
+                + "SET mg_ismod = " + flag + " "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND m_id = " + m_id + " "
+                + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setMeetingAttendeeIsMod(String bu_id, int ms_id, boolean ma_ismod) {
+        int flag = (ma_ismod == true) ? 1 : 0;
+        _sql = "UPDATE meeting_attendee "
+                + "SET ma_ismod = " + flag + " "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
     }
     
     /**
@@ -307,11 +439,38 @@ public class Meeting implements Sql {
      * @param ms_id
      * @param ms_repeats
      * @return
-     */
+     
     public boolean updateMeetingRepeats(int ms_id, int ms_repeats) {
         _sql = "CALL sp_update_ms_repeats("
                 + ms_id + ", "
                 + ms_repeats + ")";
+        return _dbAccess.updateDB(_sql);
+    } */
+    
+    public boolean createMeetingPresentation(String mp_title, int ms_id, int m_id) {
+        _sql = "INSERT INTO meeting_presentation VALUES ('"
+                + mp_title + "', " + ms_id + ", " + m_id + ")";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean createMeetingAttendee(String bu_id, int ms_id, boolean ma_ismod) {
+        int flag = (ma_ismod == true) ? 1 : 0;
+        _sql = "INSERT INTO meeting_attendee VALUES ('"
+                + bu_id + "', " + ms_id + ", " + flag + ")";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean createMeetingAttendance(String bu_id, int ms_id, int m_id, boolean mac_attend) {
+        int flag = (mac_attend == true) ? 1 : 0;
+        _sql = "INSERT INTO meeting_attendance VALUES ('"
+                + bu_id + "', " + ms_id + ", " + m_id + ", " + flag + ")";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean createMeetingGuest(String bu_id, int ms_id, int m_id, boolean mg_ismod) {
+        int flag = (mg_ismod == true) ? 1 : 0;
+        _sql = "INSERT INTO meeting_guest VALUES ('"
+                + bu_id + "', " + ms_id + ", " + m_id + ", " + flag + ")";
         return _dbAccess.updateDB(_sql);
     }
     

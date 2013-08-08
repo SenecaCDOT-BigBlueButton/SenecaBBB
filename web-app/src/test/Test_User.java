@@ -202,7 +202,7 @@ public class Test_User extends Test_Helper {
 
             display(_user.getUserInfo(_result, "nutest1"));
             
-            display(_user.removeUser("nutest1"));
+            //display(_user.removeUser("nutest1"));
             
         }
     }

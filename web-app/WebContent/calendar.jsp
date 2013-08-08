@@ -1,3 +1,4 @@
+<jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <%@ page contentType="text/html; charset=iso-8859-1" language="java"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
@@ -5,12 +6,15 @@
         <link rel='stylesheet' type='text/css' href='css/calendar_layout.css' />
         <link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.css' />
         <link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.print.css' media='print' />
-        <script type='text/javascript' src='jquery/jquery-1.8.1.min.js'></script>
-        <script type='text/javascript' src='jquery/jquery-ui-1.8.23.custom.min.js'></script>
+        <script type='text/javascript' src='js/jquery-1.9.1.min.js'></script>
+        <script type='text/javascript' src='js/jquery-ui-1.10.2.custom.min.js'></script>
         <script type='text/javascript' src='fullcalendar/fullcalendar.min.js'></script>
         <script type='text/javascript' src='fullcalendar/date.js'></script>
         <script type='text/javascript'>
-            <% String type = (String) session.getAttribute("iUserType");%>
+            <%
+                String type = (String) usersession.getUserLevel();
+                String level = (String)usersession.getUserLevel();
+            %>
             var user = "<%=type%>";
             function create(date) {
                 if (date === undefined)
@@ -44,17 +48,17 @@
                     },
                     eventClick: function(calEvent, jsEvent, view) {
                         var todayStart = new Date(Date.today());
-                        var todayEnd = new Date(Date.today().add(1).day());
+                        var todayEnd = new Date(Date.today().add(1).day())
                         if (calEvent.start.between(todayStart, todayEnd))
                         {
-                                window.location.href = calEvent.event+"true";
+                            window.location.href = calEvent.event + "true";
                         }
                         else
                             window.location.href = calEvent.event + "false";
                     },
                     dayClick: function(date, allDay, jsEvent, view) {
 
-                       create(date);
+                        create(date);
 
                         // change the day's background color just for fun
                         $(this).css('background-color', 'red');
@@ -71,7 +75,7 @@
                                 // events for every monday and wednesday.
                                 var events = [];
 
-                                for (var loop = start.getTime();
+                                for (loop = start.getTime();
                                         loop <= end.getTime();
                                         loop = loop + (24 * 60 * 60 * 1000)) {
 
@@ -121,11 +125,11 @@
                     $('#calendar').fullCalendar('renderEvent', events[0], true);
                     $('#calendar').fullCalendar('renderEvent', events[1], true);
                 }
-                function run() {
-                    var d = $('#calendar').fullCalendar('getDate');
-                    alert("The current date of the calendar is " + d);
-                }
             });
+            function run() {
+                var d = $('#calendar').fullCalendar('getDate');
+                alert("The current date of the calendar is " + d + user);
+            }
         </script>
         <style type='text/css'>
             #calendar {
@@ -140,7 +144,7 @@
             <h1>Calendar</h1>
             <p id="layoutdims">
                 <%
-                    String name = (String) session.getAttribute("sUserName");
+                    String name = (String) usersession.getGivenName();
                     out.write("<strong>" + name + "</strong>");
                 %>
                 View type: 
@@ -156,20 +160,39 @@
         <div class="colmask leftmenu">
             <div class="colleft">
                 <div class="col1">
+                    Filter by:
+                    <select>
+                        <option>Show all</option>
+                        <option>Meetings I've created</option>
+                        <option>Meetings I'm invited to</option>
+                        <%
+                            if (level.equals("student")) {
+                                out.write("<option>My courses</option>");
+                            }
+                        %>
+                    </select>
+                    <%
+                        if (level.equals("admin")) {
+                            out.write("<a href=\"\">Advanced filter</a>");
+                        }
+                    %>
                     <input type="button" onclick="create()" value="Create Event"/> 
                     <div id='calendar'></div>
                 </div>
                 <div class="col2">
                     <a href ="settings.jsp">User Settings</a><br/><br/>
-                    <%
-                        String level = (String) session.getAttribute("iUserType");
-                        if (level.equals("professor")) {
+                    <%                            if (level.equals("professor")) {
                             out.write("<a href =\"class_settings.jsp\">Class Settings</a><br><br>");
                         }
                         if (level.equals("admin") || level.equals("superadmin")) {
                             out.write("<a href =\"manage_professors.jsp\">Manage Professors</a><br><br>");
+                            out.write("<a href =\"alternate_manage_subjects.jsp\">Manage Subjects</a><br><br>");
                             out.write("<a href =\"manage_users.jsp\">Manage Users</a><br><br>");
+                            out.write("<a href =\"system_settings.jsp\">System Settings</a><br><br>");
+                             out.write("<a href =\"manage_departments.jsp\">Manage Departments</a><br><br>");
                         }
+                        else if (level.equals("professor"))
+                            out.write("<a href =\"view_department_users.jsp\">View Department Users</a><br><br>");
                     %>
                     <a href="index.jsp?error=Logged out"><strong>Log out</strong></a>
                 </div>
@@ -177,7 +200,7 @@
         </div>
         <div id="footer">
             This is the footer
-            <button type="button" id="my-button" class="my-button" onclick="run()">Date range</button>
-        </div>       
+        </div>
+        <button type="button" id="my-button" class="my-button" onclick="run()">Date range</button>       
     </body>
 </html>

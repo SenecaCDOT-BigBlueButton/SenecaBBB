@@ -1,11 +1,13 @@
 <%@page import="db.DBConnection"%>
 <%@page import="hash.PasswordHash"%>
 <%@page import="sql.User"%>
-<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.*"%>
 <%@page import="helper.MyBoolean"%>
+<%@page import= "sql.User" %>
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
+<jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 
 <%@ page language="java" import="java.sql.*" errorPage=""%>
 <%
@@ -19,19 +21,40 @@
 			if (ldap.getAccessLevel() < 0) {
 				response.sendRedirect("banned.jsp");
 			} else {
+				int ur_id=0;
 				if (ldap.getAccessLevel() == 10) {
-					session.setAttribute("iUserType", "student");
-					session.setAttribute("iUserLevel", "student");
+					usersession.setUserLevel("student");
+					ur_id=2;
 				} else if (ldap.getAccessLevel() == 20) {
-					session.setAttribute("iUserType", "employee");
-					session.setAttribute("iUserLevel", "employee");
+					usersession.setUserLevel("employee");
+					ur_id=1;
 				} else if (ldap.getAccessLevel() == 30) {
-					session.setAttribute("iUserType", "professor");
-					session.setAttribute("iUserLevel", "professor");
+					usersession.setUserLevel("professor");
+					ur_id=3;
 				}
-				session.setAttribute("sUserID", ldap.getUserID());
-				session.setAttribute("sUserName", ldap.getGivenName());
-				session.setAttribute("isLDAP", "true");
+				usersession.setUserId(ldap.getUserID());
+				usersession.setGivenName(ldap.getGivenName());
+				usersession.setLDAP(true);
+				User user = new User(dbaccess);
+				ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+				user.getUserInfo(result, userID);
+				HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
+				if (result.isEmpty()){
+					roleMask.clear();
+					user.createUser(userID, "", true, ur_id);
+					usersession.setNick(userID);
+					user.getDefaultUserSetting(roleMask);
+					System.out.println(roleMask);
+					usersession.setUserSettingsMask(roleMask);
+				}
+				else {
+					user.getUserRoleSetting(roleMask, ur_id);
+					usersession.setRoleMask(roleMask);	
+					usersession.setNick(result.get(0).get(1));
+					user.getUserSetting(roleMask, userID);
+					usersession.setUserSettingsMask(roleMask);
+				}
+				System.out.println(usersession.getUserSettingsMask());
 				response.sendRedirect("calendar.jsp");
 			}
 		}
@@ -40,24 +63,31 @@
 			/* User is authenticated */
 			User user = new User(dbaccess);
 			MyBoolean prof = new MyBoolean();
+			MyBoolean depAdmin = new MyBoolean();
 			ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 			if (user.getUserInfo(result, userID)) {
 				ArrayList<String> userInfo = result.get(0);
-				session.setAttribute("sUserID", userID);
-				session.setAttribute("sUserName", userInfo.get(11) + " " + userInfo.get(12));
+				usersession.setUserId(userID);
+				usersession.setGivenName(userInfo.get(11) + " " + userInfo.get(12));
+				usersession.setSuper(userInfo.get(7).equals("1"));
+				usersession.setEmail(userInfo.get(13));
 				user.isProfessor(prof, userID);
+				user.isDepartmentAdmin(depAdmin, userID);
+				usersession.setProfessor(prof.get_value());
+				usersession.setDepartmentAdmin(depAdmin.get_value());
 				if (prof.get_value()) {
-					session.setAttribute("iUserLevel", "professor");
-					session.setAttribute("iUserType", "professor");
+					usersession.setUserLevel("professor");
 				}
 				else {
-					session.setAttribute("iUserLevel", userInfo.get(15));
-					session.setAttribute("iUserType", userInfo.get(15));
+					usersession.setUserLevel(userInfo.get(15));
 				}
-				session.setAttribute("isLDAP", "false");
+				usersession.setLDAP(false);
 				response.sendRedirect("calendar.jsp");
 				String message = "User login successfully.";
 			} 
+			else {
+				System.out.println("***** "+user.getErrLog());
+			}
 		} else {
 			String message = "Invalid username and/or password.";
 			response.sendRedirect("index.jsp?error=" + message);

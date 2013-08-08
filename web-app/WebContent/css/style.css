@@ -1,6 +1,6 @@
+/* GLOBALS */
 @charset "utf-8";
 @import url("fonts.css");
-@import url("select.css");
 /* CSS Document */
 html, body {
 	width: 100%;
@@ -32,6 +32,7 @@ p {
 a {
 	text-decoration: none;
 	color: inherit;
+	border: none;
 }
 ul {
 	margin: 0px;
@@ -227,18 +228,23 @@ section {
 	float: left;
 }
 section#login {
-	margin-top: 300px;
+	margin-top: 10%;
 	margin-left: 170px;
+	margin-bottom: 10%;
 }
 section header p {
 	font-family: "ITCAvantGardeStd BkCn";
 	font-size: 12pt;
 	color: #838383;
 }
+section header p a:hover{
+	text-decoration: underline;
+	color: #454545;
+}
 section header h1 {
 	font-size: 30pt;
 	font-weight: lighter;
-	color: #8C8C8C;
+	color: #656565;
 	margin: 0px;
 	padding: 0px;
 	padding-top: 5px;
@@ -279,12 +285,16 @@ section form article header .expandContent {
 	transform: rotate(-180deg);
 	padding-bottom: 5px;
 }
+section form article header {
+	cursor: pointer;
+}
 section form article div.content div.component {
 	width: 620px;
 	margin-bottom: 18px;
 	clear: both;
 	display: block;
 	float: left;
+	position: relative;
 }
 section form article div.content div.component label.label {
 	width: 200px;
@@ -300,7 +310,7 @@ section form article div.content div.component label.label {
 }
 section form article div.content div.component input.input, div.dataTables_filter input {
 	height: 38px;
-	width: 390px;
+	width: 394px;
 	display: block;
 	font-size: 13pt;
 	font-family: "ITCAvantGardeStd BkCn";
@@ -308,29 +318,23 @@ section form article div.content div.component input.input, div.dataTables_filte
 	outline: none;
 	border: 1px solid #FFFFFF;
 	float: right;
-	padding-left: 10px;
+	padding-left: 8px;
+	z-index: 4px;
+}
+svg path {
+	fill: red;
+}
+section form article div.content div.component img.svg {
+	position: absolute;
+	top: 13px;
+	right: 10px;
+	z-index: 5px;
 }
 section form article div.content div.component input.input:focus, div.dataTables_filter input:focus {
 	outline: none;
 	border: 1px solid #9F100B;
 }
-section form article div.content div.component div.select {
-	height: 30px;
-	width: 394px !important;
-	float: right;
-	display: block;
-	padding: 0px;
-	padding-top: 10px;
-	padding-left: 10px;
-	font-size: 13pt;
-	font-family: "ITCAvantGardeStd BkCn";
-	color: #838383;
-	outline: none;
-	border: none;
-	position: relative; /* Enable absolute positionning for children and pseudo elements */
-	cursor: pointer;
-	background-color: #FFFFFF;
-}
+/* CHECKBOX */
 section form article div.content div.component div.checkbox {
 	height: 24px;
 	margin-left: 216px;
@@ -384,9 +388,55 @@ section form article div.content div.component div.checkbox label.text {
 	color: #454545;
 	font-family: "ITCAvantGardeStd BkCn";
 }
-section form .buttons {
-	margin-left: 218px;
+/* RADIOBUTTON */
+section form article div.content div.component div.radio {
+	height: 24px;
+	margin-left: 216px;
+	position: relative;
+	float: left;
+	clear: left;
+	display: block;
+	cursor: pointer;
 }
+section form article div.content div.component div.radio input[type=radio] {
+	display: none;
+	visibility: hidden;
+}
+section form article div.content div.component div.radio span.box {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: 0;
+	left: 0;
+	background: #eee;
+	border: 1px solid #ddd;
+	border-color: rgb( 69, 69, 69 );
+	border-style: solid;
+	border-radius: 50%;
+	background-color: rgb( 255, 255, 255 );
+	opacity: 0.5;
+	display: block;
+	cursor: pointer;
+}
+section form article div.content div.component div.radio label.checkradio {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	top: 5px;
+	left: 5px;
+	border: 1px solid #000;
+	border-radius: 50%;
+	background: #000;
+	display: block;
+	cursor: pointer;
+}
+section form article div.content div.component div.radio label.text {
+	margin-left: 30px;
+	font-size: 13pt;
+	color: #454545;
+	font-family: "ITCAvantGardeStd BkCn";
+}
+/* BUTTON */
 section form .buttons .button {
 	padding: 10px;
 	width: 85px;
@@ -403,11 +453,40 @@ section form .buttons .button {
 	-o-transition: all 0.1s;
 	transition: all 0.1s;
 }
-section form .buttons .button:hover, a#example_next:hover {
+section form .buttons .button:hover {
 	background-color: #9F100B;
 }
-section form .buttons .button:active, a#example_next:active {
-	border: 3px inset #900;
+section form .buttons .button:active {
+	background-color: #9F100B;
+}
+/* WEEK */
+section form .buttons, section form article div.content div.component#week, section form article div.content div.component#selectDayoftheWeek {
+	margin-left: 216px;
+}
+section form article div.content div.component#week .weekday, section form article div.content div.component#selectDayoftheWeek .weekday {
+	padding: 3px;
+	width: 50px;
+	height: 39px;
+	margin-right: 5.1px;
+	font-size: 12pt;
+	color: #FFFFFF;
+	border-style: none;
+	cursor: pointer;
+	background-color: #CD352B;
+	-webkit-transition: all 0.1s;
+	-moz-transition: all 0.1s;
+	-ms-transition: all 0.1s;
+	-o-transition: all 0.1s;
+	transition: all 0.1s;
+}
+section form article div.content div.component#week .weekday:hover, section form article div.content div.component#selectDayoftheWeek .weekday:hover {
+	background-color: #9F100B;
+}
+section form article div.content div.component#week .weekday:active, section form article div.content div.component#selectDayoftheWeek .weekday:active {
+	background-color: #9F100B;
+}
+section form article div.content div.component#week .weekday.selectedWeekday, section form article div.content div.component#selectDayoftheWeek .weekday.selectedWeekday{
+	background-color: #454545;
 }
 /* FOOTER */
 footer {
@@ -472,19 +551,14 @@ div.dataTables_filter label {
 	text-align: right;
 	color: #454545;
 	font-family: "ITCAvantGardeStd BkCn";
-	position: relative;
-}
-div.dataTables_filter input {
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	margin-top: 10px;
 }
 div.dataTables_length {
 	float: right;
+	margin-top: 11px;
 }
 div.dataTables_info {
 	float: right;
+	margin-top: 13px;
 }
 div.dataTables_paginate {
 	float: left;
@@ -542,19 +616,9 @@ table.pretty tbody td {
 	font-size: 10pt;
 	font-family: "ITCAvantGardeStd Md";
 	font-weight: lighter;
-	text-align: left;
 	color: #838383;
 	border-left: 1px solid #EEEEEE;
 	border-right: 1px solid #EEEEEE;
-	background: #FFFFFF;
-}
-table.pretty tbody td.odd {
-	text-align: left;
-	border-left-width: 6px;
-	border-bottom-width: 0px;
-	border-top-width: 0px;
-	border-right-width: 1px;
-	border-color: #FFFFFF;
 	background: #FFFFFF;
 }
 table.pretty tbody tr.odd td {
@@ -635,7 +699,7 @@ a.paginate_button, a.paginate_active {
 	font-size: 14pt;
 	color: #FFFFFF;
 	text-align: center;
-	border-style: none;
+	border: none;
 	cursor: pointer;
 	background-color: #CD352B;
 	-webkit-transition: all 0.1s;
@@ -646,6 +710,9 @@ a.paginate_button, a.paginate_active {
 }
 a.paginate_button:hover {
 	background-color: #9F100B;
+}
+a.paginate_button.paginate_button_disabled, a.paginate_button.paginate_button_disabled:hover {
+	background-color: #bcbcbc;/*#E6E6E6;*/
 }
 a.paginate_active {
 	background-color: #454545;
@@ -675,42 +742,44 @@ div.dataTables_paginate span>a {
 #page section article #example tbody tr td a {
 	margin-left: -9px;
 }
-#page section article #example tbody tr td a img {
+#page section article #example tbody tr td a {
 /*	filter: hue-rotate(0deg);
 	-webkit-filter: hue-rotate(0deg);
 	-moz-filter: hue-rotate(0deg);
 	-ms-filter: hue-rotate(0deg);
 	-o-filter: hue-rotate(0deg);*/
 }
-#page section article #example tbody tr td a#options {
-	padding-left: 10px;
-	padding-right: 10px;
+#page section article #example tbody tr td a#options:first-child {
+	padding-right: 25px;
 }
 .icons {
+	padding: 0px;
+	margin: 0px;
 	text-align: center;
 }
 .icons:after {
 	display: none;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* DROPDOWN */
-section form article div.content div.component div#dd1.select:after {
+/* SELECT */
+.select {
+	height: 30px;
+	width: 394px !important;
+	float: right;
+	display: block;
+	padding: 0px;
+	padding-top: 10px;
+	padding-left: 10px;
+	font-size: 13pt;
+	font-family: "ITCAvantGardeStd BkCn";
+	color: #838383;
+	outline: none;
+	border: none;
+	position: relative; /* Enable absolute positionning for children and pseudo elements */
+	cursor: pointer;
+	background-color: #FFFFFF;
+}
+.select:after {
 	content: "";
 	width: 0;
 	height: 0;
@@ -722,39 +791,37 @@ section form article div.content div.component div#dd1.select:after {
 	border-style: solid;
 	border-color: transparent #E6322E;
 }
-section form article div.content div.component div#dd1.select .dropdown {
+.select .dropdown {
 	position: absolute;
 	top: 100%;
 	left: 0;
-	right: 0; /* Items internal color */
+	right: 0;
 	list-style: none;
-	/* Hiding */
 	opacity: 0;
 	pointer-events: none;
-	background-color: #f9f9f9;
+	background-color: #F9F9F9;
 }
-/* Items Text */
-section form article div.content div.component div#dd1.select .dropdown li a {
+.select .dropdown li a {
 	display: block;
 	text-decoration: none;
-	color: #454545; /* Items Text Color */
+	color: #454545;
 	padding: 10px 20px;
 }
 /* Hover state */
-section form article div.content div.component div#dd1.select .dropdown li:hover a {
-	background-color: #e4e4e4;
+.select .dropdown li:hover a {
+	background: #E4E4E4;
 }
 /* Active state */
-section form article div.content div.component div#dd1.select.active .dropdown {
+.select.active .dropdown {
 	opacity: 1;
 	pointer-events: auto;
 }
-section form article div.content div.component div#dd1.select.active:after {
+.select.active:after {
 	border-color: #E6322E transparent;
 	border-width: 6px 6px 0 6px;
 	margin-top: -3px;
 }
-section form article div.content div.component div#dd1.select.active {
+.select.active {
 	background: #CD352B;/* Used colors: #9F100B; #CD352B; */
 	color: #FFF;
 	background: -moz-linear-gradient(left, #CD352B 0%, #CD352B 88%, #ffffff 88%, #ffffff 100%);
@@ -764,4 +831,13 @@ section form article div.content div.component div#dd1.select.active {
 	background: -ms-linear-gradient(left, #CD352B 0%, #CD352B 88%, #ffffff 88%, #ffffff 100%);
 	background: linear-gradient(to right, #CD352B 0%, #CD352B 88%, #ffffff 88%, #ffffff 100%);
  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#CD352B', endColorstr='#ffffff', GradientType=1 );
+}
+/* No CSS3 support */
+.no-opacity .select .dropdown, .no-pointerevents .select .dropdown {
+	display: none;
+	opacity: 1; /* If opacity support but no pointer-events support */
+	pointer-events: auto; /* If pointer-events support but no pointer-events support */
+}
+.no-opacity .select.active .dropdown, .no-pointerevents .select.active .dropdown {
+	display: block;
 }

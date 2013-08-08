@@ -27,29 +27,10 @@ import db.DBAccess;
  * @author Kelan (Bo) Li
  *
  */
-public class User implements Sql {
-    private DBAccess _dbAccess = null;
-    private String _sql = null;
+public class User extends Sql {
 
     public User(DBAccess source) {
-        _dbAccess = source;
-    }
-
-    public String getErrLog() {
-        return _dbAccess.getErrLog();
-    }
-
-    public String getSQL() {
-        return _sql;
-    }
-
-    /**
-     * This MUST be called after an error is caught,
-     * else no other SQL statements would run
-     * @return
-     */
-    public boolean resetErrorFlag() {
-        return _dbAccess.resetFlag();
+        super(source);
     }
     
     /** 

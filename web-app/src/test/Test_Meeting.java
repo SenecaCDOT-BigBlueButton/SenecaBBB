@@ -13,7 +13,7 @@ public class Test_Meeting extends Test_Helper {
         _test = _meeting;
         _counter = 1;
         
-        _meeting.resetErrorFlag();
+        _test.resetErrorFlag();
 
         display(_meeting.getMeetingInfo(_result, 1, 1));
 

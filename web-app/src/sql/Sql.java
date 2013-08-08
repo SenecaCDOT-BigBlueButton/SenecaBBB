@@ -1,5 +1,9 @@
 package sql;
 
+import java.util.ArrayList;
+
+import db.DBAccess;
+
 /**
  * For the parameters, please use DB column names
  * Example: setNickName(String bu_id, String bu_nick) 
@@ -18,16 +22,35 @@ package sql;
  * @author Kelan (Bo) Li
  *
  */
-public interface Sql {
+public class Sql {
     
-    public String getErrLog();
+    protected DBAccess _dbAccess = null;
+    protected String _sql = null;
+
+    public Sql(DBAccess source) {
+        _dbAccess = source;
+    }
     
-    public String getSQL();
+    public String getErrLog() {
+        return _dbAccess.getErrLog();
+    }
+    
+    public String getSQL() {
+        return _sql;
+    }
     
     /**
      * This MUST be called after an error is caught,
      * else no other SQL statements would run
+     * @return
      */
-    public boolean resetErrorFlag();
+    public boolean resetErrorFlag() {
+        return _dbAccess.resetFlag();
+    }
     
+    public boolean getMeetingInfo(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
+        _sql = "SELECT * "
+                + "FROM bbb_admin";
+        return _dbAccess.queryDB(result, _sql);
+    }
 }

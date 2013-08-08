@@ -12,7 +12,7 @@ public class Test_User extends Test_Helper {
      * _group[3]: 'is' testing for existence
      * _group[4]: create or remove rows
      */
-    static int[] _group = {0, 0, 1, 0, 0};
+    static int[] _group = {1, 1, 1, 1, 0};
     
     public Test_User(DBAccess source) {
         super();
@@ -22,7 +22,7 @@ public class Test_User extends Test_Helper {
              
         if (_group[0] == 1) {
             
-            display(((User) _user).getUserInfo(_result));
+            display(_user.getUserInfo(_result));
 
             display(_user.getUserInfo(_result, "bli64"));
 

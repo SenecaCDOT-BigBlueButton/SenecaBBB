@@ -44,6 +44,7 @@ public class LDAPAuthenticate {
     private Date lastAccess;
     private Integer timeoutTime;
     private String placeholder;
+    private String emailAddress;
     private int accessLevel;
     private HashMap<String, Integer> blacklist;
     private HashMap<String, Integer> whitelist;
@@ -270,8 +271,7 @@ public class LDAPAuthenticate {
 //                for (NamingEnumeration<?> i = at.getAll(); i.hasMore();) {
 //                    System.out.println((Attribute) i.next());
 //                }
-            	String mail= at.get("mail").toString().split(": ")[1];
-
+            	emailAddress = at.get("mail").toString().split(": ")[1];
                 authenticated = "true"; //TODO
                 calculateAccessLevel();
 
@@ -497,4 +497,8 @@ public class LDAPAuthenticate {
         }
         return stats;
     }*/
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
 }

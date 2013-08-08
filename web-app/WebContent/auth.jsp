@@ -35,6 +35,7 @@
 				usersession.setUserId(ldap.getUserID());
 				usersession.setGivenName(ldap.getGivenName());
 				usersession.setLDAP(true);
+				usersession.setEmail(ldap.getEmailAddress());
 				User user = new User(dbaccess);
 				ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 				user.getUserInfo(result, userID);

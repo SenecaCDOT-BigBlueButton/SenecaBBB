@@ -61,7 +61,7 @@ CREATE TABLE user_role (
   CONSTRAINT fk_predefined_role_of_user_role
     FOREIGN KEY (pr_name)
     REFERENCES predefined_role (pr_name)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE
 
 );
@@ -85,7 +85,7 @@ CREATE TABLE bbb_user (
     FOREIGN KEY (ur_id) 
     REFERENCES user_role (ur_id)
     # user is not deleted even if there is no role for him/her
-    ON DELETE SET NULL
+    #ON DELETE SET NULL
     ON UPDATE CASCADE
 );
 
@@ -105,12 +105,12 @@ CREATE TABLE user_department (
   CONSTRAINT fk_bbb_user_of_user_department
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT fk_department_of_user_department
     FOREIGN KEY (d_code) 
     REFERENCES department (d_code)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
@@ -127,7 +127,7 @@ CREATE TABLE meeting_schedule (
   CONSTRAINT fk_bbb_user_of_meeting_schedule
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
@@ -144,7 +144,7 @@ CREATE TABLE non_ldap_user (
   CONSTRAINT fk_bbb_user_of_non_ldap_user
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
@@ -191,7 +191,7 @@ CREATE TABLE meeting_guest (
   CONSTRAINT fk_bbb_user_of_meeting_guest
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT fk_meeting_of_meeting_guest
     FOREIGN KEY (ms_id, m_id) 
@@ -209,7 +209,7 @@ CREATE TABLE meeting_attendee (
   CONSTRAINT fk_bbb_user_of_meeting_attendee
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT fk_meeting_schedule_of_meeting_attendee
     FOREIGN KEY (ms_id) 
@@ -229,7 +229,7 @@ CREATE TABLE meeting_attendance (
   CONSTRAINT fk_bbb_user_of_meeting_attendance
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT fk_meeting_of_meeting_attendance
     FOREIGN KEY (m_id, ms_id) 
@@ -257,12 +257,12 @@ CREATE TABLE section (
   CONSTRAINT fk_course_of_section
     FOREIGN KEY (c_id) 
     REFERENCES course (c_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT fk_department_of_section
     FOREIGN KEY (d_code) 
     REFERENCES department (d_code)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
@@ -277,12 +277,12 @@ CREATE TABLE professor (
   CONSTRAINT fk_section_of_professor
     FOREIGN KEY (c_id, sc_id, sc_semesterid) 
     REFERENCES section (c_id, sc_id, sc_semesterid)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT fk_bbb_user_of_professor
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE  
 );
 
@@ -297,12 +297,12 @@ CREATE TABLE student (
   CONSTRAINT fk_section_of_student
     FOREIGN KEY (c_id, sc_id, sc_semesterid) 
     REFERENCES section (c_id, sc_id, sc_semesterid)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT fk_bbb_user_of_student
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE  
 );
 
@@ -321,7 +321,7 @@ CREATE TABLE lecture_schedule (
   CONSTRAINT fk_section_of_lecture_schedule
     FOREIGN KEY (c_id, sc_id, sc_semesterid) 
     REFERENCES section (c_id, sc_id, sc_semesterid)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE
 );
   
@@ -373,7 +373,7 @@ CREATE TABLE guest_lecturer (
   CONSTRAINT fk_bbb_user_of_guest_lecturer
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
@@ -388,7 +388,7 @@ CREATE TABLE lecture_attendance (
   CONSTRAINT fk_bbb_user_of_lecture_attendance
     FOREIGN KEY (bu_id) 
     REFERENCES bbb_user (bu_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
 	ON UPDATE CASCADE,
   CONSTRAINT fk_lecture_of_lecture_attendance
     FOREIGN KEY (l_id, ls_id) 

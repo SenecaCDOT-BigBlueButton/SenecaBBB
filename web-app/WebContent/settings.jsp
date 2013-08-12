@@ -25,9 +25,51 @@
 	String userId = usersession.getUserId();
 	User user = new User(dbaccess);
 	MyBoolean prof = new MyBoolean();
-	
-	System.out.println(usersession.getNick());
+	HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
+	HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
+	userSettings = usersession.getUserSettingsMask();
+	meetingSettings = usersession.getUserMeetingSettingsMask();
+	System.out.println(usersession.getUserMeetingSettingsMask());
 %>
+<script type="text/javascript">		
+	$(document).ready(function() {
+		<%if (userSettings.get("autoShareAudio") == 0) {%>
+			$(".checkbox .box:eq(0)").next(".checkmark").toggle();
+			$(".checkbox .box:eq(0)").attr("aria-checked", "false");
+		<%}%>
+		
+		<%if (userSettings.get("autoShareWebcam") == 0) {%>
+			$(".checkbox .box:eq(1)").next(".checkmark").toggle();
+			$(".checkbox .box:eq(1)").attr("aria-checked", "false");
+		<%}%>
+		<%if (meetingSettings.get("isPrivateChatEnabled")==0){%>
+			$(".checkbox .box:eq(2)").next(".checkmark").toggle();
+			$(".checkbox .box:eq(2)").attr("aria-checked", "false");
+		<%}%>	
+		<%if (meetingSettings.get("isViewerWebcamEnabled")==0){%>
+			$(".checkbox .box:eq(3)").next(".checkmark").toggle();
+			$(".checkbox .box:eq(3)").attr("aria-checked", "false");
+		<%}%>	
+		<%if (meetingSettings.get("isMultiWhiteboard")==0){%>
+			$(".checkbox .box:eq(4)").next(".checkmark").toggle();
+			$(".checkbox .box:eq(4)").attr("aria-checked", "false");
+		<%}%>	
+		<%if (meetingSettings.get("isRecorded")==0){%>
+		$(".checkbox .box:eq(5)").next(".checkmark").toggle();
+		$(".checkbox .box:eq(5)").attr("aria-checked", "false");
+	<%}%>
+	});
+</script>  
+<script  type="text/javascript">
+	function persist() {
+		currPass = document.getElementById("currentPassword").value;
+		if (currPass)
+		else {
+			nick = document.getElementById("nickname").value;
+			//alert($(".checkbox .box:eq(5)").attr("aria-checked"));
+		}
+	}
+</script>  
 </head>
 <body>
 <div id="page">
@@ -48,7 +90,7 @@
       <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="settings.html" tabindex="14">settings</a></p>
       <h1>Settings</h1>
     </header>
-    <form>
+    <form action="persist_user_settings.jsp" method="get">
       <article>
         <header>
           <h2>User Settings</h2>
@@ -58,7 +100,7 @@
             <label for="nickname" class="label">Nickname:</label>
             <input type="text" name="nickname" id="nickname" class="input" tabindex="15" title="Nickname" value=<%=usersession.getNick() %>>
           </div>
-          <div class="component">
+          <div class="component">         
             <div class="checkbox" title="Automatically activate microphone"> <span class="box" role="checkbox" aria-checked="true" tabindex="17" aria-labelledby="setting1"></span>
               <label class="checkmark"></label>
               <label class="text" id="setting1">Automatically activate microphone.</label>
@@ -97,9 +139,9 @@
         <img class="expandContent" src="images/arrowDown.png" title="Click here to collapse/expand content"/></header>
       <div class="content">
       <div class="component">
-        <div class="checkbox" title="Allow microphone sharing"> <span class="box" role="checkbox" aria-checked="true" tabindex="22" aria-labelledby="eventSetting1"></span>
+        <div class="checkbox" title="Allow private chat."> <span class="box" role="checkbox" aria-checked="true" tabindex="22" aria-labelledby="eventSetting1"></span>
           <label class="checkmark"></label>
-          <label class="text" id="eventSetting1">Allow microphone sharing.</label>
+          <label class="text" id="eventSetting1">Allow private chat.</label>
         </div>
       </div>
       <div class="component">
@@ -137,7 +179,7 @@
         <li><a href="help.html" title="Click here to obtain help information">Help</a></li>
       </ul>
     </nav>
-    <div id="copyright">Copyright Â© 2013 - Seneca College of Applied Arts and Technology</div>
+    <div id="copyright">Copyright © 2013 - Seneca College of Applied Arts and Technology</div>
   </footer>
 </div>
 </body>

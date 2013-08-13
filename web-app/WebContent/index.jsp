@@ -39,11 +39,6 @@
 </script>
 </head>
 <body>
-<!-- Prints 'error' on the screen. -->
-<div id="error">
-  <h2><%=error%></h2>
-</div>
-
 <!-- Login form. -->
 <div id="page">
   <header id="header"><a href="calendar.jsp"><img src="images/logo.png" alt="Seneca College of Applied Arts and Technology" tabindex="1" title="Seneca College of Applied Arts and Technology"/></a> </header>
@@ -62,7 +57,6 @@
         </fieldset>
       </article>
       <article>
-        <h4></h4>
         <fieldset>
           <div class="buttons">
             <button type="submit" name="submit" id="save" class="button" title="Click here to login">Login</button>

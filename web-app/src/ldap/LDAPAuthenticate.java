@@ -319,7 +319,7 @@ public class LDAPAuthenticate {
                 return true;
             } catch (NamingException e) {
             } catch (Exception e) {
-            	e.printStackTrace();
+                System.out.println("User " + user + " not found in LDAP. Checking local database for user.");
             }
         }
 

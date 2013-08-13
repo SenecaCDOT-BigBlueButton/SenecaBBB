@@ -11,10 +11,9 @@
 
 <%@ page language="java" import="java.sql.*" errorPage=""%>
 <%
-	String userID = request.getParameter("nickname");
-	System.out.println(userID);
-	
-	
+	int userSettings = 0;
+	if (request.getParameter("setting1box").equals("on"))
+		System.out.println("<><><><>");
 	   Enumeration paramNames = request.getParameterNames();
 
 	   while(paramNames.hasMoreElements()) {

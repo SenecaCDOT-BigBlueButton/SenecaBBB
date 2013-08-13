@@ -64,7 +64,7 @@
 				response.sendRedirect("calendar.jsp");
 			}
 		}
-		// Checks if user is registed on database.
+		// User is registed on database.
 		else if (hash.validatePassword(password.toCharArray(), userID)) {
 			/* User is authenticated */
 			User user = new User(dbaccess);
@@ -100,12 +100,13 @@
 			else {
 				System.out.println("***** "+user.getErrLog());
 			}
+		// User doesn't exist in database or LDAP
 		} else {
 			String message = "Invalid username and/or password.";
 			response.sendRedirect("index.jsp?error=" + message);
 		}
 	} else {
-		String message = "Invalid username and/or password.";
+		String message = "Invalid username and/or password.**";
 		response.sendRedirect("index.jsp?error=" + message);
 	}
 %>

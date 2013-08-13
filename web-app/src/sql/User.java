@@ -1,11 +1,10 @@
+//User.java
 package sql;
-
 
 import helper.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 
 import db.DBAccess;
 

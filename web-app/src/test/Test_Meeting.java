@@ -69,7 +69,7 @@ public class Test_Meeting extends Test_Helper {
         
         display(_meeting.setMeetingGuestIsMod("fardad.soleimanloo", 2, 1, false));
         
-        display(_meeting.createMeetingPresentation("mp_title", 1, 5));
+        display(_meeting.createMeetingPresentation("mp_title1", 1, 5));
         
         display(_meeting.createMeetingGuest("bli64", 1, 2, true));
         

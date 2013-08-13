@@ -39,11 +39,6 @@
 </script>
 </head>
 <body>
-<!-- Prints 'error' on the screen. -->
-<div id="error">
-  <h2><%=error%></h2>
-</div>
-
 <!-- Login form. -->
 <div id="page">
   <header id="header"><a href="calendar.jsp"><img src="images/logo.png" alt="Seneca College of Applied Arts and Technology" tabindex="1" title="Seneca College of Applied Arts and Technology"/></a> </header>
@@ -51,6 +46,10 @@
     <form id="login" name="formLogin" action="auth.jsp" onSubmit="return validate();" method="post">
       <article >
         <fieldset>
+          <div class="component">
+          	<!-- Prints 'error' on the screen. -->
+            <label for="errorMessage" class="label"><%=error%></label>
+          </div>
           <div class="component">
             <label for="SenecaLDAPBBBLogin" class="label">Username:</label>
             <input type="text" name="SenecaLDAPBBBLogin" id="SenecaLDAPBBBLogin" class="input" tabindex="2" title="Please insert your username" required autofocus>

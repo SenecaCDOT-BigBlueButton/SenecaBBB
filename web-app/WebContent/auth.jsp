@@ -59,6 +59,7 @@
 					roleMask.clear();
 					user.getUserMeetingSetting(roleMask, userID);
 					usersession.setUserMeetingSettingsMask(roleMask);
+					System.out.println(usersession.getEmail());
 				}
 				response.sendRedirect("calendar.jsp");
 			}

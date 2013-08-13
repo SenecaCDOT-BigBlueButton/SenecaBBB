@@ -16,6 +16,7 @@
 <title>Seneca | Conference Management System</title>
 <link rel="shortcut icon" href="http://www.cssreset.com/favicon.png" />
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/fonts.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/components.js"></script>
 <script type="text/css" src="css/select.css"></script>
@@ -48,7 +49,7 @@
   <section id="login">
 	<form id="login" name="formLogin" action="auth.jsp" onSubmit="return validate();" method="post">
 	  <article >
-        <div class="content">
+        <fieldset>
           <div class="component">
             <label for="textfield" class="label">Username:</label>
             <input type="text" name="SenecaLDAPBBBLogin" id="SenecaLDAPBBBLogin" class="input">
@@ -57,7 +58,7 @@
             <label for="textfield" class="label">Password:</label>
             <input type="password" name="SenecaLDAPBBBLoginPass" id="SenecaLDAPBBBLoginPass" class="input">
           </div>
-        </div>
+        </fieldset>
       </article>
       <article>
         <div class="content"> </div>

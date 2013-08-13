@@ -14,9 +14,7 @@
 <link rel="shortcut icon" href="http://www.cssreset.com/favicon.png" />
 <!--<link href="css/style.css" rel="stylesheet" type="text/css" media="screen and (min-width:1280px)">-->
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all">
-<noscript>
-<link rel="stylesheet" type="text/css" href="css/noJS.css" />
-</noscript>
+<link href="css/fonts.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
 <script type="text/javascript" src="js/component.js"></script>
@@ -175,6 +173,7 @@
           <label class="text" id="eventSetting4">Allow event recording.</label>
           <input type="checkbox" name="eventSetting4box" checked="checked">
         </div>
+      </div>
       </fieldset>
       </article>
       <p class="buttons">

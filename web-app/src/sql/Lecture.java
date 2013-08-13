@@ -1,6 +1,5 @@
 package sql;
 
-
 import helper.Settings;
 
 import java.util.ArrayList;

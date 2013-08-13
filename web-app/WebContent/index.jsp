@@ -9,17 +9,18 @@
 		System.out.println("error=Logged out");
 	}
 %>
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
-<title>Seneca | Conference Management System</title>
+<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="pragma" content="no-cache" />
+<title>Seneca | Conferece Management System</title>
 <link rel="shortcut icon" href="http://www.cssreset.com/favicon.png" />
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all">
 <link href="css/fonts.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="js/components.js"></script>
-<script type="text/css" src="css/select.css"></script>
 <script type="text/javascript">
 	function trim(s) {
 		return s.replace(/^\s*/, "").replace(/\s*$/, "");
@@ -38,49 +39,50 @@
 </script>
 </head>
 <body>
-	<!-- Prints 'error' on the screen. -->
-	<div id="error">
-		<h2><%=error%></h2>
-	</div>
+<!-- Prints 'error' on the screen. -->
+<div id="error">
+  <h2><%=error%></h2>
+</div>
 
-	<!-- Login form. -->
-	<div id="page">
-  <header id="header"><img src="images/logo.png" alt="Logo" title="Seneca College of Applied Arts and Technology"/> </header>
+<!-- Login form. -->
+<div id="page">
+  <header id="header"><a href="calendar.jsp"><img src="images/logo.png" alt="Seneca College of Applied Arts and Technology" tabindex="1" title="Seneca College of Applied Arts and Technology"/></a> </header>
   <section id="login">
-	<form id="login" name="formLogin" action="auth.jsp" onSubmit="return validate();" method="post">
-	  <article >
+    <form id="login" name="formLogin" action="auth.jsp" onSubmit="return validate();" method="post">
+      <article >
         <fieldset>
           <div class="component">
-            <label for="textfield" class="label">Username:</label>
-            <input type="text" name="SenecaLDAPBBBLogin" id="SenecaLDAPBBBLogin" class="input">
+            <label for="SenecaLDAPBBBLogin" class="label">Username:</label>
+            <input type="text" name="SenecaLDAPBBBLogin" id="SenecaLDAPBBBLogin" class="input" tabindex="2" title="Please insert your username" required autofocus>
           </div>
           <div class="component">
-            <label for="textfield" class="label">Password:</label>
-            <input type="password" name="SenecaLDAPBBBLoginPass" id="SenecaLDAPBBBLoginPass" class="input">
+            <label for="SenecaLDAPBBBLoginPass" class="label">Password:</label>
+            <input type="password" name="SenecaLDAPBBBLoginPass" id="SenecaLDAPBBBLoginPass" class="input" tabindex="3" title="Please insert your password" required>
           </div>
         </fieldset>
       </article>
       <article>
-        <div class="content"> </div>
+        <h4></h4>
+        <fieldset>
+          <div class="buttons">
+            <button type="submit" name="submit" id="save" class="button" title="Click here to login">Login</button>
+          </div>
+        </fieldset>
       </article>
-      <p class="buttons">
-        <input type="submit" name="submit" id="save" class="button" value="Login">
-      </p>
-	</form>
-	</section>
+    </form>
+  </section>
   <footer>
     <nav id="footerMenu">
       <ul>
-        <li><a href="#">Home</a></li>
+        <li><a href="calendar.jsp" title="Click here to go to the home page">Home</a></li>
         <li>|</li>
-        <li><a href="#">Contact Us</a></li>
+        <li><a href="contactUs.jsp" title="Click here to enter in contact with us">Contact Us</a></li>
         <li>|</li>
-        <li><a href="#">Help</a></li>
+        <li><a href="help.jsp" title="Click here to obtain help information">Help</a></li>
       </ul>
     </nav>
-    <p id="copyright">Copyright © 2013 - Seneca College of Applied Arts and Technology</p>
-    <div id="footerBar"></div>
+    <div id="copyright">Copyright © 2013 - Seneca College of Applied Arts and Technology</div>
   </footer>
-  </div>
+</div>
 </body>
 </html>

@@ -36,34 +36,42 @@
 		<%if (userSettings.get("autoShareAudio") == 0) {%>
 			$(".checkbox .box:eq(0)").next(".checkmark").toggle();
 			$(".checkbox .box:eq(0)").attr("aria-checked", "false");
+			$(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
 		<%}%>
 		
 		<%if (userSettings.get("autoShareWebcam") == 0) {%>
 			$(".checkbox .box:eq(1)").next(".checkmark").toggle();
 			$(".checkbox .box:eq(1)").attr("aria-checked", "false");
+			$(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
 		<%}%>
 		<%if (meetingSettings.get("isPrivateChatEnabled")==0){%>
 			$(".checkbox .box:eq(2)").next(".checkmark").toggle();
 			$(".checkbox .box:eq(2)").attr("aria-checked", "false");
+			$(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
 		<%}%>	
 		<%if (meetingSettings.get("isViewerWebcamEnabled")==0){%>
 			$(".checkbox .box:eq(3)").next(".checkmark").toggle();
 			$(".checkbox .box:eq(3)").attr("aria-checked", "false");
+			$(".checkbox .box:eq(3)").siblings().last().prop("checked", false);
 		<%}%>	
 		<%if (meetingSettings.get("isMultiWhiteboard")==0){%>
 			$(".checkbox .box:eq(4)").next(".checkmark").toggle();
 			$(".checkbox .box:eq(4)").attr("aria-checked", "false");
+			$(".checkbox .box:eq(4)").siblings().last().prop("checked", false);
 		<%}%>	
 		<%if (meetingSettings.get("isRecorded")==0){%>
 		$(".checkbox .box:eq(5)").next(".checkmark").toggle();
 		$(".checkbox .box:eq(5)").attr("aria-checked", "false");
+		$(".checkbox .box:eq(5)").siblings().last().prop("checked", false);
 	<%}%>
 	});
 </script>  
 <script  type="text/javascript">
 	function persist() {
 		currPass = document.getElementById("currentPassword").value;
-		if (currPass)
+		if (currPass) {
+			
+		}
 		else {
 			nick = document.getElementById("nickname").value;
 			//alert($(".checkbox .box:eq(5)").attr("aria-checked"));
@@ -95,7 +103,7 @@
         <header>
           <h2>User Settings</h2>
           <img class="expandContent" src="images/arrowDown.png" title="Click here to collapse/expand content"/></header>
-        <div class="content">
+        <fieldset>
           <div class="component">
             <label for="nickname" class="label">Nickname:</label>
             <input type="text" name="nickname" id="nickname" class="input" tabindex="15" title="Nickname" value=<%=usersession.getNick() %>>
@@ -104,21 +112,23 @@
             <div class="checkbox" title="Automatically activate microphone"> <span class="box" role="checkbox" aria-checked="true" tabindex="17" aria-labelledby="setting1"></span>
               <label class="checkmark"></label>
               <label class="text" id="setting1">Automatically activate microphone.</label>
+              <input type="checkbox" name="setting1box" id="setting1box" checked="checked">
             </div>
           </div>
           <div class="component">
             <div class="checkbox" title="Automatically activate camera"> <span class="box" role="checkbox" aria-checked="true" tabindex="18" aria-labelledby="setting2"></span>
               <label class="checkmark"></label>
               <label class="text" id="setting2">Automatically activate camera.</label>
+              <input type="checkbox" name="setting2box" checked="checked">
             </div>
           </div>
-        </div>
+        </fieldset>
       </article>
       <article>
         <header>
           <h2>Edit Password</h2>
           <img class="expandContent" src="images/arrowDown.png" title="Click here to collapse/expand content"/></header>
-        <div class="content">
+        <fieldset>
           <div class="component">
             <label for="currentPassword" class="label">Current password:</label>
             <input type="password" name="currentPassword" id="currentPassword" class="input" tabindex="19" title="Current password">
@@ -131,37 +141,41 @@
             <label for="confirmPassword" class="label">Confirm password:</label>
             <input type="password" name="confirmPassword" id="confirmPassword" class="input" tabindex="21" title="Confirm password">
           </div>
-        </div>
+        </fieldset>
       </article>
       <article>
       <header>
         <h2>Default Meeting Settings</h2>
         <img class="expandContent" src="images/arrowDown.png" title="Click here to collapse/expand content"/></header>
-      <div class="content">
+      <fieldset>
       <div class="component">
         <div class="checkbox" title="Allow private chat."> <span class="box" role="checkbox" aria-checked="true" tabindex="22" aria-labelledby="eventSetting1"></span>
           <label class="checkmark"></label>
           <label class="text" id="eventSetting1">Allow private chat.</label>
+          <input type="checkbox" name="eventSetting1box" checked="checked">
         </div>
       </div>
       <div class="component">
         <div class="checkbox" title="Allow camera sharing"> <span class="box" role="checkbox" aria-checked="true" tabindex="23" aria-labelledby="eventSetting2"></span>
           <label class="checkmark"></label>
           <label class="text" id="eventSetting2">Allow camera sharing.</label>
+          <input type="checkbox" name="eventSetting2box" checked="checked">
         </div>
       </div>
       <div class="component">
         <div class="checkbox" title="Allow public whiteboard"> <span class="box" role="checkbox" aria-checked="true" tabindex="24" aria-labelledby="eventSetting3" ></span>
           <label class="checkmark"></label>
           <label class="text" id="eventSetting3">Allow public whiteboard.</label>
+          <input type="checkbox" name="eventSetting3box" checked="checked">
         </div>
       </div>
       <div class="component">
         <div class="checkbox" title="Allow event recording"> <span class="box" role="checkbox" aria-checked="true" tabindex="25" aria-labelledby="eventSetting4"></span>
           <label class="checkmark"></label>
           <label class="text" id="eventSetting4">Allow event recording.</label>
+          <input type="checkbox" name="eventSetting4box" checked="checked">
         </div>
-      </div>
+      </fieldset>
       </article>
       <p class="buttons">
         <input type="submit" name="submit" id="save" class="button" value="Save" title="Click here to save inserted data">

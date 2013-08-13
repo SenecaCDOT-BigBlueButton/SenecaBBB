@@ -47,6 +47,10 @@
       <article >
         <fieldset>
           <div class="component">
+          	<!-- Prints 'error' on the screen. -->
+            <label for="errorMessage" class="label"><%=error%></label>
+          </div>
+          <div class="component">
             <label for="SenecaLDAPBBBLogin" class="label">Username:</label>
             <input type="text" name="SenecaLDAPBBBLogin" id="SenecaLDAPBBBLogin" class="input" tabindex="2" title="Please insert your username" required autofocus>
           </div>

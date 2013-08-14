@@ -48,7 +48,7 @@
         <fieldset>
           <div class="component">
           	<!-- Prints 'error' on the screen. -->
-            <label for="errorMessage" class="label"><%=error%></label>
+            <label for="errorMessage" id="error" class="label"><%=error%></label>
           </div>
           <div class="component">
             <label for="SenecaLDAPBBBLogin" class="label">Username:</label>

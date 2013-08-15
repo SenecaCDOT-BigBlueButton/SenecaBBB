@@ -69,19 +69,26 @@ public class Test_Meeting extends Test_Helper {
         
         display(_meeting.setMeetingGuestIsMod("fardad.soleimanloo", 2, 1, false));
         
-        display(_meeting.createMeetingPresentation("mp_title1", 1, 5));
+        //display(_meeting.createMeetingPresentation("mp_title1", 1, 5));
         
-        display(_meeting.createMeetingGuest("bli64", 1, 2, true));
+        //display(_meeting.createMeetingGuest("bli64", 1, 2, true));
         
-        display(_meeting.createMeetingGuest("bo.li", 1, 2, false));
+        //display(_meeting.createMeetingGuest("bo.li", 1, 2, false));
         
-        display(_meeting.createMeetingAttendee("bli64", 2, true));
+        //display(_meeting.createMeetingAttendee("bli64", 2, true));
         
-        display(_meeting.createMeetingAttendee("bo.li", 2, false));
+        //display(_meeting.createMeetingAttendee("bo.li", 2, false));
         
-        display(_meeting.createMeetingAttendance("bo.li", 1, 1, true));
+        //display(_meeting.createMeetingAttendance("bo.li", 1, 1, true));
         
-        display(_meeting.createMeetingAttendance("xdeng7", 1, 1, false));
+        //display(_meeting.createMeetingAttendance("xdeng7", 1, 1, false));
         
+        display(_meeting.removeMeetingAttendance("bli64", 1, 1));
+        
+        display(_meeting.removeMeetingAttendee("bli64", 1));
+        
+        display(_meeting.removeMeetingGuest("bli64", 1, 1));
+        
+        display(_meeting.removeMeetingPresentation("mp_title", 1, 1));      
     }
 }

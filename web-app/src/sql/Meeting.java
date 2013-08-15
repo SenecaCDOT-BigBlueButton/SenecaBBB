@@ -33,7 +33,7 @@ public class Meeting extends Sql {
     }
 
     /**
-     * Get data on a particular meeting<p>
+     * Get data on a particular Meeting<p>
      * Fields:<p>
      * (0)ms_id (1)m_id (2)m_inidatetime (3)m_duration (4)m_iscancel (5)m_description (6)m_modpass (7)m_userpass
      * (8)m_setting(meeting)
@@ -51,7 +51,7 @@ public class Meeting extends Sql {
     }
     
     /**
-     * Get data on meetings in a particular meeting schedule<p>
+     * Get data on meetings in a particular Meeting Schedule<p>
      * Fields:<p>
      * (0)ms_id (1)m_id (2)m_inidatetime (3)m_duration (4)m_iscancel (5)m_description (6)m_modpass (7)m_userpass
      * (8)m_setting(meeting) 
@@ -455,4 +455,34 @@ public class Meeting extends Sql {
         return _dbAccess.updateDB(_sql);
     }
     
+    public boolean removeMeetingAttendance(String bu_id, int ms_id, int m_id) {
+        _sql = "DELETE FROM meeting_attendance "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND m_id = " + m_id + " "
+                + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean removeMeetingAttendee(String bu_id, int ms_id) {
+        _sql = "DELETE FROM meeting_attendee "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean removeMeetingGuest(String bu_id, int ms_id, int m_id) {
+        _sql = "DELETE FROM meeting_guest "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND m_id = " + m_id + " "
+                + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean removeMeetingPresentation(String mp_title, int ms_id, int m_id) {
+        _sql = "DELETE FROM meeting_presentation "
+                + "WHERE ms_id = " + ms_id + " "
+                + "AND m_id = " + m_id + " "
+                + "AND mp_title = '" + mp_title + "'";
+        return _dbAccess.updateDB(_sql);
+    }
 }

@@ -20,8 +20,10 @@ public class DBAccess {
     private Connection _conn = null;
     private String _errLog = null;
     private boolean _flag = true; 
+    //private ArrayList<Connection> toClose; 
 
     public DBAccess() {
+        //toClose = new ArrayList<Connection>();
         _db = DBConnection.getInstance();
     }
     
@@ -41,6 +43,7 @@ public class DBAccess {
                 _rs.close();
             }
             if (_conn != null) {
+                //toClose.add(_conn);
                 _conn.close();
             }
         }
@@ -51,6 +54,17 @@ public class DBAccess {
         return flag;
     }
 
+    /*public void closeALL() {
+        for(int i = 0; i<toClose.size(); i++) {
+            try {
+                toClose.get(i).close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }*/
+    
     public String getErrLog() {
         return _errLog;
     }

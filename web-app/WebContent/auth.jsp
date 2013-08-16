@@ -14,9 +14,9 @@
     // Gets inserted user and password.
 	String userID = request.getParameter("SenecaLDAPBBBLogin");
 	String password = request.getParameter("SenecaLDAPBBBLoginPass");
-	// Checks if user and password fields are not empty.
+	HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
 	if (userID != null && password != null) {
-		// Checks if user is registed on Seneca's database
+		// User exists in LDAP
 		if (ldap.search(request.getParameter("SenecaLDAPBBBLogin"), request.getParameter("SenecaLDAPBBBLoginPass"))) {
 			if (ldap.getAccessLevel() < 0) {
 				response.sendRedirect("banned.jsp");
@@ -35,30 +35,36 @@
 				usersession.setUserId(ldap.getUserID());
 				usersession.setGivenName(ldap.getGivenName());
 				usersession.setLDAP(true);
+				usersession.setEmail(ldap.getEmailAddress());
 				User user = new User(dbaccess);
 				ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 				user.getUserInfo(result, userID);
-				HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
+				// User doesn't exist in our db
 				if (result.isEmpty()){
-					roleMask.clear();
 					user.createUser(userID, "", true, ur_id);
 					usersession.setNick(userID);
 					user.getDefaultUserSetting(roleMask);
-					System.out.println(roleMask);
 					usersession.setUserSettingsMask(roleMask);
+					roleMask.clear();
+					user.getDefaultMeetingSetting(roleMask);
+					usersession.setUserMeetingSettingsMask(roleMask);
 				}
+				// User exists in our db
 				else {
 					user.getUserRoleSetting(roleMask, ur_id);
-					usersession.setRoleMask(roleMask);	
+					usersession.setRoleMask(roleMask);
 					usersession.setNick(result.get(0).get(1));
 					user.getUserSetting(roleMask, userID);
 					usersession.setUserSettingsMask(roleMask);
+					roleMask.clear();
+					user.getUserMeetingSetting(roleMask, userID);
+					usersession.setUserMeetingSettingsMask(roleMask);
+					System.out.println(usersession.getEmail());
 				}
-				System.out.println(usersession.getUserSettingsMask());
 				response.sendRedirect("calendar.jsp");
 			}
 		}
-		// Checks if user is registed on database.
+		// User is registed on database.
 		else if (hash.validatePassword(password.toCharArray(), userID)) {
 			/* User is authenticated */
 			User user = new User(dbaccess);
@@ -67,14 +73,20 @@
 			ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 			if (user.getUserInfo(result, userID)) {
 				ArrayList<String> userInfo = result.get(0);
+				user.getUserSetting(roleMask, userID);
+				usersession.setUserSettingsMask(roleMask);
 				usersession.setUserId(userID);
 				usersession.setGivenName(userInfo.get(11) + " " + userInfo.get(12));
 				usersession.setSuper(userInfo.get(7).equals("1"));
 				usersession.setEmail(userInfo.get(13));
+				usersession.setNick(userInfo.get(1));
 				user.isProfessor(prof, userID);
 				user.isDepartmentAdmin(depAdmin, userID);
 				usersession.setProfessor(prof.get_value());
 				usersession.setDepartmentAdmin(depAdmin.get_value());
+				roleMask.clear();
+				user.getUserMeetingSetting(roleMask, userID);
+				usersession.setUserMeetingSettingsMask(roleMask);
 				if (prof.get_value()) {
 					usersession.setUserLevel("professor");
 				}
@@ -88,12 +100,13 @@
 			else {
 				System.out.println("***** "+user.getErrLog());
 			}
+		// User doesn't exist in database or LDAP
 		} else {
 			String message = "Invalid username and/or password.";
 			response.sendRedirect("index.jsp?error=" + message);
 		}
 	} else {
-		String message = "Invalid username and/or password.";
+		String message = "Invalid username and/or password.**";
 		response.sendRedirect("index.jsp?error=" + message);
 	}
 %>

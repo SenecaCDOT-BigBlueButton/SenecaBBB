@@ -113,6 +113,17 @@ aside nav ul .menu #home {
 aside nav ul .menu #home:hover {
 	border-left: 123px solid #9F100B;
 }
+aside nav ul .menu #settings {
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.1s;
+	-ms-transition: all 0.1s;
+	-o-transition: all 0.1s;
+	transition: all 0.1s;
+	border-left: 0px solid #EEEEEE;
+}
+aside nav ul .menu #settings:hover {
+	border-left: 123px solid #9F100B;
+}
 aside nav ul .menu #createEvent {
 	-webkit-transition: all 0.2s ease-out;
 	-moz-transition: all 0.1s;

@@ -392,6 +392,15 @@ $(document).ready(function() {
 					$(this).parent(this).css({"border-right":"10px solid #9F100B"});
 				}
 			);
+			
+			/* USER SETTINGS - MOUSEOVER */
+			$("aside nav #settings").mouseover(
+				function () {
+					$(this).css({"background-color":"#9F100B"});
+					$(this).css({"border-left":"61px solid #EEE"});
+					$(this).parent(this).css({"border-right":"10px solid #9F100B"});
+				}
+			);
 
 			/* SYSTEM SETTINGS - MOUSEOVER */
 			$("aside nav #systemSettings").mouseover(
@@ -432,6 +441,10 @@ $(document).ready(function() {
 		
 		$("aside nav #classSettings").click(function () {
 			$(location).attr('href', "classSettings.jsp");
+		});	
+		
+		$("aside nav #settings").click(function () {
+			$(location).attr('href', "settings.jsp");
 		});	
 		
 		$("aside nav #systemSettings").click(function () {

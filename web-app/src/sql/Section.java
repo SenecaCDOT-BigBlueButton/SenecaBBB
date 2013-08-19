@@ -31,14 +31,16 @@ public class Section extends Sql {
         super(source);
     }
     
-    /** 
-     * the following are query (SELECT) classes
-     * that begin with 'get' or 'is'
-     * Examples:
-     *  getHash
-     *  isActive 
+    /**
+     * Results<p>
+     * (0)c_id (1)sc_id (2)sc_semesterid (3)d_code
+     * (4)c_name (5)d_name
+     * @param result
+     * @param c_id
+     * @param sc_id
+     * @param sc_semesterid
+     * @return
      */
-    
     public boolean getSectionInfo(ArrayList<ArrayList<String>> result, String c_id, String sc_id, String sc_semesterid) {
         _sql = "SELECT section.*, course.c_name, department.d_name "
                 + "FROM section "
@@ -52,6 +54,13 @@ public class Section extends Sql {
         return _dbAccess.queryDB(result, _sql);
     }
     
+    /**
+     * Results<p>
+     * (0)c_id (1)sc_id (2)sc_semesterid (3)d_code
+     * (4)c_name (5)d_name
+     * @param result
+     * @return
+     */
     public boolean getSectionInfo(ArrayList<ArrayList<String>> result) {
         _sql = "SELECT section.*, course.c_name, department.d_name "
                 + "FROM section "
@@ -61,4 +70,27 @@ public class Section extends Sql {
                 + "ON section.d_code = department.d_code";
         return _dbAccess.queryDB(result, _sql);
     }
+    
+    /**
+     * Results<p>
+     * (0)c_id (1)sc_id (2)sc_semesterid (3)d_code
+     * (4)c_name (5)d_name
+     * @param result
+     * @param c_id
+     * @param sc_semesterid
+     * @return
+     */
+    public boolean getSectionInfo(ArrayList<ArrayList<String>> result, String c_id, String sc_semesterid) {
+        _sql = "SELECT section.*, course.c_name, department.d_name "
+                + "FROM section "
+                + "INNER JOIN course "
+                + "ON section.c_id = course.c_id "
+                + "INNER JOIN department "
+                + "ON section.d_code = department.d_code "
+                + "WHERE section.c_id = '" + c_id + "' "
+                + "AND section.sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    
 }

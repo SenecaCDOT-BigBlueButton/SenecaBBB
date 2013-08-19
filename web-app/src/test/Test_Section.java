@@ -18,5 +18,7 @@ public class Test_Section extends Test_Helper {
         
         display(_section.getSectionInfo(_result, "PSY100", "A", "201305"));
         
+        display(_section.getSectionInfo(_result, "PSY100", "201305"));
+        
     }
 }

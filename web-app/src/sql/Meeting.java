@@ -1,11 +1,8 @@
 package sql;
 
-
-import helper.Settings;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import helper.Settings;
 import db.DBAccess;
 
 /**
@@ -420,13 +417,29 @@ public class Meeting extends Sql {
      * @param ms_id
      * @param ms_repeats
      * @return
-     
+     */
     public boolean updateMeetingRepeats(int ms_id, int ms_repeats) {
         _sql = "CALL sp_update_ms_repeats("
                 + ms_id + ", "
                 + ms_repeats + ")";
         return _dbAccess.updateDB(_sql);
-    } */
+    }
+    
+    /**
+     * Format of datetime must be exactly as specified<p>
+     * Check to make sure datetime is greatly than current time<p>
+     * If method updateMeetingTime has been to alter time of day,
+     * calling this method will reset all custom changes
+     * @param ms_id
+     * @param datetime (format: 'YYYY-MM-DD HH:MM:SS')
+     * @return
+     */
+    public boolean updateMeetingScheduleInitialTime(int ms_id, String datetime) {
+        _sql = "CALL sp_update_ms_inidatetime("
+                + ms_id + ", '"
+                + datetime + "')";
+        return _dbAccess.updateDB(_sql);
+    }
     
     public boolean createMeetingPresentation(String mp_title, int ms_id, int m_id) {
         _sql = "INSERT INTO meeting_presentation VALUES ('"

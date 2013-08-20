@@ -1,11 +1,9 @@
 //User.java
 package sql;
 
-import helper.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import helper.*;
 import db.DBAccess;
 
 /**
@@ -756,12 +754,14 @@ public class User extends Sql {
     }
     
     /**
-     * WARNING: remove user from database
+     * WARNING: remove user from database<p>
+     * Fairly safe, would gave error if there are child rows dependent on 
+     * this bu_id
      * @param bu_id
      * @return
-     
+     * */
     public boolean removeUser(String bu_id) {
         _sql = "DELETE FROM bbb_user WHERE bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
-    }*/
+    }
 }

@@ -1,7 +1,5 @@
 package sql;
 
-import java.util.ArrayList;
-
 import db.DBAccess;
 
 /**

@@ -1,10 +1,6 @@
 package sql;
 
-
-import helper.Settings;
-
 import java.util.ArrayList;
-
 import db.DBAccess;
 
 /**
@@ -32,6 +28,7 @@ public class Section extends Sql {
     }
     
     /**
+     * Get a particular section info based on c_id, sc_id and sc_semesterid<p>
      * Results<p>
      * (0)c_id (1)sc_id (2)sc_semesterid (3)d_code
      * (4)c_name (5)d_name
@@ -55,6 +52,7 @@ public class Section extends Sql {
     }
     
     /**
+     * Get all sections<p>
      * Results<p>
      * (0)c_id (1)sc_id (2)sc_semesterid (3)d_code
      * (4)c_name (5)d_name
@@ -72,6 +70,7 @@ public class Section extends Sql {
     }
     
     /**
+     * Get all sections with same c_id and sc_semesterid<p>
      * Results<p>
      * (0)c_id (1)sc_id (2)sc_semesterid (3)d_code
      * (4)c_name (5)d_name
@@ -92,5 +91,153 @@ public class Section extends Sql {
         return _dbAccess.queryDB(result, _sql);
     }
     
+    /**
+     * (0)c_id (1)c_name
+     * @param result
+     * @return
+     */
+    public boolean getCourse(ArrayList<ArrayList<String>> result) {
+        _sql = "SELECT * "
+                + "FROM course";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * get all professors<p>
+     * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid (4)sc_setting
+     * @param result
+     * @return
+     */
+    public boolean getProfessor(ArrayList<ArrayList<String>> result) {
+        _sql = "SELECT * "
+                + "FROM professor";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * get professors teaching a particular section<p>
+     * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid (4)sc_setting
+     * @param result
+     * @param c_id
+     * @param sc_id
+     * @param sc_semesterid
+     * @return
+     */
+    public boolean getProfessor(ArrayList<ArrayList<String>> result, 
+            String c_id, String sc_id, String sc_semesterid) {
+        _sql = "SELECT * "
+                + "FROM professor "
+                + "WHERE c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * get all students<p>
+     * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid (4)s_isbanned
+     * @param result
+     * @return
+     */
+    public boolean getStudent(ArrayList<ArrayList<String>> result) {
+        _sql = "SELECT * "
+                + "FROM student";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * get all students of a particular section<p>
+     * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid (4)s_isbanned
+     * @param result
+     * @param c_id
+     * @param sc_id
+     * @param sc_semesterid
+     * @return
+     */
+    public boolean getStudent(ArrayList<ArrayList<String>> result, 
+            String c_id, String sc_id, String sc_semesterid) {
+        _sql = "SELECT * "
+                + "FROM student "
+                + "WHERE c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    public boolean createCourse(String c_id, String c_name) {
+        _sql = "INSERT INTO course VALUES ('"
+                + c_id + "', '" + c_name + "')";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean createSection(String c_id, String sc_id, 
+            String sc_semesterid, String d_code) {
+        _sql = "INSERT INTO section VALUES ('"
+                + c_id + "', '" + sc_id + "', '" + sc_semesterid + "', '" + d_code + "')";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean createProfessor(String bu_id, String c_id, 
+            String sc_id, String sc_semesterid) {
+        _sql = "INSERT INTO professor VALUES ('"
+                + bu_id + "', '" + c_id + "', '" + sc_id + "', '" + sc_semesterid + "', " 
+                + "(SELECT key_value FROM bbb_admin WHERE key_name='default_user'))";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean createStudent(String bu_id, String c_id,
+            String sc_id, String sc_semesterid, boolean s_isbanned) {
+        int flag = (s_isbanned == true) ? 1 : 0;
+        _sql = "INSERT INTO student VALUES ('"
+                + bu_id + "', '" + c_id + "', '" + sc_id + "', '" + sc_semesterid + "', "
+                + flag + ")";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
+     * WARNING: you need to delete child dependences first before
+     * deleting a section 
+     * @param c_id
+     * @param sc_id
+     * @param sc_semesterid
+     * @return
+     */
+    public boolean removeSection(String c_id, String sc_id, String sc_semesterid) {
+        _sql = "DELETE FROM section "
+                + "WHERE c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
+     * WARNING: you need to delete child dependences first before
+     * deleting a course
+     * @param c_id
+     * @return
+     */
+    public boolean removeCourse(String c_id) {
+        _sql = "DELETE FROM course "
+                + "WHERE c_id = '" + c_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean removeProfessor(String bu_id, String c_id, String sc_id, String sc_semesterid) {
+        _sql = "DELETE FROM professor "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "AND c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean removeStudent(String bu_id, String c_id, String sc_id, String sc_semesterid) {
+        _sql = "DELETE FROM student "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "AND c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.updateDB(_sql);
+    }
     
 }

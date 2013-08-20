@@ -1,7 +1,6 @@
 package sql;
 
 import java.util.ArrayList;
-
 import db.DBAccess;
 
 /**
@@ -343,14 +342,6 @@ public class Lecture extends Sql {
         return _dbAccess.updateDB(_sql);
     }
 
-    /**
-     * This method likely to called when a new student is added
-     * @param bu_id
-     * @param ls_id
-     * @param l_id
-     * @param la_isattend
-     * @return
-     */
     public boolean createLectureAttendance(String bu_id, int ls_id, int l_id, boolean la_isattend) {
         int flag = (la_isattend == true) ? 1 : 0;
         _sql = "INSERT INTO lecture_attendance VALUES ('"
@@ -365,13 +356,6 @@ public class Lecture extends Sql {
         return _dbAccess.updateDB(_sql);
     }
     
-    /**
-     * This method likely to called when a student is removed
-     * @param bu_id
-     * @param ls_id
-     * @param l_id
-     * @return
-     */
     public boolean removeLectureAttendance(String bu_id, int ls_id, int l_id) {
         _sql = "DELETE FROM lecture_attendance "
                 + "WHERE ls_id = " + ls_id + " "

@@ -39,10 +39,6 @@ public class Test_Meeting extends Test_Helper {
         
         display(_meeting.getMeetingSetting(_hm, 1, 2));
         
-        display(_meeting.updateMeetingDuration(2, 1, 8, 150));
-        
-        display(_meeting.updateMeetingTime(2, 1, 8, "05:05:05"));
-        
         display(_meeting.setMeetingSetting(_meeting_map, 1, 1));
         
         display(_meeting.getMeetingSetting(_hm, 1, 1));
@@ -83,12 +79,18 @@ public class Test_Meeting extends Test_Helper {
         
         //display(_meeting.createMeetingAttendance("xdeng7", 1, 1, false));
         
-        display(_meeting.removeMeetingAttendance("bli64", 1, 1));
+        //display(_meeting.removeMeetingAttendance("bli64", 1, 1));
         
-        display(_meeting.removeMeetingAttendee("bli64", 1));
+        //display(_meeting.removeMeetingAttendee("bli64", 1));
         
-        display(_meeting.removeMeetingGuest("bli64", 1, 1));
+        //display(_meeting.removeMeetingGuest("bli64", 1, 1));
         
-        display(_meeting.removeMeetingPresentation("mp_title", 1, 1));      
+        //display(_meeting.removeMeetingPresentation("mp_title", 1, 1));
+        
+        display(_meeting.updateMeetingDuration(3, 1, 8, 150));
+        
+        display(_meeting.updateMeetingTime(3, 1, 8, "05:05:05"));
+        
+        display(_meeting.updateMeetingScheduleInitialTime(1, "2013-08-01 10:20:30"));
     }
 }

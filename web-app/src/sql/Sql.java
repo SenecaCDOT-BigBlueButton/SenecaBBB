@@ -1,5 +1,9 @@
 package sql;
 
+import java.util.ArrayList;
+
+import db.DBAccess;
+
 /**
  * For the parameters, please use DB column names
  * Example: setNickName(String bu_id, String bu_nick) 
@@ -11,23 +15,36 @@ package sql;
  * 3. (default): UPDATE statement that set targeted data back to default values<p>
  * 4. (set): normal UPDATE statement, single column<p>
  * 5. (setMul): UPDATE statement, multi column<p>
- * 6. (update): UPDATE multiple tables using MySQL Stored Procedure (SP)
+ * 6. (update): UPDATE multiple tables using MySQL Stored Procedure (SP) or complex SQL statements
  *    if the method needs to be changed, edit would like be done in SQL script: bbb_db_init.sql<p>
  * 7. (create): INSERT INTO<p>
- * 8. (delete): DELETE<p>
+ * 8. (remove): DELETE<p>
  * @author Kelan (Bo) Li
  *
  */
-public interface Sql {
+public class Sql {
     
-    public String getErrLog();
+    protected DBAccess _dbAccess = null;
+    protected String _sql = null;
+
+    public Sql(DBAccess source) {
+        _dbAccess = source;
+    }
     
-    public String getSQL();
+    public String getErrLog() {
+        return _dbAccess.getErrLog();
+    }
+    
+    public String getSQL() {
+        return _sql;
+    }
     
     /**
      * This MUST be called after an error is caught,
      * else no other SQL statements would run
+     * @return
      */
-    public boolean resetErrorFlag();
-    
+    public boolean resetErrorFlag() {
+        return _dbAccess.resetFlag();
+    }
 }

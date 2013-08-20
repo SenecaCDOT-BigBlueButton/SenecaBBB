@@ -1,11 +1,10 @@
+//User.java
 package sql;
-
 
 import helper.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 
 import db.DBAccess;
 
@@ -20,36 +19,17 @@ import db.DBAccess;
  * 3. (default): UPDATE statement that set targeted data back to default values<p>
  * 4. (set): normal UPDATE statement, single column<p>
  * 5. (setMul): UPDATE statement, multi column<p>
- * 6. (update): UPDATE multiple tables using MySQL Stored Procedure (SP)
+ * 6. (update): UPDATE multiple tables using MySQL Stored Procedure (SP) or complex SQL statements
  *    if the method needs to be changed, edit would like be done in SQL script: bbb_db_init.sql<p>
  * 7. (create): INSERT INTO<p>
- * 8. (delete): DELETE<p>
+ * 8. (remove): DELETE<p>
  * @author Kelan (Bo) Li
  *
  */
-public class User implements Sql {
-    private DBAccess _dbAccess = null;
-    private String _sql = null;
+public class User extends Sql {
 
     public User(DBAccess source) {
-        _dbAccess = source;
-    }
-
-    public String getErrLog() {
-        return _dbAccess.getErrLog();
-    }
-
-    public String getSQL() {
-        return _sql;
-    }
-
-    /**
-     * This MUST be called after an error is caught,
-     * else no other SQL statements would run
-     * @return
-     */
-    public boolean resetErrorFlag() {
-        return _dbAccess.resetFlag();
+        super(source);
     }
     
     /** 
@@ -362,12 +342,11 @@ public class User implements Sql {
     public boolean getDefaultUserSetting(HashMap<String, Integer> result) {
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
-        		+ "WHERE key_name = 'default_user'";
+        		+ "WHERE key_name = 'default_user_hr'";
         ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
         boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
-            System.out.println("here");
             result.clear();
             result.put(Settings.bu_setting[0], (value & (1<<2)) == 0 ? 0:1);
             result.put(Settings.bu_setting[1], (value & (1<<1)) == 0 ? 0:1);
@@ -394,6 +373,24 @@ public class User implements Sql {
         return flag;
     }
 
+    public boolean getDefaultMeetingSetting(HashMap<String, Integer> result) {
+        _sql = "SELECT key_value "
+                + "FROM bbb_admin "
+                + "WHERE key_name = 'default_meeting_hr'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+            result.clear();
+            result.put(Settings.meeting_setting[0], (value & (1<<6)) == 0 ? 0:1);
+            result.put(Settings.meeting_setting[1], (value & (1<<5)) == 0 ? 0:1);
+            result.put(Settings.meeting_setting[2], (value & (1<<4)) == 0 ? 0:1);
+            result.put(Settings.meeting_setting[3], (value & (1<<3)) == 0 ? 0:1);
+            result.put(Settings.meeting_setting[4], (value & (1<<2)) + (value & (1<<1)) + (value & 1));
+        }
+        return flag;
+    }
+    
     public boolean getSectionSetting(HashMap<String, Integer> result, 
             String bu_id, String c_id, String sc_id, String sc_semesterid) {
         _sql = "SELECT sc_setting "
@@ -415,12 +412,25 @@ public class User implements Sql {
         }
         return flag;
     }
-
-    /*
-     * [0] guestAccountCreation
-     * [1] recordableMeetings
-     * [2] nickname
-     */
+    
+    public boolean getDefaultSectionSetting(HashMap<String, Integer> result) {
+        _sql = "SELECT key_value "
+                + "FROM bbb_admin "
+                + "WHERE key_name = 'default_class_hr'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+            result.clear();
+            result.put(Settings.section_setting[0], (value & (1<<6)) == 0 ? 0:1);
+            result.put(Settings.section_setting[1], (value & (1<<5)) == 0 ? 0:1);
+            result.put(Settings.section_setting[2], (value & (1<<4)) == 0 ? 0:1);
+            result.put(Settings.section_setting[3], (value & (1<<3)) == 0 ? 0:1);
+            result.put(Settings.section_setting[4], (value & (1<<2)) + (value & (1<<1)) + (value & 1));
+        }
+        return flag;
+    }
+    
     public boolean getUserRoleSetting(HashMap<String, Integer> result, int ur_id) {
         _sql = "SELECT ur_rolemask "
                 + "FROM user_role "
@@ -436,14 +446,6 @@ public class User implements Sql {
         }
         return flag;
     }
-    
-    /*public boolean setDepartmentInfo(String d_code_old, String d_code_new, String d_name) {
-        _sql = "UPDATE department "
-                + "SET d_code = '" +  d_code_new + "', "
-                + "d_name='" + d_name + "' "
-                + "WHERE d_code = '" + d_code_old + "'";
-        return _dbAccess.updateDB(_sql);
-    }*/
     
     /**
      * the following queries used to test the exist of a value in a table
@@ -492,7 +494,7 @@ public class User implements Sql {
     }
     
     /**
-     * the following are UPDATE methods that begin wih 'default'
+     * the following are UPDATE methods that begin with 'default'
      */
     
     public boolean defaultUserSetting(String bu_id) {
@@ -750,9 +752,9 @@ public class User implements Sql {
      * WARNING: remove user from database
      * @param bu_id
      * @return
-     */
+     
     public boolean removeUser(String bu_id) {
         _sql = "DELETE FROM bbb_user WHERE bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
-    }
+    }*/
 }

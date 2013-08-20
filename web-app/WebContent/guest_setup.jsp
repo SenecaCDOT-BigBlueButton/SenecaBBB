@@ -19,7 +19,54 @@
 	if (message == null || message == "null") {
 		message="";
 	}
+	
+	String key = request.getParameter("key");
+	if (key == null || key == "null") {
+		
+	}
+	
+	String bu_id = request.getParameter("bu_id");
+	if (bu_id == null || bu_id == "null") {
+		
+	}
+	String successText="";
+	String success = request.getParameter("success");
+	if (success == null || success == "null") {
+		success="";
+	}
+	else
+		successText = "Log in with username " + bu_id;
 %>
+
+<script type="text/javascript">
+	window.onload = function() {
+	    if(document.readyState == 'complete') {
+	        document.getElementById('newPassword').onkeyup = function() {
+	            document.getElementById('newPasswordHidden').value = this.value;
+	        };
+	    }
+	};
+	
+	function trim(s) {
+		return s.replace(/^\s*/, "").replace(/\s*$/, "");
+	}
+	function validate() {
+		if (trim(document.getElementById("newPassword").value) == "") {
+			alert("Please enter a password");
+			document.getElementById("newPassword").focus();
+			return false;
+		} else if (trim(document.getElementById("confirmPassword").value) == "") {
+			alert("Password confirm your new password");
+			document.getElementById("confirmPassword").focus();
+			return false;
+		}
+		else if (document.getElementById("newPassword").value != document.getElementById("confirmPassword").value) {
+			alert ("Passwords don't match");
+			document.getElementById("newPassword").focus();
+			return false;
+		}
+	}
+</script>
 	
 </head>
 <body>
@@ -28,19 +75,14 @@
 	<jsp:include page="menu.jsp"/>
 	<section>
 	 <header>
-      <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="settings.jsp" tabindex="14">settings</a> » change password</p>
-      <h1>Change Password</h1><%=message%>
+      <h1>Guest Setup</h1><%=message%> <%if(success.equals("true")) out.write(successText); %>
     </header>
-    <form action="persist_password.jsp&page=edit_password" method="get">
+    <form action="persist_password.jsp?page=guest" method="get" onSubmit="return validate()">
 		<article>
 		<header>
 		    <h2>Edit Password</h2>
 		    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/></header>
 		  <fieldset>
-		    <div class="component">
-		      <label for="currentPassword" class="label">Current password:</label>
-		      <input type="password" name="currentPassword" id="currentPassword" class="input" tabindex="19" title="Current password">
-		    </div>
 		    <div class="component">
 		      <label for="newPassword" class="label">New password:</label>
 		      <input type="password" name="newPassword" id="newPassword" class="input" tabindex="20" title="New password">
@@ -49,6 +91,9 @@
 		      <label for="confirmPassword" class="label">Confirm password:</label>
 		      <input type="password" name="confirmPassword" id="confirmPassword" class="input" tabindex="21" title="Confirm password">
 		    </div>
+		    <input type=hidden class="input" name="page" id="page" value="guest">
+		    <input type=hidden class="input" name="key" id="key" value="<%=key%>">
+		    <input type=hidden class="input" name="bu_id" id="bu_id" value="<%=bu_id%>">
 		  </fieldset>
 		</article>
 		 <article>

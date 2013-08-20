@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seneca | Change Password</title>
+<title>Seneca | Invite Guest</title>
 <link rel="shortcut icon" href="http://www.cssreset.com/favicon.png" />
 <!--<link href="css/style.css" rel="stylesheet" type="text/css" media="screen and (min-width:1280px)">-->
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all">
@@ -19,6 +19,21 @@
 	if (message == null || message == "null") {
 		message="";
 	}
+	
+	String firstName = request.getParameter("firstName");
+	if (firstName == null || firstName == "null") {
+		firstName="";
+	}
+	
+	String lastName = request.getParameter("lastName");
+	if (lastName == null || lastName == "null") {
+		lastName="";
+	}
+	
+	String email = request.getParameter("email");
+	if (email == null || email == "null") {
+		email="";
+	}
 %>
 	
 </head>
@@ -28,26 +43,26 @@
 	<jsp:include page="menu.jsp"/>
 	<section>
 	 <header>
-      <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="settings.jsp" tabindex="14">settings</a> » change password</p>
-      <h1>Change Password</h1><%=message%>
+      <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="create_event.jsp" tabindex="14">create event</a> » invite guest</p>
+      <h1>Invite Guest</h1><%=message%>
     </header>
-    <form action="persist_password.jsp&page=edit_password" method="get">
+    <form action="generate_guest.jsp" method="get">
 		<article>
 		<header>
-		    <h2>Edit Password</h2>
+		    <h2>Invite Guest</h2>
 		    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/></header>
 		  <fieldset>
 		    <div class="component">
-		      <label for="currentPassword" class="label">Current password:</label>
-		      <input type="password" name="currentPassword" id="currentPassword" class="input" tabindex="19" title="Current password">
+		      <label for="firstName" class="label">Guest first name:</label>
+		      <input type="text" name="firstName" id="firstName" class="input" tabindex="19" title="First Name" value="<%=firstName%>">
 		    </div>
 		    <div class="component">
-		      <label for="newPassword" class="label">New password:</label>
-		      <input type="password" name="newPassword" id="newPassword" class="input" tabindex="20" title="New password">
+		      <label for="lastName" class="label">Guest last name:</label>
+		      <input type="text" name="lastName" id="lastName" class="input" tabindex="20" title="Last Name" value="<%=lastName%>">
 		    </div>
 		    <div class="component">
-		      <label for="confirmPassword" class="label">Confirm password:</label>
-		      <input type="password" name="confirmPassword" id="confirmPassword" class="input" tabindex="21" title="Confirm password">
+		      <label for="email" class="label">Guest email:</label>
+		      <input type="email" name="email" id="email" class="input" tabindex="21" title="Email" value="<%=email%>">
 		    </div>
 		  </fieldset>
 		</article>

@@ -64,7 +64,7 @@
 				response.sendRedirect("calendar.jsp");
 			}
 		}
-		// User is registed on database.
+		// User is registed in database.
 		else if (hash.validatePassword(password.toCharArray(), userID)) {
 			/* User is authenticated */
 			User user = new User(dbaccess);

@@ -323,6 +323,13 @@ public class User extends Sql {
      * get setting methods 
      */
     
+    public boolean getUsersLike(ArrayList<ArrayList<String>> result, String bu_id) {
+        _sql = "SELECT bu_id "
+                + "FROM bbb_user "
+                + "WHERE bu_id LIKE '" + bu_id + "%' ";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
     public boolean getUserSetting(HashMap<String, Integer> result, String bu_id) {
         _sql = "SELECT bu_setting "
                 + "FROM bbb_user "

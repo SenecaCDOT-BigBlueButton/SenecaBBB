@@ -8,6 +8,21 @@
 	} else {
 		System.out.println("error=Logged out");
 	}
+	
+	String guestMessage = "";
+	String bu_id = "";
+	String guestCreated = request.getParameter("guestCreated");
+	if (guestCreated == null || guestCreated == "null") {
+		error = "";
+	} 
+	else if (guestCreated.equals("true")){
+		bu_id = request.getParameter("bu_id");
+		if (bu_id == null || bu_id == "null") {
+			bu_id = "";
+		} 
+		else 
+			error = "Log in with username " + bu_id + "and the password you just set";
+	}	
 %>
 <!doctype html>
 <html lang="en">
@@ -52,7 +67,7 @@
           </div>
           <div class="component">
             <label for="SenecaLDAPBBBLogin" class="label">Username:</label>
-            <input type="text" name="SenecaLDAPBBBLogin" id="SenecaLDAPBBBLogin" class="input" tabindex="2" title="Please insert your username" required autofocus>
+            <input type="text" name="SenecaLDAPBBBLogin" id="SenecaLDAPBBBLogin" class="input" tabindex="2" title="Please insert your username" required autofocus value="<%=bu_id%>">
           </div>
           <div class="component">
             <label for="SenecaLDAPBBBLoginPass" class="label">Password:</label>

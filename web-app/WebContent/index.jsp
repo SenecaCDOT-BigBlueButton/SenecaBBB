@@ -3,7 +3,7 @@
 <%
 	session.invalidate();
 	String error = request.getParameter("error");
-	if (error == null || error == "null") {
+	if (error == null) {
 		error = "";
 	} else {
 		System.out.println("error=Logged out");
@@ -12,12 +12,12 @@
 	String guestMessage = "";
 	String bu_id = "";
 	String guestCreated = request.getParameter("guestCreated");
-	if (guestCreated == null || guestCreated == "null") {
+	if (guestCreated == null) {
 		error = "";
 	} 
 	else if (guestCreated.equals("true")){
 		bu_id = request.getParameter("bu_id");
-		if (bu_id == null || bu_id == "null") {
+		if (bu_id == null) {
 			bu_id = "";
 		} 
 		else 

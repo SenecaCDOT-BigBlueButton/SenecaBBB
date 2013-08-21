@@ -16,22 +16,22 @@
 
 <% 
 	String message = request.getParameter("message");
-	if (message == null || message == "null") {
+	if (message == null) {
 		message="";
 	}
 	
 	String key = request.getParameter("key");
-	if (key == null || key == "null") {
+	if (key == null) {
 		
 	}
 	
 	String bu_id = request.getParameter("bu_id");
-	if (bu_id == null || bu_id == "null") {
+	if (bu_id == null) {
 		
 	}
 	String successText="";
 	String success = request.getParameter("success");
-	if (success == null || success == "null") {
+	if (success == null) {
 		success="";
 	}
 	else
@@ -71,7 +71,7 @@
 </head>
 <body>
 <div id="page">
-	<jsp:include page="header.jsp"/>
+	<jsp:include page="header_plain.jsp"/>
 	<jsp:include page="menu.jsp"/>
 	<section>
 	 <header>

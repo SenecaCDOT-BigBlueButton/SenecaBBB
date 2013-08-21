@@ -1,27 +1,27 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     String sname = request.getParameter("sname");
-    if (sname == null || sname == "null") {
+    if (sname == null) {
         sname = "";
     }
     String scode = request.getParameter("scode");
-    if (scode == null || scode == "null") {
+    if (scode == null) {
         scode = "";
     }
     String create = request.getParameter("create");
-    if (create == null || create == "null") {
+    if (create == null) {
         create = "";
     }
     String professor = request.getParameter("professor");
-    if (professor == null || professor == "null") {
+    if (professor == null) {
         professor = "";
     }
     String created = request.getParameter("created");
-    if (created == null || created == "null") {
+    if (created == null) {
         created = "";
     }
     String status = request.getParameter("status");
-    if (status == null || status == "null") {
+    if (status == null) {
         status = "3";
     }
 %>

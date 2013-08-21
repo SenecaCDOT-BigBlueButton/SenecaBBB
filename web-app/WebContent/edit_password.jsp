@@ -16,7 +16,7 @@
 
 <% 
 	String message = request.getParameter("message");
-	if (message == null || message == "null") {
+	if (message == null) {
 		message="";
 	}
 %>

@@ -26,13 +26,14 @@
 	}
 
 	String userId = usersession.getUserId();
+	if (userId.equals(""))
+		response.sendRedirect("index.jsp?error=Please log in");
 	User user = new User(dbaccess);
 	MyBoolean prof = new MyBoolean();
 	HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
 	HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
 	userSettings = usersession.getUserSettingsMask();
 	meetingSettings = usersession.getUserMeetingSettingsMask();
-	//System.out.println(usersession.getUserMeetingSettingsMask());
 %>
 <script type="text/javascript">		
 $(document).ready(function() {

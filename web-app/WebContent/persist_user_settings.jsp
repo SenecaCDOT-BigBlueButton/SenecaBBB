@@ -17,7 +17,7 @@
 	User user = new User(dbaccess);
 	
 	String nickname = request.getParameter("nickname");
-	if (nickname == null || nickname == "null") {
+	if (nickname == null) {
 		nickname = "";
 	}
 	user.setNickName(usersession.getNick(), nickname);
@@ -26,14 +26,14 @@
 	map.put(Settings.bu_setting[2],1);
 	
 	String setting1box = request.getParameter("setting1box");
-	if (setting1box == null || setting1box == "null") {
+	if (setting1box == null) {
 		map.put(Settings.bu_setting[1], 0);
 	}
 	else
 		map.put(Settings.bu_setting[1], 1);
 	
 	String setting2box = request.getParameter("setting2box");
-	if (setting2box == null || setting2box == "null") {
+	if (setting2box == null) {
 		map.put(Settings.bu_setting[0], 0);
 	}
 	else
@@ -47,25 +47,25 @@
 	map.clear();
 	
 	String eventSetting1box = request.getParameter("eventSetting1box");
-	if (eventSetting1box == null || setting1box == "null") {
+	if (eventSetting1box == null) {
 		map.put(Settings.meeting_setting[2], 0);
 	}
 	else
 		map.put(Settings.meeting_setting[2], 1);
 	String eventSetting2box = request.getParameter("eventSetting2box");
-	if (eventSetting2box == null || eventSetting2box == "null") {
+	if (eventSetting2box == null) {
 		map.put(Settings.meeting_setting[3], 0);
 	}
 	else
 		map.put(Settings.meeting_setting[3], 1);
 	String eventSetting3box = request.getParameter("eventSetting3box");
-	if (eventSetting3box == null || eventSetting3box == "null") {
+	if (eventSetting3box == null) {
 		map.put(Settings.meeting_setting[1], 0);
 	}
 	else
 		map.put(Settings.meeting_setting[1], 1);
 	String eventSetting4box = request.getParameter("eventSetting4box");
-	if (eventSetting4box == null || eventSetting4box == "null") {
+	if (eventSetting4box == null) {
 		map.put(Settings.meeting_setting[0], 0);
 	}
 	else

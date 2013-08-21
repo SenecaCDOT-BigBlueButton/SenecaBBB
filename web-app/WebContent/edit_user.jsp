@@ -1,23 +1,23 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     String fname = request.getParameter("fname");
-    if (fname == null || fname == "null") {
+    if (fname == null) {
         fname = "";
     }
     String lname = request.getParameter("lname");
-    if (lname == null || lname == "null") {
+    if (lname == null) {
         lname = "";
     }
     String email = request.getParameter("email");
-    if (email == null || email == "null") {
+    if (email == null) {
         email = "";
     }
     String sid = request.getParameter("usertype");
-    if (sid == null || sid == "null") {
+    if (sid == null) {
         sid = "";
     }
     String create = request.getParameter("create");
-    if (create == null || create == "null") {
+    if (create == null) {
         create = "";
     }
     String type = (String) session.getAttribute("iUserType");

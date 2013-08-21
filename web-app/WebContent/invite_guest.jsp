@@ -16,22 +16,22 @@
 
 <% 
 	String message = request.getParameter("message");
-	if (message == null || message == "null") {
+	if (message == null) {
 		message="";
 	}
 	
 	String firstName = request.getParameter("firstName");
-	if (firstName == null || firstName == "null") {
+	if (firstName == null) {
 		firstName="";
 	}
 	
 	String lastName = request.getParameter("lastName");
-	if (lastName == null || lastName == "null") {
+	if (lastName == null) {
 		lastName="";
 	}
 	
 	String email = request.getParameter("email");
-	if (email == null || email == "null") {
+	if (email == null) {
 		email="";
 	}
 %>

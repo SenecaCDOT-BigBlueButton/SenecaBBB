@@ -1,27 +1,27 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     String date = request.getParameter("date");
-    if (date == null || date == "null") {
+    if (date == null) {
         date = "";
     }
     String day = request.getParameter("day");
-    if (day == null || day == "null") {
+    if (day == null) {
         day = "";
     }
     String name = request.getParameter("name");
-    if (name == null || name == "null") {
+    if (name == null) {
         name = "";
     }
     String link = request.getParameter("link");
-    if (link == null || link == "null") {
+    if (link == null) {
         link = "";
     }
     String create = request.getParameter("create");
-    if (create == null || create == "null") {
+    if (create == null) {
         create = "";
     }
     String start = request.getParameter("start");
-    if (start == null || start == "null") {
+    if (start == null) {
         start = "";
     }
     String type = (String) session.getAttribute("iUserType");

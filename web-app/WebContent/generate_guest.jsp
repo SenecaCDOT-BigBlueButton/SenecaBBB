@@ -45,17 +45,13 @@
 			}
 		}*/
 		
-		
-		Context initCtx = new InitialContext();
-		Context envCtx = (Context) initCtx.lookup("java:comp/env");
-		Session session = (Session) envCtx.lookup("mail/Session");
-		
+		/*
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		System.out.println("*************"+dateFormat.format(cal.getTime()));
 		String host = "localhost";
 		String to = email;
-		String from = "noreply@bbb.senecacollege.ca";
+		String from = "noreply@bbb.senecacollege.com";
 		String subject = "Account activation";
 		String messageText = "Please visit google.com";
 		boolean sessionDebug = false;
@@ -88,7 +84,7 @@
 		out.println("Mail was sent to " + to);
 		out.println(" from " + from);
 		out.println(" using host " + host + ".");
-		
+		*/
 		
 	}
 	

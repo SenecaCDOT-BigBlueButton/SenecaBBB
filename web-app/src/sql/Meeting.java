@@ -468,6 +468,30 @@ public class Meeting extends Sql {
         return _dbAccess.updateDB(_sql);
     }
     
+    /**
+     * Create meeting schedule as well as all meetings in this meeting schedule
+     * @param ms_title
+     * @param ms_inidatetime (format: 'YYYY-MM-DD HH:MM:SS')
+     * @param ms_intervals (in days)
+     * @param ms_repeats
+     * @param ms_duration (in minutes, round to nearest integer)
+     * @param m_description
+     * @param bu_id
+     * @return
+     */
+    public boolean createMeetingSchedule(String ms_title, String ms_inidatetime, 
+            int ms_intervals, int ms_repeats, int ms_duration, String m_description, String bu_id) {
+        _sql = "CALL sp_create_ms('"
+                + ms_title + "', '"
+                + ms_inidatetime + "', "
+                + ms_intervals + ", "
+                + ms_repeats + ", "
+                + ms_duration + ", '"
+                + m_description + "', '"
+                + bu_id + "')";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     public boolean removeMeetingAttendance(String bu_id, int ms_id, int m_id) {
         _sql = "DELETE FROM meeting_attendance "
                 + "WHERE ms_id = " + ms_id + " "

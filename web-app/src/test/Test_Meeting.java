@@ -92,5 +92,9 @@ public class Test_Meeting extends Test_Helper {
         display(_meeting.updateMeetingTime(3, 1, 8, "05:05:05"));
         
         display(_meeting.updateMeetingScheduleInitialTime(1, "2013-08-01 10:20:30"));
+        
+        display(_meeting.updateMeetingRepeats(1, 10));
+        
+        display(_meeting.createMeetingSchedule("test", "2013-10-01 10:20:30", 7, 5, 30, "stuff", "bli64"));
     }
 }

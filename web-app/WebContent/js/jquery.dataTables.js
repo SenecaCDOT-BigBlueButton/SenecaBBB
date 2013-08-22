@@ -2732,6 +2732,92 @@
 		 *  @returns {node} Display length feature node
 		 *  @memberof DataTable#oApi
 		 */
+		/*function _fnFeatureHtmlLength ( oSettings )
+		{
+			if ( oSettings.oScroll.bInfinite )
+			{
+				return null;
+			}
+			
+			// This can be overruled by not using the _MENU_ var/macro in the language variable
+			var sName = 'name="'+oSettings.sTableId+'_length"';
+			var sStdMenu = '<div class="select small" role="combobox" aria-disabled="false" data-dropdown="#dropdownEntries" title="Day" tabindex="22"></div><div id="dropdownEntries" class="dropdown small dropdown-scroll dropdown-relative" aria-labelledby="label"><ul class="dropdown-menu" aria-expanded="false" role="listbox" size="1" '+sName+'>';
+			
+			var i, iLen;
+			var aLengthMenu = oSettings.aLengthMenu;
+			
+			if ( aLengthMenu.length == 2 && typeof aLengthMenu[0] === 'object' && 
+					typeof aLengthMenu[1] === 'object' )
+			{
+				for ( i=0, iLen=aLengthMenu[0].length ; i<iLen ; i++ )
+				{
+					sStdMenu += '<li role="option" value="'+aLengthMenu[0][i]+'"><a>'+aLengthMenu[1][i]+'</a></li>';
+				}
+			}
+			else
+			{
+				for ( i=0, iLen=aLengthMenu.length ; i<iLen ; i++ )
+				{
+					sStdMenu += '<li role="option" value="'+aLengthMenu[i]+'"><a>'+aLengthMenu[i]+'</a></li>';
+				}
+			}
+			sStdMenu += '</ul></div>';
+			
+			var nLength = document.createElement( 'div' );
+			if ( !oSettings.aanFeatures.l )
+			{
+				nLength.id = oSettings.sTableId+'_length';
+			}
+			nLength.className = oSettings.oClasses.sLength;
+			nLength.innerHTML = '<label>'+oSettings.oLanguage.sLengthMenu.replace( '_MENU_', sStdMenu )+'</label>';
+			
+			// Set the length to the current display length - thanks to Andrea Pavlovic for this fix,
+			// and Stefan Skopnik for fixing the fix!
+			
+			$('select option[value="'+oSettings._iDisplayLength+'"]', nLength).attr("selected", true);
+			
+			$('select', nLength).bind( 'change.DT', function(e) {
+				var iVal = $(this).val();
+				
+				// Update all other length options for the new display
+				var n = oSettings.aanFeatures.l;
+				for ( i=0, iLen=n.length ; i<iLen ; i++ )
+				{
+					if ( n[i] != this.parentNode )
+					{
+						$('select', n[i]).val( iVal );
+					}
+				}
+				
+				// Redraw the table
+				oSettings._iDisplayLength = parseInt(iVal, 10);
+				_fnCalculateEnd( oSettings );
+				
+				// If we have space to show extra rows (backing up from the end point - then do so
+				if ( oSettings.fnDisplayEnd() == oSettings.fnRecordsDisplay() )
+				{
+					oSettings._iDisplayStart = oSettings.fnDisplayEnd() - oSettings._iDisplayLength;
+					if ( oSettings._iDisplayStart < 0 )
+					{
+						oSettings._iDisplayStart = 0;
+					}
+				}
+				
+				if ( oSettings._iDisplayLength == -1 )
+				{
+					oSettings._iDisplayStart = 0;
+				}
+				
+				_fnDraw( oSettings );
+			} );
+		
+		
+			$('select', nLength).attr('aria-controls', oSettings.sTableId);
+			
+			return nLength;
+		}*/
+		
+		// ORIGINAL FUNCTION FOR "SHOW ENTRIES LENGTH"
 		function _fnFeatureHtmlLength ( oSettings )
 		{
 			if ( oSettings.oScroll.bInfinite )
@@ -2739,9 +2825,9 @@
 				return null;
 			}
 			
-			/* This can be overruled by not using the _MENU_ var/macro in the language variable */
+			// This can be overruled by not using the _MENU_ var/macro in the language variable 
 			var sName = 'name="'+oSettings.sTableId+'_length"';
-			var sStdMenu = '<select size="1" '+sName+'>';
+			var sStdMenu = '<select class="chosen-select-no-single small" data-placeholder="Number of records shown per page" title="Number of records shown per page" size="1" '+sName+'>';
 			var i, iLen;
 			var aLengthMenu = oSettings.aLengthMenu;
 			
@@ -2770,16 +2856,15 @@
 			nLength.className = oSettings.oClasses.sLength;
 			nLength.innerHTML = '<label>'+oSettings.oLanguage.sLengthMenu.replace( '_MENU_', sStdMenu )+'</label>';
 			
-			/*
-			 * Set the length to the current display length - thanks to Andrea Pavlovic for this fix,
-			 * and Stefan Skopnik for fixing the fix!
-			 */
+			
+			 // Set the length to the current display length - thanks to Andrea Pavlovic for this fix,
+			 // and Stefan Skopnik for fixing the fix!
 			$('select option[value="'+oSettings._iDisplayLength+'"]', nLength).attr("selected", true);
 			
 			$('select', nLength).bind( 'change.DT', function(e) {
 				var iVal = $(this).val();
 				
-				/* Update all other length options for the new display */
+				// Update all other length options for the new display
 				var n = oSettings.aanFeatures.l;
 				for ( i=0, iLen=n.length ; i<iLen ; i++ )
 				{
@@ -2789,11 +2874,11 @@
 					}
 				}
 				
-				/* Redraw the table */
+				// Redraw the table
 				oSettings._iDisplayLength = parseInt(iVal, 10);
 				_fnCalculateEnd( oSettings );
 				
-				/* If we have space to show extra rows (backing up from the end point - then do so */
+				// If we have space to show extra rows (backing up from the end point - then do so
 				if ( oSettings.fnDisplayEnd() == oSettings.fnRecordsDisplay() )
 				{
 					oSettings._iDisplayStart = oSettings.fnDisplayEnd() - oSettings._iDisplayLength;
@@ -2816,7 +2901,6 @@
 			
 			return nLength;
 		}
-		
 		
 		/**
 		 * Recalculate the end point based on the start point
@@ -9407,7 +9491,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Show _MENU_ entries",
+			"sLengthMenu": "_MENU_",//<span id='entries'>entries</span> - Show # of entries
 		
 		
 			/**

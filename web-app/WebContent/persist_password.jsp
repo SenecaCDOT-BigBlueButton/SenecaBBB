@@ -1,6 +1,5 @@
 <%@page import="db.DBConnection"%>
 <%@page import="hash.PasswordHash"%>
-<%@page import="sql.User"%>
 <%@page import="java.util.*"%>
 <%@page import="helper.MyBoolean"%>
 <%@page import= "sql.User" %>
@@ -49,8 +48,6 @@
 		ArrayList<ArrayList<String>> storedKeyArray = new ArrayList<ArrayList<String>>();
 		user.getSalt(storedKeyArray, bu_id);
 		ArrayList<String> storedKey = storedKeyArray.get(0);
-		System.out.println(storedKey.get(0));
-		System.out.println(key);
 		if (!(currentPassword == "" || newPassword == "" || confirmPassword == "")) {
 			if (!newPassword.equals(confirmPassword)){
 				response.sendRedirect("guest_setup.jsp?key="+key+"&bu_id="+bu_id+"&message=Please enter the new password twice.");

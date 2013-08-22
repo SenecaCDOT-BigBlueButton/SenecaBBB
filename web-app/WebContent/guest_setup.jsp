@@ -1,4 +1,12 @@
 <!doctype html>
+<%@page import="db.DBConnection"%>
+<%@page import="hash.PasswordHash"%>
+<%@page import="sql.User"%>
+<%@page import="java.util.*"%>
+<%@page import="helper.MyBoolean"%>
+<%@page import= "helper.Settings" %>
+<jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
+<jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
@@ -21,14 +29,12 @@
 	}
 	
 	String key = request.getParameter("key");
-	if (key == null) {
-		
+	String bu_id = request.getParameter("bu_id");
+	if (key == null || bu_id == null) {
+		response.sendRedirect("index.jsp?error=Invalid username or key");
+		return;
 	}
 	
-	String bu_id = request.getParameter("bu_id");
-	if (bu_id == null) {
-		
-	}
 	String successText="";
 	String success = request.getParameter("success");
 	if (success == null) {
@@ -36,6 +42,21 @@
 	}
 	else
 		successText = "Log in with username " + bu_id;
+	boolean badParams = false;
+	User user = new User(dbaccess);
+	ArrayList<ArrayList<String>> keyArray = new ArrayList<ArrayList<String>>();
+	ArrayList<String> retrievedKey = new ArrayList<String>();
+	user.getSalt(keyArray, bu_id);
+	if (keyArray.size() == 0) {
+		message = "Invalid username or key";
+		badParams = true;
+	}
+	else {
+		if (!keyArray.get(0).get(0).equals(key)) {
+			message = "Invalid username or key";
+			badParams = true;
+		}
+	}
 %>
 
 <script type="text/javascript">
@@ -72,12 +93,11 @@
 <body>
 <div id="page">
 	<jsp:include page="header_plain.jsp"/>
-	<jsp:include page="menu.jsp"/>
 	<section>
 	 <header>
       <h1>Guest Setup</h1><%=message%> <%if(success.equals("true")) out.write(successText); %>
     </header>
-    <form action="persist_password.jsp?page=guest" method="get" onSubmit="return validate()">
+    <form action="persist_password.jsp?page=guest" method="get" onSubmit="return validate()" <%if (badParams)out.write("hidden=\"hidden\""); %>>
 		<article>
 		<header>
 		    <h2>Edit Password</h2>

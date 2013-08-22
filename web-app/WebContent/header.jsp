@@ -2,7 +2,7 @@
 <header id="header"><a href="calendar.jsp"><img src="images/logo.png" alt="Seneca College of Applied Arts and Technology" tabindex="1" title="Seneca College of Applied Arts and Technology"/></a>
     <nav>
       <ul>
-        <li><a href="index.jsp?error=Logged out" tabindex="4" title="Logout">Logout</a></li>
+        <li><a href="logout.jsp" tabindex="4" title="Logout">Logout</a></li>
         <li class="divisor">|</li>
         <li><a href="settings.jsp" tabindex="3" title="User settings">Settings</a></li>
         <li class="divisor">|</li>

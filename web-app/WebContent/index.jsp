@@ -1,21 +1,16 @@
 <%@page import="db.DBConnection"%>
 <jsp:useBean id="ldap" scope="session" class="ldap.LDAPAuthenticate" />
 <%
-	session.invalidate();
 	String error = request.getParameter("error");
 	if (error == null) {
 		error = "";
-	} else {
-		System.out.println("error=Logged out");
-	}
-	
+	} 
 	String guestMessage = "";
 	String bu_id = "";
 	String guestCreated = request.getParameter("guestCreated");
-	if (guestCreated == null) {
-		error = "";
-	} 
-	else if (guestCreated.equals("true")){
+	if (guestCreated == null)
+		guestCreated = "false";
+	if (guestCreated.equals("true")){
 		bu_id = request.getParameter("bu_id");
 		if (bu_id == null) {
 			bu_id = "";
@@ -56,14 +51,14 @@
 <body>
 <!-- Login form. -->
 <div id="page">
-  <header id="header"><a href="calendar.jsp"><img src="images/logo.png" alt="Seneca College of Applied Arts and Technology" tabindex="1" title="Seneca College of Applied Arts and Technology"/></a> </header>
+  <jsp:include page="header_plain.jsp"/>
   <section id="login">
     <form id="login" name="formLogin" action="auth.jsp" onSubmit="return validate();" method="post">
       <article >
         <fieldset>
           <div class="component">
-          	<!-- Prints 'error' on the screen. -->
-            <label for="errorMessage" id="error" class="label"><%=error%></label>
+          	<!-- Prints 'error' on the screen. --><%System.out.println(error); %>
+            <label id="error" class="label"><%=error%></label>
           </div>
           <div class="component">
             <label for="SenecaLDAPBBBLogin" class="label">Username:</label>

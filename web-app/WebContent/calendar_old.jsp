@@ -1,24 +1,21 @@
-<%@page import="db.DBConnection"%>
-<%@page import="sql.User"%>
-<%@page import="java.util.*"%>
-<jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
-<!doctype html>
-<html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seneca | Change Settings</title>
-<link rel="shortcut icon" href="http://www.cssreset.com/favicon.png" />
-<!--<link href="css/style.css" rel="stylesheet" type="text/css" media="screen and (min-width:1280px)">-->
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all">
-<link href="css/fonts.css" rel="stylesheet" type="text/css" media="all">
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-<script type="text/javascript" src="js/component.js"></script>
-<script type="text/javascript" src="js/componentStepper.js"></script>
- <script type='text/javascript'>
+<%@ page contentType="text/html; charset=iso-8859-1" language="java"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <link rel='stylesheet' type='text/css' href='css/calendar_layout.css' />
+        <link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.css' />
+        <link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.print.css' media='print' />
+        <script type='text/javascript' src='js/jquery-1.9.1.min.js'></script>
+        <script type='text/javascript' src='js/jquery-ui-1.10.2.custom.min.js'></script>
+        <script type='text/javascript' src='fullcalendar/fullcalendar.min.js'></script>
+        <script type='text/javascript' src='fullcalendar/date.js'></script>
+        <script type='text/javascript'>
+            <%
+                String type = (String) usersession.getUserLevel();
+                String level = (String)usersession.getUserLevel();
+            %>
+            var user = "<%=type%>";
             function create(date) {
                 if (date === undefined)
                     date = "";
@@ -133,14 +130,77 @@
                 var d = $('#calendar').fullCalendar('getDate');
                 alert("The current date of the calendar is " + d + user);
             }
-</script>
-</head>
-<body>
-<div id="page">
-  <jsp:include page="header.jsp"/>
-  <jsp:include page="menu.jsp"/>
-   <div id='calendar'></div>
-  <jsp:include page="footer.jsp"/>
-</div>
-</body>
+        </script>
+        <style type='text/css'>
+            #calendar {
+                width: 900px;
+                margin: 0 auto;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="header">
+            <h1>Calendar</h1>
+            <p id="layoutdims">
+                <%
+                    String name = (String) usersession.getGivenName();
+                    out.write("<strong>" + name + "</strong>");
+                %>
+                View type: 
+                <select name="view">
+                    <option value="calendar">Calendar</option>
+                    <option value="grid">Grid</option>
+                </select>
+                <%
+                    out.write("You are a <strong>" + type + "</strong>");
+                %>
+            </p>
+        </div>
+        <div class="colmask leftmenu">
+            <div class="colleft">
+                <div class="col1">
+                    Filter by:
+                    <select>
+                        <option>Show all</option>
+                        <option>Meetings I've created</option>
+                        <option>Meetings I'm invited to</option>
+                        <%
+                            if (level.equals("student")) {
+                                out.write("<option>My courses</option>");
+                            }
+                        %>
+                    </select>
+                    <%
+                        if (level.equals("admin")) {
+                            out.write("<a href=\"\">Advanced filter</a>");
+                        }
+                    %>
+                    <input type="button" onclick="create()" value="Create Event"/> 
+                    <div id='calendar'></div>
+                </div>
+                <div class="col2">
+                    <a href ="settings.jsp">User Settings</a><br/><br/>
+                    <%                            if (level.equals("professor")) {
+                            out.write("<a href =\"class_settings.jsp\">Class Settings</a><br><br>");
+                        }
+                        if (level.equals("admin") || level.equals("superadmin")) {
+                            out.write("<a href =\"manage_professors.jsp\">Manage Professors</a><br><br>");
+                            out.write("<a href =\"alternate_manage_subjects.jsp\">Manage Subjects</a><br><br>");
+                            out.write("<a href =\"manage_users.jsp\">Manage Users</a><br><br>");
+                            out.write("<a href =\"system_settings.jsp\">System Settings</a><br><br>");
+                             out.write("<a href =\"manage_departments.jsp\">Manage Departments</a><br><br>");
+                        }
+                        else if (level.equals("professor"))
+                            out.write("<a href =\"view_department_users.jsp\">View Department Users</a><br><br>");
+                    %>
+                    <a href="index.jsp?error=Logged out"><strong>Log out</strong></a>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            This is the footer
+        </div>
+        <button type="button" id="my-button" class="my-button" onclick="run()">Date range</button>       
+    </body>
 </html>

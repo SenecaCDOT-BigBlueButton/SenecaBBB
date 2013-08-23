@@ -202,9 +202,6 @@ dir
 css
 dir
 
-fonts
-dir
-
 response.jsp
 file
 
@@ -238,6 +235,9 @@ robert.stanica.ca
 
 
 1848
+
+fonts
+dir
 
 settings.jsp
 file
@@ -273,6 +273,9 @@ robert.stanica.ca
 
 1979
 
+fullcalendar
+dir
+
 auth.jsp
 file
 
@@ -306,9 +309,6 @@ robert.stanica.ca
 
 
 2636
-
-fullcalendar
-dir
 
 edit_subject.jsp
 file

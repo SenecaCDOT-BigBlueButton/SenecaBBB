@@ -26,9 +26,6 @@ has-prop-mods
 
 20421713-4250-0666-0c04-ce57b7db7bff
 
-jquery
-dir
-
 manage_whitelist.jsp
 file
 
@@ -62,6 +59,9 @@ robert.stanica.ca
 
 
 9110
+
+jquery
+dir
 
 class_settings.jsp
 file
@@ -199,40 +199,6 @@ robert.stanica.ca
 
 6587
 
-edit_student.jsp
-file
-
-
-
-
-2013-08-23T17:10:53.981479Z
-95794572fc9ba875a3fe5685408d42e8
-2013-08-22T17:51:54.000000Z
-141
-robert.stanica.ca
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-2321
-
 edit_departments.jsp
 file
 
@@ -267,20 +233,14 @@ robert.stanica.ca
 
 3622
 
-WEB-INF
-dir
-
-css
-dir
-
-manage_departments.jsp
+edit_student.jsp
 file
 
 
 
 
-2013-08-23T17:10:54.000480Z
-e9bbca2c8e4b009e14239f8b88ed2afa
+2013-08-23T17:10:53.981479Z
+95794572fc9ba875a3fe5685408d42e8
 2013-08-22T17:51:54.000000Z
 141
 robert.stanica.ca
@@ -305,7 +265,13 @@ robert.stanica.ca
 
 
 
-2407
+2321
+
+WEB-INF
+dir
+
+css
+dir
 
 response.jsp
 file
@@ -341,6 +307,40 @@ robert.stanica.ca
 
 1848
 
+manage_departments.jsp
+file
+
+
+
+
+2013-08-23T17:10:54.000480Z
+e9bbca2c8e4b009e14239f8b88ed2afa
+2013-08-22T17:51:54.000000Z
+141
+robert.stanica.ca
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2407
+
 settings.jsp
 file
 
@@ -375,6 +375,9 @@ robert.stanica.ca
 
 1979
 
+fullcalendar
+dir
+
 auth.jsp
 file
 
@@ -408,9 +411,6 @@ robert.stanica.ca
 
 
 3594
-
-fullcalendar
-dir
 
 alternate_edit_subject.jsp
 file

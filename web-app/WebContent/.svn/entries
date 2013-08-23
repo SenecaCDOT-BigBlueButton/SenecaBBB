@@ -50,13 +50,6 @@ dir
 
 add
 
-footer.jsp
-file
-0
-
-
-add
-
 fonts
 dir
 
@@ -64,7 +57,7 @@ dir
 
 add
 
-settings.jsp
+footer.jsp
 file
 0
 
@@ -78,7 +71,7 @@ file
 
 add
 
-generate_guest.jsp
+settings.jsp
 file
 0
 
@@ -86,6 +79,13 @@ file
 add
 
 auth.jsp
+file
+0
+
+
+add
+
+generate_guest.jsp
 file
 0
 
@@ -109,14 +109,14 @@ file
 
 add
 
-calendar_old.jsp
+index.jsp
 file
 0
 
 
 add
 
-index.jsp
+calendar_old.jsp
 file
 0
 

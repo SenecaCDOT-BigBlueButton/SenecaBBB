@@ -1,6 +1,0 @@
-*.class
-
-# Package Files #
-*.jar
-*.ear
-config.xml

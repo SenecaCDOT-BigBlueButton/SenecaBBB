@@ -23,7 +23,7 @@ option:hover {
 	height: 100%;
 	text-align: left;
 	background-color: #eeeeee;
-	background-image: url(../images/CMS.svg);
+	background-image: url(../../../images/CMS.svg);
 	background-repeat: no-repeat;
 	background-size: 1280px;
 	background-position: right top;
@@ -542,7 +542,7 @@ section form .buttons .button, .datePicker, .search {
 	display: block;
 	margin-right: 0px;
 	margin-left: 10px;
-	background-image: url(../images/calendarTransparent.svg);
+	background-image: url(../../../images/calendarTransparent.svg);
 	background-repeat: no-repeat;
 	background-position: center;
 	position: relative; /* Enable absolute positionning for children and pseudo elements */
@@ -555,7 +555,7 @@ section form .buttons .button, .datePicker, .search {
 	display: block;
 	margin-right: 0px;
 	margin-left: 10px;
-	background-image: url(../images/searchTransparent.svg);
+	background-image: url(../../../images/searchTransparent.svg);
 	background-repeat: no-repeat;
 	background-position: center;
 	position: relative; /* Enable absolute positionning for children and pseudo elements */
@@ -852,27 +852,27 @@ footer div#copyright {
 }
 .tableComponent table tbody tr td.status img {
 	border: none;
-	background-image: url('../images/status.svg');
+	background-image: url('../../../images/status.svg');
 }
 .tableComponent table tbody tr td a.view img {
 	border: none;
-	background-image: url('../images/view.svg');
+	background-image: url('../../../images/view.svg');
 }
 .tableComponent table tbody tr td a.modify img {
 	border: none;
-	background-image: url('../images/modify.svg');
+	background-image: url('../../../images/modify.svg');
 }
 .tableComponent table tbody tr td a.delete img {
 	border: none;
-	background-image: url('../images/delete.svg');
+	background-image: url('../../../images/delete.svg');
 }
 .tableComponent table tbody tr td a.add img {
 	border: none;
-	background-image: url('../images/add.svg');
+	background-image: url('../../../images/add.svg');
 }
 .tableComponent table tbody tr td a.remove img {
 	border: none;
-	background-image: url('../images/remove.svg');
+	background-image: url('../../../images/remove.svg');
 }
 .tableComponent table tbody tr td a:hover img {
 	background-position: 0px -17px;
@@ -898,7 +898,7 @@ footer div#copyright {
 	height: 42px;
 	float: right;
 	display: block;
-	background-image: url('../images/search.svg');
+	background-image: url('../../../images/search.svg');
 	background-position: 100% -17px;
 	background-repeat: no-repeat;
 	cursor: pointer;

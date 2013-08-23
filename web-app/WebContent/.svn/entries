@@ -1,0 +1,184 @@
+10
+
+dir
+257
+https://github.com:443/SenecaCDOT-BigBlueButton/SenecaBBB.git
+https://github.com:443/SenecaCDOT-BigBlueButton/SenecaBBB.git
+
+
+
+2013-08-22T17:51:54.000000Z
+257
+robert.stanica.ca
+has-props
+has-prop-mods
+
+
+
+
+
+
+
+
+
+
+
+
+20421713-4250-0666-0c04-ce57b7db7bff
+
+header.jsp
+file
+0
+
+
+add
+
+branches
+dir
+
+WEB-INF
+dir
+
+
+
+add
+
+css
+dir
+
+
+
+add
+
+fonts
+dir
+
+
+
+add
+
+footer.jsp
+file
+0
+
+
+add
+
+testing-db.jsp
+file
+0
+
+
+add
+
+settings.jsp
+file
+0
+
+
+add
+
+auth.jsp
+file
+0
+
+
+add
+
+generate_guest.jsp
+file
+0
+
+
+add
+
+tags
+dir
+
+menu.jsp
+file
+0
+
+
+add
+
+invite_guest.jsp
+file
+0
+
+
+add
+
+index.jsp
+file
+0
+
+
+add
+
+calendar_old.jsp
+file
+0
+
+
+add
+
+guest_setup.jsp
+file
+0
+
+
+add
+
+persist_user_settings.jsp
+file
+0
+
+
+add
+
+trunk
+dir
+
+calendar.jsp
+file
+0
+
+
+add
+
+logout.jsp
+file
+0
+
+
+add
+
+images
+dir
+
+
+
+add
+
+header_plain.jsp
+file
+0
+
+
+add
+
+persist_password.jsp
+file
+0
+
+
+add
+
+js
+dir
+
+
+
+add
+

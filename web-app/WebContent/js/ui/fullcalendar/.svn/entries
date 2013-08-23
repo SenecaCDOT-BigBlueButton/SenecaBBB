@@ -1,0 +1,56 @@
+10
+
+dir
+0
+https://github.com:443/SenecaCDOT-BigBlueButton/SenecaBBB.git/js/ui/fullcalendar
+https://github.com:443/SenecaCDOT-BigBlueButton/SenecaBBB.git
+add
+
+
+
+
+
+has-props
+has-prop-mods
+
+
+
+
+
+
+
+
+
+
+
+
+20421713-4250-0666-0c04-ce57b7db7bff
+
+gcal.js
+file
+
+
+
+add
+
+fullcalendar.js
+file
+
+
+
+add
+
+date.js
+file
+
+
+
+add
+
+fullcalendar.min.js
+file
+
+
+
+add
+

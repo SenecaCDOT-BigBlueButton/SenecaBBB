@@ -1,0 +1,179 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/257/branches/bobert/web-app/WebContent
+END
+manage_whitelist.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/162/branches/bobert/web-app/WebContent/manage_whitelist.jsp
+END
+class_settings.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/162/branches/bobert/web-app/WebContent/class_settings.jsp
+END
+event_details.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/253/branches/bobert/web-app/WebContent/event_details.jsp
+END
+header.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/254/branches/bobert/web-app/WebContent/header.jsp
+END
+manage_subjects.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/162/branches/bobert/web-app/WebContent/manage_subjects.jsp
+END
+edit_student.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/253/branches/bobert/web-app/WebContent/edit_student.jsp
+END
+footer.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/242/branches/bobert/web-app/WebContent/footer.jsp
+END
+response.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/162/branches/bobert/web-app/WebContent/response.jsp
+END
+settings.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/253/branches/bobert/web-app/WebContent/settings.jsp
+END
+testing-db.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/245/branches/bobert/web-app/WebContent/testing-db.jsp
+END
+generate_guest.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/254/branches/bobert/web-app/WebContent/generate_guest.jsp
+END
+auth.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/253/branches/bobert/web-app/WebContent/auth.jsp
+END
+edit_subject.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/253/branches/bobert/web-app/WebContent/edit_subject.jsp
+END
+menu.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/242/branches/bobert/web-app/WebContent/menu.jsp
+END
+invite_guest.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/253/branches/bobert/web-app/WebContent/invite_guest.jsp
+END
+index.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/254/branches/bobert/web-app/WebContent/index.jsp
+END
+guest_setup.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/254/branches/bobert/web-app/WebContent/guest_setup.jsp
+END
+edit_password.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/253/branches/bobert/web-app/WebContent/edit_password.jsp
+END
+calendar_old.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/257/branches/bobert/web-app/WebContent/calendar_old.jsp
+END
+persist_user_settings.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/253/branches/bobert/web-app/WebContent/persist_user_settings.jsp
+END
+event_details2.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/162/branches/bobert/web-app/WebContent/event_details2.jsp
+END
+calendar.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/257/branches/bobert/web-app/WebContent/calendar.jsp
+END
+logout.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/254/branches/bobert/web-app/WebContent/logout.jsp
+END
+manage_users.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/162/branches/bobert/web-app/WebContent/manage_users.jsp
+END
+header_plain.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/254/branches/bobert/web-app/WebContent/header_plain.jsp
+END
+persist_password.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/254/branches/bobert/web-app/WebContent/persist_password.jsp
+END
+manage_professors.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/162/branches/bobert/web-app/WebContent/manage_professors.jsp
+END
+manage_students.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/162/branches/bobert/web-app/WebContent/manage_students.jsp
+END
+edit_user.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/253/branches/bobert/web-app/WebContent/edit_user.jsp
+END

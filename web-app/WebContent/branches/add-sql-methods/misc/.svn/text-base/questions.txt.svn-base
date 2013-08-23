@@ -1,0 +1,15 @@
+1) We started talking about retrieving records over the conference. 
+
+2) Will the admin populate the 'section' part of the db for each professor? Is this a reasonable job for the admin if there are many (100+) professors?
+
+3) We need a way to create accounts that are not part of LDAP. Does admin do this or should professors be allowed to?
+
+4) Different access levels on user accounts (if student has been naughty we may not want to ban him, maybe just revoke his right to create meetings)
+
+5) Separate pages for viewing past recordings and archived recordings or merge them into one table/list (not db table)
+
+6) Stress testing. We need a lot of fake data to see how responsive and and easy to use system is with a lot of entries.
+
+7) Restriction on number of meetings to join. Users should only be in one meeting at once, and shouldn't be allowed to create a meeting while they're in one.
+
+8) Db table for system settings (global time out, etc)

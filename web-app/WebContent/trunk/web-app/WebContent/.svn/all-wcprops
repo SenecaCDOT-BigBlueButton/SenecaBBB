@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/233/trunk/web-app/WebContent
+END
+header.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/221/trunk/web-app/WebContent/header.jsp
+END
+footer.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/209/trunk/web-app/WebContent/footer.jsp
+END
+testing-db.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/212/trunk/web-app/WebContent/testing-db.jsp
+END
+settings.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/220/trunk/web-app/WebContent/settings.jsp
+END
+generate_guest.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/221/trunk/web-app/WebContent/generate_guest.jsp
+END
+auth.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/220/trunk/web-app/WebContent/auth.jsp
+END
+menu.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/209/trunk/web-app/WebContent/menu.jsp
+END
+invite_guest.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/220/trunk/web-app/WebContent/invite_guest.jsp
+END
+persist_user_settings.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/220/trunk/web-app/WebContent/persist_user_settings.jsp
+END
+index.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/221/trunk/web-app/WebContent/index.jsp
+END
+guest_setup.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/221/trunk/web-app/WebContent/guest_setup.jsp
+END
+calendar_old.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/226/trunk/web-app/WebContent/calendar_old.jsp
+END
+logout.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/221/trunk/web-app/WebContent/logout.jsp
+END
+calendar.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/226/trunk/web-app/WebContent/calendar.jsp
+END
+persist_password.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/221/trunk/web-app/WebContent/persist_password.jsp
+END
+header_plain.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/221/trunk/web-app/WebContent/header_plain.jsp
+END

@@ -1,0 +1,9 @@
+.select:focus .dropdown {
+    opacity: 1;
+    pointer-events: auto;
+}
+.select:focus:after {
+	border-color: #E6322E transparent;
+	border-width: 6px 6px 0 6px;
+	margin-top: -3px;
+}

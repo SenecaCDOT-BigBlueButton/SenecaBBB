@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/222/trunk/web-app/src/test
+END
+Test_Lecture.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/209/trunk/web-app/src/test/Test_Lecture.java
+END
+Test_Section.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/220/trunk/web-app/src/test/Test_Section.java
+END
+Test_Meeting.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/222/trunk/web-app/src/test/Test_Meeting.java
+END
+Test_User.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/209/trunk/web-app/src/test/Test_User.java
+END
+Test_Helper.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/SenecaCDOT-BigBlueButton/SenecaBBB.git/!svn/ver/116/trunk/web-app/src/test/Test_Helper.java
+END

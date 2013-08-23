@@ -1,0 +1,17 @@
+@font-face {
+	font-family: 'ITCAvantGardeStd BkCn';
+	src: url('ITCAvantGardeStd-BkCn.eot');
+	src: url('ITCAvantGardeStd-BkCn.eot?#iefix') format('embedded-opentype'),
+		url('ITCAvantGardeStd-BkCn.woff') format('woff'),
+		url('ITCAvantGardeStd-BkCn.ttf') format('truetype'),
+		url('ITCAvantGardeStd-BkCn.svg') format('svg');
+}
+
+@font-face {
+	font-family: 'ITCAvantGardeStd Md';
+	src: url('ITCAvantGardeStd-Md.eot');
+	src: url('ITCAvantGardeStd-Md.eot?#iefix') format('embedded-opentype'),
+		url('ITCAvantGardeStd-Md.woff') format('woff'),
+		url('ITCAvantGardeStd-Md.ttf') format('truetype'),
+		url('ITCAvantGardeStd-Md.svg') format('svg');
+}

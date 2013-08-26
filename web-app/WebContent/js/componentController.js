@@ -86,8 +86,8 @@ $(screen).ready(function() {
 		populateDate();
 
 		//Change days field according to the current month
-		$("#dropdownMonthStarts").change(function(){
-			switch ($(this).val()){
+		function populateMonthStarts(){
+			switch ($("dropdownMonthStarts").val()){
 				case "January":
 				case "March":
 				case "May":
@@ -140,11 +140,11 @@ $(screen).ready(function() {
 					$("#dropdownDayStarts").selectmenu({'refresh': true});
 					break;
 			}
-		});
-
+		}
+		
 		//Change days field according to the current month
-		$("#dropdownMonthEnds").change(function(){
-			switch ($(this).val()){
+		function populateMonthEnds(){
+			switch ($("dropdownMonthEnds").val()){
 				case "January":
 				case "March":
 				case "May":
@@ -188,6 +188,7 @@ $(screen).ready(function() {
 					
 					if ((previouslySelectedDay >= 29) && (isLeapYear)){
 						$("#dropdownDayEnds").val(29);
+						alert("leapyear");
 					} else if (previouslySelectedDay >= 28){
 						$("#dropdownDayEnds").val(28);
 					} else {
@@ -197,54 +198,26 @@ $(screen).ready(function() {
 					$("#dropdownDayEnds").selectmenu({'refresh': true});
 					break;
 			}
+		}
+
+		//Change days field according to the current month
+		$("#dropdownMonthStarts").change(function(){
+			populateMonthStarts();
 		});
 
-		//Change days field according to the current year
-		$("#dropdownYearEnds").change(function(){
-			
-			var isLeapYear = ((($(this).val()) % 4) == 0) ? true : false;
-			
-			if ((isLeapYear) && ("February" == $("#dropdownMonthEnds").val())){
-				
-				var previouslySelectedDay = $("#dropdownDayEnds").val();
-				$("#dropdownDayEnds option").remove();
-				
-				for (var i = 1; i <= 29; i++) {
-					$("#dropdownDayEnds").append("<option role='option'>" + (i) + "</option>");
-				}
-				
-				if ((previouslySelectedDay >= 29) && (isLeapYear)){
-					$("#dropdownDayEnds").val(29);
-				} else {
-					$("#dropdownDayEnds").val(previouslySelectedDay);
-				}
-				
-				$("#dropdownDayEnds").selectmenu({'refresh': true});
-			}
+		//Change days field according to the current month
+		$("#dropdownMonthEnds").change(function(){
+			populateMonthEnds();
 		});
 
 		//Change days field according to the current year
 		$("#dropdownYearStarts").change(function(){
-			
-			var isLeapYear = ((($(this).val()) % 4) == 0) ? true : false;
-			
-			if ((isLeapYear) && ("February" == $("#dropdownMonthEnds").val())){
-				
-				var previouslySelectedDay = $("#dropdownDayEnds").val();
-				$("#dropdownDayEnds option").remove();
-				
-				for (var i = 1; i <= 29; i++) {
-					$("#dropdownDayEnds").append("<option role='option'>" + (i) + "</option>");
-				}
-				
-				if ((previouslySelectedDay >= 29) && (isLeapYear)){
-					$("#dropdownDayEnds").val(29);
-				} else {
-					$("#dropdownDayEnds").val(previouslySelectedDay);
-				}
-				
-				$("#dropdownDayEnds").selectmenu({'refresh': true});
-			}
+			populateMonthStarts();
+		});
+
+		//Change days field according to the current year
+		$("#dropdownYearEnds").change(function(){
+			populateMonthEnds();
 		});
 
 		// Dropdown: Recurrence
@@ -668,7 +641,8 @@ $(screen).ready(function() {
 
 		/* MENU - CURRENT PAGE */
 		var currentPage = $("section header h1").text().substr(0,1).toLowerCase() + $("section header h1").text().substr(1).replace(/ /g, '');
-		$("aside nav #"+currentPage).css({"border-left":"0px solid #EEE"}, {"background-color":"#9F100B"});
+		$("aside nav #"+currentPage).css({"border-left":"0px solid #EEE"});
+		$("aside nav #"+currentPage).css({"background-color":"#9F100B"});
 		$("aside nav #"+currentPage).parent(this).css({"border-right":"10px solid #454545"});
 		$("aside nav #"+currentPage).unbind('mouseout');
 		$("aside nav #"+currentPage).unbind('mouseover');

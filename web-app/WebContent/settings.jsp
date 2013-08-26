@@ -17,7 +17,7 @@
 <link href="css/fonts.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-<script type="text/javascript" src="js/component.js"></script>
+<script type="text/javascript" src="js/componentControler.js"></script>
 <script type="text/javascript" src="js/componentStepper.js"></script>
 <%
 	String message = request.getParameter("message");

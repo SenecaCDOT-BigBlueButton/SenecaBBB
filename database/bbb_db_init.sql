@@ -30,6 +30,8 @@ DROP PROCEDURE IF EXISTS sp_update_ls_inidatetime;
 DROP PROCEDURE IF EXISTS sp_update_l_duration;
 DROP PROCEDURE IF EXISTS sp_update_l_time;
 DROP PROCEDURE IF EXISTS sp_update_ls_repeats;
+DROP PROCEDURE IF EXISTS sp_delete_ls;
+DROP PROCEDURE IF EXISTS sp_delete_ms;
 
 DELIMITER //
 CREATE FUNCTION fn_next_id(param1 VARCHAR(50))
@@ -500,6 +502,50 @@ BEGIN
 					WHERE ls_id = p_ls_id)
 			WHERE ls_id = p_ls_id;
 	END IF;  
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_delete_ms(
+	IN p_ms_id INT UNSIGNED)
+BEGIN
+	DECLARE _repeats INT UNSIGNED;
+	DELETE FROM meeting 
+		WHERE ms_id = p_ms_id 
+		AND m_inidatetime > sysdate();
+	SELECT count(*) INTO _repeats
+		FROM meeting
+			WHERE ms_id = p_ms_id;
+	IF _repeats > 0 THEN
+		UPDATE meeting_schedule
+			SET ms_repeats = _repeats
+			WHERE ms_id = p_ms_id;
+	ELSE
+		DELETE FROM meeting_schedule
+			WHERE ms_id = p_ms_id;
+	END IF;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_delete_ls(
+	IN p_ls_id INT UNSIGNED)
+BEGIN
+	DECLARE _repeats INT UNSIGNED;
+	DELETE FROM lecture 
+		WHERE ls_id = p_ls_id
+		AND l_inidatetime > sysdate();
+	SELECT count(*) INTO _repeats
+		FROM lecture
+		WHERE ls_id = p_ls_id;
+	IF _repeats > 0 THEN
+		UPDATE lecture_schedule
+			SET ls_repeats = _repeats
+			WHERE ls_id = p_ls_id;
+	ELSE
+		DELETE FROM lecture_schedule
+			WHERE ls_id = p_ls_id;
+	END IF;
 END//
 DELIMITER ;
 

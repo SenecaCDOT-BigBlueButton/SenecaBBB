@@ -164,6 +164,32 @@ public class Section extends Sql {
         return _dbAccess.queryDB(result, _sql);
     }
     
+    public boolean setBannedFromSection(
+            String bu_id, String c_id, String sc_id, String sc_semesterid, boolean s_isbanned) {
+        int flag = (s_isbanned == true) ? 1 : 0;
+        _sql = "UPDATE student "
+                + "SET s_isbanned = " + flag + " "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "AND c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setCourseId(String old_c_id, String new_c_id) {
+        _sql = "UPDATE course "
+                + "SET c_id = '" + new_c_id + "' "
+                + "WHERE c_id ='" + old_c_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setCourseName(String c_id, String c_name) {
+        _sql = "UPDATE course "
+                + "SET c_name = '" + c_name + "' "
+                + "WHERE c_id ='" + c_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     public boolean createCourse(String c_id, String c_name) {
         _sql = "INSERT INTO course VALUES ('"
                 + c_id + "', '" + c_name + "')";

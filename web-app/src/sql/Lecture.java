@@ -336,6 +336,35 @@ public class Lecture extends Sql {
         return _dbAccess.updateDB(_sql);
     }
 
+    /**
+     * 
+     * @param ls_id
+     * @param ls_repeats
+     * @return
+     */
+    public boolean updateLectureRepeats(int ls_id, int ls_repeats) {
+        _sql = "CALL sp_update_ls_repeats("
+                + ls_id + ", "
+                + ls_repeats + ")";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
+     * Format of datetime must be exactly as specified<p>
+     * Check to make sure datetime is greatly than current time<p>
+     * If method updateLectureTime has been to alter time of day,
+     * calling this method will reset all custom changes
+     * @param ls_id
+     * @param datetime (format: 'YYYY-MM-DD HH:MM:SS')
+     * @return
+     */
+    public boolean updateLectureScheduleInitialTime(int ls_id, String datetime) {
+        _sql = "CALL sp_update_ls_inidatetime("
+                + ls_id + ", '"
+                + datetime + "')";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     public boolean createLecturePresentation(String lp_title, int ls_id, int l_id) {
         _sql = "INSERT INTO lecture_presentation VALUES ('"
                 + lp_title + "', " + ls_id + ", " + l_id + ")";
@@ -353,6 +382,33 @@ public class Lecture extends Sql {
         int flag = (gl_ismod == true) ? 1 : 0;
         _sql = "INSERT INTO guest_lecturer VALUES ('"
                 + bu_id + "', " + ls_id + ", " + l_id + ", " + flag + ")";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
+     * Create lecture schedule as well as all lectures in this lecture schedule
+     * @param c_id
+     * @param sc_id
+     * @param sc_semesterid
+     * @param ls_inidatetime (format: 'YYYY-MM-DD HH:MM:SS')
+     * @param ls_intervals (in days)
+     * @param ls_repeats
+     * @param ls_duration (in minutes, round to nearest integer)
+     * @param l_description
+     * @return
+     */
+    public boolean createLectureSchedule(String c_id, String sc_id, String sc_semesterid, 
+            String ls_inidatetime, int ls_intervals, int ls_repeats, int ls_duration, 
+            String l_description) {
+        _sql = "CALL sp_create_ls('"
+                + c_id + "', '"
+                + sc_id + "', '"
+                + sc_semesterid + "', '"
+                + ls_inidatetime + "', "
+                + ls_intervals + ", "
+                + ls_repeats + ", "
+                + ls_duration + ", '"
+                + l_description + "')";
         return _dbAccess.updateDB(_sql);
     }
     
@@ -377,6 +433,17 @@ public class Lecture extends Sql {
                 + "WHERE ls_id = " + ls_id + " "
                 + "AND l_id = " + l_id + " "
                 + "AND lp_title = '" + lp_title + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
+     * Only lectures yet to happen will be removed
+     * lecture schedule only removed if there is no lecture associated with it
+     * @param ls_id
+     * @return
+     */
+    public boolean removeMeetingSchedule(int ls_id) {
+        _sql = "CALL sp_delete_ls(" + ls_id + ")";
         return _dbAccess.updateDB(_sql);
     }
 }

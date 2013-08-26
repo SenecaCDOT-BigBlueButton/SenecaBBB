@@ -6,7 +6,6 @@ import db.DBAccess;
 
 public class Test_Section extends Test_Helper {
     static Section _section = null;
-    static int _counter;
 
     public Test_Section(DBAccess source) {
         super();
@@ -44,9 +43,15 @@ public class Test_Section extends Test_Helper {
         
         //display(_section.removeCourse("AAA"));
         
-        display(_section.removeStudent("bli64", "???", "Z", "12345"));
+        //display(_section.removeStudent("bli64", "???", "Z", "12345"));
         
-        display(_section.removeProfessor("bo.li", "???", "Z", "12345"));
+        //display(_section.removeProfessor("bo.li", "???", "Z", "12345"));
+        
+        display(_section.setBannedFromSection("rwstanica", "OOP344", "B", "201305", true));
+        
+        display(_section.setCourseName("OOP344", "test"));
+        
+        display(_section.setCourseId("IPC144", "ABC"));
         
     }
 }

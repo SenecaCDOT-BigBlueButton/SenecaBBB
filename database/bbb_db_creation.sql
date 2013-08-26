@@ -164,7 +164,7 @@ CREATE TABLE meeting (
   CONSTRAINT fk_meeting_schedule_of_meeting
     FOREIGN KEY (ms_id) 
     REFERENCES meeting_schedule (ms_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
@@ -341,7 +341,7 @@ CREATE TABLE lecture (
   CONSTRAINT fk_lecture_schedule_of_lecture
     FOREIGN KEY (ls_id) 
     REFERENCES lecture_schedule (ls_id)
-    ON DELETE CASCADE
+    #ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 

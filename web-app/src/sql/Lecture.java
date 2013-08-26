@@ -336,6 +336,35 @@ public class Lecture extends Sql {
         return _dbAccess.updateDB(_sql);
     }
 
+    /**
+     * 
+     * @param ls_id
+     * @param ls_repeats
+     * @return
+     */
+    public boolean updateLectureRepeats(int ls_id, int ls_repeats) {
+        _sql = "CALL sp_update_ls_repeats("
+                + ls_id + ", "
+                + ls_repeats + ")";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
+     * Format of datetime must be exactly as specified<p>
+     * Check to make sure datetime is greatly than current time<p>
+     * If method updateLectureTime has been to alter time of day,
+     * calling this method will reset all custom changes
+     * @param ls_id
+     * @param datetime (format: 'YYYY-MM-DD HH:MM:SS')
+     * @return
+     */
+    public boolean updateMeetingScheduleInitialTime(int ls_id, String datetime) {
+        _sql = "CALL sp_update_ls_inidatetime("
+                + ls_id + ", '"
+                + datetime + "')";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     public boolean createLecturePresentation(String lp_title, int ls_id, int l_id) {
         _sql = "INSERT INTO lecture_presentation VALUES ('"
                 + lp_title + "', " + ls_id + ", " + l_id + ")";
@@ -353,6 +382,30 @@ public class Lecture extends Sql {
         int flag = (gl_ismod == true) ? 1 : 0;
         _sql = "INSERT INTO guest_lecturer VALUES ('"
                 + bu_id + "', " + ls_id + ", " + l_id + ", " + flag + ")";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
+     * Create lecture schedule as well as all meetings in this lecture schedule
+     * @param ls_title
+     * @param ms_inidatetime (format: 'YYYY-MM-DD HH:MM:SS')
+     * @param ms_intervals (in days)
+     * @param ms_repeats
+     * @param ms_duration (in minutes, round to nearest integer)
+     * @param m_description
+     * @param bu_id
+     * @return
+     */
+    public boolean createMeetingSchedule(String ms_title, String ms_inidatetime, 
+            int ms_intervals, int ms_repeats, int ms_duration, String m_description, String bu_id) {
+        _sql = "CALL sp_create_ms('"
+                + ms_title + "', '"
+                + ms_inidatetime + "', "
+                + ms_intervals + ", "
+                + ms_repeats + ", "
+                + ms_duration + ", '"
+                + m_description + "', '"
+                + bu_id + "')";
         return _dbAccess.updateDB(_sql);
     }
     

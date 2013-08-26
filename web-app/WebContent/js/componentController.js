@@ -670,5 +670,6 @@ $(screen).ready(function() {
 		var currentPage = $("section header h1").text().substr(0,1).toLowerCase() + $("section header h1").text().substr(1).replace(/ /g, '');
 		$("aside nav #"+currentPage).css({"border-left":"0px solid #EEE"}, {"background-color":"#9F100B"});
 		$("aside nav #"+currentPage).parent(this).css({"border-right":"10px solid #454545"});
-		$("aside nav #"+currentPage).unbind('mouseout', 'mouseover');
+		$("aside nav #"+currentPage).unbind('mouseout');
+		$("aside nav #"+currentPage).unbind('mouseover');
 });

@@ -28,7 +28,7 @@
 <meta http-equiv="pragma" content="no-cache" />
 <title>Seneca | Conferece Management System</title>
 <link rel="shortcut icon" href="http://www.cssreset.com/favicon.png" />
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/themes/base/style.css" rel="stylesheet" type="text/css" media="all">
 <link href="css/fonts.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type="text/javascript">

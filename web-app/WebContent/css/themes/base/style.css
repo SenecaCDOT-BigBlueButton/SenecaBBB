@@ -548,6 +548,53 @@ section form .buttons .button, .datePicker, .search {
 	position: relative; /* Enable absolute positionning for children and pseudo elements */
 	cursor: pointer;
 }
+button.ui-datepicker-trigger {
+	/*position: absolute;
+            top: 50px;
+            left: 30px;
+            border-radius: 0;
+            display: block;
+            height: 39px;
+            width: 39px;
+            border: none;*/
+	padding: 10px;
+	padding-top: 8px;
+	width: 85px;
+	height: 39px;
+	margin-left: 0px;
+	margin-right: 18px;
+	font-size: 14pt;
+	color: #FFFFFF;
+	border-style: none;
+	cursor: pointer;
+	
+	-webkit-transition: all 0.1s;
+	-moz-transition: all 0.1s;
+	-ms-transition: all 0.1s;
+	-o-transition: all 0.1s;
+	transition: all 0.1s;
+	width: 39px;
+	height: 42px;
+	float: right;
+	display: block;
+	margin-right: 0px;
+	margin-left: 10px;
+	background-color: #CD352B;
+	background-image:url(../../../images/themes/base/calendarTransparent.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+	position: relative; /* Enable absolute positionning for children and pseudo elements */
+	cursor: pointer;
+}
+#datePickerStart {
+	/*visibility: hidden;*/
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 39px;
+	height: 40px;
+	border: none;
+}
 .search {
 	width: 39px;
 	height: 42px;

@@ -8,6 +8,7 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
@@ -18,6 +19,8 @@
 <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
 <script type="text/javascript">
 $(screen).ready(function() {
 	/* ATTENDEES LIST */	
@@ -34,6 +37,17 @@ $(screen).ready(function() {
 });
 $(function(){
 	$('select').selectmenu();
+});
+$(function(){
+	var pickerOpts = {
+		showOn: "button",
+		buttonText:"",
+		onSelect:function(dateText){
+			var startDate = new Date(dateText);
+			alert("day: " + startDate.getDate() + " month: " + startDate.getMonth());
+		}
+	};	
+	$("#datePickerStart").datepicker(pickerOpts);
 });
 </script>
 </head>
@@ -140,10 +154,10 @@ $(function(){
           <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/></header>
         <div class="content">
           <fieldset>
-            <div class="component" id="startsOn">
+          	<div class="component" id="startsOn">
               <label for="dropdownMonthStarts" class="label">Starts:</label>
-              <button type="button" name="datePicker" id="show" class="datePicker" title="Choose a date"></button>
-              <div id="gambi"></div>
+<!--              <button type="button" name="datePicker" id="show" class="datePicker" title="Choose a date"></button>-->
+              <input id="datePickerStart" readonly aria-disabled="true">
               <select id="dropdownYearStarts" title="Year" tabindex="23" style="width: 100px">
               </select>
               <select id="dropdownDayStarts" title="Day" tabindex="22" role="listbox" style="width: 100px">

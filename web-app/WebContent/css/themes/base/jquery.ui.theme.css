@@ -356,10 +356,49 @@ REMOVE HOVER REGARDING SELECT BUTTON
 .ui-icon-circle-plus { background-position: 0 -192px; }
 .ui-icon-circle-minus { background-position: -16px -192px; }
 .ui-icon-circle-close { background-position: -32px -192px; }
-.ui-icon-circle-triangle-e { background-position: -48px -192px; }
-.ui-icon-circle-triangle-s { background-position: -64px -192px; }
-.ui-icon-circle-triangle-w { background-position: -80px -192px; }
-.ui-icon-circle-triangle-n { background-position: -96px -192px; }
+.ui-icon-circle-triangle-e { /* East */
+	/*background-position: -48px -192px;*/
+	content: "";
+	width: 0;
+	height: 0;
+	margin-right: 10px;
+	border-width: 6px 0 6px 6px;
+	border-style: solid;
+	border-color: transparent #E6322E;
+	background: none;
+}
+.ui-icon-circle-triangle-s { /* South */
+	/*background-position: -64px -192px;*/
+	content: "";
+	width: 0;
+	height: 0;
+	margin-bottom: 10px;
+	border-width: 6px 6px 0px 6px;
+	border-style: solid;
+	border-color: transparent #E6322E;
+	background: none;}
+.ui-icon-circle-triangle-w { /* West */
+	/*background-position: -80px -192px;*/
+	content: "";
+	width: 0;
+	height: 0;
+	margin-left: 10px;
+	border-width: 6px 6px 6px 0px;
+	border-style: solid;
+	border-color: transparent #E6322E;
+	background: none;
+}
+.ui-icon-circle-triangle-n { /* North */
+	/*background-position: -96px -192px;*/
+	content: "";
+	width: 0;
+	height: 0;
+	margin-top: 10px;
+	border-width: 0px 6px 6px 6px;
+	border-style: solid;
+	border-color: transparent #E6322E;
+	background: none;
+}
 .ui-icon-circle-arrow-e { background-position: -112px -192px; }
 .ui-icon-circle-arrow-s { background-position: -128px -192px; }
 .ui-icon-circle-arrow-w { background-position: -144px -192px; }

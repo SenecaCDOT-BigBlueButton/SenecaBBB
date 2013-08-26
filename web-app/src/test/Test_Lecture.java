@@ -78,6 +78,17 @@ public class Test_Lecture extends Test_Helper {
         //display(_lecture.removeLecturePresentation("testing1", 1, 1));
         
         //display(_lecture.removeLectureGuest("bo.li", 1, 1));
-         
+        
+        display(_lecture.updateLectureRepeats(1, 15));
+        
+        display(_lecture.updateLectureRepeats(2, 1));
+        
+        display(_lecture.updateLectureScheduleInitialTime(2, "2013-10-01 10:20:30"));
+        
+        //display(_lecture.createLectureSchedule("PSY150", "A", "201305", "2013-10-01 10:20:30", 7, 10, 50, "PSY150"));
+        
+        display(_lecture.removeMeetingSchedule(3));
+        
+        display(_lecture.removeMeetingSchedule(1));
     }
 }

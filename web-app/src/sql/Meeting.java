@@ -522,4 +522,15 @@ public class Meeting extends Sql {
                 + "AND mp_title = '" + mp_title + "'";
         return _dbAccess.updateDB(_sql);
     }
+    
+    /**
+     * Only meetings yet to happen will be removed
+     * meeting schedule only removed if there is no meeting associated with it
+     * @param ms_id
+     * @return
+     */
+    public boolean removeMeetingSchedule(int ms_id) {
+        _sql = "CALL sp_delete_ms(" + ms_id + ")";
+        return _dbAccess.updateDB(_sql);
+    }
 }

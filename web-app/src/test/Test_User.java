@@ -12,7 +12,7 @@ public class Test_User extends Test_Helper {
      * _group[3]: 'is' testing for existence
      * _group[4]: create or remove rows
      */
-    static int[] _group = {1, 0, 0, 0, 0};
+    static int[] _group = {0, 0, 0, 0, 1};
     
     public Test_User(DBAccess source) {
         super();
@@ -58,7 +58,7 @@ public class Test_User extends Test_Helper {
 
             display(_user.getIsSuperAdmin(_result, "fardad.soleimanloo"));
             
-            display(_user.getUsersLike(_result, "bli64"));
+            //display(_user.getUsersLike(_result, "bli64"));
         }
         
         if (_group[1] == 1) {

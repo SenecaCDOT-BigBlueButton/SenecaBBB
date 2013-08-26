@@ -86,8 +86,8 @@ $(screen).ready(function() {
 		populateDate();
 
 		//Change days field according to the current month
-		function populateMonthStarts(){
-			switch ($("dropdownMonthStarts").val()){
+		function populateMonthStarts(month){
+			switch (month){
 				case "January":
 				case "March":
 				case "May":
@@ -95,6 +95,7 @@ $(screen).ready(function() {
 				case "August":
 				case "October":
 				case "December":
+				
 					var previouslySelectedDay = $("#dropdownDayStarts").val();
 					$("#dropdownDayStarts option").remove();
 					for (var i = 1; i <= 31; i++) {
@@ -143,8 +144,8 @@ $(screen).ready(function() {
 		}
 		
 		//Change days field according to the current month
-		function populateMonthEnds(){
-			switch ($("dropdownMonthEnds").val()){
+		function populateMonthEnds(month){
+			switch (month){
 				case "January":
 				case "March":
 				case "May":
@@ -188,7 +189,7 @@ $(screen).ready(function() {
 					
 					if ((previouslySelectedDay >= 29) && (isLeapYear)){
 						$("#dropdownDayEnds").val(29);
-						alert("leapyear");
+						
 					} else if (previouslySelectedDay >= 28){
 						$("#dropdownDayEnds").val(28);
 					} else {
@@ -202,22 +203,22 @@ $(screen).ready(function() {
 
 		//Change days field according to the current month
 		$("#dropdownMonthStarts").change(function(){
-			populateMonthStarts();
+			populateMonthStarts($("#dropdownMonthStarts").val());
 		});
 
 		//Change days field according to the current month
 		$("#dropdownMonthEnds").change(function(){
-			populateMonthEnds();
+			populateMonthEnds($("#dropdownMonthEnds").val());
 		});
 
 		//Change days field according to the current year
 		$("#dropdownYearStarts").change(function(){
-			populateMonthStarts();
+			populateMonthStarts($("#dropdownMonthStarts").val());
 		});
 
 		//Change days field according to the current year
 		$("#dropdownYearEnds").change(function(){
-			populateMonthEnds();
+			populateMonthEnds($("#dropdownMonthEnds").val());
 		});
 
 		// Dropdown: Recurrence

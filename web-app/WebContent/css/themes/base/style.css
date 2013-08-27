@@ -586,12 +586,12 @@ button.ui-datepicker-trigger {
 	position: relative; /* Enable absolute positionning for children and pseudo elements */
 	cursor: pointer;
 }
-#datePickerStart {
-	/*visibility: hidden;*/
+#datePickerStarts {
+	visibility: hidden;
 	position: absolute;
 	top: 0px;
 	right: 0px;
-	width: 39px;
+	width: 37px;
 	height: 40px;
 	border: none;
 }

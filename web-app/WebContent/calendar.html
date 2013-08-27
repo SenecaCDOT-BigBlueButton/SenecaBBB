@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Seneca | Conferece Management System</title>
+<link rel="icon" href="http://www.cssreset.com/favicon.png">
+<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
+
+<link href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css' rel='stylesheet' />
+<link href='fullcalendar-1.6.3/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+<script src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
+<script type="text/javascript" src="js/componentController.js"></script>
+<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+
+<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
+
+<!--
+
+<script type="text/javascript" src="js/componentController.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>-->
+
+<script type="text/javascript">
+$(screen).ready(function() {
+	$('#calendar').fullCalendar({
+			
+	});
+})
+$(function(){
+	$('select').selectmenu();
+
+	var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		
+/*$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			editable: true,
+			events: [
+				{
+					title: 'All Day Event',
+					start: new Date(y, m, 1)
+				},
+				{
+					title: 'Long Event',
+					start: new Date(y, m, d-5),
+					end: new Date(y, m, d-2)
+				},
+				{
+					id: 999,
+					title: 'Repeating Event',
+					start: new Date(y, m, d-3, 16, 0),
+					allDay: false
+				},
+				{
+					id: 999,
+					title: 'Repeating Event',
+					start: new Date(y, m, d+4, 16, 0),
+					allDay: false
+				},
+				{
+					title: 'Meeting',
+					start: new Date(y, m, d, 10, 30),
+					allDay: false
+				},
+				{
+					title: 'Lunch',
+					start: new Date(y, m, d, 12, 0),
+					end: new Date(y, m, d, 14, 0),
+					allDay: false
+				},
+				{
+					title: 'Birthday Party',
+					start: new Date(y, m, d+1, 19, 0),
+					end: new Date(y, m, d+1, 22, 30),
+					allDay: false
+				},
+				{
+					title: 'Click for Google',
+					start: new Date(y, m, 28),
+					end: new Date(y, m, 29),
+					url: 'http://google.com/'
+				}
+			]
+		});*/
+});
+</script>
+<style>
+
+	body {
+		margin-top: 40px;
+		text-align: center;
+		font-size: 14px;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		}
+
+	#calendar {
+		width: 900px;
+		margin: 0 auto;
+		}
+
+</style>
+</head>
+<body>
+<div id="page">
+  <header id="header"><a href="calendar.jsp"><img src="images/logo.png" alt="Seneca College of Applied Arts and Technology" tabindex="1" title="Seneca College of Applied Arts and Technology"/></a>
+    <nav>
+      <ul>
+        <li><a href="#" tabindex="4" title="Logout">Logout</a></li>
+        <li class="divisor">|</li>
+        <li><a href="settings.jsp" tabindex="3" title="User settings">Settings</a></li>
+        <li class="divisor">|</li>
+        <li><a href="#" tabindex="2" title="View user info">Ystallonne Alves</a></li>
+      </ul>
+    </nav>
+  </header>
+  <aside>
+    <nav>
+      <ul>
+        <div class="menu">
+          <li id="home"><a href="index.jsp" tabindex="5" title="Click here to go to the home screen">Home</a></li>
+        </div>
+        <div class="menu">
+          <li id="createEvent"><a href="createEvent.jsp" tabindex="6" title="Click here to create a new event">Create Event</a></li>
+        </div>
+        <div class="menu">
+          <li id="manageUsers"><a href="manageUsers.jsp" tabindex="7" title="Click here to manage users">Manage Users</a></li>
+        </div>
+        <div class="menu">
+          <li id="departments"><a href="departments.jsp" tabindex="8" title="Click here to manage departments">Departments</a></li>
+        </div>
+        <div class="menu">
+          <li id="departmentUsers"><a href="departmentUsers.jsp" tabindex="9" title="Click here to manage department users">Department Users</a></li>
+        </div>
+        <div class="menu">
+          <li id="subjects"><a href="subjects.jsp" tabindex="10" title="Click here to manage subjects">Subjects</a></li>
+        </div>
+        <div class="menu">
+          <li id="classSettings"><a href="classSettings.jsp" tabindex="11" title="Click here to manage class settings">Class Settings</a></li>
+        </div>
+        <div class="menu">
+          <li id="systemSettings"><a href="systemSettings.jsp" tabindex="12" title="Click here to manage system settings">System Settings</a></li>
+        </div>
+      </ul>
+    </nav>
+  </aside>
+  <section>
+    <header>
+      <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="createEvent" tabindex="14">create event</a></p>
+      <h1>Create Event</h1>
+    </header>
+    <form>
+      <article>
+        <header>
+          <h2>Event Details</h2>
+          <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/></header>
+        <div class="content">
+          <fieldset>
+          	<div class="component">
+              <div id="calendar"></div>
+            </div>
+        </fieldset>
+        </div>
+      </article>
+    </form>
+  </section>
+  <footer>
+    <nav id="footerMenu">
+      <ul>
+        <li><a href="calendar.jsp" title="Click here to go to the home page">Home</a></li>
+        <li>|</li>
+        <li><a href="contactUs.jsp" title="Click here to enter in contact with us">Contact Us</a></li>
+        <li>|</li>
+        <li><a href="help.jsp" title="Click here to obtain help information">Help</a></li>
+      </ul>
+    </nav>
+    <div id="copyright">Copyright © 2013 - Seneca College of Applied Arts and Technology</div>
+  </footer>
+</div>
+</body>
+</html>

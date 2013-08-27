@@ -10,8 +10,22 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
+
+<link href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css' rel='stylesheet' />
+<link href='fullcalendar-1.6.3/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
+<script type="text/javascript" src="js/componentController.js"></script>
+<!--
+
 <script type="text/javascript" src="js/componentController.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
@@ -19,9 +33,7 @@
 <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
-
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>-->
 
 <script type="text/javascript">
 $(screen).ready(function() {
@@ -36,29 +48,16 @@ $(screen).ready(function() {
 	$('#attendeesList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
 	$.fn.dataTableExt.sErrMode = 'throw';
 	$('.dataTables_filter input').attr("placeholder", "Filter entries");
-});
+})
 $(function(){
 	$('select').selectmenu();
-});
-$(function(){
-	var pickerOpts = {
-		showOn: "button",
-		buttonText:"",
-		onSelect:function(dateText){
-			var startDate = new Date(dateText);
-			//alert("day: " + startDate.getDate() + " month: " + startDate.getMonth());
-		}
-	};
-	$("#datePickerStart").datepicker(pickerOpts);
-});
-/*	$(document).ready(function() {
+
+	var date = new Date();
+	var d = date.getDate();
+	var m = date.getMonth();
+	var y = date.getFullYear();
 	
-		var date = new Date();
-		var d = date.getDate();
-		var m = date.getMonth();
-		var y = date.getFullYear();
-		
-		$('#calendar').fullCalendar({
+	$('#calendar').fullCalendar({
 			header: {
 				left: 'prev,next today',
 				center: 'title',
@@ -112,8 +111,19 @@ $(function(){
 				}
 			]
 		});
-		
-	});*/
+});
+
+$(function(){
+	var pickerOpts = {
+		showOn: "button",
+		buttonText:"",
+		onSelect:function(dateText){
+			//var startDate = new Date(dateText);
+			alert("day: " + startDate.getDate() + " month: " + startDate.getMonth());
+		}
+	};
+	$("#datePickerStarts").datepicker(pickerOpts);
+});
 </script>
 </head>
 <body>
@@ -223,7 +233,7 @@ $(function(){
           	<div class="component" id="startsOn">
               <label for="dropdownMonthStarts" class="label">Starts:</label>
 <!--              <button type="button" name="datePicker" id="show" class="datePicker" title="Choose a date"></button>-->
-              <input id="datePickerStart" readonly aria-disabled="true">
+              <input id="datePickerStarts">
               <select id="dropdownYearStarts" title="Year" tabindex="23" style="width: 100px">
               </select>
               <select id="dropdownDayStarts" title="Day" tabindex="22" role="listbox" style="width: 100px">

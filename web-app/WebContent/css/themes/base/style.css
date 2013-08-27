@@ -587,12 +587,11 @@ button.ui-datepicker-trigger {
 	cursor: pointer;
 }
 #calendar {
-		width: 600px;
+		width: 850px;
 		margin: 0 auto;
-		background-color: #036;
-		height: 50px;
-		display:block;
-		}
+		height: 900px;
+		display: block;
+}
 
 #datePickerStart {
 	/*visibility: hidden;*/

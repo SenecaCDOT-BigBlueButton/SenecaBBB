@@ -510,7 +510,7 @@ $(screen).ready(function() {
 		});
 
 		/* Day of the Month */
-		$("section form article fieldset div.component#selectDayoftheMonth #dayoftheMonth").jStepper({minValue:1, maxValue:31, minLength:1});
+		//$("section form article fieldset div.component#selectDayoftheMonth #dayoftheMonth").jStepper({minValue:1, maxValue:31, minLength:1});
 
 		/* CLEAR MENU */		
 		function clear (){

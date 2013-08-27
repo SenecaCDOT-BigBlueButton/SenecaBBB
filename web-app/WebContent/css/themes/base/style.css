@@ -586,13 +586,6 @@ button.ui-datepicker-trigger {
 	position: relative; /* Enable absolute positionning for children and pseudo elements */
 	cursor: pointer;
 }
-#calendar {
-		width: 850px;
-		margin: 0 auto;
-		height: 900px;
-		display: block;
-}
-
 #datePickerStart {
 	/*visibility: hidden;*/
 	position: absolute;
@@ -601,6 +594,12 @@ button.ui-datepicker-trigger {
 	width: 39px;
 	height: 40px;
 	border: none;
+}
+#calendar {
+	width: 900px;
+	margin-left: -14px;
+	height: 900px;
+	display: block;
 }
 .search {
 	width: 39px;

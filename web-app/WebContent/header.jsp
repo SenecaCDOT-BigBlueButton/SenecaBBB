@@ -9,4 +9,4 @@
         <li><a href="#" tabindex="2" title="View user info"><%=usersession.getGivenName() %></a></li>
       </ul>
     </nav>
-  </header>
+</header>

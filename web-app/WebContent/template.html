@@ -12,20 +12,20 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
 <link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script type="text/javascript" src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.datepicker.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <script type="text/javascript" src="js/componentController.js"></script>
 
 <script type="text/javascript">
 $(screen).ready(function() {
-	/* ATTENDEES LIST */	
+	/* ATTENDEES LIST */
 	$('#addAttendee').dataTable({"sPaginationType": "full_numbers"});
 	$('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
 	$.fn.dataTableExt.sErrMode = 'throw';
@@ -38,15 +38,52 @@ $(screen).ready(function() {
 	$('.dataTables_filter input').attr("placeholder", "Filter entries");
 });
 $(function(){
-	var pickerOpts = {
+	var month = new Array(12);
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	var datePickerStarts = {
 		showOn: "button",
 		buttonText:"",
+		minDate: 0,
+		maxDate: "+4Y",
 		onSelect:function(dateText){
 			var startDate = new Date(dateText);
-			alert("day: " + startDate.getDate() + " month: " + startDate.getMonth());
+			$("#dropdownDayStarts").val(startDate.getUTCDate());
+			$("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
+			$("#dropdownYearStarts").val(startDate.getUTCFullYear());
+			$("#dropdownDayStarts").selectmenu({'refresh': true});
+			$("#dropdownMonthStarts").selectmenu({'refresh': true});
+			$("#dropdownYearStarts").selectmenu({'refresh': true});
 		}
-	};	
-	$("#datePickerStarts").datepicker(pickerOpts);
+	};
+	var datePickerEnds = {
+		showOn: "button",
+		buttonText:"",
+		minDate: 0,
+		maxDate: "+4Y",
+		onSelect:function(dateText){
+			var endDate = new Date(dateText);
+			$("#dropdownDayEnds").val(endDate.getUTCDate());
+			$("#dropdownMonthEnds").val(month[endDate.getUTCMonth()]);
+			$("#dropdownYearEnds").val(endDate.getUTCFullYear());
+			$("#dropdownDayEnds").selectmenu({'refresh': true});
+			$("#dropdownMonthEnds").selectmenu({'refresh': true});
+			$("#dropdownYearEnds").selectmenu({'refresh': true});
+		}
+	};
+	$("#datePickerStarts").datepicker(datePickerStarts);
+	$("#datePickerEnds").datepicker(datePickerEnds);
 });
 $(function(){
 	$('select').selectmenu();
@@ -219,7 +256,7 @@ $(function(){
           <fieldset>
           	<div class="component" id="startsOn">
               <label for="dropdownMonthStarts" class="label">Starts:</label>
-              <div class="datePicker">
+              <div class="datePicker" title="Choose a date">
               	<input id="datePickerStarts" class="datePicker" aria-disabled="true"  aria-hidden="true" aria-readonly="true" readonly>
               </div>
               <select id="dropdownYearStarts" title="Year" tabindex="23" style="width: 100px">
@@ -334,7 +371,9 @@ $(function(){
             </div>
             <div id="occurrenceEnds" class="component">
               <label for="dropdownMonthEnds" class="label">Date:</label>
-              <button type="button" name="datePicker" id="datePicker" class="datePicker" title="Choose a date"></button>
+              <div class="datePicker" title="Choose a date">
+              	<input id="datePickerEnds" class="datePicker" aria-disabled="true"  aria-hidden="true" aria-readonly="true" readonly>
+              </div>
               <select id="dropdownYearEnds" title="Year" tabindex="23" role="listbox" style="width: 100px">
               </select>
               <select id="dropdownDayEnds" title="Day" tabindex="22" role="listbox" style="width: 100px">

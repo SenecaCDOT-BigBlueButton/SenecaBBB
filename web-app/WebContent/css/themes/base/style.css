@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* CSS Document */
-/* GLOBALS */
+/*[ GLOBALS ]*/
 html, body {
 	width: 100%;
 	height: 100%;
@@ -44,7 +44,7 @@ ul {
 	list-style-type: none;
 	overflow: hidden;
 }
-/* HEADER */
+/*[ HEADER ]*/
 header#header {
 	max-width: 1280px;
 	height: 140px;
@@ -95,7 +95,7 @@ header#header li.divisor {
 	padding: 10px 0em;
 	background-color: #FFF;
 }
-/* MENU */
+/*[ MENU ]*/
 aside {
 	width: 200px;
 	float: left;
@@ -225,7 +225,7 @@ aside nav ul li {
 	padding-bottom: 0em;
 	padding-left: 0em;
 }
-/* CONTENT */
+/*[ CONTENT ]*/
 section {
 	width: 900px;
 	height: auto;
@@ -338,6 +338,12 @@ section form article fieldset div.component {
 	float: left;
 	position: relative;
 }
+div#calendar {
+	width: 900px;
+	margin-left: -14px;
+	height: 900px;
+	display: block;
+}
 section form article fieldset div.tableComponent {
 	width: 620px;
 	margin-left: -12px;
@@ -408,7 +414,7 @@ section form article fieldset div.component input.input:focus, div.dataTables_fi
 	outline: none;
 	border: 1px solid #9F100B;
 }
-/* CHECKBOX */
+/*[ CHECKBOX ]*/
 section form article fieldset div.component div.checkbox {
 	height: 24px;
 	margin-left: 216px;
@@ -463,7 +469,7 @@ section form article fieldset div.component div.checkbox label.text {
 	font-style: normal;
 	font-weight: 500;
 }
-/* RADIOBUTTON */
+/*[ RADIOBUTTON ]*/
 section form article fieldset div.component div.radio {
 	height: 24px;
 	margin-left: 216px;
@@ -513,11 +519,11 @@ section form article fieldset div.component div.radio label.text {
 	font-style: normal;
 	font-weight: 500;
 }
-/* BUTTON */
+/*[ BUTTONS ]*/
 section form .buttons {
 	margin-left: 216px;
 }
-section form .buttons .button, .datePicker, .search {
+section form .buttons .button, .search {
 	padding: 10px;
 	padding-top: 8px;
 	width: 85px;
@@ -535,71 +541,44 @@ section form .buttons .button, .datePicker, .search {
 	-o-transition: all 0.1s;
 	transition: all 0.1s;
 }
-.datePicker {
+/* DatePicker Component */
+div.datePicker {
 	width: 39px;
 	height: 42px;
 	float: right;
 	display: block;
 	margin-right: 0px;
 	margin-left: 10px;
-	background-image: url(../../../images/calendarTransparent.svg);
-	background-repeat: no-repeat;
-	background-position: center;
 	position: relative; /* Enable absolute positionning for children and pseudo elements */
 	cursor: pointer;
 }
-button.ui-datepicker-trigger {
-	/*position: absolute;
-            top: 50px;
-            left: 30px;
-            border-radius: 0;
-            display: block;
-            height: 39px;
-            width: 39px;
-            border: none;*/
-	padding: 10px;
-	padding-top: 8px;
-	width: 85px;
-	height: 39px;
-	margin-left: 0px;
-	margin-right: 18px;
-	font-size: 14pt;
-	color: #FFFFFF;
-	border-style: none;
-	cursor: pointer;
-	
-	-webkit-transition: all 0.1s;
-	-moz-transition: all 0.1s;
-	-ms-transition: all 0.1s;
-	-o-transition: all 0.1s;
-	transition: all 0.1s;
-	width: 39px;
-	height: 42px;
-	float: right;
-	display: block;
-	margin-right: 0px;
-	margin-left: 10px;
-	background-color: #CD352B;
-	background-image:url(../../../images/themes/base/calendarTransparent.svg);
-	background-repeat: no-repeat;
-	background-position: center;
-	position: relative; /* Enable absolute positionning for children and pseudo elements */
-	cursor: pointer;
-}
-#datePickerStarts {
+input.datePicker {
 	visibility: hidden;
 	position: absolute;
 	top: 0px;
-	right: 0px;
-	width: 37px;
+	left: 0px;
+	width: 38px;
 	height: 40px;
 	border: none;
 }
-#calendar {
-	width: 900px;
-	margin-left: -14px;
-	height: 900px;
+button.ui-datepicker-trigger {
+	width: 39px;
+	height: 42px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
 	display: block;
+	border: none;
+	background-color: #CD352B;
+	-webkit-transition: all 0.1s;
+	-moz-transition: all 0.1s;
+	-ms-transition: all 0.1s;
+	-o-transition: all 0.1s;
+	transition: all 0.1s;
+	background-image:url(../../../images/themes/base/calendarTransparent.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
 }
 .search {
 	width: 39px;
@@ -614,10 +593,10 @@ button.ui-datepicker-trigger {
 	position: relative; /* Enable absolute positionning for children and pseudo elements */
 	cursor: pointer;
 }
-section form .buttons .button:hover, .datePicker:hover, #search:hover {
+section form .buttons .button:hover, .datePicker:hover, #search:hover, button.ui-datepicker-trigger:hover {
 	background-color: #9F100B;
 }
-section form .buttons .button:active, .datePicker:active, #search:active {
+section form .buttons .button:active, .datePicker:active, #search:active, button.ui-datepicker-trigger:active {
 	background-color: #9F100B;
 }
 /* WEEK - CHECKBOX AND RADIOBUTTON BUTTONS*/

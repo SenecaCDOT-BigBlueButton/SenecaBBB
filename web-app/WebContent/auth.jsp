@@ -39,7 +39,7 @@
 				User user = new User(dbaccess);
 				ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 				user.getUserInfo(result, userID);
-				
+				System.
 				// User doesn't exist in our db
 				if (result.isEmpty()){
 					user.createUser(userID, "", true, ur_id);
@@ -52,7 +52,6 @@
 				}
 				// User exists in our db
 				else {
-					 System.out.println("here.");
 					user.getUserRoleSetting(roleMask, ur_id);
 					usersession.setRoleMask(roleMask);
 					usersession.setNick(result.get(0).get(1));
@@ -61,7 +60,6 @@
 					roleMask.clear();
 					user.getUserMeetingSetting(roleMask, userID);
 					usersession.setUserMeetingSettingsMask(roleMask);
-					System.out.println(usersession.getEmail());
 				}
 				response.sendRedirect("calendar.jsp");
 			}

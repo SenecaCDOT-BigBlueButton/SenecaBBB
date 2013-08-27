@@ -403,12 +403,6 @@ $(screen).ready(function() {
 			$(this).next(".content").slideToggle(500);
 			$(this).find("img").toggleClass("expandContent");
 		});
-		$("#startsOnDatePicker").hide();
-
-		/* DATEPICKER */
-		$("#datePicker").click(function () {
-			$("#startsOnDatePicker").slideToggle(500);
-		});
 
 		/* Checkbox */
 		$('.checkbox .box').keydown(function() {

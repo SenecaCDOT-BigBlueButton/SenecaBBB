@@ -12,6 +12,7 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
 <link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script type="text/javascript" src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
@@ -35,7 +36,18 @@ $(screen).ready(function() {
 	$('#attendeesList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
 	$.fn.dataTableExt.sErrMode = 'throw';
 	$('.dataTables_filter input').attr("placeholder", "Filter entries");
-})
+});
+$(function(){
+	var pickerOpts = {
+		showOn: "button",
+		buttonText:"",
+		onSelect:function(dateText){
+			var startDate = new Date(dateText);
+			alert("day: " + startDate.getDate() + " month: " + startDate.getMonth());
+		}
+	};	
+	$("#date").datepicker(pickerOpts);
+});
 $(function(){
 	$('select').selectmenu();
 
@@ -98,18 +110,6 @@ $(function(){
 				}
 			]
 		});
-});
-
-$(function(){
-	var pickerOpts = {
-		showOn: "button",
-		buttonText:"",
-		onSelect:function(dateText){
-			//var startDate = new Date(dateText);
-			//alert("day: " + startDate.getDate() + " month: " + startDate.getMonth());
-		}
-	};
-	$("#datePickerStarts").datepicker(pickerOpts);
 });
 </script>
 </head>
@@ -220,6 +220,21 @@ $(function(){
           	<div class="component" id="startsOn">
               <label for="dropdownMonthStarts" class="label">Starts:</label>
 <!--              <button type="button" name="datePicker" id="show" class="datePicker" title="Choose a date"></button>-->
+              <style type="text/css">
+button.ui-datepicker-trigger, #date {
+	position: absolute;
+	top: 50px;
+	left: 30px;
+	border-radius: 0;
+	display: block;
+	height: 39px;
+	width: 39px;
+	border: none;
+}
+#date{
+}
+</style>
+              <input id="date" readonly aria-disabled="true">
               <input id="datePickerStarts">
               <select id="dropdownYearStarts" title="Year" tabindex="23" style="width: 100px">
               </select>

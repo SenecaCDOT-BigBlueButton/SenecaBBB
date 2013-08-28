@@ -56,7 +56,7 @@ $(function(){
 		showOn: "button",
 		buttonText:"",
 		minDate: 0,
-		maxDate: "+4Y",
+		maxDate: "+1Y",
 		onSelect:function(dateText){
 			var startDate = new Date(dateText);
 			$("#dropdownDayStarts").val(startDate.getUTCDate());
@@ -71,7 +71,7 @@ $(function(){
 		showOn: "button",
 		buttonText:"",
 		minDate: 0,
-		maxDate: "+4Y",
+		maxDate: "+1Y",
 		onSelect:function(dateText){
 			var endDate = new Date(dateText);
 			$("#dropdownDayEnds").val(endDate.getUTCDate());

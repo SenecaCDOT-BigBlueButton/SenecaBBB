@@ -74,8 +74,8 @@ $(screen).ready(function() {
 			$("#dropdownDayStarts").val(data.getUTCDate());
 			$("#dropdownDayEnds").val(data.getUTCDate());
 			
-			// Add the next 5 years as options
-			for (var i = 0; i < 5; i++) {
+			// Add the next 2 years as options
+			for (var i = 0; i < 2; i++) {
 				$("#dropdownYearStarts").append("<option role='option'>" + (data.getUTCFullYear() + i) + "</option>");
 				$("#dropdownYearEnds").append("<option role='option'>" + (data.getUTCFullYear() + i) + "</option>");
 			}

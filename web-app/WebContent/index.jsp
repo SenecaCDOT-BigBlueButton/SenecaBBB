@@ -1,4 +1,5 @@
 <%@page import="db.DBConnection"%>
+<jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <jsp:useBean id="ldap" scope="session" class="ldap.LDAPAuthenticate" />
 <%
 	String error = request.getParameter("error");
@@ -18,6 +19,8 @@
 		else 
 			error = "Log in with username " + bu_id + "and the password you just set";
 	}	
+	if (usersession.getUserId() != "")
+		response.sendRedirect("calendar.jsp");
 %>
 <!doctype html>
 <html lang="en">

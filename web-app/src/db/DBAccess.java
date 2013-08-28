@@ -150,4 +150,8 @@ public class DBAccess {
         }
         return _flag;
     }
+    
+    public boolean getFlagStatus() {
+    	return _flag;
+    }
 }

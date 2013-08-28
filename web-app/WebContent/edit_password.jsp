@@ -1,3 +1,6 @@
+<%@page import="db.DBConnection"%>
+<jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
+<jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
 <html lang="en">
 <head>
@@ -21,6 +24,17 @@
 <script type="text/javascript" src="js/componentController.js"></script>
 
 <% 
+	//Start page validation
+	String userId = usersession.getUserId();
+	if (userId.equals("")) {
+		response.sendRedirect("index.jsp?error=Please log in");
+		return;
+	}
+	if (dbaccess.getFlagStatus() == false) {
+		response.sendRedirect("index.jsp?error=Database connection error");
+		return;
+	} //End page validation
+	
 	String message = request.getParameter("message");
 	if (message == null) {
 		message="";

@@ -10,9 +10,9 @@ public class UserSession {
 	private String givenName="";
 	private String nick="";
 	private String email="";
-	private HashMap<String, Integer> userSettingsMask;
-	private HashMap<String, Integer> roleMask;
-	private HashMap<String, Integer> userMeetingSettingsMask;
+	private HashMap<String, Integer> userSettingsMask = new HashMap<String, Integer>();
+	private HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
+	private HashMap<String, Integer> userMeetingSettingsMask = new HashMap<String, Integer>();
 	private boolean isLDAP = false;
 	private boolean isSuper = false;
 	private boolean isProfessor = false;
@@ -118,6 +118,6 @@ public class UserSession {
 	}
 
 	public void setUserMeetingSettingsMask(HashMap<String, Integer> userMeetingSettingsMask) {
-		this.userMeetingSettingsMask = userMeetingSettingsMask;
+		this.userMeetingSettingsMask = new HashMap<String,Integer>(userMeetingSettingsMask);
 	}
 }

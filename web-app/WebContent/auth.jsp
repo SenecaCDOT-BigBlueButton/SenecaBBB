@@ -3,18 +3,18 @@
 <%@page import="sql.User"%>
 <%@page import="java.util.*"%>
 <%@page import="helper.MyBoolean"%>
-<%@page import= "sql.User" %>
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
+
 
 <%@ page language="java" import="java.sql.*" errorPage=""%>
 <%
     // Gets inserted user and password.
 	String userID = request.getParameter("SenecaLDAPBBBLogin");
 	String password = request.getParameter("SenecaLDAPBBBLoginPass");
-	HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
+	HashMap<String, Integer> mask = new HashMap<String, Integer>();
 	if (userID != null && password != null) {
 		// User exists in LDAP
 		if (ldap.search(request.getParameter("SenecaLDAPBBBLogin"), request.getParameter("SenecaLDAPBBBLoginPass"))) {
@@ -39,27 +39,26 @@
 				User user = new User(dbaccess);
 				ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 				user.getUserInfo(result, userID);
-				System.
 				// User doesn't exist in our db
 				if (result.isEmpty()){
 					user.createUser(userID, "", true, ur_id);
 					usersession.setNick(userID);
-					user.getDefaultUserSetting(roleMask);
-					usersession.setUserSettingsMask(roleMask);
-					roleMask.clear();
-					user.getDefaultMeetingSetting(roleMask);
-					usersession.setUserMeetingSettingsMask(roleMask);
+					user.getDefaultUserSetting(mask);
+					usersession.setUserSettingsMask(mask);
+					mask.clear();
+					user.getDefaultMeetingSetting(mask);
+					usersession.setUserMeetingSettingsMask(mask);
 				}
 				// User exists in our db
 				else {
-					user.getUserRoleSetting(roleMask, ur_id);
-					usersession.setRoleMask(roleMask);
+					user.getUserRoleSetting(mask, ur_id);
+					usersession.setRoleMask(mask);
 					usersession.setNick(result.get(0).get(1));
-					user.getUserSetting(roleMask, userID);
-					usersession.setUserSettingsMask(roleMask);
-					roleMask.clear();
-					user.getUserMeetingSetting(roleMask, userID);
-					usersession.setUserMeetingSettingsMask(roleMask);
+					user.getUserSetting(mask, userID);
+					usersession.setUserSettingsMask(mask);
+					mask.clear();
+					user.getUserMeetingSetting(mask, userID);
+					usersession.setUserMeetingSettingsMask(mask);
 				}
 				response.sendRedirect("calendar.jsp");
 			}
@@ -73,8 +72,9 @@
 			ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 			if (user.getUserInfo(result, userID)) {
 				ArrayList<String> userInfo = result.get(0);
-				user.getUserSetting(roleMask, userID);
-				usersession.setUserSettingsMask(roleMask);
+				int ur_id = Integer.parseInt(userInfo.get(8));
+				user.getUserSetting(mask, userID);
+				usersession.setUserSettingsMask(mask);
 				usersession.setUserId(userID);
 				usersession.setGivenName(userInfo.get(11) + " " + userInfo.get(12));
 				usersession.setSuper(userInfo.get(7).equals("1"));
@@ -84,9 +84,12 @@
 				user.isDepartmentAdmin(depAdmin, userID);
 				usersession.setProfessor(prof.get_value());
 				usersession.setDepartmentAdmin(depAdmin.get_value());
-				roleMask.clear();
-				user.getUserMeetingSetting(roleMask, userID);
-				usersession.setUserMeetingSettingsMask(roleMask);
+				mask.clear();
+				user.getUserMeetingSetting(mask, userID);
+				usersession.setUserMeetingSettingsMask(mask);
+				mask.clear();
+				user.getUserRoleSetting(mask, ur_id);
+				usersession.setRoleMask(mask);
 				if (prof.get_value()) {
 					usersession.setUserLevel("professor");
 				}

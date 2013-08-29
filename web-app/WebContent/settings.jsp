@@ -29,61 +29,73 @@
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <script type="text/javascript" src="js/componentController.js"></script>
+
 <%
+	//Start page validation
+	String userId = usersession.getUserId();
+	if (userId.equals("")) {
+		response.sendRedirect("index.jsp?error=Please log in");
+		return;
+	}
+	if (dbaccess.getFlagStatus() == false) {
+		response.sendRedirect("index.jsp?error=Database connection error");
+		return;
+	} //End page validation
+	
 	String message = request.getParameter("message");
 	if (message == null || message == "null") {
 		message="";
 	}
-
-	String userId = usersession.getUserId();
-	if (userId.equals(""))
-		response.sendRedirect("index.jsp?error=Please log in");
+	
 	User user = new User(dbaccess);
 	MyBoolean prof = new MyBoolean();
 	HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
 	HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
+	HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
 	userSettings = usersession.getUserSettingsMask();
 	meetingSettings = usersession.getUserMeetingSettingsMask();
+	roleMask = usersession.getRoleMask();
+	int nickName = roleMask.get("nickname");
 %>
-<script type="text/javascript">		
-$(document).ready(function() {
-	<%if (userSettings.get("autoShareAudio") == 0) {%>
-		$(".checkbox .box:eq(0)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(0)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
-	<%}%>
-	<%if (userSettings.get("autoShareWebcam") == 0) {%>
-		$(".checkbox .box:eq(1)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(1)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
-	<%}%>
-	<%if (meetingSettings.get("isPrivateChatEnabled")==0){%>
-		$(".checkbox .box:eq(2)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(2)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
-	<%}%>	
-	<%if (meetingSettings.get("isViewerWebcamEnabled")==0){%>
-		$(".checkbox .box:eq(3)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(3)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(3)").siblings().last().prop("checked", false);
-	<%}%>	
-	<%if (meetingSettings.get("isMultiWhiteboard")==0){%>
-		$(".checkbox .box:eq(4)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(4)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(4)").siblings().last().prop("checked", false);
-	<%}%>	
-	<%if (meetingSettings.get("isRecorded")==0){%>
-		$(".checkbox .box:eq(5)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(5)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(5)").siblings().last().prop("checked", false);
-	<%}%>
-});
-</script>
 </head>
 <body>
 <div id="page">
   <jsp:include page="header.jsp"/>
   <jsp:include page="menu.jsp"/>
+	<script type="text/javascript">		
+		$(document).ready(function() {
+			<%if (userSettings.get("autoShareAudio") == 0) {%>
+				$(".checkbox .box:eq(0)").next(".checkmark").toggle();
+				$(".checkbox .box:eq(0)").attr("aria-checked", "false");
+				$(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
+			<%}%>
+			<%if (userSettings.get("autoShareWebcam") == 0) {%>
+				$(".checkbox .box:eq(1)").next(".checkmark").toggle();
+				$(".checkbox .box:eq(1)").attr("aria-checked", "false");
+				$(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
+			<%}%>
+			<%if (meetingSettings.get("isPrivateChatEnabled")==0){%>
+				$(".checkbox .box:eq(2)").next(".checkmark").toggle();
+				$(".checkbox .box:eq(2)").attr("aria-checked", "false");
+				$(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
+			<%}%>	
+			<%if (meetingSettings.get("isViewerWebcamEnabled")==0){%>
+				$(".checkbox .box:eq(3)").next(".checkmark").toggle();
+				$(".checkbox .box:eq(3)").attr("aria-checked", "false");
+				$(".checkbox .box:eq(3)").siblings().last().prop("checked", false);
+			<%}%>	
+			<%if (meetingSettings.get("isMultiWhiteboard")==0){%>
+				$(".checkbox .box:eq(4)").next(".checkmark").toggle();
+				$(".checkbox .box:eq(4)").attr("aria-checked", "false");
+				$(".checkbox .box:eq(4)").siblings().last().prop("checked", false);
+			<%}%>	
+			<%if (meetingSettings.get("isRecorded")==0){%>
+				$(".checkbox .box:eq(5)").next(".checkmark").toggle();
+				$(".checkbox .box:eq(5)").attr("aria-checked", "false");
+				$(".checkbox .box:eq(5)").siblings().last().prop("checked", false);
+			<%}%>
+		});
+	</script>
   <section>
     <header>
       <p><a href="calendar.jsp" tabindex="13">home</a> » settings</p>
@@ -96,10 +108,12 @@ $(document).ready(function() {
           <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/></header>
         <div class="content">
         <fieldset>
+        <%if (nickName == 1) { %>
           <div class="component">
             <label for="nickname" class="label">Nickname:</label>
             <input type="text" name="nickname" id="nickname" class="input" tabindex="15" title="Nickname" value=<%=usersession.getNick() %>>
           </div>
+          <%}%>
           <div class="component">
             <div class="checkbox" title="Automatically activate microphone"> <span class="box" role="checkbox" aria-checked="true" tabindex="17" aria-labelledby="setting1"></span>
               <label class="checkmark"></label>

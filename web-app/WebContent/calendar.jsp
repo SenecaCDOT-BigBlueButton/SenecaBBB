@@ -18,6 +18,18 @@
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
 <script type="text/javascript" src="js/component.js"></script>
 <script type="text/javascript" src="js/componentStepper.js"></script>
+<%
+
+User user = new User(dbaccess);
+HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
+HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
+HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
+userSettings = usersession.getUserSettingsMask();
+meetingSettings = usersession.getUserMeetingSettingsMask();
+roleMask = usersession.getRoleMask();
+//int nickName = roleMask.get("nickname");
+System.out.println(usersession.getUserMeetingSettingsMask());
+%>
  <script type='text/javascript'>
             function create(date) {
                 if (date === undefined)

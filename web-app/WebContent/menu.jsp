@@ -6,7 +6,7 @@
         <li id="home"><a href="calendar.jsp" tabindex="5" title="Click here to go to the home screen">Home</a></li>
       </div>
       <div class="menu">
-        <li id="createEvent"><a href="createEvent.jsp" tabindex="6" title="Click here to create a new event">Create Event</a></li>
+        <li id="createEvent"><a href="create_event.jsp" tabindex="6" title="Click here to create a new event">Create Event</a></li>
       </div>
        <div class="menu">
         <li id="settings"><a href="settings.jsp" tabindex="7" title="Click here to change your settings">Settings</a></li>

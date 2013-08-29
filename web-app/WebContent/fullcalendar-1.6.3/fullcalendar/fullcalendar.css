@@ -102,9 +102,23 @@ html .fc, .fc table {
 	line-height: 1.9em;
 	white-space: nowrap;
 	cursor: pointer;
+	padding-top: 8px;
+	height: 39px;
+	margin-left: 0px;
+	margin-right: 18px;
+	font-size: 14pt;
+	color: #FFFFFF;
+	border-style: none;
+	cursor: pointer;
+	background-color: #CD352B;
+	-webkit-transition: all 0.1s;
+	-moz-transition: all 0.1s;
+	-ms-transition: all 0.1s;
+	-o-transition: all 0.1s;
+	transition: all 0.1s;
 }
 .fc-state-default { /* non-theme */
-	border: 1px solid;
+	/*border: 1px solid;*/
 }
 .fc-state-default.fc-corner-left { /* non-theme */
 	/*border-top-left-radius: 4px;
@@ -119,9 +133,8 @@ html .fc, .fc table {
 	and we'll try to make them look good cross-browser.
 */
 .fc-text-arrow {
-	margin: 0 .1em;
-	font-size: 2em;
-	font-family: "Courier New", Courier, monospace;
+	/*margin: 0 .1em;
+	font-size: 2em;*/
 	vertical-align: baseline; /* for IE7 */
 }
 .fc-button-prev .fc-text-arrow, .fc-button-next .fc-text-arrow { /* for &lsaquo; &rsaquo; */
@@ -146,44 +159,30 @@ html .fc, .fc table {
 	borrowed from twitter bootstrap (http://twitter.github.com/bootstrap/)
 */
 .fc-state-default {
-	background-color: #f5f5f5;
-	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
-	background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
-	background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
-	background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-	background-repeat: repeat-x;
-	border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-	color: #333;
-	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+	color: #FFFFFF;
+	background-color: #CD352B;
 }
 .fc-state-hover, .fc-state-down, .fc-state-active, .fc-state-disabled {
-	color: #333333;
-	background-color: #e6e6e6;
+	color: #FFFFFF;
+	background-color: #9F100B;
 }
 .fc-state-hover {
-	color: #333333;
+	color: #FFFFFF;
 	text-decoration: none;
-	background-position: 0 -15px;
-	-webkit-transition: background-position 0.1s linear;
-	-moz-transition: background-position 0.1s linear;
-	-o-transition: background-position 0.1s linear;
-	transition: background-position 0.1s linear;
 }
-.fc-state-down, .fc-state-active {
-	background-color: #cccccc;
-	background-image: none;
+.fc-state-down {
+	background-color: #9F100B;
 	outline: 0;
-	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.fc-state-active {
+	background-color: #9F100B;
+	outline: 0;
+	cursor: default;
 }
 .fc-state-disabled {
 	cursor: default;
-	background-image: none;
 	opacity: 0.65;
 	filter: alpha(opacity=65);
-	box-shadow: none;
 }
 /* Global Event Styles
 ------------------------------------------------------------------------*/

@@ -65,7 +65,7 @@ header#header nav {
 	font-family: "ITCAvantGardeStd BkCn", Sans-Serif;
 	font-style: normal;
 	font-weight: 400;
-	font-size: 12pt;
+	font-size: 14px;
 	color: #454545;
 	margin-right: 40px;
 	margin-top: 0px;
@@ -209,7 +209,7 @@ aside nav ul li {
 	font-family: "ITCAvantGardeStd Md", Sans-Serif;
 	font-style: normal;
 	font-weight: 500;
-	font-size: 12pt;
+	font-size: 16px;
 	text-align: right;
 	text-decoration: none;
 	color: #FFF;
@@ -243,7 +243,7 @@ section header p {
 	font-family: "ITCAvantGardeStd BkCn";
 	font-style: normal;
 	font-weight: 400;
-	font-size: 12pt;
+	font-size: 14px;
 	color: #838383;
 }
 section header p a:hover {
@@ -251,13 +251,14 @@ section header p a:hover {
 	color: #454545;
 }
 section header h1 {
-	font-size: 30pt;
+	font-size: 40px;
 	font-style: normal;
 	font-weight: 300;
 	color: #656565;
 	margin: 0px;
 	padding: 0px;
 	padding-top: 5px;
+	cursor: default;
 }
 section form article {
 	display: table;
@@ -270,7 +271,7 @@ section form article header {
 	cursor: pointer;
 }
 section form article header h2 {
-	font-size: 16pt;
+	font-size: 18px;
 	font-style: normal;
 	font-weight: 300;
 	color: #838383;
@@ -284,7 +285,7 @@ section form article header h2 {
 }
 h3 {
 	width: 900px;
-	font-size: 16pt;
+	font-size: 18px;
 	font-style: normal;
 	font-weight: 300;
 	color: #838383;
@@ -299,7 +300,7 @@ h3 {
 }
 h4 {
 	width: 900px;
-	font-size: 16pt;
+	font-size: 18px;
 	font-style: normal;
 	font-weight: 300;
 	color: #838383;
@@ -358,7 +359,7 @@ section form article fieldset div.component label.label {
 	clear: left;
 	display: block;
 	padding-top: 10px;
-	font-size: 13pt;
+	font-size: 18px;
 	text-transform: uppercase;
 	text-align: right;
 	color: #454545;
@@ -375,7 +376,7 @@ section form article fieldset div.component input.input, div.dataTables_filter i
 	height: 38px;
 	width: 394px;
 	display: block;
-	font-size: 13pt;
+	font-size: 15px;
 	font-family: "ITCAvantGardeStd BkCn";
 	font-style: normal;
 	font-weight: 400;
@@ -463,7 +464,7 @@ section form article fieldset div.component div.checkbox label.checkmark {
 }
 section form article fieldset div.component div.checkbox label.text {
 	margin-left: 30px;
-	font-size: 13pt;
+	font-size: 15px;
 	color: #454545;
 	font-family: "ITCAvantGardeStd BkCn";
 	font-style: normal;
@@ -513,7 +514,7 @@ section form article fieldset div.component div.radio label.checkradio {
 }
 section form article fieldset div.component div.radio label.text {
 	margin-left: 30px;
-	font-size: 13pt;
+	font-size: 15px;
 	color: #454545;
 	font-family: "ITCAvantGardeStd BkCn";
 	font-style: normal;
@@ -530,7 +531,7 @@ section form .buttons .button, .search {
 	height: 39px;
 	margin-left: 0px;
 	margin-right: 18px;
-	font-size: 14pt;
+	font-size: 16px;
 	color: #FFFFFF;
 	border-style: none;
 	cursor: pointer;
@@ -608,7 +609,7 @@ section form article fieldset div.component#week .weekday, section form article 
 	width: 50px;
 	height: 39px;
 	margin-right: 5.1px;
-	font-size: 12pt;
+	font-size: 14px;
 	color: #FFFFFF;
 	border-style: none;
 	cursor: pointer;
@@ -655,7 +656,7 @@ footer nav li {
 	font-family: "ITCAvantGardeStd BkCn", Sans-Serif;
 	font-style: normal;
 	font-weight: 400;
-	font-size: 11pt;
+	font-size: 13px;
 }
 footer nav li a {
 	-webkit-transition: all 0.2s ease-out;
@@ -671,7 +672,7 @@ footer nav li a:hover {
 }
 footer div#copyright {
 	width: 1280px;
-	font-size: 11pt;
+	font-size: 13px;
 	text-align: center;
 	color: #838383;
 	padding-top: 50px;
@@ -690,7 +691,7 @@ footer div#copyright {
 .tableComponent .dataTables_filter label {
 	width: 620px;
 	padding-top: 10px;
-	font-size: 13pt;
+	font-size: 15px;
 	text-transform: uppercase;
 	text-align: right;
 	color: #454545;
@@ -716,7 +717,7 @@ footer div#copyright {
 }
 /* Header cells */
 .tableComponent table thead th {
-	font-size: 9pt;
+	font-size: 11px;
 	font-family: "ITCAvantGardeStd Demi";
 	font-style: normal;
 	font-weight: 600;
@@ -809,7 +810,7 @@ footer div#copyright {
 	padding-right: 0px;
 	padding-left: 10px;
 	padding-bottom: 15px;
-	font-size: 10pt;
+	font-size: 12px;
 	font-family: "ITCAvantGardeStd Md";
 	font-style: normal;
 	font-weight: 500;
@@ -829,12 +830,10 @@ footer div#copyright {
 	border-left-color: #9F100B;
 }
 /* Pagination */
-.tableComponent a.paginate_button, a.paginate_active {
-	display: inline-block;
-	padding: 10px;
+.tableComponent a.paginate_button, .tableComponent a.paginate_active {
+	position: relative;
 	margin-right: 2px;
-	width: 65px;
-	font-size: 14pt;
+	font-size: 16px;
 	color: #FFFFFF;
 	text-align: center;
 	border: none;
@@ -845,12 +844,46 @@ footer div#copyright {
 	-ms-transition: all 0.1s;
 	-o-transition: all 0.1s;
 	transition: all 0.1s;
-}
-.tableComponent a.paginate_active {
+	display: inline-block;
+	width: 39px;
+	vertical-align: middle;
+	padding-top: 13px;
+	height: 30px;
+}/*
+.tableComponent a.paginate_button{
+	top: 0px;
+	padding: 10px;
+	padding-top: 11px;
+	padding-bottom: 6px;
+}*/
+.tableComponent span a.paginate_active {
 	background-color: #454545;
+}
+.tableComponent paging_full_numbers{
+	position: relative;
 }
 .tableComponent a.paginate_button:hover {
 	background-color: #9F100B;
+}
+.tableComponent a.first.paginate_button {
+	background-image:url(../../../images/themes/base/firstArrow.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.tableComponent a.previous.paginate_button {
+	background-image:url(../../../images/themes/base/previousArrow.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.tableComponent a.next.paginate_button {
+	background-image:url(../../../images/themes/base/nextArrow.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.tableComponent a.last.paginate_button {
+	background-image:url(../../../images/themes/base/lastArrow.svg);
+	background-repeat: no-repeat;
+	background-position: center;
 }
 .tableComponent a.paginate_button.paginate_button_disabled, .tableComponent a.paginate_button.paginate_button_disabled:hover {
 	background-color: #bcbcbc;/*#E6E6E6;*/
@@ -861,10 +894,7 @@ footer div#copyright {
 .tableComponent .paging_full_numbers a:active {
 	outline: none;
 }
-.tableComponent div.dataTables_paginate span>a {
-	width: 15px;
-	text-align: center;
-}
+
 .tableComponent table thead tr .firstColumn {
 	border-left: 1px solid #E0E0E0;
 	padding-left: 14px;
@@ -911,7 +941,7 @@ footer div#copyright {
 .tableComponent table tbody tr td a#options:first-child {
 	margin-right: 25px;
 }
-#searchUser:after {
+.searchBox:after {
 	background-size: 17px;
 	border: none;
 	border-style: 1px solid #AAAAAA;

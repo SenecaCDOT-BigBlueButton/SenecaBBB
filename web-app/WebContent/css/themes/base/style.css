@@ -245,6 +245,7 @@ section header p {
 	font-weight: 400;
 	font-size: 14px;
 	color: #838383;
+	cursor: default;
 }
 section header p a:hover {
 	text-decoration: underline;
@@ -678,6 +679,7 @@ footer div#copyright {
 	padding-top: 50px;
 	padding-bottom: 15px;
 	border-bottom: 20px solid #454545;
+	cursor: default;
 }
 /* TABLE */
 /* Elements */
@@ -711,6 +713,7 @@ footer div#copyright {
 .tableComponent .dataTables_info {
 	float: right;
 	margin-top: 13px;
+	cursor: default;
 }
 .tableComponent div.dataTables_wrapper {
 	width: 900px;
@@ -731,6 +734,7 @@ footer div#copyright {
 	border-left: 1px solid #EEEEEE;
 	background: #E0E0E0;
 	position: relative;
+	cursor: default;
 }
 .tableComponent table thead th.icons {
 	padding-left: 0px;
@@ -849,15 +853,10 @@ footer div#copyright {
 	vertical-align: middle;
 	padding-top: 13px;
 	height: 30px;
-}/*
-.tableComponent a.paginate_button{
-	top: 0px;
-	padding: 10px;
-	padding-top: 11px;
-	padding-bottom: 6px;
-}*/
+}
 .tableComponent span a.paginate_active {
 	background-color: #454545;
+	cursor: default;
 }
 .tableComponent paging_full_numbers{
 	position: relative;
@@ -887,6 +886,7 @@ footer div#copyright {
 }
 .tableComponent a.paginate_button.paginate_button_disabled, .tableComponent a.paginate_button.paginate_button_disabled:hover {
 	background-color: #bcbcbc;/*#E6E6E6;*/
+	cursor: default;
 }
 .tableComponent .paging_full_numbers a:hover {
 	text-decoration: none;

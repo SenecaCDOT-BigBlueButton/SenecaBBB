@@ -39,6 +39,7 @@ html .fc, .fc table {
 .fc-header-title {
 	display: inline-block;
 	vertical-align: top;
+	cursor: default;
 }
 .fc-header-title h2 {
 	margin-top: 0;
@@ -82,6 +83,7 @@ html .fc, .fc table {
 ------------------------------------------------------------------------*/
 .fc-widget-header,    /* <th>, usually */ .fc-widget-content {  /* <td>, usually */
 	border: 1px solid #ddd;
+	cursor: default;
 }
 .fc-state-highlight { /* <td> today cell */ /* TODO: add .fc-today to <th> */
 	background: #fcf8e3;

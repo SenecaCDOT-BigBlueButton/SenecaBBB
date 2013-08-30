@@ -36,7 +36,7 @@
 	} 
 	HashMap<String, Integer> roleMask = usersession.getRoleMask();
 	if (roleMask.get("guestAccountCreation") == 0){}
-		//response.sendRedirect("index.jsp?error=Permission denied");
+		response.sendRedirect("index.jsp?error=Permission denied");
 	//End page validation
 	
 	String message = request.getParameter("message");

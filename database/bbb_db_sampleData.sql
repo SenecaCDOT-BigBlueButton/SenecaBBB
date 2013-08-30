@@ -126,7 +126,7 @@ INSERT INTO lecture_attendance VALUES ('rwstanica', 2, 3, 0);
 INSERT INTO lecture_attendance VALUES ('non_ldap1', 2, 3, 0);
 INSERT INTO lecture_attendance VALUES ('non_ldap2', 2, 3, 0);
 
-CALL sp_create_ms('Test Meeting Schedule 1', '2013-07-01 10:00:00', '2;1;5;2', 50, 'Test Meeting 2 description', 'bo.li');
+CALL sp_create_ms('Test Meeting Schedule 1', '2013-07-01 10:00:00', '2;1;5;2', 50, 'Test Meeting 1 description', 'bo.li');
 CALL sp_create_ms('Test Meeting Schedule 2', '2013-07-22 13:00:00', '2;2;2013-10-01;7', 50, 'Test Meeting 2 description', 'bli64');
 CALL sp_create_ms('Test Meeting Schedule 3', '2013-07-01 10:00:00', '1', 50, 'Test', 'bo.li');
 CALL sp_create_ms('Test Meeting Schedule 4', '2013-08-01 10:00:00', '3;1;6;1;0111110', 50, 'Test Meeting 4 description', 'bo.li');

@@ -111,14 +111,14 @@ BEGIN
 						INTO _repeat;
 					SELECT substring_index(p_ms_spec, ';', -1)
 						INTO _interval;
-					CALL sp_create_m_daily1(_repeat, _interval, _nextval, p_ms_inidatetime, p_ms_duration,
+					CALL sp_create_m_daily1(0, _repeat, _interval, _nextval, p_ms_inidatetime, p_ms_duration,
 						p_m_description, p_bu_id);
 				ELSE
 					SELECT substring_index(substring_index(p_ms_spec, ';', 3), ';', -1)
 						INTO _enddate;
 					SELECT substring_index(p_ms_spec, ';', -1)
 						INTO _interval;
-					CALL sp_create_m_daily2(_enddate, _interval, _nextval, p_ms_inidatetime, p_ms_duration,
+					CALL sp_create_m_daily2(0, _enddate, _interval, _nextval, p_ms_inidatetime, p_ms_duration,
 						p_m_description, p_bu_id);
 				END IF;
 			END;
@@ -135,7 +135,7 @@ BEGIN
 								INTO _interval;
 							SELECT substring_index(p_ms_spec, ';', -1)
 								INTO _weekbit;
-							CALL sp_create_m_weekly1(_repeat, _interval, _weekbit, _nextval, p_ms_inidatetime, 
+							CALL sp_create_m_weekly1(0, _repeat, _interval, _weekbit, _nextval, p_ms_inidatetime, 
 								p_ms_duration, p_m_description, p_bu_id);
 						END;
 					WHEN 2 THEN
@@ -146,7 +146,7 @@ BEGIN
 								INTO _interval;
 							SELECT substring_index(p_ms_spec, ';', -1)
 								INTO _weekbit;
-							CALL sp_create_m_weekly2(_repeat, _interval, _weekbit, _nextval, p_ms_inidatetime, 
+							CALL sp_create_m_weekly2(0, _repeat, _interval, _weekbit, _nextval, p_ms_inidatetime, 
 								p_ms_duration, p_m_description, p_bu_id);
 						END;
 					WHEN 3 THEN
@@ -157,7 +157,7 @@ BEGIN
 								INTO _interval;
 							SELECT substring_index(p_ms_spec, ';', -1)
 								INTO _weekbit;
-							CALL sp_create_m_weekly3(_enddate, _interval, _weekbit, _nextval, p_ms_inidatetime, 
+							CALL sp_create_m_weekly3(0, _enddate, _interval, _weekbit, _nextval, p_ms_inidatetime, 
 								p_ms_duration, p_m_description, p_bu_id);
 						END;
 				END CASE;
@@ -175,7 +175,7 @@ BEGIN
 								INTO _interval;
 							SELECT substring_index(p_ms_spec, ';', -1)
 								INTO _day;
-							CALL sp_create_m_monthly1(_repeat, _interval, _day, _nextval, p_ms_inidatetime, 
+							CALL sp_create_m_monthly1(0, _repeat, _interval, _day, _nextval, p_ms_inidatetime, 
 								p_ms_duration, p_m_description, p_bu_id);
 						END;
 					WHEN 2 THEN
@@ -186,7 +186,7 @@ BEGIN
 								INTO _interval;
 							SELECT substring_index(p_ms_spec, ';', -1)
 								INTO _day;
-							CALL sp_create_m_monthly2(_repeat, _interval, _day, _nextval, p_ms_inidatetime, 
+							CALL sp_create_m_monthly2(0, _repeat, _interval, _day, _nextval, p_ms_inidatetime, 
 								p_ms_duration, p_m_description, p_bu_id);
 						END;
 				END CASE;
@@ -196,7 +196,149 @@ END//
 DELIMITER ;
 
 DELIMITER //
+CREATE PROCEDURE sp_edit_ms(
+	IN p_ms_id INT UNSIGNED,
+	IN p_ms_inidatetime DATETIME,
+	IN p_ms_spec VARCHAR(100),
+	IN p_m_description VARCHAR(2000))
+BEGIN
+	DECLARE _bu_id VARCHAR(100);
+	DECLARE _duration INT UNSIGNED;
+	DECLARE _count INT UNSIGNED;
+	DECLARE _type1 INT DEFAULT substring(p_ms_spec, 1, 1);
+	DECLARE _type2 INT;
+	DECLARE _repeat INT;
+	DECLARE _interval INT;
+	DECLARE _enddate DATE;
+	DECLARE _weekbit CHAR(10);
+	DECLARE _day INT;
+	SELECT bu_id, ms_duration
+		INTO _bu_id, _duration
+		FROM meeting_schedule
+		WHERE ms_id = p_ms_id;
+	DELETE FROM meeting 
+		WHERE ms_id = p_ms_id 
+		AND m_inidatetime > sysdate();
+	SELECT count(*) INTO _count
+		FROM meeting
+		WHERE ms_id = p_ms_id;
+	IF _count != 0 THEN
+		SELECT max(m_id) INTO _count
+			FROM meeting
+			WHERE ms_id = p_ms_id;
+	END IF;
+	UPDATE meeting_schedule
+		SET ms_spec = p_ms_spec
+		WHERE ms_id = p_ms_id;
+	IF _count = 0 THEN
+		UPDATE meeting_schedule
+			SET ms_inidatetime = p_ms_inidatetime
+			WHERE ms_id = p_ms_id;
+	END IF;
+	CASE _type1
+		WHEN 1 THEN
+			BEGIN
+				INSERT INTO meeting VALUES 
+					(_nextval, _count + 1, p_ms_inidatetime, p_ms_duration, 
+					0, p_m_description, floor(rand() * 10000), floor(rand() * 10000), 
+					(SELECT m_setting FROM bbb_user WHERE bu_id = p_bu_id)); 
+			END;
+		WHEN 2 THEN
+			BEGIN
+				SELECT substring_index(substring_index(p_ms_spec, ';', 2), ';', -1)
+					INTO _type2;
+				IF _type2 = 1 THEN
+					SELECT substring_index(substring_index(p_ms_spec, ';', 3), ';', -1)
+						INTO _repeat;
+					SELECT substring_index(p_ms_spec, ';', -1)
+						INTO _interval;
+					CALL sp_create_m_daily1(_count, _repeat, _interval, p_ms_id, p_ms_inidatetime, _duration,
+						p_m_description, _bu_id);
+				ELSE
+					SELECT substring_index(substring_index(p_ms_spec, ';', 3), ';', -1)
+						INTO _enddate;
+					SELECT substring_index(p_ms_spec, ';', -1)
+						INTO _interval;
+					CALL sp_create_m_daily2(_count, _enddate, _interval, p_ms_id, p_ms_inidatetime, _duration,
+						p_m_description, _bu_id);
+				END IF;
+			END;
+		WHEN 3 THEN
+			BEGIN
+				SELECT substring_index(substring_index(p_ms_spec, ';', 2), ';', -1)
+					INTO _type2;
+				CASE _type2
+					WHEN 1 THEN
+						BEGIN
+							SELECT substring_index(substring_index(p_ms_spec, ';', 3), ';', -1)
+								INTO _repeat;
+							SELECT substring_index(substring_index(p_ms_spec, ';', 4), ';', -1)
+								INTO _interval;
+							SELECT substring_index(p_ms_spec, ';', -1)
+								INTO _weekbit;
+							CALL sp_create_m_weekly1(_count, _repeat, _interval, _weekbit, p_ms_id, p_ms_inidatetime, 
+								_duration, p_m_description, _bu_id);
+						END;
+					WHEN 2 THEN
+						BEGIN
+							SELECT substring_index(substring_index(p_ms_spec, ';', 3), ';', -1)
+								INTO _repeat;
+							SELECT substring_index(substring_index(p_ms_spec, ';', 4), ';', -1)
+								INTO _interval;
+							SELECT substring_index(p_ms_spec, ';', -1)
+								INTO _weekbit;
+							CALL sp_create_m_weekly2(_count, _repeat, _interval, _weekbit, p_ms_id, p_ms_inidatetime, 
+								_duration, p_m_description, _bu_id);
+						END;
+					WHEN 3 THEN
+						BEGIN
+							SELECT substring_index(substring_index(p_ms_spec, ';', 3), ';', -1)
+								INTO _enddate;
+							SELECT substring_index(substring_index(p_ms_spec, ';', 4), ';', -1)
+								INTO _interval;
+							SELECT substring_index(p_ms_spec, ';', -1)
+								INTO _weekbit;
+							CALL sp_create_m_weekly3(_count, _enddate, _interval, _weekbit, p_ms_id, p_ms_inidatetime, 
+								_duration, p_m_description, _bu_id);
+						END;
+				END CASE;
+			END;
+		WHEN 4 THEN
+			BEGIN
+				SELECT substring_index(substring_index(p_ms_spec, ';', 2), ';', -1)
+					INTO _type2;
+				CASE _type2
+					WHEN 1 THEN
+						BEGIN
+							SELECT substring_index(substring_index(p_ms_spec, ';', 3), ';', -1)
+								INTO _repeat;
+							SELECT substring_index(substring_index(p_ms_spec, ';', 4), ';', -1)
+								INTO _interval;
+							SELECT substring_index(p_ms_spec, ';', -1)
+								INTO _day;
+							CALL sp_create_m_monthly1(_count, _repeat, _interval, _day, p_ms_id, p_ms_inidatetime, 
+								_duration, p_m_description, _bu_id);
+						END;
+					WHEN 2 THEN
+						BEGIN
+							SELECT substring_index(substring_index(p_ms_spec, ';', 3), ';', -1)
+								INTO _repeat;
+							SELECT substring_index(substring_index(p_ms_spec, ';', 4), ';', -1)
+								INTO _interval;
+							SELECT substring_index(p_ms_spec, ';', -1)
+								INTO _day;
+							CALL sp_create_m_monthly2(_count, _repeat, _interval, _day, p_ms_id, p_ms_inidatetime, 
+								_duration, p_m_description, _bu_id);
+						END;
+				END CASE;
+			END;
+	END CASE;
+END//
+DELIMITER ;
+
+DELIMITER //
 CREATE PROCEDURE sp_create_m_daily1(
+	IN p_count INT,
 	IN p_repeats INT,
 	IN p_interval INT,
 	IN p_ms_id INT UNSIGNED,
@@ -205,14 +347,14 @@ CREATE PROCEDURE sp_create_m_daily1(
 	IN p_m_description VARCHAR(2000),
 	IN p_bu_id VARCHAR(100))
 BEGIN
-	DECLARE _counter INT DEFAULT 0;
+	DECLARE _counter INT DEFAULT p_count;
 	loop1: LOOP
 		SET _counter = _counter + 1;
 		INSERT INTO meeting VALUES 
 			(p_ms_id, _counter, p_ms_inidatetime + INTERVAL (_counter - 1) * p_interval DAY,
 			p_ms_duration, 0, p_m_description, floor(rand() * 10000), floor(rand() * 10000), 
 			(SELECT m_setting FROM bbb_user WHERE bu_id = p_bu_id));
-		IF _counter < p_repeats THEN ITERATE loop1;
+		IF _counter < (p_repeats + p_count) THEN ITERATE loop1;
 		END IF;
 		LEAVE loop1;
 	END LOOP loop1;
@@ -221,6 +363,7 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE sp_create_m_daily2(
+	IN p_count INT,
 	IN p_enddate DATE,
 	IN p_interval INT,
 	IN p_ms_id INT UNSIGNED,
@@ -229,7 +372,7 @@ CREATE PROCEDURE sp_create_m_daily2(
 	IN p_m_description VARCHAR(2000),
 	IN p_bu_id VARCHAR(100))
 BEGIN
-	DECLARE _counter INT DEFAULT 0;
+	DECLARE _counter INT DEFAULT p_count;
 	DECLARE _current DATETIME DEFAULT p_ms_inidatetime;
 	loop1: LOOP
 		SET _counter = _counter + 1;
@@ -248,6 +391,7 @@ DELIMITER ;
 # this method create events based on a total number of sessions
 DELIMITER //
 CREATE PROCEDURE sp_create_m_weekly1(
+	IN p_count INT,
 	IN p_repeat INT,
 	IN p_interval INT,
 	IN p_weekbit CHAR(10),
@@ -257,7 +401,7 @@ CREATE PROCEDURE sp_create_m_weekly1(
 	IN p_m_description VARCHAR(2000),
 	IN p_bu_id VARCHAR(100))
 BEGIN
-	DECLARE _counter INT DEFAULT 1;
+	DECLARE _counter INT DEFAULT p_count + 1;
 	DECLARE _current DATETIME DEFAULT p_ms_inidatetime;
 	loop1: LOOP
 		IF substring(p_weekbit, dayofweek(_current), 1) = '1' THEN
@@ -272,7 +416,7 @@ BEGIN
 		ELSE 
 			SET _current = _current + INTERVAL 1 DAY;
 		END IF;
-		IF _counter <= p_repeat THEN ITERATE loop1;
+		IF _counter <= (p_repeat + p_count) THEN ITERATE loop1;
 		END IF;
 		LEAVE loop1;
 	END LOOP loop1;
@@ -282,6 +426,7 @@ DELIMITER ;
 # this method create events based on a total number of weeks
 DELIMITER //
 CREATE PROCEDURE sp_create_m_weekly2(
+	IN p_count INT,
 	IN p_repeat INT,
 	IN p_interval INT,
 	IN p_weekbit CHAR(10),
@@ -291,7 +436,7 @@ CREATE PROCEDURE sp_create_m_weekly2(
 	IN p_m_description VARCHAR(2000),
 	IN p_bu_id VARCHAR(100))
 BEGIN
-	DECLARE _counter INT DEFAULT 1;
+	DECLARE _counter INT DEFAULT p_count + 1;
 	DECLARE _w_counter INT DEFAULT 1;
 	DECLARE _current DATETIME DEFAULT p_ms_inidatetime;
 	loop1: LOOP
@@ -318,6 +463,7 @@ DELIMITER ;
 # this method create events based on an end date
 DELIMITER //
 CREATE PROCEDURE sp_create_m_weekly3(
+	IN p_count INT,
 	IN p_enddate DATE,
 	IN p_interval INT,
 	IN p_weekbit CHAR(10),
@@ -327,7 +473,7 @@ CREATE PROCEDURE sp_create_m_weekly3(
 	IN p_m_description VARCHAR(2000),
 	IN p_bu_id VARCHAR(100))
 BEGIN
-	DECLARE _counter INT DEFAULT 1;
+	DECLARE _counter INT DEFAULT p_count + 1;
 	DECLARE _current DATETIME DEFAULT p_ms_inidatetime;
 	loop1: LOOP
 		IF substring(p_weekbit, dayofweek(_current), 1) = '1' THEN
@@ -353,6 +499,7 @@ DELIMITER ;
 # selected date is out of bound in another month
 DELIMITER //
 CREATE PROCEDURE sp_create_m_monthly1(
+	IN p_count INT,
 	IN p_repeats INT,
 	IN p_interval INT,
 	IN p_day INT,
@@ -362,7 +509,7 @@ CREATE PROCEDURE sp_create_m_monthly1(
 	IN p_m_description VARCHAR(2000),
 	IN p_bu_id VARCHAR(100))
 BEGIN
-	DECLARE _counter INT DEFAULT 0;
+	DECLARE _counter INT DEFAULT p_count;
 	DECLARE _current DATETIME;
 	DECLARE _diff INT DEFAULT DAY(p_ms_inidatetime) - p_day; 
 	DECLARE _offset INT;
@@ -405,7 +552,7 @@ BEGIN
 				MONTH(_current + INTERVAL p_interval MONTH), '-',
 				DAY(LAST_DAY(_current + INTERVAL p_interval MONTH)), ' ', TIME(_current));
 		END IF;
-		IF _counter < p_repeats THEN ITERATE loop1;
+		IF _counter < (p_repeats + p_count) THEN ITERATE loop1;
 		END IF;
 		LEAVE loop1;
 	END LOOP loop1;
@@ -416,6 +563,7 @@ DELIMITER ;
 # Sunday = 1 ... Saturday = 7
 DELIMITER //
 CREATE PROCEDURE sp_create_m_monthly2(
+	IN p_count INT,
 	IN p_repeats INT,
 	IN p_interval INT,
 	IN p_day INT UNSIGNED,
@@ -425,7 +573,7 @@ CREATE PROCEDURE sp_create_m_monthly2(
 	IN p_m_description VARCHAR(2000),
 	IN p_bu_id VARCHAR(100))
 BEGIN
-	DECLARE _counter INT DEFAULT 0;
+	DECLARE _counter INT DEFAULT p_count;
 	DECLARE _flag INT DEFAULT 0;
 	DECLARE _current DATETIME;
 	DECLARE _loop DATETIME;
@@ -478,7 +626,7 @@ BEGIN
 			END IF;
 			LEAVE loop4;
 		END LOOP loop4;
-		IF _counter < p_repeats THEN ITERATE loop1;
+		IF _counter < (p_repeats + p_count) THEN ITERATE loop1;
 		END IF;
 		LEAVE loop1;
 	END LOOP loop1;
@@ -530,14 +678,14 @@ BEGIN
 						INTO _repeat;
 					SELECT substring_index(p_ls_spec, ';', -1)
 						INTO _interval;
-					CALL sp_create_l_daily1(_repeat, _interval, _nextval, p_ls_inidatetime, p_ls_duration,
+					CALL sp_create_l_daily1(0, _repeat, _interval, _nextval, p_ls_inidatetime, p_ls_duration,
 						p_l_description);
 				ELSE
 					SELECT substring_index(substring_index(p_ls_spec, ';', 3), ';', -1)
 						INTO _enddate;
 					SELECT substring_index(p_ls_spec, ';', -1)
 						INTO _interval;
-					CALL sp_create_l_daily2(_enddate, _interval, _nextval, p_ls_inidatetime, p_ls_duration,
+					CALL sp_create_l_daily2(0, _enddate, _interval, _nextval, p_ls_inidatetime, p_ls_duration,
 						p_l_description);
 				END IF;
 			END;
@@ -554,7 +702,7 @@ BEGIN
 								INTO _interval;
 							SELECT substring_index(p_ls_spec, ';', -1)
 								INTO _weekbit;
-							CALL sp_create_l_weekly1(_repeat, _interval, _weekbit, _nextval, p_ls_inidatetime, 
+							CALL sp_create_l_weekly1(0, _repeat, _interval, _weekbit, _nextval, p_ls_inidatetime, 
 								p_ls_duration, p_l_description);
 						END;
 					WHEN 2 THEN
@@ -565,7 +713,7 @@ BEGIN
 								INTO _interval;
 							SELECT substring_index(p_ls_spec, ';', -1)
 								INTO _weekbit;
-							CALL sp_create_l_weekly2(_repeat, _interval, _weekbit, _nextval, p_ls_inidatetime, 
+							CALL sp_create_l_weekly2(0, _repeat, _interval, _weekbit, _nextval, p_ls_inidatetime, 
 								p_ls_duration, p_l_description);
 						END;
 					WHEN 3 THEN
@@ -576,7 +724,7 @@ BEGIN
 								INTO _interval;
 							SELECT substring_index(p_ls_spec, ';', -1)
 								INTO _weekbit;
-							CALL sp_create_l_weekly3(_enddate, _interval, _weekbit, _nextval, p_ls_inidatetime, 
+							CALL sp_create_l_weekly3(0, _enddate, _interval, _weekbit, _nextval, p_ls_inidatetime, 
 								p_ls_duration, p_l_description);
 						END;
 				END CASE;
@@ -594,7 +742,7 @@ BEGIN
 								INTO _interval;
 							SELECT substring_index(p_ls_spec, ';', -1)
 								INTO _day;
-							CALL sp_create_l_monthly1(_repeat, _interval, _day, _nextval, p_ls_inidatetime, 
+							CALL sp_create_l_monthly1(0, _repeat, _interval, _day, _nextval, p_ls_inidatetime, 
 								p_ls_duration, p_l_description);
 						END;
 					WHEN 2 THEN
@@ -605,7 +753,7 @@ BEGIN
 								INTO _interval;
 							SELECT substring_index(p_ls_spec, ';', -1)
 								INTO _day;
-							CALL sp_create_l_monthly2(_repeat, _interval, _day, _nextval, p_ls_inidatetime, 
+							CALL sp_create_l_monthly2(0, _repeat, _interval, _day, _nextval, p_ls_inidatetime, 
 								p_ls_duration, p_l_description);
 						END;
 				END CASE;
@@ -615,7 +763,147 @@ END//
 DELIMITER ;
 
 DELIMITER //
+CREATE PROCEDURE sp_edit_ls(
+	IN p_ls_id INT UNSIGNED,
+	IN p_ls_inidatetime DATETIME,
+	IN p_ls_spec VARCHAR(100),
+	IN p_l_description VARCHAR(2000))
+BEGIN
+	DECLARE _duration INT UNSIGNED;
+	DECLARE _count INT UNSIGNED;
+	DECLARE _type1 INT DEFAULT substring(p_ls_spec, 1, 1);
+	DECLARE _type2 INT;
+	DECLARE _repeat INT;
+	DECLARE _interval INT;
+	DECLARE _enddate DATE;
+	DECLARE _weekbit CHAR(10);
+	DECLARE _day INT;
+	SELECT ls_duration
+		INTO _duration
+		FROM lecture_schedule
+		WHERE ls_id = p_ls_id;
+	DELETE FROM lecture 
+		WHERE ls_id = p_ls_id 
+		AND l_inidatetime > sysdate();
+	SELECT count(*) INTO _count
+		FROM lecture
+		WHERE ls_id = p_ls_id;
+	IF _count != 0 THEN
+		SELECT max(l_id) INTO _count
+			FROM lecture
+			WHERE ls_id = p_ls_id;
+	END IF;
+	UPDATE lecture_schedule
+		SET ls_spec = p_ls_spec
+		WHERE ls_id = p_ls_id;
+	IF _count = 0 THEN
+		UPDATE lecture_schedule
+			SET ls_inidatetime = p_ls_inidatetime
+			WHERE ls_id = p_ls_id;
+	END IF;
+	CASE _type1
+		WHEN 1 THEN
+			BEGIN
+				INSERT INTO lecture VALUES 
+					(_nextval, _count + 1, p_ls_inidatetime, p_ls_duration, 
+					0, p_l_description, floor(rand() * 10000), floor(rand() * 10000)); 
+			END;
+		WHEN 2 THEN
+			BEGIN
+				SELECT substring_index(substring_index(p_ls_spec, ';', 2), ';', -1)
+					INTO _type2;
+				IF _type2 = 1 THEN
+					SELECT substring_index(substring_index(p_ls_spec, ';', 3), ';', -1)
+						INTO _repeat;
+					SELECT substring_index(p_ls_spec, ';', -1)
+						INTO _interval;
+					CALL sp_create_l_daily1(_count, _repeat, _interval, p_ls_id, p_ls_inidatetime, _duration,
+						p_l_description);
+				ELSE
+					SELECT substring_index(substring_index(p_ls_spec, ';', 3), ';', -1)
+						INTO _enddate;
+					SELECT substring_index(p_ls_spec, ';', -1)
+						INTO _interval;
+					CALL sp_create_l_daily2(_count, _enddate, _interval, p_ls_id, p_ls_inidatetime, _duration,
+						p_l_description);
+				END IF;
+			END;
+		WHEN 3 THEN
+			BEGIN
+				SELECT substring_index(substring_index(p_ls_spec, ';', 2), ';', -1)
+					INTO _type2;
+				CASE _type2
+					WHEN 1 THEN
+						BEGIN
+							SELECT substring_index(substring_index(p_ls_spec, ';', 3), ';', -1)
+								INTO _repeat;
+							SELECT substring_index(substring_index(p_ls_spec, ';', 4), ';', -1)
+								INTO _interval;
+							SELECT substring_index(p_ls_spec, ';', -1)
+								INTO _weekbit;
+							CALL sp_create_l_weekly1(_count, _repeat, _interval, _weekbit, p_ls_id, p_ls_inidatetime, 
+								_duration, p_l_description);
+						END;
+					WHEN 2 THEN
+						BEGIN
+							SELECT substring_index(substring_index(p_ls_spec, ';', 3), ';', -1)
+								INTO _repeat;
+							SELECT substring_index(substring_index(p_ls_spec, ';', 4), ';', -1)
+								INTO _interval;
+							SELECT substring_index(p_ls_spec, ';', -1)
+								INTO _weekbit;
+							CALL sp_create_l_weekly2(_count, _repeat, _interval, _weekbit, p_ls_id, p_ls_inidatetime, 
+								_duration, p_l_description);
+						END;
+					WHEN 3 THEN
+						BEGIN
+							SELECT substring_index(substring_index(p_ls_spec, ';', 3), ';', -1)
+								INTO _enddate;
+							SELECT substring_index(substring_index(p_ls_spec, ';', 4), ';', -1)
+								INTO _interval;
+							SELECT substring_index(p_ls_spec, ';', -1)
+								INTO _weekbit;
+							CALL sp_create_l_weekly3(_count, _enddate, _interval, _weekbit, p_ls_id, p_ls_inidatetime, 
+								_duration, p_l_description);
+						END;
+				END CASE;
+			END;
+		WHEN 4 THEN
+			BEGIN
+				SELECT substring_index(substring_index(p_ls_spec, ';', 2), ';', -1)
+					INTO _type2;
+				CASE _type2
+					WHEN 1 THEN
+						BEGIN
+							SELECT substring_index(substring_index(p_ls_spec, ';', 3), ';', -1)
+								INTO _repeat;
+							SELECT substring_index(substring_index(p_ls_spec, ';', 4), ';', -1)
+								INTO _interval;
+							SELECT substring_index(p_ls_spec, ';', -1)
+								INTO _day;
+							CALL sp_create_l_monthly1(_count, _repeat, _interval, _day, p_ls_id, p_ls_inidatetime, 
+								_duration, p_l_description);
+						END;
+					WHEN 2 THEN
+						BEGIN
+							SELECT substring_index(substring_index(p_ls_spec, ';', 3), ';', -1)
+								INTO _repeat;
+							SELECT substring_index(substring_index(p_ls_spec, ';', 4), ';', -1)
+								INTO _interval;
+							SELECT substring_index(p_ls_spec, ';', -1)
+								INTO _day;
+							CALL sp_create_l_monthly2(_count, _repeat, _interval, _day, p_ls_id, p_ls_inidatetime, 
+								_duration, p_l_description);
+						END;
+				END CASE;
+			END;
+	END CASE;
+END//
+DELIMITER ;
+
+DELIMITER //
 CREATE PROCEDURE sp_create_l_daily1(
+	IN p_count INT,
 	IN p_repeats INT,
 	IN p_interval INT,
 	IN p_ls_id INT UNSIGNED,
@@ -623,13 +911,13 @@ CREATE PROCEDURE sp_create_l_daily1(
 	IN p_ls_duration INT,
 	IN p_l_description VARCHAR(2000))
 BEGIN
-	DECLARE _counter INT DEFAULT 0;
+	DECLARE _counter INT DEFAULT p_count;
 	loop1: LOOP
 		SET _counter = _counter + 1;
 		INSERT INTO lecture VALUES 
 			(p_ls_id, _counter, p_ls_inidatetime + INTERVAL (_counter - 1) * p_interval DAY,
 			p_ls_duration, 0, p_l_description, floor(rand() * 10000), floor(rand() * 10000));
-		IF _counter < p_repeats THEN ITERATE loop1;
+		IF _counter < (p_repeats + p_count) THEN ITERATE loop1;
 		END IF;
 		LEAVE loop1;
 	END LOOP loop1;
@@ -638,6 +926,7 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE sp_create_l_daily2(
+	IN p_count INT,
 	IN p_enddate DATE,
 	IN p_interval INT,
 	IN p_ls_id INT UNSIGNED,
@@ -645,7 +934,7 @@ CREATE PROCEDURE sp_create_l_daily2(
 	IN p_ls_duration INT,
 	IN p_l_description VARCHAR(2000))
 BEGIN
-	DECLARE _counter INT DEFAULT 0;
+	DECLARE _counter INT DEFAULT p_count;
 	DECLARE _current DATETIME DEFAULT p_ls_inidatetime;
 	loop1: LOOP
 		SET _counter = _counter + 1;
@@ -663,6 +952,7 @@ DELIMITER ;
 # this method create events based on a total number of sessions
 DELIMITER //
 CREATE PROCEDURE sp_create_l_weekly1(
+	IN p_count INT,
 	IN p_repeat INT,
 	IN p_interval INT,
 	IN p_weekbit CHAR(10),
@@ -671,7 +961,7 @@ CREATE PROCEDURE sp_create_l_weekly1(
 	IN p_ls_duration INT,
 	IN p_l_description VARCHAR(2000))
 BEGIN
-	DECLARE _counter INT DEFAULT 1;
+	DECLARE _counter INT DEFAULT p_count + 1;
 	DECLARE _current DATETIME DEFAULT p_ls_inidatetime;
 	loop1: LOOP
 		IF substring(p_weekbit, dayofweek(_current), 1) = '1' THEN
@@ -695,6 +985,7 @@ DELIMITER ;
 # this method create events based on a total number of weeks
 DELIMITER //
 CREATE PROCEDURE sp_create_l_weekly2(
+	IN p_count INT,
 	IN p_repeat INT,
 	IN p_interval INT,
 	IN p_weekbit CHAR(10),
@@ -703,7 +994,7 @@ CREATE PROCEDURE sp_create_l_weekly2(
 	IN p_ls_duration INT,
 	IN p_l_description VARCHAR(2000))
 BEGIN
-	DECLARE _counter INT DEFAULT 1;
+	DECLARE _counter INT DEFAULT p_count + 1;
 	DECLARE _w_counter INT DEFAULT 1;
 	DECLARE _current DATETIME DEFAULT p_ls_inidatetime;
 	loop1: LOOP
@@ -729,6 +1020,7 @@ DELIMITER ;
 # this method create events based on an end date
 DELIMITER //
 CREATE PROCEDURE sp_create_l_weekly3(
+	IN p_count INT,
 	IN p_enddate DATE,
 	IN p_interval INT,
 	IN p_weekbit CHAR(10),
@@ -737,7 +1029,7 @@ CREATE PROCEDURE sp_create_l_weekly3(
 	IN p_ls_duration INT,
 	IN p_l_description VARCHAR(2000))
 BEGIN
-	DECLARE _counter INT DEFAULT 1;
+	DECLARE _counter INT DEFAULT p_count + 1;
 	DECLARE _current DATETIME DEFAULT p_ls_inidatetime;
 	loop1: LOOP
 		IF substring(p_weekbit, dayofweek(_current), 1) = '1' THEN
@@ -762,6 +1054,7 @@ DELIMITER ;
 # selected date is out of bound in another month
 DELIMITER //
 CREATE PROCEDURE sp_create_l_monthly1(
+	IN p_count INT,
 	IN p_repeats INT,
 	IN p_interval INT,
 	IN p_day INT,
@@ -770,7 +1063,7 @@ CREATE PROCEDURE sp_create_l_monthly1(
 	IN p_ls_duration INT,
 	IN p_l_description VARCHAR(2000))
 BEGIN
-	DECLARE _counter INT DEFAULT 0;
+	DECLARE _counter INT DEFAULT p_count;
 	DECLARE _current DATETIME;
 	DECLARE _diff INT DEFAULT DAY(p_ls_inidatetime) - p_day; 
 	DECLARE _offset INT;
@@ -812,7 +1105,7 @@ BEGIN
 				MONTH(_current + INTERVAL p_interval MONTH), '-',
 				DAY(LAST_DAY(_current + INTERVAL p_interval MONTH)), ' ', TIME(_current));
 		END IF;
-		IF _counter < p_repeats THEN ITERATE loop1;
+		IF _counter < (p_repeats + p_count) THEN ITERATE loop1;
 		END IF;
 		LEAVE loop1;
 	END LOOP loop1;
@@ -823,6 +1116,7 @@ DELIMITER ;
 # Sunday = 1 ... Saturday = 7
 DELIMITER //
 CREATE PROCEDURE sp_create_l_monthly2(
+	IN p_count INT,
 	IN p_repeats INT,
 	IN p_interval INT,
 	IN p_day INT,
@@ -831,7 +1125,7 @@ CREATE PROCEDURE sp_create_l_monthly2(
 	IN p_ls_duration INT,
 	IN p_l_description VARCHAR(2000))
 BEGIN
-	DECLARE _counter INT DEFAULT 0;
+	DECLARE _counter INT DEFAULT p_count;
 	DECLARE _flag INT DEFAULT 0;
 	DECLARE _current DATETIME;
 	DECLARE _loop DATETIME;
@@ -882,7 +1176,7 @@ BEGIN
 			END IF;
 			LEAVE loop4;
 		END LOOP loop4;
-		IF _counter < p_repeats THEN ITERATE loop1;
+		IF _counter < (p_repeats + p_count) THEN ITERATE loop1;
 		END IF;
 		LEAVE loop1;
 	END LOOP loop1;

@@ -55,6 +55,29 @@
 %>
 
 <script type="text/javascript">
+	
+	function search()
+	{
+		var xmlhttp;
+		if (window.XMLHttpRequest)
+		{// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		}
+		else
+		{// code for IE6, IE5
+		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function()
+		{
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		  {
+		    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+		  }
+		}
+		userName = document.getElementById("searchBoxAddAttendee").value;
+	    xmlhttp.open("GET","search.jsp?userName=" + userName,true);
+	    xmlhttp.send();
+	}
 $(document).ready(function() {
 	<%if (meetingSettings.get("isPrivateChatEnabled")==0){%>
 		$(".checkbox .box:eq(0)").next(".checkmark").toggle();
@@ -365,7 +388,7 @@ $(function(){
           <fieldset>
             <div class="component">
               <label for="searchBoxAddAttendee" class="label">Search User:</label>
-              <button type="button" name="search" class="search" tabindex="38" title="Search user"></button>
+              <button type="button" name="search" class="search" tabindex="38" title="Search user" onclick="search()"></button>
               <input type="text" name="searchBox" id="searchBoxAddAttendee" class="searchBox" tabindex="37" title="Search user">
             </div>
             <div id="tableAddAttendee" class="tableComponent">

@@ -56,8 +56,7 @@
 
 <script type="text/javascript">
 	
-	function search()
-	{
+	function searchUser(){
 		var xmlhttp;
 		if (window.XMLHttpRequest)
 		{// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -71,7 +70,9 @@
 		{
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 		  {
-		    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+			  var json = xmlhttp.responseText;
+			  obj = JSON.parse(json);
+		    document.getElementById("responseDiv").innerHTML=xmlhttp.responseText;
 		  }
 		}
 		userName = document.getElementById("searchBoxAddAttendee").value;
@@ -388,7 +389,7 @@ $(function(){
           <fieldset>
             <div class="component">
               <label for="searchBoxAddAttendee" class="label">Search User:</label>
-              <button type="button" name="search" class="search" tabindex="38" title="Search user" onclick="search()"></button>
+              <button type="button" name="search" class="search" tabindex="38" title="Search user" onclick="searchUser()"></button><div id="responseDiv"></div>
               <input type="text" name="searchBox" id="searchBoxAddAttendee" class="searchBox" tabindex="37" title="Search user">
             </div>
             <div id="tableAddAttendee" class="tableComponent">

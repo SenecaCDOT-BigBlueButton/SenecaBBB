@@ -64,7 +64,7 @@ public class Meeting extends Sql {
     
     /**
      * Fields:<p>
-     * (0)ms_id (1)ms_title (2)ms_inidatetime (3)ms_intervals (4)ms_repeats (5)ms_duration (6)bu_id
+     * (0)ms_id (1)ms_title (2)ms_inidatetime (3)ms_spec (4)ms_duration (5)bu_id
      * @param result
      * @return
      */
@@ -76,7 +76,7 @@ public class Meeting extends Sql {
     
     /**
      * Fields:<p>
-     * (0)ms_id (1)ms_title (2)ms_inidatetime (3)ms_intervals (4)ms_repeats (5)ms_duration (6)bu_id 
+     * (0)ms_id (1)ms_title (2)ms_inidatetime (3)ms_spec (4)ms_duration (5)bu_id 
      * @param result
      * @param ms_id
      * @return
@@ -412,35 +412,6 @@ public class Meeting extends Sql {
         return _dbAccess.updateDB(_sql);
     }
     
-    /**
-     * 
-     * @param ms_id
-     * @param ms_repeats
-     * @return
-     */
-    public boolean updateMeetingRepeats(int ms_id, int ms_repeats) {
-        _sql = "CALL sp_update_ms_repeats("
-                + ms_id + ", "
-                + ms_repeats + ")";
-        return _dbAccess.updateDB(_sql);
-    }
-    
-    /**
-     * Format of datetime must be exactly as specified<p>
-     * Check to make sure datetime is greatly than current time<p>
-     * If method updateMeetingTime has been to alter time of day,
-     * calling this method will reset all custom changes
-     * @param ms_id
-     * @param datetime (format: 'YYYY-MM-DD HH:MM:SS')
-     * @return
-     */
-    public boolean updateMeetingScheduleInitialTime(int ms_id, String datetime) {
-        _sql = "CALL sp_update_ms_inidatetime("
-                + ms_id + ", '"
-                + datetime + "')";
-        return _dbAccess.updateDB(_sql);
-    }
-    
     public boolean createMeetingPresentation(String mp_title, int ms_id, int m_id) {
         _sql = "INSERT INTO meeting_presentation VALUES ('"
                 + mp_title + "', " + ms_id + ", " + m_id + ")";
@@ -469,26 +440,98 @@ public class Meeting extends Sql {
     }
     
     /**
-     * Create meeting schedule as well as all meetings in this meeting schedule
+     * Create meeting schedule as well as all meetings in this meeting schedule<p>
+     * ms_spec Format: Type;Subtype;Repeat-or-EndDate;Interval;Weekstring-or-DayOfMonth<p>
+     * Type 1: Single occurrence, no Subtype<p>
+     *      Example: 1<p>
+     * Type 2: Daily<p> 
+     *      2 Subtypes:<p>
+     *          (1) repeat for a number of times<p>
+     *          (2) repeat until a certain date<p>
+     *      Example: 2;1;6;2<p>
+     *               repeat 6 times with interval of 2 days<p> 
+     *               2;2;2013-10-01;7<p>
+     *               repeat until end date reached with interval of 7 days<p>
+     * Type 3: Weekly<p>
+     *      3 Subtypes:<p>
+     *          (1) repeat for a number of times<p>
+     *          (2) repeat for a number of weeks<p>
+     *          (3) repeat until end date is reached<p>
+     *      Weekstring: 0011000 Sun|Mon|Tues|Wed|Thurs|Fri|Sat<p>
+     *      Example: 3;1;6;1;0111110<p>
+     *               3;2;6;2;0110010<p>
+     *               3;3;2013-11-11;3;0110010<p>
+     * Type 4: Monthly<p>
+     *      2 Subtypes:<p>
+     *          (1) repeat on same day each month
+     *              (date will auto change to the last day of month for shortened month)
+     *          (2) repeat the first occurrence of day-of-week in a month
+     *      Example: 4;1;7;1;31<p>
+     *               4;2;5;1;3<p>
+     *               repeat on the first Tuesday of each month for 5 month, repeat every month
      * @param ms_title
      * @param ms_inidatetime (format: 'YYYY-MM-DD HH:MM:SS')
-     * @param ms_intervals (in days)
-     * @param ms_repeats
+     * @param ms_spec
      * @param ms_duration (in minutes, round to nearest integer)
      * @param m_description
      * @param bu_id
      * @return
      */
     public boolean createMeetingSchedule(String ms_title, String ms_inidatetime, 
-            int ms_intervals, int ms_repeats, int ms_duration, String m_description, String bu_id) {
+            String ms_spec, int ms_duration, String m_description, String bu_id) {
         _sql = "CALL sp_create_ms('"
                 + ms_title + "', '"
-                + ms_inidatetime + "', "
-                + ms_intervals + ", "
-                + ms_repeats + ", "
+                + ms_inidatetime + "', '"
+                + ms_spec + "', "
                 + ms_duration + ", '"
                 + m_description + "', '"
                 + bu_id + "')";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
+     * Edit a meeting schedule, delete all future meetings, create new ones<p>
+     * ms_spec Format: Type;Subtype;Repeat-or-EndDate;Interval;Weekstring-or-DayOfMonth<p>
+     * Type 1: Single occurrence, no Subtype<p>
+     *      Example: 1<p>
+     * Type 2: Daily<p> 
+     *      2 Subtypes:<p>
+     *          (1) repeat for a number of times<p>
+     *          (2) repeat until a certain date<p>
+     *      Example: 2;1;6;2<p>
+     *               repeat 6 times with interval of 2 days<p> 
+     *               2;2;2013-10-01;7<p>
+     *               repeat until end date reached with interval of 7 days<p>
+     * Type 3: Weekly<p>
+     *      3 Subtypes:<p>
+     *          (1) repeat for a number of times<p>
+     *          (2) repeat for a number of weeks<p>
+     *          (3) repeat until end date is reached<p>
+     *      Weekstring: 0011000 Sun|Mon|Tues|Wed|Thurs|Fri|Sat<p>
+     *      Example: 3;1;6;1;0111110<p>
+     *               3;2;6;2;0110010<p>
+     *               3;3;2013-11-11;3;0110010<p>
+     * Type 4: Monthly<p>
+     *      2 Subtypes:<p>
+     *          (1) repeat on same day each month
+     *              (date will auto change to the last day of month for shortened month)
+     *          (2) repeat the first occurrence of day-of-week in a month
+     *      Example: 4;1;7;1;31<p>
+     *               4;2;5;1;3<p>
+     *               repeat on the first Tuesday of each month for 5 month, repeat every month
+     * @param ms_id
+     * @param ms_inidatetime (format: 'YYYY-MM-DD HH:MM:SS')
+     * @param ms_spec
+     * @param m_description
+     * @return
+     */
+    public boolean editMeetingSchedule(int ms_id, String ms_inidatetime, 
+            String ms_spec, String m_description) {
+        _sql = "CALL sp_edit_ms("
+                + ms_id + ", '"
+                + ms_inidatetime + "', '"
+                + ms_spec + "', '"
+                + m_description + "')";
         return _dbAccess.updateDB(_sql);
     }
     

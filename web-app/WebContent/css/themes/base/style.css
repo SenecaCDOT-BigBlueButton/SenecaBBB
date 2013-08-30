@@ -597,8 +597,6 @@ button.ui-datepicker-trigger {
 }
 #calendar {
 	width: 900px;
-	margin-left: -14px;
-	height: 900px;
 	display: block;
 }
 .search {

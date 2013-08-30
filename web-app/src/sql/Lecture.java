@@ -1,6 +1,7 @@
 package sql;
 
 import java.util.ArrayList;
+
 import db.DBAccess;
 
 /**
@@ -241,6 +242,43 @@ public class Lecture extends Sql {
         return _dbAccess.queryDB(result, _sql);
     }
 
+    /**
+     * Fields:<p>
+     * (0)ls_id (1)l_id (2)l_inidatetime (3)l_duration (4)l_iscancel (5)l_description (6)l_modpass (7)l_userpass (8)c_name
+     * @param result
+     * @param bu_id
+     * @param professor
+     * @param student
+     * @return
+     */
+    public boolean getLecturesForUser(ArrayList<ArrayList<String>> result, String bu_id, boolean professor, boolean student) {
+    	String _professor = "(SELECT lecture.*, course.c_name " 
+    			+ "FROM lecture "
+    			+ "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
+    			+ "INNER JOIN professor ON lecture_schedule.c_id = professor.c_id AND lecture_schedule.sc_id = professor.sc_id AND lecture_schedule.sc_semesterid = professor.sc_semesterid "
+    			+ "INNER JOIN course ON lecture_schedule.c_id = course.c_id) ";
+    			//+ "WHERE professor.bu_id = '" + bu_id +"') ";
+    			
+    	String _student = "(SELECT lecture.*, course.c_name " 
+    			+ "FROM lecture "
+    			+ "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
+    			+ "INNER JOIN student ON lecture_schedule.c_id = student.c_id AND lecture_schedule.sc_id = student.sc_id AND lecture_schedule.sc_semesterid = student.sc_semesterid "
+    			+ "INNER JOIN course ON lecture_schedule.c_id = course.c_id "
+    			+ "WHERE student.bu_id = '" + bu_id +"') ";
+    	
+    	if (professor && student) {
+    		_sql = _professor + "UNION DISTINCT " + _student;
+    	} else if (professor) {
+    		_sql = _professor;
+    	} else if (student) {
+    		_sql = _student;
+    	} else {
+    		result.clear();
+    		return true;
+    	}
+    	return (_dbAccess.queryDB(result, _sql));
+    }
+    
     /**
      * (0)bu_id (1)gl_ismod
      * @param result

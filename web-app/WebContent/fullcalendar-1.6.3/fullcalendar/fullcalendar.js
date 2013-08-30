@@ -66,8 +66,8 @@ var defaults = {
 	dayNames: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
 	dayNamesShort: ['Sunday','Monday','Tuesday','Wednesday','Thurdsday','Friday','Saturday'],
 	buttonText: {
-		prev: "<span class='fc-text-arrow'>&lsaquo;</span>",
-		next: "<span class='fc-text-arrow'>&rsaquo;</span>",
+		prev: "<span class='fc-text-arrow'> </span>",
+		next: "<span class='fc-text-arrow'> </span>",
 		prevYear: "<span class='fc-text-arrow'>&laquo;</span>",
 		nextYear: "<span class='fc-text-arrow'>&raquo;</span>",
 		today: 'Today',

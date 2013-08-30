@@ -533,11 +533,11 @@ $(screen).ready(function() {
 				);
 			});
 
-			/* HOME - MOUSEOVER */
-			$("aside nav #home").mouseover(
+			/* CALENDAR - MOUSEOVER */
+			$("aside nav #calendar").mouseover(
 				function () {
 					$(this).css({"background-color":"#9F100B"});
-					$(this).css({"border-left":"123px solid #EEE"});
+					$(this).css({"border-left":"95px solid #EEE"});
 					$(this).parent(this).css({"border-right":"10px solid #9F100B"});
 				}
 			);
@@ -604,21 +604,30 @@ $(screen).ready(function() {
 					$(this).parent(this).css({"border-right":"10px solid #9F100B"});
 				}
 			);
+			
+			/* SETTINGS - MOUSEOVER */
+			$("aside nav #settings").mouseover(
+				function () {
+					$(this).css({"background-color":"#9F100B"});
+					$(this).css({"border-left":"108px solid #EEE"});
+					$(this).parent(this).css({"border-right":"10px solid #9F100B"});
+				}
+			);
 		}
 
 		clear();
 
 	 	/* MENU - CLICK EVENT */
-		$("aside nav #home").click(function () {
+		$("aside nav #calendar").click(function () {
 			$(location).attr('href', "calendar.jsp");
 		});
 
 		$("aside nav #createEvent").click(function () {
-			$(location).attr('href', "createEvent.jsp");
+			$(location).attr('href', "create_event.jsp");
 		});
 
 		$("aside nav #manageUsers").click(function () {
-			$(location).attr('href', "manageUsers.jsp");
+			$(location).attr('href', "manage_users.jsp");
 		});
 
 		$("aside nav #departments").click(function () {
@@ -626,7 +635,7 @@ $(screen).ready(function() {
 		});
 
 		$("aside nav #departmentUsers").click(function () {
-			$(location).attr('href', "departmentUsers.jsp");
+			$(location).attr('href', "department_users.jsp");
 		});	
 
 		$("aside nav #subjects").click(function () {
@@ -634,11 +643,15 @@ $(screen).ready(function() {
 		});	
 
 		$("aside nav #classSettings").click(function () {
-			$(location).attr('href', "classSettings.jsp");
+			$(location).attr('href', "class_settings.jsp");
 		});	
 
 		$("aside nav #systemSettings").click(function () {
-			$(location).attr('href', "systemSettings.jsp");
+			$(location).attr('href', "system_settings.jsp");
+		});
+
+		$("aside nav #settings").click(function () {
+			$(location).attr('href', "settings.jsp");
 		});
 
 		/* MENU - CURRENT PAGE */

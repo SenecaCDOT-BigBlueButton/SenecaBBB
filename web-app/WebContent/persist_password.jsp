@@ -14,6 +14,8 @@
 	HashMap<String, Integer> map = new HashMap<String, Integer>();
 	User user = new User(dbaccess);
 	String pageIncoming = request.getParameter("page");
+	if (pageIncoming == null)
+		pageIncoming = "";
 	String newPassword = request.getParameter("newPassword");
 	String confirmPassword = request.getParameter("confirmPassword");
 	String currentPassword = request.getParameter("currentPassword");

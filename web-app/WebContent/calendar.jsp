@@ -32,7 +32,7 @@ $(function(){
 	var m = date.getMonth();
 	var y = date.getFullYear();
 	
-	$('#calendar').fullCalendar({
+	$('#fullcalendar').fullCalendar({
 			header: {
 				left: 'prev,next today',
 				center: 'title',
@@ -95,8 +95,8 @@ $(function(){
 	<jsp:include page="menu.jsp"/>   
 	<section>
 		<header>
-			<p><a href="calendar.jsp" tabindex="13">home</a> » <a href="createEvent" tabindex="14">create event</a></p>
-			<h1>Create Event</h1>
+			<p><a href="calendar.jsp" tabindex="13">home</a> » </p>
+			<h1>Calendar</h1>
 		</header>
 		<form>
 			<article>
@@ -143,7 +143,11 @@ $(function(){
 			</article>
 		</form>
 		<h4></h4>
-		<div id='calendar'></div>
+		<div class="content">
+			<div class="component">
+				<div id="fullcalendar"></div><div id='fullcalendar'></div>
+			</div>
+		</div>
 	</section>
 	<jsp:include page="footer.jsp"/>
 </div>

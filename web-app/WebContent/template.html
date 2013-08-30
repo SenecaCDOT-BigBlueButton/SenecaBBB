@@ -25,13 +25,13 @@
 
 <script type="text/javascript">
 $(screen).ready(function() {
-	/* ATTENDEES LIST */
+	/* ADD ATTENDEE */
 	$('#addAttendee').dataTable({"sPaginationType": "full_numbers"});
 	$('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
 	$.fn.dataTableExt.sErrMode = 'throw';
 	$('.dataTables_filter input').attr("placeholder", "Filter entries");
-		
-	/* ATTENDEES LIST */	
+
+	/* ATTENDEES LIST */
 	$('#attendeesList').dataTable({"sPaginationType": "full_numbers"});
 	$('#attendeesList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
 	$.fn.dataTableExt.sErrMode = 'throw';
@@ -93,7 +93,7 @@ $(function(){
 	var m = date.getMonth();
 	var y = date.getFullYear();
 	
-	$('#calendar').fullCalendar({
+	$('#fullcalendar').fullCalendar({
 			header: {
 				left: 'prev,next today',
 				center: 'title',
@@ -167,7 +167,7 @@ $(function(){
     <nav>
       <ul>
         <div class="menu">
-          <li id="home"><a href="index.jsp" tabindex="5" title="Click here to go to the home screen">Home</a></li>
+          <li id="calendar"><a href="calendar.jsp" tabindex="5" title="Click here to see your calendar of events">Calendar</a></li>
         </div>
         <div class="menu">
           <li id="createEvent"><a href="createEvent.jsp" tabindex="6" title="Click here to create a new event">Create Event</a></li>
@@ -190,6 +190,9 @@ $(function(){
         <div class="menu">
           <li id="systemSettings"><a href="systemSettings.jsp" tabindex="12" title="Click here to manage system settings">System Settings</a></li>
         </div>
+        <div class="menu">
+          <li id="settings"><a href="settings.jsp" tabindex="13" title="Click here to change your settings">Settings</a></li>
+        </div>
       </ul>
     </nav>
   </aside>
@@ -205,8 +208,8 @@ $(function(){
           <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/></header>
         <div class="content">
           <fieldset>
+          <div id="fullcalendar"></div>
           	<div class="component">
-              <div id="calendar"></div>
               <label for="eventTitle" class="label">Event Title:</label>
               <input name="eventTitle" id="eventTitle" class="input" tabindex="15" title="Event title" type="text" required autofocus>
             </div>
@@ -217,13 +220,13 @@ $(function(){
                 <option value="Lecture">Lecture</option>
               </select>
             </div>
-            <div class="component">
-              <div class="checkbox" title="Allow microphone sharing."> <span class="box" role="checkbox" aria-checked="true" tabindex="17" aria-labelledby="eventSetting1"></span>
-                <label class="checkmark"></label>
-                <label class="text" id="eventSetting1">Allow microphone sharing.</label>
-                <input type="checkbox" name="eventSetting1box" checked="checked" aria-disabled="true">
-              </div>
-            </div>
+			<div class="component">
+				<div class="checkbox" title="Allow microphone sharing"> <span class="box" role="checkbox" aria-checked="true" tabindex="17" aria-labelledby="eventSetting1"></span>
+					<label class="checkmark"></label>
+					<label class="text" id="eventSetting1">Allow microphone sharing.</label>
+					<input type="checkbox" name="eventSetting1box" checked="checked" aria-disabled="true">
+				</div>
+			</div>
             <div class="component">
               <div class="checkbox" title="Allow camera sharing"> <span class="box" role="checkbox" aria-checked="true" tabindex="18" aria-labelledby="eventSetting2"></span>
                 <label class="checkmark"></label>
@@ -239,7 +242,7 @@ $(function(){
               </div>
             </div>
             <div class="component" style="z-index: 2;">
-              <div class="checkbox" title="Allow event recording."> <span class="box" role="checkbox" aria-checked="true" tabindex="20" aria-labelledby="eventSetting4"></span>
+              <div class="checkbox" title="Allow event recording"> <span class="box" role="checkbox" aria-checked="true" tabindex="20" aria-labelledby="eventSetting4"></span>
                 <label class="checkmark"></label>
                 <label class="text" id="eventSetting4">Allow event recording.</label>
                 <input type="checkbox" name="eventSetting4box" checked="checked" aria-disabled="true">
@@ -287,10 +290,18 @@ $(function(){
                 <option role="option">Monthly</option>
               </select>
             </div>
-            <div style="display: none;" id="selectRepeatsEvery" class="component">
-              <label for="repeatsEvery" class="label">Repeats every:</label>
-              <input name="repeatsEvery" id="repeatsEvery" class="input" tabindex="25" title="Repeats every" type="number" required>
-            </div>
+            
+<div class="component">
+	<label for="selectboxId" class="label">Select box label:</label>
+	<select name="selectboxName" id="selectboxId" title="Select box description" tabindex="1" role="listbox" style="width: 402px">
+		<option role="option" selected>Default selected option</option>
+		<option role="option">Regular option</option>
+	</select>
+</div>
+			<div style="display: none;" id="selectRepeatsEvery" class="component">
+				<label for="repeatsEvery" class="label">Repeats every:</label>
+				<input name="repeatsEvery" id="repeatsEvery" class="input" tabindex="25" title="Repeats every" type="number" required>
+			</div>
             <div class="component" id="selectOccursBy">
               <label for="dropdownOccursBy" class="label">Occurs by:</label>
               <select id="dropdownOccursBy" title="Occurs by" tabindex="26" role="listbox" style="width: 402px">
@@ -336,7 +347,6 @@ $(function(){
                 <option role="option" value="29">29th</option>
                 <option role="option" value="30">30th</option>
                 <option role="option" value="31">31st</option>
-                <option role="option" value="32">Last day of the month</option>
               </select>
             </div>
             <div id="week" class="component" role="group">
@@ -485,7 +495,7 @@ $(function(){
               <label for="searchBoxAddAttendee" class="label">Search User:</label>
               <button type="button" name="search" class="search" tabindex="38" title="Search user"></button>
               <input type="text" name="searchBox" id="searchBoxAddAttendee" class="searchBox" tabindex="37" title="Search user">
-            </div>
+            </div>            
             <div id="tableAddAttendee" class="tableComponent">
               <h4></h4>
               <table id="addAttendee" border="0" cellpadding="0" cellspacing="0">
@@ -539,7 +549,7 @@ $(function(){
                     <td>ystallonne@seneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row" title="aberdeenshire">aberdenshire</td>
@@ -547,7 +557,7 @@ $(function(){
                     <td>aberdeenshire@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">angus</td>
@@ -555,7 +565,7 @@ $(function(){
                     <td>angus@seneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">argyll</td>
@@ -563,7 +573,7 @@ $(function(){
                     <td>argyll@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">edinburgh</td>
@@ -571,7 +581,7 @@ $(function(){
                     <td>edinburgh@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">clackmannanshire</td>
@@ -579,7 +589,7 @@ $(function(){
                     <td>clackmannanshire@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">Dumfries &amp; Galloway</td>
@@ -587,7 +597,7 @@ $(function(){
                     <td>dumfries@myseneca.ca</td>
                     <td>Professor</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">dundee</td>
@@ -595,7 +605,7 @@ $(function(){
                     <td>dundee@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">east.ayrshire</td>
@@ -603,7 +613,7 @@ $(function(){
                     <td>east.ayrshire@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">Dunbartonshire </td>
@@ -611,7 +621,7 @@ $(function(){
                     <td>@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">East Lothian </td>
@@ -619,7 +629,7 @@ $(function(){
                     <td>@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">East Renfrewshire </td>
@@ -627,7 +637,7 @@ $(function(){
                     <td>@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">Eilean Siar </td>
@@ -635,7 +645,7 @@ $(function(){
                     <td>@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">Falkirk </td>
@@ -643,7 +653,7 @@ $(function(){
                     <td>@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">Fife </td>
@@ -651,7 +661,7 @@ $(function(){
                     <td>fife@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">Glasgow City </td>
@@ -659,7 +669,7 @@ $(function(){
                     <td>glashgow@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">Highland </td>
@@ -667,7 +677,7 @@ $(function(){
                     <td>highland@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">Inverclyde</td>
@@ -675,7 +685,7 @@ $(function(){
                     <td>inverclyde@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                   <tr>
                     <td class="row">Midlothian </td>
@@ -683,7 +693,7 @@ $(function(){
                     <td>midlothian@myseneca.ca</td>
                     <td>Student</td>
                     <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
+                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Remove"/></a></td>
                   </tr>
                 </tbody>
               </table>
@@ -692,14 +702,14 @@ $(function(){
         </div>
       </article>
       <article>
-        <h4></h4>
-        <fieldset>
-          <div class="buttons">
-            <button type="submit" name="submit" id="save" class="button" title="Click here to save inserted data">Save</button>
-            <button type="button" name="button" id="cancel"  class="button" title="Click here to cancel">Cancel</button>
-          </div>
-        </fieldset>
-      </article>
+	<h4></h4>
+	<fieldset>
+		<div class="actionButtons">
+			<button type="submit" name="submit" id="save" class="button" title="Click here to save inserted data">Save</button>
+			<button type="button" name="button" id="cancel" class="button" title="Click here to cancel" onclick="window.location.href='calendar.jsp'">Cancel</button>
+		</div>
+	</fieldset>
+</article>
     </form>
   </section>
   <footer>

@@ -106,7 +106,7 @@ aside nav ul .menu {
 	border-right: 10px solid #EEEEEE;
 	cursor: pointer;
 }
-aside nav ul .menu #home {
+aside nav ul .menu #calendar {
 	-webkit-transition: all 0.2s ease-out;
 	-moz-transition: all 0.1s;
 	-ms-transition: all 0.1s;
@@ -114,8 +114,8 @@ aside nav ul .menu #home {
 	transition: all 0.1s;
 	border-left: 0px solid #EEEEEE;
 }
-aside nav ul .menu #home:hover {
-	border-left: 123px solid #9F100B;
+aside nav ul .menu #calendar:hover {
+	border-left: 95px solid #9F100B;
 }
 aside nav ul .menu #createEvent {
 	-webkit-transition: all 0.2s ease-out;
@@ -204,6 +204,17 @@ aside nav ul .menu #systemSettings {
 }
 aside nav ul .menu #systemSettings:hover {
 	border-left: 47px solid #9F100B;
+}
+aside nav ul .menu #settings {
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.1s;
+	-ms-transition: all 0.1s;
+	-o-transition: all 0.1s;
+	transition: all 0.1s;
+	border-left: 0px solid #EEEEEE;
+}
+aside nav ul .menu #settings:hover {
+	border-left: 108px solid #9F100B;
 }
 aside nav ul li {
 	font-family: "ITCAvantGardeStd Md", Sans-Serif;
@@ -331,6 +342,8 @@ section form article header .expandContent {
 }
 section form article fieldset {
 	border: none;
+	margin: 0px;
+	padding: 0px;
 }
 section form article fieldset div.component {
 	width: 620px;
@@ -342,13 +355,11 @@ section form article fieldset div.component {
 }
 div#calendar {
 	width: 900px;
-	margin-left: -14px;
-	height: 900px;
+	margin-left: 0px;
 	display: block;
 }
 section form article fieldset div.tableComponent {
 	width: 620px;
-	margin-left: -12px;
 	clear: both;
 	display: block;
 	float: left;
@@ -465,7 +476,7 @@ section form article fieldset div.component div.checkbox label.checkmark {
 }
 section form article fieldset div.component div.checkbox label.text {
 	margin-left: 30px;
-	font-size: 15px;
+	font-size: 16px;
 	color: #454545;
 	font-family: "ITCAvantGardeStd BkCn";
 	font-style: normal;
@@ -515,7 +526,7 @@ section form article fieldset div.component div.radio label.checkradio {
 }
 section form article fieldset div.component div.radio label.text {
 	margin-left: 30px;
-	font-size: 15px;
+	font-size: 16px;
 	color: #454545;
 	font-family: "ITCAvantGardeStd BkCn";
 	font-style: normal;
@@ -525,10 +536,12 @@ section form article fieldset div.component div.radio label.text {
 section form .buttons {
 	margin-left: 216px;
 }
-section form .buttons .button, .search {
-	padding: 10px;
-	padding-top: 8px;
-	width: 85px;
+section form .actionButtons {
+	margin-left: 0px;
+}
+section form .buttons .button, section form .actionButtons .button {
+	padding: 8px 15px;
+	min-width: 85px;
 	height: 39px;
 	margin-left: 0px;
 	margin-right: 18px;
@@ -593,12 +606,19 @@ button.ui-datepicker-trigger {
 	background-repeat: no-repeat;
 	background-position: center;
 	position: relative; /* Enable absolute positionning for children and pseudo elements */
+	border-style: none;
+	background-color: #CD352B;
+	-webkit-transition: all 0.1s;
+	-moz-transition: all 0.1s;
+	-ms-transition: all 0.1s;
+	-o-transition: all 0.1s;
+	transition: all 0.1s;
 	cursor: pointer;
 }
-section form .buttons .button:hover, .datePicker:hover, #search:hover, button.ui-datepicker-trigger:hover {
+section form .buttons .button:hover, section form .buttons .actionButton:hover, .datePicker:hover, #search:hover, button.ui-datepicker-trigger:hover, .search:hover {
 	background-color: #9F100B;
 }
-section form .buttons .button:active, .datePicker:active, #search:active, button.ui-datepicker-trigger:active {
+section form .buttons .button:active, section form .buttons .actionButton:active, .datePicker:active, #search:active, button.ui-datepicker-trigger:active, .search:hover {
 	background-color: #9F100B;
 }
 /* WEEK - CHECKBOX AND RADIOBUTTON BUTTONS*/
@@ -910,6 +930,14 @@ footer div#copyright {
 	width: 17px;
 	height: 17px;
 	background-repeat: no-repeat;
+}
+.tableComponent table tbody tr td.action img {
+	border: none;
+	background-image: url('../../../images/status.svg');
+}
+.tableComponent table tbody tr td.action img {
+	border: none;
+	background-image: url('../../../images/status.svg');
 }
 .tableComponent table tbody tr td.status img {
 	border: none;

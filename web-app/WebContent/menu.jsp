@@ -1,5 +1,6 @@
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <aside>
+
 	<nav>
 		<ul>
 			<div class="menu">
@@ -27,4 +28,5 @@
 			%>
 		</ul>
 	</nav>
+
 </aside>

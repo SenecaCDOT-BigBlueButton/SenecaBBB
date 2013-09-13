@@ -303,16 +303,16 @@ public class LDAPAuthenticate {
 
                 if (!results.hasMore()) // search failed
                 {
+                  System.out.println("test");
                     throw new Exception();
                 }
 
                 SearchResult sr = results.next();
                 Attributes at = sr.getAttributes();
-
-                //System.out.println("position=" +position);
-          
-
+              
                 position = ((sr.getName().split(","))[1].split("="))[1];
+                if (position.equals("Employee") || position.equals("Professor"))
+                  givenName = at.get(givenNameField).toString().split(": ")[1];
                 userID = at.get(userIDField).toString().split(": ")[1];
 
                 authenticated = "true";

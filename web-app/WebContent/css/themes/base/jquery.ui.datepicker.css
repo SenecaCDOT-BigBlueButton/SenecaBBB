@@ -20,9 +20,11 @@
 }*/
 .ui-datepicker .ui-datepicker-prev {
 	left: 2px;
+	cursor: pointer;
 }
 .ui-datepicker .ui-datepicker-next {
 	right: 2px;
+	cursor: pointer;
 }
 /*.ui-datepicker .ui-datepicker-prev-hover {
 	left: 1px;

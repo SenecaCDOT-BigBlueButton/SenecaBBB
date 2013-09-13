@@ -118,8 +118,9 @@ CREATE TABLE meeting_schedule (
   ms_id           INT UNSIGNED,
   ms_title        VARCHAR(100) NOT NULL,
   ms_inidatetime  DATETIME NOT NULL,
-  ms_intervals    INT UNSIGNED NOT NULL,
-  ms_repeats      INT UNSIGNED NOT NULL,
+  ms_spec         VARCHAR(100) NOT NULL,
+  #ms_intervals    INT UNSIGNED NOT NULL,
+  #ms_repeats      INT UNSIGNED NOT NULL,
   ms_duration     INT UNSIGNED NOT NULL,
   bu_id           VARCHAR(100) NOT NULL,
   CONSTRAINT pk_meeting_schedule 
@@ -312,8 +313,9 @@ CREATE TABLE lecture_schedule (
   sc_id           CHAR(2) NOT NULL,
   sc_semesterid   INT UNSIGNED NOT NULL,
   ls_inidatetime  DATETIME NOT NULL,
-  ls_intervals    INT UNSIGNED NOT NULL,
-  ls_repeats      INT UNSIGNED NOT NULL,
+  ls_spec         VARCHAR(100) NOT NULL,
+  #ls_intervals    INT UNSIGNED NOT NULL,
+  #ls_repeats      INT UNSIGNED NOT NULL,
   ls_duration     INT UNSIGNED NOT NULL,
   #ls_isrecorded   BIT(1), part of sc_setting
   CONSTRAINT pk_lecture_schedule 

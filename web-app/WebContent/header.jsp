@@ -7,7 +7,7 @@
         <li class="divisor">|</li>
         <li><a href="settings.jsp" tabindex="3" title="User settings">Settings</a></li>
         <li class="divisor">|</li>
-        <li><a href="#" tabindex="2" title="View user info"><%=usersession.getGivenName() %></a></li>
+        <li><a href="settings.jsp" tabindex="2" title="View user info"><%=usersession.getGivenName() %></a></li>
       </ul>
     </nav>
 </header>

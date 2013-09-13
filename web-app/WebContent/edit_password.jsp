@@ -22,7 +22,6 @@
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <script type="text/javascript" src="js/componentController.js"></script>
-
 <% 
 	//Start page validation
 	String userId = usersession.getUserId();
@@ -40,47 +39,48 @@
 		message="";
 	}
 %>
-	
 </head>
 <body>
 <div id="page">
 	<jsp:include page="header.jsp"/>
 	<jsp:include page="menu.jsp"/>
 	<section>
-	 <header>
-      <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="settings.jsp" tabindex="14">settings</a> » change password</p>
-      <h1>Change Password</h1><%=message%>
-    </header>
-    <form action="persist_password.jsp&page=edit_password" method="get">
-		<article>
 		<header>
-		    <h2>Edit Password</h2>
-		    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/></header>
-		  <div class ="content">
-		  <fieldset>
-		    <div class="component">
-		      <label for="currentPassword" class="label">Current password:</label>
-		      <input type="password" name="currentPassword" id="currentPassword" class="input" tabindex="19" title="Current password">
-		    </div>
-		    <div class="component">
-		      <label for="newPassword" class="label">New password:</label>
-		      <input type="password" name="newPassword" id="newPassword" class="input" tabindex="20" title="New password">
-		    </div>
-		    <div class="component">
-		      <label for="confirmPassword" class="label">Confirm password:</label>
-		      <input type="password" name="confirmPassword" id="confirmPassword" class="input" tabindex="21" title="Confirm password">
-		    </div>
-		  </fieldset>
-		</div>
-		</article>
-		 <article>
-        <fieldset>
-          <div class="buttons">
-            <button type="submit" name="submit" id="save" class="button" title="Click here to save inserted data">Save</button>
-            <button type="button" name="button" id="cancel"  class="button" title="Click here to cancel">Cancel</button>
-          </div>
-        </fieldset>
-      </article>
+			<p><a href="calendar.jsp" tabindex="13">home</a> » <a href="settings.jsp" tabindex="14">settings</a> » <a href="edit_password.jsp" tabindex="15">change password</a></p>
+			<h1>Change Password</h1>
+			<div class="warningMessage"><%=message %></div>
+		</header>
+		<form action="persist_password.jsp?page=edit_password" method="get">
+			<article>
+				<header>
+					<h2>Edit Password</h2>
+					<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/></header>
+				<div class ="content">
+					<fieldset>
+						<div class="component">
+							<label for="currentPassword" class="label">Current password:</label>
+							<input type="password" name="currentPassword" id="currentPassword" class="input" tabindex="16" title="Current password" required>
+						</div>
+						<div class="component">
+							<label for="newPassword" class="label">New password:</label>
+							<input type="password" name="newPassword" id="newPassword" class="input" tabindex="17" title="New password" required>
+						</div>
+						<div class="component">
+							<label for="confirmPassword" class="label">Confirm password:</label>
+							<input type="password" name="confirmPassword" id="confirmPassword" class="input" tabindex="18" title="Confirm password" required>
+						</div>
+					</fieldset>
+				</div>
+			</article>
+			<article>
+				<h4></h4>
+				<fieldset>
+					<div class="actionButtons">
+						<button type="submit" name="submit" id="save" class="button" title="Click here to save inserted data">Save</button>
+						<button type="button" name="button" id="cancel" class="button" title="Click here to cancel" onclick="window.location.href='settings.jsp'">Cancel</button>
+					</div>
+				</fieldset>
+			</article>
 		</form>
 	</section>
 	<jsp:include page="footer.jsp"/>

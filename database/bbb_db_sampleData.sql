@@ -84,8 +84,16 @@ INSERT INTO student VALUES ('rwstanica', 'OOP344', 'B', '201305', 0);
 INSERT INTO student VALUES ('non_ldap1', 'OOP344', 'B', '201305', 0);
 INSERT INTO student VALUES ('non_ldap2', 'OOP344', 'B', '201305', 0);
 
-CALL sp_create_ls('OOP344', 'A', '201305', '2013-07-01 10:00:00', 7, 10, 50, 'OOP344A');
-CALL sp_create_ls('OOP344', 'B', '201305', '2013-07-03 10:00:00', 7, 10, 50, 'OOP344B');
+CALL sp_create_ls('OOP344', 'A', '201305', '2013-07-01 10:00:00', '2;1;5;1', 50, 'OOP344A');
+CALL sp_create_ls('OOP344', 'B', '201305', '2013-09-03 10:00:00', '2;2;2013-10-01;6', 50, 'OOP344B');
+CALL sp_create_ls('IPC144', 'A', '201305', '2013-08-03 10:00:00', '1', 50, 'IPC144');
+CALL sp_create_ls('IPC144', 'B', '201305', '2013-08-03 10:00:00', '3;1;10;2;0011000', 50, 'IPC144');
+CALL sp_create_ls('PSY100', 'A', '201305', '2013-08-03 10:00:00', '3;2;10;2;0100000', 50, 'PSY100');
+CALL sp_create_ls('PSY100', 'B', '201305', '2013-08-03 10:00:00', '3;3;2013-11-11;3;0100001', 50, 'PSY100');
+CALL sp_create_ls('PSY150', 'A', '201305', '2013-08-03 10:00:00', '4;1;7;1;31', 50, 'PSY150');
+CALL sp_create_ls('PSY150', 'B', '201305', '2013-08-23 10:00:00', '4;1;7;2;5', 50, 'PSY150');
+CALL sp_create_ls('INT222', 'A', '201305', '2013-08-05 10:00:00', '4;2;7;1;1', 50, 'PSY150');
+CALL sp_create_ls('INT222', 'B', '201305', '2013-08-23 10:00:00', '4;2;7;2;2', 50, 'PSY150');
 
 INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 1, 1);
 INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 1, 2);
@@ -118,8 +126,18 @@ INSERT INTO lecture_attendance VALUES ('rwstanica', 2, 3, 0);
 INSERT INTO lecture_attendance VALUES ('non_ldap1', 2, 3, 0);
 INSERT INTO lecture_attendance VALUES ('non_ldap2', 2, 3, 0);
 
-CALL sp_create_ms('Test Meeting Schedule 1', '2013-07-01 10:00:00', 7, 10, 50, 'Test Meeting 2 description', 'bo.li');
-CALL sp_create_ms('Test Meeting Schedule 2', '2013-07-22 13:00:00', 7, 10, 50, 'Test Meeting 2 description', 'bli64');
+CALL sp_create_ms('Test Meeting Schedule 1', '2013-07-01 10:00:00', '2;1;5;2', 50, 'Test Meeting 1 description', 'bo.li');
+CALL sp_create_ms('Test Meeting Schedule 2', '2013-07-22 13:00:00', '2;2;2013-10-01;7', 50, 'Test Meeting 2 description', 'bli64');
+CALL sp_create_ms('Test Meeting Schedule 3', '2013-07-01 10:00:00', '1', 50, 'Test', 'bo.li');
+CALL sp_create_ms('Test Meeting Schedule 4', '2013-08-01 10:00:00', '3;1;6;1;0111110', 50, 'Test Meeting 4 description', 'bo.li');
+CALL sp_create_ms('Test Meeting Schedule 5', '2013-08-01 10:00:00', '3;2;6;2;0110010', 50, 'Test Meeting 5 description', 'bo.li');
+CALL sp_create_ms('Test Meeting Schedule 6', '2013-08-01 10:00:00', '3;3;2013-11-11;3;0110010', 50, 'Test Meeting 5 description', 'bo.li');
+CALL sp_create_ms('Test Meeting Schedule 7', '2013-02-01 10:00:00', '4;1;7;1;31', 50, 'Test Meeting 7 description', 'bo.li');
+CALL sp_create_ms('Test Meeting Schedule 8', '2013-01-30 10:00:00', '4;1;5;1;30', 50, 'Test Meeting 8 description', 'bo.li');
+CALL sp_create_ms('Test Meeting Schedule 9', '2013-12-31 10:00:00', '4;1;5;3;30', 50, 'Test Meeting 9 description', 'bo.li');
+CALL sp_create_ms('Test Meeting Schedule 10', '2013-12-31 10:00:00', '4;2;5;1;3', 50, 'Test Meeting 10 description', 'bo.li');
+CALL sp_create_ms('Test Meeting Schedule 11', '2013-12-31 10:00:00', '4;2;5;3;7', 50, 'Test Meeting 11 description', 'bo.li');
+
 
 INSERT INTO meeting_attendee VALUES ('jtrobins', 1, 0);
 INSERT INTO meeting_attendee VALUES ('capilkey', 1, 0);

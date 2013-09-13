@@ -1,7 +1,9 @@
-// JavaScript Document
+//JavaScript Document
 $(screen).ready(function() {
 
-		/* SELECT */
+		/*[ CREATE EVENT ]*/
+
+		/* SELECT BOXES */
 		$("#selectRepeatsEvery").css("display", "none");
 		$("#selectDayoftheMonth").css("display", "none");
 		$("#selectDayoftheWeek").css("display", "none");
@@ -10,15 +12,19 @@ $(screen).ready(function() {
 		$("#week").css("display", "none");
 		$("#selectOccursBy").css("display", "none");
 		$("#selectEnds").css("display", "none");
-		//$("#tableAddAttendee").css("display", "none");
 
 		//Setting default values for selects
 		$("#dropdownEventType").val("Meeting");
 		$("#dropdownRecurrence").val("Only once");
 		$("#dropdownEnds").val("After # of occurrence(s)");
-
+		
+		//Populate select boxes regarding current date
 		function populateDate(){
+			/* DATE */
+			//Get current date
 			var data = new Date();
+			
+			/* MONTH */
 			var month = new Array(12);
 			month[0]="January";
 			month[1]="February";
@@ -32,13 +38,14 @@ $(screen).ready(function() {
 			month[9]="October";
 			month[10]="November";
 			month[11]="December";
-			
-			//Select month value
+			//Select current month value
 			$("#dropdownMonthStarts").val(month[data.getUTCMonth()]);
 			$("#dropdownMonthEnds").val(month[data.getUTCMonth()]);
 			
-			//Add days according to month
+			/* DAY */
+			//Add days according to months
 			switch($("#dropdownMonthStarts").val()){
+				//Months that have 31 days
 				case "January":
 				case "March":
 				case "May":
@@ -51,7 +58,8 @@ $(screen).ready(function() {
 						$("#dropdownDayEnds").append("<option role='option'>" + (i) + "</option>");
 					}
 					break;
-				case "April":
+				
+				//Months that have 30 days
 				case "June":
 				case "September":
 				case "November":
@@ -60,25 +68,30 @@ $(screen).ready(function() {
 						$("#dropdownDayEnds").append("<option role='option'>" + (i) + "</option>");
 					}
 					break;
+				//Month that has 28 or 29 days
 				case "February":
 					for (var i = 1; i <= 28; i++) {
 						$("#dropdownDayStarts").append("<option role='option'>" + (i) + "</option>");
 						$("#dropdownDayEnds").append("<option role='option'>" + (i) + "</option>");
 					}
+					//If it is a leap year, add the 29th day
 					if ((data.getUTCFullYear() % 4) == 0){
 						$("#dropdownDayStarts").append("<option role='option'>" + 29 + "</option>");
 						$("#dropdownDayEnds").append("<option role='option'>" + 29 + "</option>");
 					}
 					break;
 			}
+			//Select current day value
 			$("#dropdownDayStarts").val(data.getUTCDate());
 			$("#dropdownDayEnds").val(data.getUTCDate());
 			
-			// Add the next 2 years as options
+			/* YEAR */
+			//Add current and next year to year
 			for (var i = 0; i < 2; i++) {
 				$("#dropdownYearStarts").append("<option role='option'>" + (data.getUTCFullYear() + i) + "</option>");
 				$("#dropdownYearEnds").append("<option role='option'>" + (data.getUTCFullYear() + i) + "</option>");
 			}
+			//Select current year value
 			$("#dropdownYearStarts").val(data.getUTCFullYear());
 			$("#dropdownYearEnds").val(data.getUTCFullYear());
 		}
@@ -95,7 +108,6 @@ $(screen).ready(function() {
 				case "August":
 				case "October":
 				case "December":
-				
 					var previouslySelectedDay = $("#dropdownDayStarts").val();
 					$("#dropdownDayStarts option").remove();
 					for (var i = 1; i <= 31; i++) {
@@ -123,13 +135,10 @@ $(screen).ready(function() {
 				case "February":
 					var previouslySelectedDay = $("#dropdownDayStarts").val();
 					$("#dropdownDayStarts option").remove();
-					
 					var isLeapYear = ((($("#dropdownYearStarts").val()) % 4) == 0) ? true : false;
-					
 					for (var i = 1; i <= (isLeapYear ? 29 : 28); i++) {
 						$("#dropdownDayStarts").append("<option role='option'>" + (i) + "</option>");
 					}
-					
 					if ((previouslySelectedDay >= 29) && (isLeapYear)){
 						$("#dropdownDayStarts").val(29);
 					} else if (previouslySelectedDay >= 28){
@@ -137,7 +146,6 @@ $(screen).ready(function() {
 					} else {
 						$("#dropdownDayStarts").val(previouslySelectedDay);
 					}
-					
 					$("#dropdownDayStarts").selectmenu({'refresh': true});
 					break;
 			}
@@ -180,13 +188,10 @@ $(screen).ready(function() {
 				case "February":
 					var previouslySelectedDay = $("#dropdownDayEnds").val();
 					$("#dropdownDayEnds option").remove();
-					
 					var isLeapYear = ((($("#dropdownYearEnds").val()) % 4) == 0) ? true : false;
-					
 					for (var i = 1; i <= (isLeapYear ? 29 : 28); i++) {
 						$("#dropdownDayEnds").append("<option role='option'>" + (i) + "</option>");
 					}
-					
 					if ((previouslySelectedDay >= 29) && (isLeapYear)){
 						$("#dropdownDayEnds").val(29);
 						
@@ -195,7 +200,6 @@ $(screen).ready(function() {
 					} else {
 						$("#dropdownDayEnds").val(previouslySelectedDay);
 					}
-					
 					$("#dropdownDayEnds").selectmenu({'refresh': true});
 					break;
 			}
@@ -221,7 +225,7 @@ $(screen).ready(function() {
 			populateMonthEnds($("#dropdownMonthEnds").val());
 		});
 
-		// Dropdown: Recurrence
+		//Dropdown: Recurrence
 		$('select#dropdownRecurrence').change( function() {
 			switch ($(this).val()){
 				case "Daily":
@@ -255,10 +259,11 @@ $(screen).ready(function() {
 					$("#occurrenceEnds").css("display", "none");
 					$("#dropdownEnds").val("After # of occurrence(s)");
 					$("#dropdownEnds").selectmenu({'refresh': true});
-					// Starting date
-					//var data = new Date(2013,6,19);
-					var data = new Date();
-					// Day of the week of the starting date
+					
+					//Starting date
+					var data = new Date();//var data = new Date(2013,6,19);
+					
+					//Day of the week of the starting date
 					var weekday = new Array();
 					weekday[0]="Sunday";
 					weekday[1]="Monday";
@@ -269,13 +274,13 @@ $(screen).ready(function() {
 					weekday[6]="Saturday";
 					var dayOfTheWeek = weekday[data.getUTCDay()];
 					
-					// Unchecking all days of the week
+					//Unchecking all days of the week
 					$('section form article fieldset div.component#week .weekday').each(function() {
 						$(this).attr("aria-checked", "false");
 						$(this).toggleClass("selectedWeekday", false);
 					});
 					
-					// Checking only the day of the week of the starting date
+					//Checking only the day of the week of the starting date
 					$("section form article fieldset div.component#week .weekday#"+dayOfTheWeek).attr("aria-checked", "true");
 					$("section form article fieldset div.component#week .weekday#"+dayOfTheWeek).toggleClass("selectedWeekday", true);
 					break;
@@ -315,7 +320,7 @@ $(screen).ready(function() {
 			}
 		});
 
-		// Dropdown: Occurs by
+		//Dropdown: Occurs By
 		$('select#dropdownOccursBy').change( function() {
 			switch ($(this).val()){
 				case "Day of the month":
@@ -332,10 +337,10 @@ $(screen).ready(function() {
 					$("#selectDayoftheWeek").css("display", "block");
 					$("#selectDayoftheMonth").css("display", "none");
 					
-					// Starting date
-					//var data = new Date(2013,6,19);
-					var data = new Date();
-					// Day of the week of the starting date
+					//Starting date
+					var data = new Date();//var data = new Date(2013,6,19);
+					
+					//Day of the week of the starting date
 					var weekday = new Array();
 					weekday[0]="Sunday";
 					weekday[1]="Monday";
@@ -346,23 +351,25 @@ $(screen).ready(function() {
 					weekday[6]="Saturday";
 					var dayOfTheWeek = weekday[data.getUTCDay()];
 					
-					// Unchecking all days of the week
+					//Unchecking all days of the week
 					$('section form article fieldset div.component#selectDayoftheWeek .weekday').each(function() {
 						$(this).attr("aria-checked", "false");
 						$(this).toggleClass("selectedWeekday", false);
 					});
 					
-					// Checking only the day of the week of the starting date
+					//Checking only the day of the week of the starting date
 					$("section form article fieldset div.component#selectDayoftheWeek .weekday#"+dayOfTheWeek).attr("aria-checked", "true");
 					$("section form article fieldset div.component#selectDayoftheWeek .weekday#"+dayOfTheWeek).toggleClass("selectedWeekday", true);
 					break;
 			}
 		});
+		
+		/* Day of the Month */
+		//$("section form article fieldset div.component#selectDayoftheMonth #dayoftheMonth").jStepper({minValue:1, maxValue:31, minLength:1});
 
-		// Dropdown: Ends
+		//Dropdown: Ends
 		$('select#dropdownEnds').change( function() {
 			switch ($(this).val()){
-				
 				case "After # of occurrence(s)"://After # of occurrence(s)
 					$("#occurrencesNumber").css("display", "block");
 					$("#occurrencesNumber").text();
@@ -382,6 +389,8 @@ $(screen).ready(function() {
 			}
 		});
 
+		/*[ GLOBAL FEATURES ]*/
+		
 		/* ONLY NUMBERS */
 		$('input[type="number"]').keydown(function(event) {
 			switch(event.keyCode){
@@ -392,9 +401,10 @@ $(screen).ready(function() {
 				case 37: //left arrow
 				case 39: //right arrow
 				case 46: //delete
+					//Allows keys to be pressed down
 					break;
 				default:
-					// Ensure that it is a number that user is inserting
+					//Ensure that it is a number that user is inserting
 					if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
 						event.preventDefault();	
 					}
@@ -408,7 +418,7 @@ $(screen).ready(function() {
 			$(this).find("img").toggleClass("expandContent");
 		});
 
-		/* Checkbox */
+		/* CHECKBOXES */
 		$('.checkbox .box').keydown(function() {
 			if (event.which == 13){
 				event.preventDefault(event);
@@ -440,7 +450,7 @@ $(screen).ready(function() {
 				$(this).siblings().last().prop("checked", true);
 			}
 		});
-/*		$('.checkbox .text').click(function(event) {
+		/*$('.checkbox .text').click(function(event) {
 			$(this).prev(".checkmark").toggle();
 			$('.checkbox .box').attr("aria-checked", ($(this).attr("aria-checked") === "true" ? "false" : "true"));
 			
@@ -464,12 +474,12 @@ $(screen).ready(function() {
 						$(this).siblings().last().prop("checked", true);
 					  }
 					}
-				})
+				});
 			});
 		};
 		$(".checkbox .box").pressEnterSpace();
 
-		/* Radio */
+		/* RADIO BUTTONS */
 		$('.radio .box').keydown(function() {
 			if (event.which == 13){
 				event.preventDefault(event);
@@ -485,7 +495,7 @@ $(screen).ready(function() {
 			$(this).toggle();
 		});
 
-		/* Day of the Week checked for weekly events*/
+		/* Day of the Week checked for weekly events */
 		$("section form article fieldset div.component#week .weekday").click(function() {
 			$(this).attr("aria-checked", ($(this).attr("aria-checked") === "true" ? "false" : "true"));
 			if ($(this).attr("aria-checked") == "true"){
@@ -495,7 +505,7 @@ $(screen).ready(function() {
 			}
 		});
 
-		/* Day of the Week checked for monthly events*/
+		/* Day of the Week checked for monthly events */
 		$("section form article fieldset div.component#selectDayoftheWeek .weekday").click(function() {
 			$("section form article fieldset div.component#selectDayoftheWeek .weekday").removeClass("selectedWeekday");
 			$("section form article fieldset div.component#selectDayoftheWeek .weekday").attr("aria-checked", false);
@@ -506,9 +516,6 @@ $(screen).ready(function() {
 				$(this).toggleClass("selectedWeekday");
 			}
 		});
-
-		/* Day of the Month */
-		//$("section form article fieldset div.component#selectDayoftheMonth #dayoftheMonth").jStepper({minValue:1, maxValue:31, minLength:1});
 
 		/* CLEAR MENU */		
 		function clear (){
@@ -530,11 +537,11 @@ $(screen).ready(function() {
 				);
 			});
 
-			/* HOME - MOUSEOVER */
-			$("aside nav #home").mouseover(
+			/* CALENDAR - MOUSEOVER */
+			$("aside nav #calendar").mouseover(
 				function () {
 					$(this).css({"background-color":"#9F100B"});
-					$(this).css({"border-left":"123px solid #EEE"});
+					$(this).css({"border-left":"95px solid #EEE"});
 					$(this).parent(this).css({"border-right":"10px solid #9F100B"});
 				}
 			);
@@ -601,12 +608,21 @@ $(screen).ready(function() {
 					$(this).parent(this).css({"border-right":"10px solid #9F100B"});
 				}
 			);
+			
+			/* SETTINGS - MOUSEOVER */
+			$("aside nav #settings").mouseover(
+				function () {
+					$(this).css({"background-color":"#9F100B"});
+					$(this).css({"border-left":"108px solid #EEE"});
+					$(this).parent(this).css({"border-right":"10px solid #9F100B"});
+				}
+			);
 		}
 
 		clear();
 
 	 	/* MENU - CLICK EVENT */
-		$("aside nav #home").click(function () {
+		$("aside nav #calendar").click(function () {
 			$(location).attr('href', "calendar.jsp");
 		});
 
@@ -615,7 +631,7 @@ $(screen).ready(function() {
 		});
 
 		$("aside nav #manageUsers").click(function () {
-			$(location).attr('href', "manageUsers.jsp");
+			$(location).attr('href', "manage_users.jsp");
 		});
 
 		$("aside nav #departments").click(function () {
@@ -623,7 +639,7 @@ $(screen).ready(function() {
 		});
 
 		$("aside nav #departmentUsers").click(function () {
-			$(location).attr('href', "departmentUsers.jsp");
+			$(location).attr('href', "department_users.jsp");
 		});	
 
 		$("aside nav #subjects").click(function () {
@@ -631,11 +647,15 @@ $(screen).ready(function() {
 		});	
 
 		$("aside nav #classSettings").click(function () {
-			$(location).attr('href', "classSettings.jsp");
+			$(location).attr('href', "class_settings.jsp");
 		});	
 
 		$("aside nav #systemSettings").click(function () {
-			$(location).attr('href', "systemSettings.jsp");
+			$(location).attr('href', "system_settings.jsp");
+		});
+
+		$("aside nav #settings").click(function () {
+			$(location).attr('href', "settings.jsp");
 		});
 
 		/* MENU - CURRENT PAGE */

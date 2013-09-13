@@ -23,6 +23,7 @@
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <script type="text/javascript" src="js/componentController.js"></script>
 
+
 <script type="text/javascript">
 $(function(){
 	$('select').selectmenu();
@@ -150,6 +151,7 @@ $(function(){
 		</div>
 	</section>
 	<jsp:include page="footer.jsp"/>
+
 </div>
 </body>
 </html>

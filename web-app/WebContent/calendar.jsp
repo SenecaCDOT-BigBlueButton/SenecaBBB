@@ -34,24 +34,29 @@
 		message="";
 	}
 	
+	boolean check1 = request.getParameter("filterOption1box") != null && request.getParameter("filterOption1box").equals("on");
+	boolean check2 = request.getParameter("filterOption2box") != null && request.getParameter("filterOption2box").equals("on");
+	boolean check3 = request.getParameter("filterOption3box") != null && request.getParameter("filterOption3box").equals("on");
+	boolean check4 = request.getParameter("filterOption4box") != null && request.getParameter("filterOption4box").equals("on");
+	
 	ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 	Meeting meet = new Meeting(dbaccess);
 	dbaccess.resetFlag();
-	System.out.println(meet.getMeetingsForUser(result, "bo.li", true, true));
+	System.out.println(meet.getMeetingsForUser(result, usersession.getUserId(), true, true));
 	System.out.println(dbaccess.getErrLog());
 	System.out.println(result.size());
 	String meetingJSON = meetingDBToJSON(result);
 	
 	Lecture lect = new Lecture(dbaccess);
 	dbaccess.resetFlag();
-	System.out.println(lect.getLecturesForUser(result, "bo.li", true, true));
+	System.out.println(lect.getLecturesForUser(result, usersession.getUserId(), true, true));
 	System.out.println(dbaccess.getErrLog());
 	System.out.println(result.size());
 	String lectureJSON = lectureDBToJSON(result);
 	%>
 	<script type='text/javascript'>
 		$(document).ready(function() {
-			$('#calendar').fullCalendar({
+			$('#fullcalendar').fullCalendar({
 				header: {
 					left: 'prev,next today',
 					center: 'title',
@@ -72,10 +77,59 @@
 		<jsp:include page="menu.jsp"/>
 		<section>
 			<header>
-				<p>home</p>
-				<h1>Home</h1><%=message %>
+				<p><a href="calendar.jsp" tabindex="13">home</a> » </p>
+				<h1>Calendar</h1>
 			</header>
-			<div id='calendar'></div>
+				<form>
+					<article>
+						<header>
+							<h2>Filter Options</h2>
+							<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
+						</header>
+						<div class="content">
+							<fieldset>
+								<div class="component">
+									<div class="checkbox" title="Meetings you created."> <span class="box" role="checkbox" <%= (check1 ? "aria-checked='checked'" : "") %> tabindex="17" aria-labelledby="filterOption1"></span>
+										<label class="checkmark"></label>
+										<label class="text" id="filterOption1">Meetings you created.</label>
+										<input type="checkbox" name="filterOption1box" <%= (check1 ? "checked='checked'" : "") %> aria-disabled="true">
+									</div>
+								</div>
+								<div class="component">
+									<div class="checkbox" title="Lectures you created."> <span class="box" role="checkbox" aria-checked="true" tabindex="18" aria-labelledby="filterOption2"></span>
+										<label class="checkmark"></label>
+										<label class="text" id="filterOption2">Lectures you created.</label>
+										<input type="checkbox" name="filterOption2box" checked="checked" aria-disabled="true">
+									</div>
+								</div>
+								<div class="component">
+									<div class="checkbox" title="Meetings you were invited to attend."> <span class="box" role="checkbox" aria-checked="true" tabindex="19" aria-labelledby="filterOption3"></span>
+										<label class="checkmark"></label>
+										<label class="text" id="filterOption3">Meetings you were invited to attend.</label>
+										<input type="checkbox" name="filterOption3box" checked="checked" aria-disabled="true">
+									</div>
+								</div>
+								<div class="component" style="z-index: 2;">
+									<div class="checkbox" title="Lectures you were invited to attend."> <span class="box" role="checkbox" aria-checked="true" tabindex="20" aria-labelledby="filterOption4"></span>
+										<label class="checkmark"></label>
+										<label class="text" id="filterOption4">Lectures you were invited to attend.</label>
+										<input type="checkbox" name="filterOption4box" checked="checked" aria-disabled="true">
+									</div>
+								</div>
+							</fieldset>
+							<fieldset>
+								<div class="buttons">
+									<button type="submit" name="submit" id="save" class="button" title="Click here to submit filter options">Filter</button>
+								</div>
+							</fieldset>
+						</div>
+					</article>
+				</form>
+			<div class="content">
+				<div class="component">
+					<div id="fullcalendar"></div>
+				</div>
+			</div>
 		</section>
 		<jsp:include page="footer.jsp"/>
 	</div>
@@ -103,7 +157,7 @@ public String meetingDBToJSON(ArrayList<ArrayList<String>> results) {
 	return converted;
 }
 
-//     (0)ls_id (1)l_id (2)l_inidatetime (3)l_duration (4)l_iscancel (5)l_description (6)l_modpass (7)l_userpass (8)c_name
+//     (0)ls_id (1)l_id (2)l_inidatetime (3)l_duration (4)l_iscancel (5)l_description (6)l_modpass (7)l_userpass (8)c_name (9)sc_id
 public String lectureDBToJSON(ArrayList<ArrayList<String>> results) {
 	String converted = "";
 	for (int i = 0; i < results.size(); ++i) {
@@ -114,7 +168,7 @@ public String lectureDBToJSON(ArrayList<ArrayList<String>> results) {
 		//		+ " 8: " + results.get(i).get(8) + " 9: " + results.get(i).get(9));
 		String [] date = results.get(i).get(2).split(" ");
 		
-		converted += "{id: " + results.get(i).get(0) + ",title: '" + results.get(i).get(8) + "',start: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "),end: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "+" + results.get(i).get(3) + ")}";
+		converted += "{id: " + results.get(i).get(0) + ",title: '" + results.get(i).get(8) + results.get(i).get(9) + "',start: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "),end: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "+" + results.get(i).get(3) + ")}";
 		//System.out.println(converted);
 	}
 	return converted;

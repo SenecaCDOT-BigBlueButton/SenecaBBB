@@ -252,18 +252,16 @@ public class Lecture extends Sql {
      * @return
      */
     public boolean getLecturesForUser(ArrayList<ArrayList<String>> result, String bu_id, boolean professor, boolean student) {
-    	String _professor = "(SELECT lecture.*, course.c_name " 
+    	String _professor = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id " 
     			+ "FROM lecture "
     			+ "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
     			+ "INNER JOIN professor ON lecture_schedule.c_id = professor.c_id AND lecture_schedule.sc_id = professor.sc_id AND lecture_schedule.sc_semesterid = professor.sc_semesterid "
-    			+ "INNER JOIN course ON lecture_schedule.c_id = course.c_id) ";
-    			//+ "WHERE professor.bu_id = '" + bu_id +"') ";
+    			+ "WHERE professor.bu_id = '" + bu_id +"') ";
     			
-    	String _student = "(SELECT lecture.*, course.c_name " 
+    	String _student = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id " 
     			+ "FROM lecture "
     			+ "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
     			+ "INNER JOIN student ON lecture_schedule.c_id = student.c_id AND lecture_schedule.sc_id = student.sc_id AND lecture_schedule.sc_semesterid = student.sc_semesterid "
-    			+ "INNER JOIN course ON lecture_schedule.c_id = course.c_id "
     			+ "WHERE student.bu_id = '" + bu_id +"') ";
     	
     	if (professor && student) {

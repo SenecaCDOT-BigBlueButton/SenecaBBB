@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* CSS Document */
-/* GLOBALS */
+/*[ GLOBALS ]*/
 html, body {
 	width: 100%;
 	height: 100%;
@@ -44,7 +44,7 @@ ul {
 	list-style-type: none;
 	overflow: hidden;
 }
-/* HEADER */
+/*[ HEADER ]*/
 header#header {
 	max-width: 1280px;
 	height: 140px;
@@ -65,7 +65,7 @@ header#header nav {
 	font-family: "ITCAvantGardeStd BkCn", Sans-Serif;
 	font-style: normal;
 	font-weight: 400;
-	font-size: 12pt;
+	font-size: 14px;
 	color: #454545;
 	margin-right: 40px;
 	margin-top: 0px;
@@ -95,7 +95,7 @@ header#header li.divisor {
 	padding: 10px 0em;
 	background-color: #FFF;
 }
-/* MENU */
+/*[ MENU ]*/
 aside {
 	width: 200px;
 	float: left;
@@ -106,7 +106,7 @@ aside nav ul .menu {
 	border-right: 10px solid #EEEEEE;
 	cursor: pointer;
 }
-aside nav ul .menu #home {
+aside nav ul .menu #calendar {
 	-webkit-transition: all 0.2s ease-out;
 	-moz-transition: all 0.1s;
 	-ms-transition: all 0.1s;
@@ -114,8 +114,8 @@ aside nav ul .menu #home {
 	transition: all 0.1s;
 	border-left: 0px solid #EEEEEE;
 }
-aside nav ul .menu #home:hover {
-	border-left: 123px solid #9F100B;
+aside nav ul .menu #calendar:hover {
+	border-left: 95px solid #9F100B;
 }
 aside nav ul .menu #createEvent {
 	-webkit-transition: all 0.2s ease-out;
@@ -205,11 +205,22 @@ aside nav ul .menu #systemSettings {
 aside nav ul .menu #systemSettings:hover {
 	border-left: 47px solid #9F100B;
 }
+aside nav ul .menu #settings {
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.1s;
+	-ms-transition: all 0.1s;
+	-o-transition: all 0.1s;
+	transition: all 0.1s;
+	border-left: 0px solid #EEEEEE;
+}
+aside nav ul .menu #settings:hover {
+	border-left: 108px solid #9F100B;
+}
 aside nav ul li {
 	font-family: "ITCAvantGardeStd Md", Sans-Serif;
 	font-style: normal;
 	font-weight: 500;
-	font-size: 12pt;
+	font-size: 16px;
 	text-align: right;
 	text-decoration: none;
 	color: #FFF;
@@ -225,7 +236,7 @@ aside nav ul li {
 	padding-bottom: 0em;
 	padding-left: 0em;
 }
-/* CONTENT */
+/*[ CONTENT ]*/
 section {
 	width: 900px;
 	height: auto;
@@ -243,21 +254,23 @@ section header p {
 	font-family: "ITCAvantGardeStd BkCn";
 	font-style: normal;
 	font-weight: 400;
-	font-size: 12pt;
+	font-size: 14px;
 	color: #838383;
+	cursor: default;
 }
 section header p a:hover {
 	text-decoration: underline;
 	color: #454545;
 }
 section header h1 {
-	font-size: 30pt;
+	font-size: 40px;
 	font-style: normal;
 	font-weight: 300;
 	color: #656565;
 	margin: 0px;
 	padding: 0px;
 	padding-top: 5px;
+	cursor: default;
 }
 section form article {
 	display: table;
@@ -270,7 +283,7 @@ section form article header {
 	cursor: pointer;
 }
 section form article header h2 {
-	font-size: 16pt;
+	font-size: 18px;
 	font-style: normal;
 	font-weight: 300;
 	color: #838383;
@@ -284,7 +297,7 @@ section form article header h2 {
 }
 h3 {
 	width: 900px;
-	font-size: 16pt;
+	font-size: 18px;
 	font-style: normal;
 	font-weight: 300;
 	color: #838383;
@@ -299,7 +312,7 @@ h3 {
 }
 h4 {
 	width: 900px;
-	font-size: 16pt;
+	font-size: 18px;
 	font-style: normal;
 	font-weight: 300;
 	color: #838383;
@@ -329,6 +342,8 @@ section form article header .expandContent {
 }
 section form article fieldset {
 	border: none;
+	margin: 0px;
+	padding: 0px;
 }
 section form article fieldset div.component {
 	width: 620px;
@@ -338,9 +353,13 @@ section form article fieldset div.component {
 	float: left;
 	position: relative;
 }
+div#calendar {
+	width: 900px;
+	margin-left: 0px;
+	display: block;
+}
 section form article fieldset div.tableComponent {
 	width: 620px;
-	margin-left: -12px;
 	clear: both;
 	display: block;
 	float: left;
@@ -352,7 +371,7 @@ section form article fieldset div.component label.label {
 	clear: left;
 	display: block;
 	padding-top: 10px;
-	font-size: 13pt;
+	font-size: 18px;
 	text-transform: uppercase;
 	text-align: right;
 	color: #454545;
@@ -369,7 +388,7 @@ section form article fieldset div.component input.input, div.dataTables_filter i
 	height: 38px;
 	width: 394px;
 	display: block;
-	font-size: 13pt;
+	font-size: 15px;
 	font-family: "ITCAvantGardeStd BkCn";
 	font-style: normal;
 	font-weight: 400;
@@ -408,7 +427,7 @@ section form article fieldset div.component input.input:focus, div.dataTables_fi
 	outline: none;
 	border: 1px solid #9F100B;
 }
-/* CHECKBOX */
+/*[ CHECKBOX ]*/
 section form article fieldset div.component div.checkbox {
 	height: 24px;
 	margin-left: 216px;
@@ -457,13 +476,13 @@ section form article fieldset div.component div.checkbox label.checkmark {
 }
 section form article fieldset div.component div.checkbox label.text {
 	margin-left: 30px;
-	font-size: 13pt;
+	font-size: 16px;
 	color: #454545;
 	font-family: "ITCAvantGardeStd BkCn";
 	font-style: normal;
 	font-weight: 500;
 }
-/* RADIOBUTTON */
+/*[ RADIOBUTTON ]*/
 section form article fieldset div.component div.radio {
 	height: 24px;
 	margin-left: 216px;
@@ -507,24 +526,26 @@ section form article fieldset div.component div.radio label.checkradio {
 }
 section form article fieldset div.component div.radio label.text {
 	margin-left: 30px;
-	font-size: 13pt;
+	font-size: 16px;
 	color: #454545;
 	font-family: "ITCAvantGardeStd BkCn";
 	font-style: normal;
 	font-weight: 500;
 }
-/* BUTTON */
+/*[ BUTTONS ]*/
 section form .buttons {
 	margin-left: 216px;
 }
-section form .buttons .button, .datePicker, .search {
-	padding: 10px;
-	padding-top: 8px;
-	width: 85px;
+section form .actionButtons {
+	margin-left: 0px;
+}
+section form .buttons .button, section form .actionButtons .button {
+	padding: 8px 15px;
+	min-width: 85px;
 	height: 39px;
 	margin-left: 0px;
 	margin-right: 18px;
-	font-size: 14pt;
+	font-size: 16px;
 	color: #FFFFFF;
 	border-style: none;
 	cursor: pointer;
@@ -535,70 +556,46 @@ section form .buttons .button, .datePicker, .search {
 	-o-transition: all 0.1s;
 	transition: all 0.1s;
 }
-.datePicker {
+/* DatePicker Component */
+div.datePicker {
 	width: 39px;
 	height: 42px;
 	float: right;
 	display: block;
 	margin-right: 0px;
 	margin-left: 10px;
-	background-image: url(../../../images/calendarTransparent.svg);
-	background-repeat: no-repeat;
-	background-position: center;
 	position: relative; /* Enable absolute positionning for children and pseudo elements */
 	cursor: pointer;
 }
-button.ui-datepicker-trigger {
-	/*position: absolute;
-            top: 50px;
-            left: 30px;
-            border-radius: 0;
-            display: block;
-            height: 39px;
-            width: 39px;
-            border: none;*/
-	padding: 10px;
-	padding-top: 8px;
-	width: 85px;
-	height: 39px;
-	margin-left: 0px;
-	margin-right: 18px;
-	font-size: 14pt;
-	color: #FFFFFF;
-	border-style: none;
-	cursor: pointer;
-	
-	-webkit-transition: all 0.1s;
-	-moz-transition: all 0.1s;
-	-ms-transition: all 0.1s;
-	-o-transition: all 0.1s;
-	transition: all 0.1s;
-	width: 39px;
-	height: 42px;
-	float: right;
-	display: block;
-	margin-right: 0px;
-	margin-left: 10px;
-	background-color: #CD352B;
-	background-image:url(../../../images/themes/base/calendarTransparent.svg);
-	background-repeat: no-repeat;
-	background-position: center;
-	position: relative; /* Enable absolute positionning for children and pseudo elements */
-	cursor: pointer;
-}
-#datePickerStart {
-	/*visibility: hidden;*/
+input.datePicker {
+	visibility: hidden;
 	position: absolute;
 	top: 0px;
-	right: 0px;
-	width: 39px;
+	left: 0px;
+	width: 38px;
 	height: 40px;
 	border: none;
 }
-#calendar {
-	width: 900px;
+button.ui-datepicker-trigger {
+	width: 39px;
+	height: 42px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
 	display: block;
+	border: none;
+	background-color: #CD352B;
+	-webkit-transition: all 0.1s;
+	-moz-transition: all 0.1s;
+	-ms-transition: all 0.1s;
+	-o-transition: all 0.1s;
+	transition: all 0.1s;
+	background-image:url(../../../images/themes/base/calendarTransparent.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
 }
+
 .search {
 	width: 39px;
 	height: 42px;
@@ -610,12 +607,19 @@ button.ui-datepicker-trigger {
 	background-repeat: no-repeat;
 	background-position: center;
 	position: relative; /* Enable absolute positionning for children and pseudo elements */
+	border-style: none;
+	background-color: #CD352B;
+	-webkit-transition: all 0.1s;
+	-moz-transition: all 0.1s;
+	-ms-transition: all 0.1s;
+	-o-transition: all 0.1s;
+	transition: all 0.1s;
 	cursor: pointer;
 }
-section form .buttons .button:hover, .datePicker:hover, #search:hover {
+section form .buttons .button:hover, section form .buttons .actionButton:hover, .datePicker:hover, #search:hover, button.ui-datepicker-trigger:hover, .search:hover {
 	background-color: #9F100B;
 }
-section form .buttons .button:active, .datePicker:active, #search:active {
+section form .buttons .button:active, section form .buttons .actionButton:active, .datePicker:active, #search:active, button.ui-datepicker-trigger:active, .search:hover {
 	background-color: #9F100B;
 }
 /* WEEK - CHECKBOX AND RADIOBUTTON BUTTONS*/
@@ -627,7 +631,7 @@ section form article fieldset div.component#week .weekday, section form article 
 	width: 50px;
 	height: 39px;
 	margin-right: 5.1px;
-	font-size: 12pt;
+	font-size: 14px;
 	color: #FFFFFF;
 	border-style: none;
 	cursor: pointer;
@@ -674,7 +678,7 @@ footer nav li {
 	font-family: "ITCAvantGardeStd BkCn", Sans-Serif;
 	font-style: normal;
 	font-weight: 400;
-	font-size: 11pt;
+	font-size: 13px;
 }
 footer nav li a {
 	-webkit-transition: all 0.2s ease-out;
@@ -690,13 +694,13 @@ footer nav li a:hover {
 }
 footer div#copyright {
 	width: 1280px;
-	font-size: 11pt;
+	font-size: 13px;
 	text-align: center;
 	color: #838383;
 	padding-top: 50px;
 	padding-bottom: 15px;
 	border-bottom: 20px solid #454545;
-	display: table-caption;
+	cursor: default;
 }
 /* TABLE */
 /* Elements */
@@ -710,7 +714,7 @@ footer div#copyright {
 .tableComponent .dataTables_filter label {
 	width: 620px;
 	padding-top: 10px;
-	font-size: 13pt;
+	font-size: 15px;
 	text-transform: uppercase;
 	text-align: right;
 	color: #454545;
@@ -730,13 +734,14 @@ footer div#copyright {
 .tableComponent .dataTables_info {
 	float: right;
 	margin-top: 13px;
+	cursor: default;
 }
 .tableComponent div.dataTables_wrapper {
 	width: 900px;
 }
 /* Header cells */
 .tableComponent table thead th {
-	font-size: 9pt;
+	font-size: 11px;
 	font-family: "ITCAvantGardeStd Demi";
 	font-style: normal;
 	font-weight: 600;
@@ -750,6 +755,7 @@ footer div#copyright {
 	border-left: 1px solid #EEEEEE;
 	background: #E0E0E0;
 	position: relative;
+	cursor: default;
 }
 .tableComponent table thead th.icons {
 	padding-left: 0px;
@@ -829,7 +835,7 @@ footer div#copyright {
 	padding-right: 0px;
 	padding-left: 10px;
 	padding-bottom: 15px;
-	font-size: 10pt;
+	font-size: 12px;
 	font-family: "ITCAvantGardeStd Md";
 	font-style: normal;
 	font-weight: 500;
@@ -849,12 +855,10 @@ footer div#copyright {
 	border-left-color: #9F100B;
 }
 /* Pagination */
-.tableComponent a.paginate_button, a.paginate_active {
-	display: inline-block;
-	padding: 10px;
+.tableComponent a.paginate_button, .tableComponent a.paginate_active {
+	position: relative;
 	margin-right: 2px;
-	width: 65px;
-	font-size: 14pt;
+	font-size: 16px;
 	color: #FFFFFF;
 	text-align: center;
 	border: none;
@@ -865,15 +869,45 @@ footer div#copyright {
 	-ms-transition: all 0.1s;
 	-o-transition: all 0.1s;
 	transition: all 0.1s;
+	display: inline-block;
+	width: 39px;
+	vertical-align: middle;
+	padding-top: 13px;
+	height: 30px;
 }
-.tableComponent a.paginate_active {
+.tableComponent span a.paginate_active {
 	background-color: #454545;
+	cursor: default;
+}
+.tableComponent paging_full_numbers{
+	position: relative;
 }
 .tableComponent a.paginate_button:hover {
 	background-color: #9F100B;
 }
+.tableComponent a.first.paginate_button {
+	background-image:url(../../../images/themes/base/firstArrow.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.tableComponent a.previous.paginate_button {
+	background-image:url(../../../images/themes/base/previousArrow.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.tableComponent a.next.paginate_button {
+	background-image:url(../../../images/themes/base/nextArrow.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.tableComponent a.last.paginate_button {
+	background-image:url(../../../images/themes/base/lastArrow.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+}
 .tableComponent a.paginate_button.paginate_button_disabled, .tableComponent a.paginate_button.paginate_button_disabled:hover {
 	background-color: #bcbcbc;/*#E6E6E6;*/
+	cursor: default;
 }
 .tableComponent .paging_full_numbers a:hover {
 	text-decoration: none;
@@ -881,10 +915,7 @@ footer div#copyright {
 .tableComponent .paging_full_numbers a:active {
 	outline: none;
 }
-.tableComponent div.dataTables_paginate span>a {
-	width: 15px;
-	text-align: center;
-}
+
 .tableComponent table thead tr .firstColumn {
 	border-left: 1px solid #E0E0E0;
 	padding-left: 14px;
@@ -900,6 +931,14 @@ footer div#copyright {
 	width: 17px;
 	height: 17px;
 	background-repeat: no-repeat;
+}
+.tableComponent table tbody tr td.action img {
+	border: none;
+	background-image: url('../../../images/status.svg');
+}
+.tableComponent table tbody tr td.action img {
+	border: none;
+	background-image: url('../../../images/status.svg');
 }
 .tableComponent table tbody tr td.status img {
 	border: none;
@@ -931,7 +970,7 @@ footer div#copyright {
 .tableComponent table tbody tr td a#options:first-child {
 	margin-right: 25px;
 }
-#searchUser:after {
+.searchBox:after {
 	background-size: 17px;
 	border: none;
 	border-style: 1px solid #AAAAAA;

@@ -66,7 +66,7 @@ public class Lecture extends Sql {
     /**
      * Fields:<p>
      * (0)ls_id (1)c_id (2)sc_id (3)sc_semesterid (4)ls_inidatetime
-     * (5)ls_intervals (6)ls_repeats (7)ls_duration
+     * (5)ls_spec (6)ls_duration
      * @param result
      * @return
      */
@@ -79,7 +79,7 @@ public class Lecture extends Sql {
     /**
      * Fields:<p>
      * (0)ls_id (1)c_id (2)sc_id (3)sc_semesterid (4)ls_inidatetime
-     * (5)ls_intervals (6)ls_repeats (7)ls_duration
+     * (5)ls_spec (6)ls_duration
      * @param result
      * @param ls_id
      * @return
@@ -371,35 +371,6 @@ public class Lecture extends Sql {
                 + time + "')";
         return _dbAccess.updateDB(_sql);
     }
-
-    /**
-     * 
-     * @param ls_id
-     * @param ls_repeats
-     * @return
-     */
-    public boolean updateLectureRepeats(int ls_id, int ls_repeats) {
-        _sql = "CALL sp_update_ls_repeats("
-                + ls_id + ", "
-                + ls_repeats + ")";
-        return _dbAccess.updateDB(_sql);
-    }
-    
-    /**
-     * Format of datetime must be exactly as specified<p>
-     * Check to make sure datetime is greatly than current time<p>
-     * If method updateLectureTime has been to alter time of day,
-     * calling this method will reset all custom changes
-     * @param ls_id
-     * @param datetime (format: 'YYYY-MM-DD HH:MM:SS')
-     * @return
-     */
-    public boolean updateLectureScheduleInitialTime(int ls_id, String datetime) {
-        _sql = "CALL sp_update_ls_inidatetime("
-                + ls_id + ", '"
-                + datetime + "')";
-        return _dbAccess.updateDB(_sql);
-    }
     
     public boolean createLecturePresentation(String lp_title, int ls_id, int l_id) {
         _sql = "INSERT INTO lecture_presentation VALUES ('"
@@ -422,28 +393,97 @@ public class Lecture extends Sql {
     }
     
     /**
-     * Create lecture schedule as well as all lectures in this lecture schedule
-     * @param c_id
-     * @param sc_id
-     * @param sc_semesterid
+     * Create lecture schedule as well as all lectures in this lecture schedule<p>
+     * ls_spec Format: Type;Subtype;Repeat-or-EndDate;Interval;Weekstring-or-DayOfMonth<p>
+     * Type 1: Single occurrence, no Subtype<p>
+     *      Example: 1<p>
+     * Type 2: Daily<p> 
+     *      2 Subtypes:<p>
+     *          (1) repeat for a number of times<p>
+     *          (2) repeat until a certain date<p>
+     *      Example: 2;1;6;2<p>
+     *               repeat 6 times with interval of 2 days<p> 
+     *               2;2;2013-10-01;7<p>
+     *               repeat until end date reached with interval of 7 days<p>
+     * Type 3: Weekly<p>
+     *      3 Subtypes:<p>
+     *          (1) repeat for a number of times<p>
+     *          (2) repeat for a number of weeks<p>
+     *          (3) repeat until end date is reached<p>
+     *      Weekstring: 0011000 Sun|Mon|Tues|Wed|Thurs|Fri|Sat<p>
+     *      Example: 3;1;6;1;0111110<p>
+     *               3;2;6;2;0110010<p>
+     *               3;3;2013-11-11;3;0110010<p>
+     * Type 4: Monthly<p>
+     *      2 Subtypes:<p>
+     *          (1) repeat on same day each month
+     *              (date will auto change to the last day of month for shortened month)
+     *          (2) repeat the first occurrence of day-of-week in a month
+     *      Example: 4;1;7;1;31<p>
+     *               4;2;5;1;3<p>
+     *               repeat on the first Tuesday of each month for 5 month, repeat every month
+     * @param ls_title
      * @param ls_inidatetime (format: 'YYYY-MM-DD HH:MM:SS')
-     * @param ls_intervals (in days)
-     * @param ls_repeats
+     * @param ls_spec
      * @param ls_duration (in minutes, round to nearest integer)
      * @param l_description
      * @return
      */
     public boolean createLectureSchedule(String c_id, String sc_id, String sc_semesterid, 
-            String ls_inidatetime, int ls_intervals, int ls_repeats, int ls_duration, 
-            String l_description) {
+            String ls_inidatetime, String ls_spec, int ls_duration, String l_description) {
         _sql = "CALL sp_create_ls('"
                 + c_id + "', '"
                 + sc_id + "', '"
                 + sc_semesterid + "', '"
-                + ls_inidatetime + "', "
-                + ls_intervals + ", "
-                + ls_repeats + ", "
+                + ls_inidatetime + "', '"
+                + ls_spec + "', "
                 + ls_duration + ", '"
+                + l_description + "')";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
+     * Edit a lecture schedule, delete all future lectures, create new ones<p>
+     * ms_spec Format: Type;Subtype;Repeat-or-EndDate;Interval;Weekstring-or-DayOfMonth<p>
+     * Type 1: Single occurrence, no Subtype<p>
+     *      Example: 1<p>
+     * Type 2: Daily<p> 
+     *      2 Subtypes:<p>
+     *          (1) repeat for a number of times<p>
+     *          (2) repeat until a certain date<p>
+     *      Example: 2;1;6;2<p>
+     *               repeat 6 times with interval of 2 days<p> 
+     *               2;2;2013-10-01;7<p>
+     *               repeat until end date reached with interval of 7 days<p>
+     * Type 3: Weekly<p>
+     *      3 Subtypes:<p>
+     *          (1) repeat for a number of times<p>
+     *          (2) repeat for a number of weeks<p>
+     *          (3) repeat until end date is reached<p>
+     *      Weekstring: 0011000 Sun|Mon|Tues|Wed|Thurs|Fri|Sat<p>
+     *      Example: 3;1;6;1;0111110<p>
+     *               3;2;6;2;0110010<p>
+     *               3;3;2013-11-11;3;0110010<p>
+     * Type 4: Monthly<p>
+     *      2 Subtypes:<p>
+     *          (1) repeat on same day each month
+     *              (date will auto change to the last day of month for shortened month)
+     *          (2) repeat the first occurrence of day-of-week in a month
+     *      Example: 4;1;7;1;31<p>
+     *               4;2;5;1;3<p>
+     *               repeat on the first Tuesday of each month for 5 month, repeat every month
+     * @param ls_id
+     * @param ls_inidatetime (format: 'YYYY-MM-DD HH:MM:SS')
+     * @param ls_spec
+     * @param l_description
+     * @return
+     */
+    public boolean editLectureSchedule(int ls_id, String ls_inidatetime, 
+            String ls_spec, String l_description) {
+        _sql = "CALL sp_edit_ls("
+                + ls_id + ", '"
+                + ls_inidatetime + "', '"
+                + ls_spec + "', '"
                 + l_description + "')";
         return _dbAccess.updateDB(_sql);
     }

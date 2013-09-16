@@ -8,6 +8,10 @@
 
 <%@ page language="java" import="java.sql.*" errorPage=""%>
 <%
+	String message = request.getParameter("message");
+	if (message == null) {
+		message="";
+	}
 	session.invalidate();
-	response.sendRedirect("index.jsp?error=Logged out successfully");
+	response.sendRedirect("index.jsp?error=" + message);
 %>

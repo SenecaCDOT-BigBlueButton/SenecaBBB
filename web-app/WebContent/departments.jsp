@@ -1,5 +1,5 @@
 <%@page import="db.DBConnection"%>
-<%@page import="sql.User"%>
+<%@page import="sql.*"%>
 <%@page import="java.util.*"%>
 <%@page import="helper.MyBoolean"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
@@ -55,6 +55,11 @@
 	meetingSettings = usersession.getUserMeetingSettingsMask();
 	roleMask = usersession.getRoleMask();
 	int nickName = roleMask.get("nickname");
+	
+	ArrayList<ArrayList<String>> deptList = new ArrayList<ArrayList<String>>();
+	Department dept = new Department(dbaccess);
+	boolean sql_flag = dept.getDepartment(deptList);
+	
 %>
 <script type="text/javascript">
 /* TABLE */
@@ -100,13 +105,19 @@ $(function(){
 									</tr>
 								</thead>
 								<tbody>
+								<%
+									for (int i=0; i<deptList.size(); i++) {
+								%>
 									<tr>
-										<td class="row">ICT</td>
-										<td>Information and Communications Technology</td>
-										<td class="icons" align="center"><a href="department_users.jsp?department=1" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
-										<td class="icons" align="center"><a href="department_users.jsp?department=1" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
-										<td class="icons" align="center"><a href="department_users.jsp?department=1" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
+										<td class="row"><% out.print(deptList.get(i).get(0)); %></td>
+										<td><% out.print(deptList.get(i).get(1)); %></td>
+										<td class="icons" align="center"><a href="department_users.jsp?department=<% out.print(deptList.get(i).get(0)); %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
+										<td class="icons" align="center"><a href="department_users.jsp?department=<% out.print(deptList.get(i).get(0)); %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
+										<td class="icons" align="center"><a href="department_users.jsp?department=<% out.print(deptList.get(i).get(0)); %>" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
 									</tr>
+								<%
+									}
+								%>
 								</tbody>
 							</table>
 						</div>

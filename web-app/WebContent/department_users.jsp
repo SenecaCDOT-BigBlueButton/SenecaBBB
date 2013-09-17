@@ -39,6 +39,8 @@
 	}
 	if (dbaccess.getFlagStatus() == false) {
 		response.sendRedirect("index.jsp?error=Database connection error");
+		//Error flag needs to reset here
+		dbaccess.resetFlag();
 		return;
 	} //End page validation
 

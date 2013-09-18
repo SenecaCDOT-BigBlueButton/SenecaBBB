@@ -146,7 +146,7 @@ $(function(){
 		<h4></h4>
 		<div class="content">
 			<div class="component">
-				<div id="fullcalendar"></div><div id='fullcalendar'></div>
+				<div id="fullcalendar"></div>
 			</div>
 		</div>
 	</section>

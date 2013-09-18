@@ -54,7 +54,9 @@ public class Test_User extends Test_Helper {
 
             display(_user.getComment(_result, "bli64"));
 
-            display(_user.getIsDepartmentAdmin(_result, "fardad.soleimanloo", "ICT"));
+            display(_user.getIsDepartmentAdmin(_result, "bli64", "ABC"));
+            
+            display(_user.getIsDepartmentAdmin(_result, "bli64"));
 
             display(_user.getIsSuperAdmin(_result, "fardad.soleimanloo"));
             

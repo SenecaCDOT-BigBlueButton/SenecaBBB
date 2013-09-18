@@ -39,7 +39,11 @@
 	if (dbaccess.getFlagStatus() == false) {
 		response.sendRedirect("index.jsp?error=Database connection error");
 		return;
-	} //End page validation
+	} 
+	if (!(usersession.isDepartmentAdmin() || usersession.isSuper())) {
+	    response.sendRedirect("calendar.jsp");
+	}
+	//End page validation
 	
 	String message = request.getParameter("message");
 	if (message == null || message == "null") {
@@ -58,7 +62,14 @@
 	
 	ArrayList<ArrayList<String>> deptList = new ArrayList<ArrayList<String>>();
 	Department dept = new Department(dbaccess);
-	boolean sql_flag = dept.getDepartment(deptList);
+	boolean sql_flag;
+	if (usersession.isSuper()) {
+	    sql_flag = dept.getDepartment(deptList);    
+	}
+	else {
+	    sql_flag = dept.getDepartment(deptList, userId);
+	}
+	
 	
 %>
 <script type="text/javascript">
@@ -127,9 +138,11 @@ $(function(){
 			<article>
 				<h4></h4>
 				<fieldset>
+				<% if (usersession.isSuper()) { %>
 					<div class="actionButtons">
 						<button type="button" name="button" id="addDepartment" class="button" title="Click here to add a new department" onclick="window.location.href='add_department.jsp'">Add department</button>
 					</div>
+				<% } %>
 				</fieldset>
 			</article>
 		</form>

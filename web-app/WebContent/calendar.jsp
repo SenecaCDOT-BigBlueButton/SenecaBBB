@@ -34,10 +34,13 @@
 		message="";
 	}
 	
-	boolean check1 = request.getParameter("filterOption1box") != null && request.getParameter("filterOption1box").equals("on");
-	boolean check2 = request.getParameter("filterOption2box") != null && request.getParameter("filterOption2box").equals("on");
-	boolean check3 = request.getParameter("filterOption3box") != null && request.getParameter("filterOption3box").equals("on");
-	boolean check4 = request.getParameter("filterOption4box") != null && request.getParameter("filterOption4box").equals("on");
+	boolean check1 = false, check2 = false, check3 = false, check4 = false;
+	if (request.getParameter("filtering") != null) {
+		check1 = request.getParameter("filterOption1box") != null;
+		check2 = request.getParameter("filterOption2box") != null;
+		check3 = request.getParameter("filterOption3box") != null;
+		check4 = request.getParameter("filterOption4box") != null;
+	}
 	
 	ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 	Meeting meet = new Meeting(dbaccess);
@@ -89,33 +92,34 @@
 						<div class="content">
 							<fieldset>
 								<div class="component">
-									<div class="checkbox" title="Meetings you created."> <span class="box" role="checkbox" <%= (check1 ? "aria-checked='checked'" : "") %> tabindex="17" aria-labelledby="filterOption1"></span>
-										<label class="checkmark"></label>
+									<div class="checkbox" title="Meetings you created."> <span class="box" role="checkbox" <%= (check1 ? "aria-checked='true'" : "aria-checked='false'") %> tabindex="17" aria-labelledby="filterOption1"></span>
+										<label class="checkmark" <%= (check1 ? "style='display:none'" : "") %>></label>
 										<label class="text" id="filterOption1">Meetings you created.</label>
-										<input type="checkbox" name="filterOption1box" <%= (check1 ? "checked='checked'" : "") %> aria-disabled="true">
+										<input type="checkbox" name="filterOption1box" <%= (check1 ? "checked='checked'" : "") %> aria-disabled="true" />
 									</div>
 								</div>
 								<div class="component">
-									<div class="checkbox" title="Lectures you created."> <span class="box" role="checkbox" aria-checked="true" tabindex="18" aria-labelledby="filterOption2"></span>
-										<label class="checkmark"></label>
+									<div class="checkbox" title="Lectures you created."> <span class="box" role="checkbox" <%= (check2 ? "aria-checked='true'" : "aria-checked='false'") %> tabindex="18" aria-labelledby="filterOption2"></span>
+										<label class="checkmark" <%= (check2 ? "style='display:none'" : "") %>></label>
 										<label class="text" id="filterOption2">Lectures you created.</label>
-										<input type="checkbox" name="filterOption2box" checked="checked" aria-disabled="true">
+										<input type="checkbox" name="filterOption2box" <%= (check2 ? "checked='checked'" : "") %> aria-disabled="true">
 									</div>
 								</div>
 								<div class="component">
-									<div class="checkbox" title="Meetings you were invited to attend."> <span class="box" role="checkbox" aria-checked="true" tabindex="19" aria-labelledby="filterOption3"></span>
-										<label class="checkmark"></label>
+									<div class="checkbox" title="Meetings you were invited to attend."> <span class="box" role="checkbox" <%= (check3 ? "aria-checked='true'" : "aria-checked='false'") %> tabindex="19" aria-labelledby="filterOption3"></span>
+										<label class="checkmark" <%= (check3 ? "style='display:none'" : "") %>></label>
 										<label class="text" id="filterOption3">Meetings you were invited to attend.</label>
-										<input type="checkbox" name="filterOption3box" checked="checked" aria-disabled="true">
+										<input type="checkbox" name="filterOption3box" <%= (check3 ? "checked='checked'" : "") %> aria-disabled="true">
 									</div>
 								</div>
-								<div class="component" style="z-index: 2;">
-									<div class="checkbox" title="Lectures you were invited to attend."> <span class="box" role="checkbox" aria-checked="true" tabindex="20" aria-labelledby="filterOption4"></span>
-										<label class="checkmark"></label>
+								<div class="component">
+									<div class="checkbox" title="Lectures you were invited to attend."> <span class="box" role="checkbox" <%= (check4 ? "aria-checked='true'" : "aria-checked='false'") %> tabindex="20" aria-labelledby="filterOption4"></span>
+										<label class="checkmark" <%= (check4 ? "style='display:none'" : "") %>></label>
 										<label class="text" id="filterOption4">Lectures you were invited to attend.</label>
-										<input type="checkbox" name="filterOption4box" checked="checked" aria-disabled="true">
+										<input type="checkbox" name="filterOption4box" <%= (check4 ? "checked='checked'" : "") %> aria-disabled="true">
 									</div>
 								</div>
+								<input type="hidden" name="filtering" />
 							</fieldset>
 							<fieldset>
 								<div class="buttons">

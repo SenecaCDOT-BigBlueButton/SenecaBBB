@@ -140,7 +140,7 @@ $(function(){
 				<fieldset>
 				<% if (usersession.isSuper()) { %>
 					<div class="actionButtons">
-						<button type="button" name="button" id="addDepartment" class="button" title="Click here to add a new department" onclick="window.location.href='add_department.jsp'">Add department</button>
+						<button type="button" name="button" id="addDepartment" class="button" title="Click here to add a new department" onclick="window.location.href='create_departments.jsp'">Add department</button>
 					</div>
 				<% } %>
 				</fieldset>

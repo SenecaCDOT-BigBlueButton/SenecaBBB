@@ -432,9 +432,9 @@ $(screen).ready(function() {
 				}
 			}
 		});
+		
 		$('.checkbox .box').click(function(event) {
 			$(this).next(".checkmark").toggle();
-			//$(this).attr("aria-checked", ($(this).attr("aria-checked") === "true" ? "false" : "true"));
 			
 			if (($(this).attr("aria-checked") === "true")) {
 				$(this).attr("aria-checked", "false");
@@ -443,13 +443,8 @@ $(screen).ready(function() {
 				$(this).attr("aria-checked", "true");
 				($(this).siblings().last())[0].checked = true;
 			}
-			
-			/*if (($(this).siblings().last().is(":checked"))){
-				$(this).siblings().last().prop("checked", false);
-			} else {
-				$(this).siblings().last().prop("checked", true);
-			}*/
 		});
+		
 		$('.checkbox .checkmark').click(function() {
 			$(this).toggle();
 			
@@ -460,11 +455,6 @@ $(screen).ready(function() {
 				$(this).siblings().first().attr("aria-checked", "true");
 				($(this).siblings().last())[0].checked = true;
 			}
-			/*if (($(this).siblings().last().is(":checked"))){
-				$(this).siblings().last().prop("checked", false);
-			} else {
-				$(this).siblings().last().prop("checked", true);
-			}*/
 		});
 		/*$('.checkbox .text').click(function(event) {
 			$(this).prev(".checkmark").toggle();

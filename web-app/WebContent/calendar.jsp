@@ -34,25 +34,25 @@
 		message="";
 	}
 	
-	boolean check1 = false, check2 = false, check3 = false, check4 = false;
+	boolean check1 = true, check2 = true, check3 = true, check4 = true;
 	if (request.getParameter("filtering") != null) {
 		check1 = request.getParameter("filterOption1box") != null;
 		check2 = request.getParameter("filterOption2box") != null;
 		check3 = request.getParameter("filterOption3box") != null;
 		check4 = request.getParameter("filterOption4box") != null;
 	}
-	
+		
 	ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 	Meeting meet = new Meeting(dbaccess);
 	dbaccess.resetFlag();
-	System.out.println(meet.getMeetingsForUser(result, usersession.getUserId(), true, true));
+	System.out.println(meet.getMeetingsForUser(result, usersession.getUserId(), check1, check3));
 	System.out.println(dbaccess.getErrLog());
 	System.out.println(result.size());
 	String meetingJSON = meetingDBToJSON(result);
 	
 	Lecture lect = new Lecture(dbaccess);
 	dbaccess.resetFlag();
-	System.out.println(lect.getLecturesForUser(result, usersession.getUserId(), true, true));
+	System.out.println(lect.getLecturesForUser(result, usersession.getUserId(), check2, check4));
 	System.out.println(dbaccess.getErrLog());
 	System.out.println(result.size());
 	String lectureJSON = lectureDBToJSON(result);
@@ -68,9 +68,12 @@
 				editable: false,
 				allDayDefault: false,
 				events: [
-					<%= meetingJSON %>, <%= lectureJSON%>
+					<%= meetingJSON %>, <%= lectureJSON %>
 				]
 			});
+			
+			// make the filter options hidden once the page has loaded
+			$('#filterOptions').click();
 		});
 	</script>
 </head>
@@ -85,7 +88,7 @@
 			</header>
 				<form>
 					<article>
-						<header>
+						<header id="filterOptions">
 							<h2>Filter Options</h2>
 							<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
 						</header>
@@ -93,28 +96,28 @@
 							<fieldset>
 								<div class="component">
 									<div class="checkbox" title="Meetings you created."> <span class="box" role="checkbox" <%= (check1 ? "aria-checked='true'" : "aria-checked='false'") %> tabindex="17" aria-labelledby="filterOption1"></span>
-										<label class="checkmark" <%= (check1 ? "style='display:none'" : "") %>></label>
+										<label class="checkmark" <%= (check1 ? "" : "style='display:none'") %>></label>
 										<label class="text" id="filterOption1">Meetings you created.</label>
 										<input type="checkbox" name="filterOption1box" <%= (check1 ? "checked='checked'" : "") %> aria-disabled="true" />
 									</div>
 								</div>
 								<div class="component">
 									<div class="checkbox" title="Lectures you created."> <span class="box" role="checkbox" <%= (check2 ? "aria-checked='true'" : "aria-checked='false'") %> tabindex="18" aria-labelledby="filterOption2"></span>
-										<label class="checkmark" <%= (check2 ? "style='display:none'" : "") %>></label>
+										<label class="checkmark" <%= (check2 ? "" : "style='display:none'") %>></label>
 										<label class="text" id="filterOption2">Lectures you created.</label>
 										<input type="checkbox" name="filterOption2box" <%= (check2 ? "checked='checked'" : "") %> aria-disabled="true">
 									</div>
 								</div>
 								<div class="component">
 									<div class="checkbox" title="Meetings you were invited to attend."> <span class="box" role="checkbox" <%= (check3 ? "aria-checked='true'" : "aria-checked='false'") %> tabindex="19" aria-labelledby="filterOption3"></span>
-										<label class="checkmark" <%= (check3 ? "style='display:none'" : "") %>></label>
+										<label class="checkmark" <%= (check3 ? "" : "style='display:none'") %>></label>
 										<label class="text" id="filterOption3">Meetings you were invited to attend.</label>
 										<input type="checkbox" name="filterOption3box" <%= (check3 ? "checked='checked'" : "") %> aria-disabled="true">
 									</div>
 								</div>
 								<div class="component">
 									<div class="checkbox" title="Lectures you were invited to attend."> <span class="box" role="checkbox" <%= (check4 ? "aria-checked='true'" : "aria-checked='false'") %> tabindex="20" aria-labelledby="filterOption4"></span>
-										<label class="checkmark" <%= (check4 ? "style='display:none'" : "") %>></label>
+										<label class="checkmark" <%= (check4 ? "" : "style='display:none'") %>></label>
 										<label class="text" id="filterOption4">Lectures you were invited to attend.</label>
 										<input type="checkbox" name="filterOption4box" <%= (check4 ? "checked='checked'" : "") %> aria-disabled="true">
 									</div>
@@ -140,23 +143,15 @@
 </body>
 </html>
 
-<%! 
-//title: 'Birthday Party',
-//start: new Date(y, m, d+1, 19, 0),
-//end: new Date(y, m, d+1, 22, 30),
-//allDay: false
+<%!
 public String meetingDBToJSON(ArrayList<ArrayList<String>> results) {
 	String converted = "";
 	for (int i = 0; i < results.size(); ++i) {
 		if (i > 0)
 			converted += ",";
-		//System.out.println("0: " + results.get(i).get(0) + " 1: " + results.get(i).get(1) + " 2: " + results.get(i).get(2) + " 3: " + results.get(i).get(3) 
-		//		+ " 4: " + results.get(i).get(4) + " 5: " + results.get(i).get(5) + " 6: " + results.get(i).get(6) + " 7: " + results.get(i).get(7) 
-		//		+ " 8: " + results.get(i).get(8) + " 9: " + results.get(i).get(9));
-		String [] date = results.get(i).get(2).split(" ");
 		
+		String [] date = results.get(i).get(2).split(" ");
 		converted += "{id: " + results.get(i).get(0) + ",title: '" + results.get(i).get(9) + "',start: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "),end: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "+" + results.get(i).get(3) + ")}";
-		//System.out.println(converted);
 	}
 	return converted;
 }
@@ -167,13 +162,9 @@ public String lectureDBToJSON(ArrayList<ArrayList<String>> results) {
 	for (int i = 0; i < results.size(); ++i) {
 		if (i > 0)
 			converted += ",";
-		//System.out.println("0: " + results.get(i).get(0) + " 1: " + results.get(i).get(1) + " 2: " + results.get(i).get(2) + " 3: " + results.get(i).get(3) 
-		//		+ " 4: " + results.get(i).get(4) + " 5: " + results.get(i).get(5) + " 6: " + results.get(i).get(6) + " 7: " + results.get(i).get(7) 
-		//		+ " 8: " + results.get(i).get(8) + " 9: " + results.get(i).get(9));
-		String [] date = results.get(i).get(2).split(" ");
 		
+		String [] date = results.get(i).get(2).split(" ");
 		converted += "{id: " + results.get(i).get(0) + ",title: '" + results.get(i).get(8) + results.get(i).get(9) + "',start: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "),end: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "+" + results.get(i).get(3) + ")}";
-		//System.out.println(converted);
 	}
 	return converted;
 }

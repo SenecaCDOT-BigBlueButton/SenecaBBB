@@ -14,8 +14,6 @@
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
-	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
-	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
 	<link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -24,9 +22,6 @@
 	<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
-	<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
-	<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
-	<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 	<script type="text/javascript" src="js/componentController.js"></script>
 	<%
 	String message = request.getParameter("message");

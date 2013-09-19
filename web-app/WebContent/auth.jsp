@@ -12,6 +12,8 @@
 <%@ page language="java" import="java.sql.*" errorPage=""%>
 <%
     // Gets inserted user and password.
+    User user = new User(dbaccess);
+	ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 	String userID = request.getParameter("SenecaLDAPBBBLogin");
 	String password = request.getParameter("SenecaLDAPBBBLoginPass");
 	HashMap<String, Integer> mask = new HashMap<String, Integer>();
@@ -36,8 +38,6 @@
 				usersession.setGivenName(ldap.getGivenName());
 				usersession.setLDAP(true);
 				usersession.setEmail(ldap.getEmailAddress());
-				User user = new User(dbaccess);
-				ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 				user.getUserInfo(result, userID);
 				// User doesn't exist in our db
 				if (result.isEmpty()){
@@ -54,11 +54,14 @@
 					user.getUserRoleSetting(mask, ur_id);
 					usersession.setRoleMask(mask);
 					usersession.setNick(result.get(0).get(1));
+					usersession.setSuper(result.get(0).get(7).equals("1"));
 					user.getUserSetting(mask, userID);
 					usersession.setUserSettingsMask(mask);
 					mask.clear();
 					user.getUserMeetingSetting(mask, userID);
 					usersession.setUserMeetingSettingsMask(mask);
+					user.getIsDepartmentAdmin(result, userID);
+					usersession.setDepartmentAdmin(result.get(0).get(0).equals("1"));
 				}
 				response.sendRedirect("calendar.jsp");
 			}
@@ -66,10 +69,8 @@
 		// User is registed in database.
 		else if (hash.validatePassword(password.toCharArray(), userID)) {
 			/* User is authenticated */
-			User user = new User(dbaccess);
 			MyBoolean prof = new MyBoolean();
 			MyBoolean depAdmin = new MyBoolean();
-			ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 			if (user.getUserInfo(result, userID)) {
 				ArrayList<String> userInfo = result.get(0);
 				int ur_id = Integer.parseInt(userInfo.get(8));
@@ -78,6 +79,8 @@
 				usersession.setUserId(userID);
 				usersession.setGivenName(userInfo.get(11) + " " + userInfo.get(12));
 				usersession.setSuper(userInfo.get(7).equals("1"));
+				user.getIsDepartmentAdmin(result, userID);
+				usersession.setDepartmentAdmin(result.get(0).get(0).equals("1"));
 				usersession.setEmail(userInfo.get(13));
 				usersession.setNick(userInfo.get(1));
 				user.isProfessor(prof, userID);

@@ -306,6 +306,21 @@ public class User extends Sql {
      * (0)ud_isadmin
      * @param result
      * @param bu_id
+     * @return
+     */
+    public boolean getIsDepartmentAdmin(ArrayList<ArrayList<String>> result, String bu_id) {
+        _sql = "SELECT ud_isadmin "
+                + "FROM user_department "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "ORDER BY ud_isadmin DESC "
+                + "LIMIT 1";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * (0)ud_isadmin
+     * @param result
+     * @param bu_id
      * @param d_code
      * @return
      */
@@ -728,7 +743,7 @@ public class User extends Sql {
     public boolean createUser(String bu_id, String bu_comment, boolean bu_isldap, int ur_id) {
         _sql = "INSERT INTO bbb_user " 
                 + "VALUES ('" + bu_id + "', '" + bu_id + "', 0, 1, '"
-                + bu_comment + "', NULL, " + bu_isldap + ", 0, " + ur_id + ", "
+                + bu_comment + "', SYSDATE(), " + bu_isldap + ", 0, " + ur_id + ", "
                 + "(SELECT key_value FROM bbb_admin WHERE key_name='default_user'), "
                 + "(SELECT key_value FROM bbb_admin WHERE key_name='default_meeting'))";
         return _dbAccess.updateDB(_sql);

@@ -17,7 +17,7 @@ public class Test_Department extends Test_Helper {
         
         display(_department.getDepartment(_result));
         
-        display(_department.getDepartment(_result, "IAT"));
+        display(_department.getDepartment(_result, "bli64"));
         
         display(_department.getDepartmentUser(_result));
         

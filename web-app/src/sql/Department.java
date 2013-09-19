@@ -46,10 +46,13 @@ public class Department extends Sql {
      * @param d_code
      * @return
      */
-    public boolean getDepartment(ArrayList<ArrayList<String>> result, String d_code) {
-        _sql = "SELECT * "
-                + "FROM department "
-                + "WHERE d_code = '" + d_code +"'";
+    public boolean getDepartment(ArrayList<ArrayList<String>> result, String bu_id) {
+        _sql = "SELECT DISTINCT d.d_code, d.d_name "
+                + "FROM department d "
+                + "JOIN user_department ud "
+                + "ON d.d_code = ud.d_code "
+                + "WHERE bu_id = '" + bu_id +"' "
+                + "AND ud_isadmin = 1";
         return _dbAccess.queryDB(result, _sql);
     }
     

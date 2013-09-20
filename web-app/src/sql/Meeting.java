@@ -195,41 +195,59 @@ public class Meeting extends Sql {
     }
     
     /**
-     * (0)bu_id (1)ma_ismod
+     * (0)bu_id (1)ms_id (2)ma_ismod (3)bu_nick
+     * @param result
+     * @return
+     */
+    public boolean getMeetingAttendee(ArrayList<ArrayList<String>> result) {
+        _sql = "SELECT ma.*, bu.bu_nick "
+                + "FROM meeting_attendee ma "
+                + "JOIN bbb_user bu "
+                + "WHERE ma.bu_id = bu.bu_id";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * (0)bu_id (1)ms_id (2)ma_ismod (3)bu_nick
      * @param result
      * @param ms_id
      * @return
      */
     public boolean getMeetingAttendee(ArrayList<ArrayList<String>> result, int ms_id) {
-        _sql = "SELECT bu_id, ma_ismod "
-                + "FROM meeting_attendee "
-                + "WHERE ms_id = " + ms_id;
+        _sql = "SELECT ma.*, bu.bu_nick "
+                + "FROM meeting_attendee ma "
+                + "JOIN bbb_user bu "
+                + "WHERE ma.bu_id = bu.bu_id "
+                + "AND ma.ms_id = " + ms_id;
         return _dbAccess.queryDB(result, _sql);
     }
     
     /**
-     * (0)bu_id (1)ma_ismod
+     * (0)bu_id (1)ms_id (2)ma_ismod (3)bu_nick
      * @param result
      * @param ms_id
      * @param bu_id
      * @return
      */
     public boolean getMeetingAttendee(ArrayList<ArrayList<String>> result, int ms_id, String bu_id) {
-        _sql = "SELECT bu_id, ma_ismod "
-                + "FROM meeting_attendee "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND bu_id = '" + bu_id + "'";
+        _sql = "SELECT ma.*, bu.bu_nick "
+                + "FROM meeting_attendee ma "
+                + "JOIN bbb_user bu "
+                + "WHERE ma.bu_id = bu.bu_id "
+                + "AND ma.ms_id = " + ms_id + " "
+                + "AND ma.bu_id = '" + bu_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
+    
     /**
-     * (0)bu_id (1)mac_isattend
+     * (0)bu_id (1)ms_id (2)m_id (1)mac_isattend
      * @param result
      * @param ms_id
      * @return
      */
     public boolean getMeetingAttendance(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
-        _sql = "SELECT bu_id, mac_isattend "
+        _sql = "SELECT * "
                 + "FROM meeting_attendance "
                 + "WHERE ms_id = " + ms_id + " "
                 + "AND m_id = " + m_id;
@@ -237,14 +255,14 @@ public class Meeting extends Sql {
     }
     
     /**
-     * (0)bu_id (1)mac_isattend
+     * (0)bu_id (1)ms_id (2)m_id (1)mac_isattend
      * @param result
      * @param ms_id
      * @param bu_id
      * @return
      */
     public boolean getMeetingAttendance(ArrayList<ArrayList<String>> result, int ms_id, int m_id, String bu_id) {
-        _sql = "SELECT bu_id, mac_isattend "
+        _sql = "SELECT * "
                 + "FROM meeting_attendance "
                 + "WHERE ms_id = " + ms_id + " "
                 + "AND m_id = " + m_id + " "

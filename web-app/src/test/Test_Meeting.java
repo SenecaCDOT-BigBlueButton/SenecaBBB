@@ -31,7 +31,11 @@ public class Test_Meeting extends Test_Helper {
         
         display(_meeting.getMeetingPresentation(_result, 1, 1));
         
+        display(_meeting.getMeetingAttendee(_result));
+        
         display(_meeting.getMeetingAttendee(_result, 1));
+        
+        display(_meeting.getMeetingAttendee(_result, 1, "capilkey"));
         
         display(_meeting.getMeetingAttendance(_result, 1, 1));
         

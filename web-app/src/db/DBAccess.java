@@ -18,6 +18,7 @@ public class DBAccess {
     private PreparedStatement _stmt = null;
     private ResultSet _rs = null;
     private Connection _conn = null;
+    private String _errCode = null;
     private String _errLog = null;
     private boolean _flag = true; 
     //private ArrayList<Connection> toClose; 
@@ -69,6 +70,10 @@ public class DBAccess {
         return _errLog;
     }
     
+    public String getErrCode() {
+        return _errCode;
+    }
+    
     /**
      * This MUST be called after an error is caught,
      * else no other SQL statements would run
@@ -92,6 +97,7 @@ public class DBAccess {
         if(_flag) { //statement do no execute if there is previous error
             _flag = openConnection();
             if (!_flag) { //check connection error
+                _errCode = "C1";
                 _errLog = "SQLException: Bad or No Connection";
             }
             else {
@@ -140,6 +146,7 @@ public class DBAccess {
                     _stmt.executeUpdate();
                 }
                 catch (SQLException e) {
+                    _errCode = Integer.toString(e.getErrorCode());
                     _errLog = "SQLException: " + e.getMessage();
                     _flag = false;
                 }

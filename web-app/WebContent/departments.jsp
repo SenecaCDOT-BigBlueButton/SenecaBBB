@@ -1,4 +1,3 @@
-<%@page import="db.DBConnection"%>
 <%@page import="sql.*"%>
 <%@page import="java.util.*"%>
 <%@page import="helper.MyBoolean"%>
@@ -37,11 +36,13 @@
 		return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
-		response.sendRedirect("index.jsp?error=Database connection error");
+	    dbaccess.resetFlag();
+		response.sendRedirect("logout.jsp?message=Database connection error");
 		return;
-	} 
+	}
 	if (!(usersession.isDepartmentAdmin() || usersession.isSuper())) {
 	    response.sendRedirect("calendar.jsp");
+	    return;
 	}
 	//End page validation
 	
@@ -51,6 +52,7 @@
 	}
 	
 	User user = new User(dbaccess);
+	Department dept = new Department(dbaccess);
 	MyBoolean prof = new MyBoolean();
 	HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
 	HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
@@ -60,14 +62,43 @@
 	roleMask = usersession.getRoleMask();
 	int nickName = roleMask.get("nickname");
 	
+	String deptCode = request.getParameter("DeptCode");
+	String deptName = request.getParameter("DeptName");
+	String deptRemove = request.getParameter("deptRemove");
+	
+	if (deptCode!=null && deptName!=null) {
+	    if (!deptCode.equals("") && !deptName.equals("")) {
+	    	if (!dept.createDepartment(deptCode, deptName)) {
+	    	    dbaccess.resetFlag();
+	    	    response.sendRedirect("logout.jsp?message=There was a database error");
+	    	    return;
+	    	}
+	    }
+	}
+	if (deptRemove!=null && usersession.isSuper()) {
+	    if (!dept.removeDepartment(deptRemove)) {
+    	    dbaccess.resetFlag();
+    	    String temp1 = "departments.jsp?message=There was a database error<br />"
+    	            + "Department (Code: " + deptRemove + ") cannot be removed, there may be users still in that department";
+    	    response.sendRedirect(temp1);
+    	    return;
+    	}
+	}
+	
 	ArrayList<ArrayList<String>> deptList = new ArrayList<ArrayList<String>>();
-	Department dept = new Department(dbaccess);
-	boolean sql_flag;
 	if (usersession.isSuper()) {
-	    sql_flag = dept.getDepartment(deptList);    
+	    if (!dept.getDepartment(deptList)) {
+    	    dbaccess.resetFlag();
+    	    response.sendRedirect("logout.jsp?message=There was a database error");
+    	    return;
+    	}  
 	}
 	else {
-	    sql_flag = dept.getDepartment(deptList, userId);
+	    if (!dept.getDepartment(deptList, userId)) {
+    	    dbaccess.resetFlag();
+    	    response.sendRedirect("logout.jsp?message=There was a database error");
+    	    return;
+    	}
 	}
 	
 	
@@ -112,7 +143,9 @@ $(function(){
 										<th title="Name">Name<span></span></th>
 										<th width="65" title="View users" class="icons" align="center">Users</th>
 										<th width="65" title="Modify" class="icons" align="center">Modify</th>
+										<% if (usersession.isSuper()) { %>
 										<th width="65" title="Remove" class="icons" align="center">Remove</th>
+										<% } %>
 									</tr>
 								</thead>
 								<tbody>
@@ -124,7 +157,9 @@ $(function(){
 										<td><% out.print(deptList.get(i).get(1)); %></td>
 										<td class="icons" align="center"><a href="department_users.jsp?department=<% out.print(deptList.get(i).get(0)); %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
 										<td class="icons" align="center"><a href="department_users.jsp?department=<% out.print(deptList.get(i).get(0)); %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
-										<td class="icons" align="center"><a href="department_users.jsp?department=<% out.print(deptList.get(i).get(0)); %>" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
+										<% if (usersession.isSuper()) { %>
+										<td class="icons" align="center"><a href="departments.jsp?deptRemove=<% out.print(deptList.get(i).get(0)); %>" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
+										<% } %>
 									</tr>
 								<%
 									}

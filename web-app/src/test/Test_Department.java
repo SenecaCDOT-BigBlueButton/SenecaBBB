@@ -29,9 +29,9 @@ public class Test_Department extends Test_Helper {
         
         display(_department.setDepartmentCode("ICT", "ABC"));
         
-        //display(_department.createDepartment("XIV", "guess"));
+        display(_department.createDepartment("XIV", "guess"));
         
-        //display(_department.createDepartmentUser("non_ldap1", "IAT", true));
+        display(_department.createDepartmentUser("non_ldap1", "IAT", true));
         
         display(_department.removeDepartment("XIV"));
         

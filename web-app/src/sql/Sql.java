@@ -33,6 +33,10 @@ public class Sql {
         return _dbAccess.getErrLog();
     }
     
+    public String getErrCode() {
+        return _dbAccess.getErrCode();
+    }
+    
     public String getSQL() {
         return _sql;
     }
@@ -45,4 +49,6 @@ public class Sql {
     public boolean resetErrorFlag() {
         return _dbAccess.resetFlag();
     }
+    
+    
 }

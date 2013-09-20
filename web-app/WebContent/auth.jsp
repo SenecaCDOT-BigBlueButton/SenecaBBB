@@ -61,12 +61,14 @@
 					user.getUserMeetingSetting(mask, userID);
 					usersession.setUserMeetingSettingsMask(mask);
 					user.getIsDepartmentAdmin(result, userID);
-					usersession.setDepartmentAdmin(result.get(0).get(0).equals("1"));
+					if (!result.isEmpty()) {
+						usersession.setDepartmentAdmin(result.get(0).get(0).equals("1"));
+					}
 				}
 				response.sendRedirect("calendar.jsp");
 			}
 		}
-		// User is registed in database.
+		// User is registered in database.
 		else if (hash.validatePassword(password.toCharArray(), userID)) {
 			/* User is authenticated */
 			MyBoolean prof = new MyBoolean();
@@ -80,7 +82,9 @@
 				usersession.setGivenName(userInfo.get(11) + " " + userInfo.get(12));
 				usersession.setSuper(userInfo.get(7).equals("1"));
 				user.getIsDepartmentAdmin(result, userID);
-				usersession.setDepartmentAdmin(result.get(0).get(0).equals("1"));
+				if (!result.isEmpty()) {
+					usersession.setDepartmentAdmin(result.get(0).get(0).equals("1"));
+				}
 				usersession.setEmail(userInfo.get(13));
 				usersession.setNick(userInfo.get(1));
 				user.isProfessor(prof, userID);

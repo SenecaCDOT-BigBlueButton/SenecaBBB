@@ -54,9 +54,9 @@ public class Test_User extends Test_Helper {
 
             display(_user.getComment(_result, "bli64"));
 
-            display(_user.getIsDepartmentAdmin(_result, "bli64", "ABC"));
+            //display(_user.getIsDepartmentAdmin(_result, "bli64", "ABC"));
             
-            display(_user.getIsDepartmentAdmin(_result, "bli64"));
+            //display(_user.getIsDepartmentAdmin(_result, "bli64"));
 
             display(_user.getIsSuperAdmin(_result, "fardad.soleimanloo"));
             
@@ -109,7 +109,7 @@ public class Test_User extends Test_Helper {
             
             display(_user.setDepartmentAdmin("bli64", "ICT", true));
             
-            display(_user.getIsDepartmentAdmin(_result, "bli64", "ICT"));
+            //display(_user.getIsDepartmentAdmin(_result, "bli64", "ICT"));
             
             display(_user.setSuperAdmin("bli64", true));
 

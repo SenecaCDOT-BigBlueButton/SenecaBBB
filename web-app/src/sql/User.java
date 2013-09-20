@@ -303,36 +303,6 @@ public class User extends Sql {
     }
 
     /**
-     * (0)ud_isadmin
-     * @param result
-     * @param bu_id
-     * @return
-     */
-    public boolean getIsDepartmentAdmin(ArrayList<ArrayList<String>> result, String bu_id) {
-        _sql = "SELECT ud_isadmin "
-                + "FROM user_department "
-                + "WHERE bu_id = '" + bu_id + "' "
-                + "ORDER BY ud_isadmin DESC "
-                + "LIMIT 1";
-        return _dbAccess.queryDB(result, _sql);
-    }
-    
-    /**
-     * (0)ud_isadmin
-     * @param result
-     * @param bu_id
-     * @param d_code
-     * @return
-     */
-    public boolean getIsDepartmentAdmin(ArrayList<ArrayList<String>> result, String bu_id, String d_code) {
-        _sql = "SELECT ud_isadmin "
-                + "FROM user_department "
-                + "WHERE bu_id = '" + bu_id + "' "
-                + "AND d_code = '" + d_code + "'";
-        return _dbAccess.queryDB(result, _sql);
-    }
-
-    /**
      * get setting methods 
      */
     
@@ -487,10 +457,40 @@ public class User extends Sql {
         return flag;
     }
     
-    public boolean isDepartmentAdmin(MyBoolean bool, String bu_id) {
+    public boolean isDepartmentUser(MyBoolean bool, String bu_id, String d_code) {
         _sql = "SELECT 1 "
                 + "FROM user_department "
                 + "WHERE bu_id = '" + bu_id + "' "
+                + "AND d_code = '" + d_code + "' "
+                + "LIMIT 1";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isDepartmentAdmin(MyBoolean bool, String bu_id) {
+        _sql = "SELECT ud_isadmin "
+                + "FROM user_department "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "AND ud_isadmin = 1 "
+                + "LIMIT 1";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isDepartmentAdmin(MyBoolean bool, String bu_id, String d_code) {
+        _sql = "SELECT ud_isadmin "
+                + "FROM user_department "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "AND d_code = '" + d_code + "' "
+                + "AND ud_isadmin = 1 "
                 + "LIMIT 1";
         ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
         boolean flag =_dbAccess.queryDB(tempResult, _sql);

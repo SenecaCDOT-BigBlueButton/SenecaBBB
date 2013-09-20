@@ -2,9 +2,9 @@
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <jsp:useBean id="ldap" scope="session" class="ldap.LDAPAuthenticate" />
 <%
-	String error = request.getParameter("error");
-	if (error == null) {
-		error = "";
+	String message = request.getParameter("message");
+	if (message == null) {
+		message = "";
 	} 
 	String guestMessage = "";
 	String bu_id = "";
@@ -17,7 +17,7 @@
 			bu_id = "";
 		} 
 		else 
-			error = "Log in with username " + bu_id + "and the password you just set";
+			message = "Log in with username " + bu_id + "and the password you just set";
 	}	
 	if (usersession.getUserId() != "")
 		response.sendRedirect("calendar.jsp");
@@ -60,8 +60,8 @@
       <article >
         <fieldset>
           <div class="component">
-          	<!-- Prints 'error' on the screen. --><%System.out.println(error); %>
-            <label id="error" class="label"><%=error%></label>
+          	<!-- Prints 'message' on the screen. --><%System.out.println(message); %>
+            <label id="message" class="label"><%=message%></label>
           </div>
           <div class="component">
             <label for="SenecaLDAPBBBLogin" class="label">Username:</label>

@@ -13,6 +13,8 @@
 <%
     // Gets inserted user and password.
     User user = new User(dbaccess);
+	MyBoolean prof = new MyBoolean();
+	MyBoolean depAdmin = new MyBoolean();
 	ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 	String userID = request.getParameter("SenecaLDAPBBBLogin");
 	String password = request.getParameter("SenecaLDAPBBBLoginPass");
@@ -60,10 +62,10 @@
 					mask.clear();
 					user.getUserMeetingSetting(mask, userID);
 					usersession.setUserMeetingSettingsMask(mask);
-					user.getIsDepartmentAdmin(result, userID);
-					if (!result.isEmpty()) {
-						usersession.setDepartmentAdmin(result.get(0).get(0).equals("1"));
-					}
+					user.isProfessor(prof, userID);
+					user.isDepartmentAdmin(depAdmin, userID);
+					usersession.setProfessor(prof.get_value());
+					usersession.setDepartmentAdmin(depAdmin.get_value());
 				}
 				response.sendRedirect("calendar.jsp");
 			}
@@ -71,8 +73,6 @@
 		// User is registered in database.
 		else if (hash.validatePassword(password.toCharArray(), userID)) {
 			/* User is authenticated */
-			MyBoolean prof = new MyBoolean();
-			MyBoolean depAdmin = new MyBoolean();
 			if (user.getUserInfo(result, userID)) {
 				ArrayList<String> userInfo = result.get(0);
 				int ur_id = Integer.parseInt(userInfo.get(8));
@@ -81,10 +81,6 @@
 				usersession.setUserId(userID);
 				usersession.setGivenName(userInfo.get(11) + " " + userInfo.get(12));
 				usersession.setSuper(userInfo.get(7).equals("1"));
-				user.getIsDepartmentAdmin(result, userID);
-				if (!result.isEmpty()) {
-					usersession.setDepartmentAdmin(result.get(0).get(0).equals("1"));
-				}
 				usersession.setEmail(userInfo.get(13));
 				usersession.setNick(userInfo.get(1));
 				user.isProfessor(prof, userID);
@@ -113,10 +109,10 @@
 		// User doesn't exist in database or LDAP
 		} else {
 			String message = "Invalid username and/or password.";
-			response.sendRedirect("index.jsp?error=" + message);
+			response.sendRedirect("index.jsp?message=" + message);
 		}
 	} else {
 		String message = "Invalid username and/or password.**";
-		response.sendRedirect("index.jsp?error=" + message);
+		response.sendRedirect("index.jsp?message=" + message);
 	}
 %>

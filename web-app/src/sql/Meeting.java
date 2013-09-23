@@ -88,6 +88,20 @@ public class Meeting extends Sql {
         return _dbAccess.queryDB(result, _sql);
     }
     
+    /**
+     * Fields:<p>
+     * (0)ms_id (1)ms_title (2)ms_inidatetime (3)ms_spec (4)ms_duration (5)bu_id 
+     * @param result
+     * @param ms_id
+     * @return
+     */
+    public boolean getMeetingCreators(ArrayList<ArrayList<String>> result, int ms_id) {
+        _sql = "SELECT bu_id "
+                + "FROM meeting_schedule "
+                + "WHERE ms_id = " + ms_id;
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
     
     /**
      * Fields:<p>

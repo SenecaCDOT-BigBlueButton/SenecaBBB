@@ -98,6 +98,13 @@ public class Department extends Sql {
         return _dbAccess.updateDB(_sql);
     }
     
+    public boolean setMultiDepartment(String old_d_code, String new_d_code, String d_name) {
+        _sql = "UPDATE department "
+                + "SET d_name = '" + d_name + "', d_code = '" + new_d_code + "' " 
+                + "WHERE d_code ='" + old_d_code + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     public boolean setDepartmentAdmin(
             String bu_id, String d_code, boolean ud_isadmin) {
         int flag = (ud_isadmin == true) ? 1 : 0;

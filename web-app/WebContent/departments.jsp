@@ -1,6 +1,6 @@
 <%@page import="sql.*"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -30,6 +30,7 @@
 <script type="text/javascript" src="js/componentController.js"></script>
 <%
 	//Start page validation
+	boolean validFlag; 
 	String userId = usersession.getUserId();
 	if (userId.equals("")) {
 		response.sendRedirect("index.jsp?message=Please log in");
@@ -60,11 +61,17 @@
 	String deptCode = request.getParameter("DeptCode");
 	String deptName = request.getParameter("DeptName");
 	String deptRemove = request.getParameter("deptRemove");
+	String oldDeptCode = request.getParameter("OldDeptCode");
+	String modDeptCode = request.getParameter("NewDeptCode");
+	String modDeptName = request.getParameter("NewDeptName");
 	
 	if (deptCode!=null && deptName!=null) {
-	    deptCode = deptCode.trim();
-        deptName = deptName.trim();
-	    if (!deptCode.equals("") && !deptName.equals("")) {
+	    // TO-DO List: deptCodeCreate(String)
+	    //             deptNameCreate(String)
+	    deptCode = Validation.prepare(deptCode);
+		deptName = Validation.prepare(deptName);
+	    validFlag = Validation.deptCodeCreate(deptCode) && Validation.deptNameCreate(deptName);
+	    if (validFlag) {
 	        if (!dept.createDepartment(deptCode, deptName)) {
 	            dept.resetErrorFlag();
 	            message =  "Could not create new department " + deptCode
@@ -76,21 +83,53 @@
 	            message = "Department " + deptCode + " created"; 
 	        }
 	    } else {
-	        message = "New department was not created, one or more required field missing";
+	        message = Validation.getErrMsg();
 	    }
 	}
+	
 	if (deptRemove!=null && usersession.isSuper()) {
-	    deptRemove = deptRemove.trim();
-	    if (!dept.removeDepartment(deptRemove)) {
-            dept.resetErrorFlag();
-            message =  "Could not remove department " + deptRemove
-                + "<br />SQL Error Code: " + dept.getErrCode() 
-                + "<br />Error Submission Code : D02"
-                + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
-        }
-        else {
-            message = "Department " + deptRemove + " was removed";
-        }
+	    deptRemove = Validation.prepare(deptRemove);
+	 	// TO-DO List: deptCodeRemove(String)
+	    validFlag = Validation.deptCodeRemove(deptRemove);
+	    if (validFlag) {
+	    	if (!dept.removeDepartment(deptRemove)) {
+            	dept.resetErrorFlag();
+            	message =  "Could not remove department " + deptRemove
+                	+ "<br />SQL Error Code: " + dept.getErrCode() 
+                	+ "<br />Error Submission Code : D02"
+                	+ "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+        	}
+        	else {
+            	message = "Department " + deptRemove + " was removed";
+        	}
+	    }
+	    else {
+	        message = Validation.getErrMsg();
+	    }
+	}
+	
+	if (modDeptCode!=null && modDeptName!=null && oldDeptCode!=null) {
+	    modDeptCode = Validation.prepare(modDeptCode);
+		modDeptName = Validation.prepare(modDeptName);
+		oldDeptCode = Validation.prepare(oldDeptCode);
+		// TO-DO List: deptCodeMod(String)
+	    //             deptNameMod(String)
+	    //             deptCodeOldMod(String)
+	    validFlag = Validation.deptCodeMod(modDeptCode) && Validation.deptNameMod(modDeptName) && Validation.deptCodeOldMod(oldDeptCode);
+	    if (validFlag) {
+	        if (!dept.setMultiDepartment(oldDeptCode, modDeptCode, modDeptName)) {
+	            dept.resetErrorFlag();
+	            message =  "Could not modify department " + oldDeptCode
+	                + "<br />SQL Error Code: " + dept.getErrCode() 
+                    + "<br />Error Submission Code : D03"
+                    + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	        }
+	        else {
+	            message = "Department " + oldDeptCode + " was modified"; 
+	        }
+	    } else {
+	        message = Validation.getErrMsg();
+	    }
 	}
 	
 	ArrayList<ArrayList<String>> deptList = new ArrayList<ArrayList<String>>();

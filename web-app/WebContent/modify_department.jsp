@@ -77,13 +77,17 @@
 				</header>
 				<div class="content">
 					<fieldset>
-				        <div class="component">
-				            <label for="DeptCode" class="label">Department Code:</label>
-				            <input type="text" name="d_code" id="d_name" class="input" tabindex="2" value="<%=d_code %>" title="Please Enter Department code">
+						<div class="component">
+				            <label for="OldDeptCode" class="label">Department Code:</label>
+				            <input type="text" name="OldDeptCode" id="OldDeptCode" class="input" tabindex="2" value="<%=d_code %>" title="Department code" readonly="readonly">
 				        </div>
 				        <div class="component">
-				            <label for="DeptName" class="label">Department Name:</label>
-				            <input type="text" name="d_code" id="d_name" class="input" tabindex="3" value="<%=d_name %>" title="Please Enter Department Name" >
+				            <label for="NewDeptCode" class="label">New Department Code:</label>
+				            <input type="text" name="NewDeptCode" id="NewDeptCode" class="input" tabindex="2" value="<%=d_code %>" title="Please Enter Department code">
+				        </div>
+				        <div class="component">
+				            <label for="NewDeptName" class="label">New Department Name:</label>
+				            <input type="text" name="NewDeptName" id="NewDeptName" class="input" tabindex="3" value="<%=d_name %>" title="Please Enter Department Name" >
 				        </div>
 				        <div class="component">
 					        <div class="buttons">

@@ -50,5 +50,16 @@ public class Sql {
         return _dbAccess.resetFlag();
     }
     
-    
+    /*public String errCleanPkg(boolean init, String eCode, String redirect) {
+        String msg = "";
+        if (!init) {
+            resetErrorFlag();
+            msg = redirect + "?message="
+                    + "SQL Error Code: " + getErrCode() 
+                    + "\nSQL Error Message: " + getErrLog()
+                    + "\nError Submission Code : " + eCode
+                    + "\nPlease include the Error Submission Code if you wish to report this problem to site Admin";
+        }
+        return msg;
+    }*/
 }

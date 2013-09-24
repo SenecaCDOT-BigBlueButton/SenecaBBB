@@ -1,6 +1,6 @@
 <%@page import="sql.*"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -30,14 +30,10 @@
 <script type="text/javascript" src="js/componentController.js"></script>
 <%
 	//Start page validation
+	boolean validFlag; 
 	String userId = usersession.getUserId();
 	if (userId.equals("")) {
-		response.sendRedirect("index.jsp?error=Please log in");
-		return;
-	}
-	if (dbaccess.getFlagStatus() == false) {
-	    dbaccess.resetFlag();
-		response.sendRedirect("logout.jsp?message=Database connection error");
+		response.sendRedirect("index.jsp?message=Please log in");
 		return;
 	}
 	if (!(usersession.isDepartmentAdmin() || usersession.isSuper())) {
@@ -65,40 +61,99 @@
 	String deptCode = request.getParameter("DeptCode");
 	String deptName = request.getParameter("DeptName");
 	String deptRemove = request.getParameter("deptRemove");
+	String oldDeptCode = request.getParameter("OldDeptCode");
+	String modDeptCode = request.getParameter("NewDeptCode");
+	String modDeptName = request.getParameter("NewDeptName");
 	
 	if (deptCode!=null && deptName!=null) {
-	    if (!deptCode.equals("") && !deptName.equals("")) {
-	    	if (!dept.createDepartment(deptCode, deptName)) {
-	    	    dbaccess.resetFlag();
-	    	    response.sendRedirect("logout.jsp?message=There was a database error");
-	    	    return;
-	    	}
+	    // TO-DO List: deptCodeCreate(String)
+	    //             deptNameCreate(String)
+	    deptCode = Validation.prepare(deptCode);
+		deptName = Validation.prepare(deptName);
+	    validFlag = Validation.deptCodeCreate(deptCode) && Validation.deptNameCreate(deptName);
+	    if (validFlag) {
+	        if (!dept.createDepartment(deptCode, deptName)) {
+	            dept.resetErrorFlag();
+	            message =  "Could not create new department " + deptCode
+	                + "<br />SQL Error Code: " + dept.getErrCode() 
+                    + "<br />Error Submission Code : D01"
+                    + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	        }
+	        else {
+	            message = "Department " + deptCode + " created"; 
+	        }
+	    } else {
+	        message = Validation.getErrMsg();
 	    }
 	}
+	
 	if (deptRemove!=null && usersession.isSuper()) {
-	    if (!dept.removeDepartment(deptRemove)) {
-    	    dbaccess.resetFlag();
-    	    String temp1 = "departments.jsp?message=There was a database error<br />"
-    	            + "Department (Code: " + deptRemove + ") cannot be removed, there may be users still in that department";
-    	    response.sendRedirect(temp1);
-    	    return;
-    	}
+	    deptRemove = Validation.prepare(deptRemove);
+	 	// TO-DO List: deptCodeRemove(String)
+	    validFlag = Validation.deptCodeRemove(deptRemove);
+	    if (validFlag) {
+	    	if (!dept.removeDepartment(deptRemove)) {
+            	dept.resetErrorFlag();
+            	message =  "Could not remove department " + deptRemove
+                	+ "<br />SQL Error Code: " + dept.getErrCode() 
+                	+ "<br />Error Submission Code : D02"
+                	+ "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+        	}
+        	else {
+            	message = "Department " + deptRemove + " was removed";
+        	}
+	    }
+	    else {
+	        message = Validation.getErrMsg();
+	    }
+	}
+	
+	if (modDeptCode!=null && modDeptName!=null && oldDeptCode!=null) {
+	    modDeptCode = Validation.prepare(modDeptCode);
+		modDeptName = Validation.prepare(modDeptName);
+		oldDeptCode = Validation.prepare(oldDeptCode);
+		// TO-DO List: deptCodeMod(String)
+	    //             deptNameMod(String)
+	    //             deptCodeOldMod(String)
+	    validFlag = Validation.deptCodeMod(modDeptCode) && Validation.deptNameMod(modDeptName) && Validation.deptCodeOldMod(oldDeptCode);
+	    if (validFlag) {
+	        if (!dept.setMultiDepartment(oldDeptCode, modDeptCode, modDeptName)) {
+	            dept.resetErrorFlag();
+	            message =  "Could not modify department " + oldDeptCode
+	                + "<br />SQL Error Code: " + dept.getErrCode() 
+                    + "<br />Error Submission Code : D03"
+                    + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	        }
+	        else {
+	            message = "Department " + oldDeptCode + " was modified"; 
+	        }
+	    } else {
+	        message = Validation.getErrMsg();
+	    }
 	}
 	
 	ArrayList<ArrayList<String>> deptList = new ArrayList<ArrayList<String>>();
 	if (usersession.isSuper()) {
 	    if (!dept.getDepartment(deptList)) {
-    	    dbaccess.resetFlag();
-    	    response.sendRedirect("logout.jsp?message=There was a database error");
-    	    return;
-    	}  
+            dept.resetErrorFlag();
+            message =  "Could not get department list"
+                + "<br />SQL Error Code: " + dept.getErrCode() 
+                + "<br />Error Submission Code : D03"
+                + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+            response.sendRedirect("logout.jsp?message=" + message);
+            return;
+        }
 	}
 	else {
 	    if (!dept.getDepartment(deptList, userId)) {
-    	    dbaccess.resetFlag();
-    	    response.sendRedirect("logout.jsp?message=There was a database error");
-    	    return;
-    	}
+            dept.resetErrorFlag();
+            message =  "Could not get department list"
+                + "<br />SQL Error Code: " + dept.getErrCode() 
+                + "<br />Error Submission Code : D04"
+                + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+            response.sendRedirect("logout.jsp?message=" + message);
+            return;
+        }
 	}
 	
 	
@@ -153,12 +208,12 @@ $(function(){
 									for (int i=0; i<deptList.size(); i++) {
 								%>
 									<tr>
-										<td class="row"><% out.print(deptList.get(i).get(0)); %></td>
-										<td><% out.print(deptList.get(i).get(1)); %></td>
-										<td class="icons" align="center"><a href="department_users.jsp?department=<% out.print(deptList.get(i).get(0)); %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
-										<td class="icons" align="center"><a href="department_users.jsp?department=<% out.print(deptList.get(i).get(0)); %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
+										<td class="row"><%= deptList.get(i).get(0) %></td>
+										<td><%= deptList.get(i).get(1) %></td>
+										<td class="icons" align="center"><a href="department_users.jsp?department=<%= deptList.get(i).get(0) %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
+										<td class="icons" align="center"><a href="modify_department.jsp?mod_d_code=<%= deptList.get(i).get(0) %>&mod_d_name=<%= deptList.get(i).get(1) %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
 										<% if (usersession.isSuper()) { %>
-										<td class="icons" align="center"><a href="departments.jsp?deptRemove=<% out.print(deptList.get(i).get(0)); %>" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
+										<td class="icons" align="center"><a href="departments.jsp?deptRemove=<%= deptList.get(i).get(0) %>" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
 										<% } %>
 									</tr>
 								<%

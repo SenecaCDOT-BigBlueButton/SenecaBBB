@@ -634,6 +634,13 @@ public class User extends Sql {
         return _dbAccess.updateDB(_sql);
     }
     
+    public boolean setEmail(String bu_id, String nu_email) {
+        _sql = "UPDATE non_ldap_user "
+                + "SET nu_email = '" +  nu_email + "' "
+                + "WHERE bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     public boolean setLastName(String bu_id, String nu_lastname) {
         _sql = "UPDATE non_ldap_user "
                 + "SET nu_lastname = '" +  nu_lastname + "' "

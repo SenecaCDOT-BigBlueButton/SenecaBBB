@@ -14,6 +14,7 @@
 		
 		if (userName == "") {
 			out.write ("Please enter a username to search");
+			System.out.println("enter a name to search");
 		}
 		else {
 			if (ldap.search(userName)) {

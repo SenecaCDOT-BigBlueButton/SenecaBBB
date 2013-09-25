@@ -1,7 +1,8 @@
 <%@page import="db.DBConnection"%>
 <%@page import="sql.User"%>
+<%@page import="sql.Department"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -31,28 +32,74 @@
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <script type="text/javascript" src="js/componentController.js"></script>
 <%
+	boolean validFlag; 
+	User user = new User(dbaccess);
+	Department dept = new Department(dbaccess);
+	MyBoolean myBool = new MyBoolean();
+	String message;
+	String adminStatus = "";
 	//Start page validation
 	String userId = usersession.getUserId();
 	if (userId.equals("")) {
 		response.sendRedirect("index.jsp?message=Please log in");
 		return;
 	}
+	String d_code = request.getParameter("DeptCode");
+	if (d_code==null) {
+	    response.sendRedirect("departments.jsp?message=Please do not mess with the URL");
+	    return;
+	}
+	d_code = Validation.prepare(d_code);
+	if (!Validation.checkDeptCode(d_code)) {
+	    response.sendRedirect("departments.jsp?message=" + Validation.getErrMsg());
+	    return;
+	}
+	if (!dept.isDepartment(myBool, d_code)) {
+	    dept.resetErrorFlag();
+	    message =  "Could not verify department status: " + d_code
+	        + "<br />SQL Error Code: " + dept.getErrCode() 
+	        + "<br />Error Submission Code : DU01"
+	        + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	    response.sendRedirect("logout.jsp?message=" + message);
+	    return;   
+	}
+	if (!myBool.get_value()) {
+	    response.sendRedirect("departments.jsp?message=Department with that code does not exist");
+	    return;
+	}
+	if (!usersession.isSuper()) {
+	    if (!user.isDepartmentAdmin(myBool, usersession.getUserId(), d_code)) {
+		    user.resetErrorFlag();
+	        message =  "Could not verify department admin status for: " + usersession.getUserId()
+	            + "<br />SQL Error Code: " + user.getErrCode() 
+	            + "<br />Error Submission Code : DU02"
+	            + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	        response.sendRedirect("logout.jsp?message=" + message);
+		    return;   
+		}
+	    if (!myBool.get_value()) {
+		    response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
+		    return;
+		}	
+	}	
 	//End page validation
-
-	String message = request.getParameter("message");
+	
+	message = request.getParameter("message");
 	if (message == null || message == "null") {
 		message = "";
 	}
-
-	User user = new User(dbaccess);
-	MyBoolean prof = new MyBoolean();
-	HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
-	HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
-	HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
-	userSettings = usersession.getUserSettingsMask();
-	meetingSettings = usersession.getUserMeetingSettingsMask();
-	roleMask = usersession.getRoleMask();
-	int nickName = roleMask.get("nickname");
+	
+	ArrayList<ArrayList<String>> deptUserList = new ArrayList<ArrayList<String>>();
+	if (!dept.getDepartmentUser(deptUserList, d_code)) {
+    	dept.resetErrorFlag();
+        message =  "Could not get department list"
+        	+ "<br />SQL Error Code: " + dept.getErrCode() 
+            + "<br />Error Submission Code : DU03"
+            + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+        response.sendRedirect("logout.jsp?message=" + message);
+        return;
+	}
+	
 %>
 <script type="text/javascript">
 	$(screen).ready(function() {
@@ -106,34 +153,53 @@
 								<table id="tableName" border="0" cellpadding="0" cellspacing="0">
 									<thead>
 										<tr>
-											<!-- First field -->
-											<th width="100" class="firstColumn" tabindex="15"
-												title="First field">First field<span>
+											<!-- Department Code -->
+											<th width="150" class="firstColumn" tabindex="15"
+												title="Department Code">Department Code<span>
 													<!-- Sorting arrow -->
 											</span></th>
 											<!-- Field with expandable width -->
-											<th title="Name" title="Field with expandable width">Field
-												with expandable width<span>
+											<th title="Name" title="User Id">User Id<span>
 													<!-- Sorting arrow -->
 											</span>
 											</th>
 											<!-- Regular field -->
-											<th width="230" title="Regular field">Regular field<span>
+											<th title="Nick Name">Nick Name<span>
+													<!-- Sorting arrow -->
+											</span></th>
+											</th>
+											<!-- Regular field -->
+											<th title="Admin Status" align="center">Admin Status<span>
 													<!-- Sorting arrow -->
 											</span></th>
 											<!-- Action field -->
-											<th width="65" title="Action" class="icons" align="center">Action</th>
+											<% if (usersession.isSuper()) { %>
+											<th title="Action" class="icons" align="center">Set Admin Status</th>
+											<% }  %>
 										</tr>
 									</thead>
 									<tbody>
+									<%
+										for (int i=0; i<deptUserList.size(); i++) {
+									%>
 										<tr>
-											<td class="row">First field</td>
-											<td>Field with expandable width</td>
-											<td>Regular field</td>
-											<td class="icons" align="center"><a href="#" class="add"><img
+											<td class="row"><%= deptUserList.get(i).get(1) %></td>
+											<td><%= deptUserList.get(i).get(0) %></td>
+											<td><%= deptUserList.get(i).get(3) %></td>
+											<%
+												adminStatus = deptUserList.get(i).get(2);
+												adminStatus = (adminStatus.equals("1")) ? "Yes" : ""; 
+											%>
+											<td><%= adminStatus %></td>
+											<% if (usersession.isSuper()) { %>
+											<td class="icons" align="center"><a href="#" class="<%= adminStatus = (adminStatus.equals("Yes")) ? "remove" : "add" %>"><img
 													src="images/iconPlaceholder.svg" width="17" height="17"
-													title="Action description" alt="Action" /></a></td>
+													title="Set Admin Status: (+) given admin status (x) remove admin status" alt="Action" /></a></td>
+											<% }  %>
 										</tr>
+									<%
+										}
+									%>
 									</tbody>
 								</table>
 							</div>

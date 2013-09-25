@@ -2,6 +2,8 @@ package sql;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import helper.MyBoolean;
 import helper.Settings;
 import db.DBAccess;
 
@@ -39,11 +41,11 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingInfo(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
+    public boolean getMeetingInfo(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
         _sql = "SELECT meeting.* "
                 + "FROM meeting "
-                + "WHERE meeting.ms_id = " + ms_id + " "
-                + "AND meeting.m_id = " + m_id;
+                + "WHERE meeting.ms_id = '" + ms_id + "' "
+                + "AND meeting.m_id = '" + m_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -55,10 +57,10 @@ public class Meeting extends Sql {
      * @param result
      * @return
      */
-    public boolean getMeetingInfo(ArrayList<ArrayList<String>> result, int ms_id) {
+    public boolean getMeetingInfo(ArrayList<ArrayList<String>> result, String ms_id) {
         _sql = "SELECT meeting.* "
                 + "FROM meeting "
-                + "WHERE ms_id = " + ms_id;
+                + "WHERE ms_id = '" + ms_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -81,10 +83,10 @@ public class Meeting extends Sql {
      * @param ms_id
      * @return
      */
-    public boolean getMeetingScheduleInfo(ArrayList<ArrayList<String>> result, int ms_id) {
+    public boolean getMeetingScheduleInfo(ArrayList<ArrayList<String>> result, String ms_id) {
         _sql = "SELECT * "
                 + "FROM meeting_schedule "
-                + "WHERE ms_id = " + ms_id;
+                + "WHERE ms_id = '" + ms_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -95,13 +97,12 @@ public class Meeting extends Sql {
      * @param ms_id
      * @return
      */
-    public boolean getMeetingCreators(ArrayList<ArrayList<String>> result, int ms_id) {
+    public boolean getMeetingCreators(ArrayList<ArrayList<String>> result, String ms_id) {
         _sql = "SELECT bu_id "
                 + "FROM meeting_schedule "
-                + "WHERE ms_id = " + ms_id;
+                + "WHERE ms_id = '" + ms_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
-    
     
     /**
      * Fields:<p>
@@ -151,11 +152,11 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingDescription(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
+    public boolean getMeetingDescription(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
         _sql = "SELECT m_description "
                 + "FROM meeting "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -166,11 +167,11 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingInitialDatetime(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
+    public boolean getMeetingInitialDatetime(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
         _sql = "SELECT m_inidatetime "
                 + "FROM meeting "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -181,11 +182,11 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingDuration(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
+    public boolean getMeetingDuration(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
         _sql = "SELECT m_duration "
                 + "FROM meeting "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.queryDB(result, _sql);
     } 
     
@@ -196,11 +197,11 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getIsMeetingCancelled(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
+    public boolean getIsMeetingCancelled(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
         _sql = "SELECT m_iscancel "
                 + "FROM meeting "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -211,11 +212,11 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingModPass(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
+    public boolean getMeetingModPass(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
         _sql = "SELECT m_modpass "
                 + "FROM meeting "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -226,11 +227,11 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingUserPass(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
+    public boolean getMeetingUserPass(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
         _sql = "SELECT m_userpass "
                 + "FROM meeting "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -242,11 +243,11 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingPresentation(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
+    public boolean getMeetingPresentation(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
         _sql = "SELECT mp_title "
                 + "FROM meeting_presentation "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -259,7 +260,7 @@ public class Meeting extends Sql {
         _sql = "SELECT ma.*, bu.bu_nick "
                 + "FROM meeting_attendee ma "
                 + "JOIN bbb_user bu "
-                + "WHERE ma.bu_id = bu.bu_id";
+                + "ON ma.bu_id = bu.bu_id";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -269,12 +270,12 @@ public class Meeting extends Sql {
      * @param ms_id
      * @return
      */
-    public boolean getMeetingAttendee(ArrayList<ArrayList<String>> result, int ms_id) {
+    public boolean getMeetingAttendee(ArrayList<ArrayList<String>> result, String ms_id) {
         _sql = "SELECT ma.*, bu.bu_nick "
                 + "FROM meeting_attendee ma "
                 + "JOIN bbb_user bu "
-                + "WHERE ma.bu_id = bu.bu_id "
-                + "AND ma.ms_id = " + ms_id;
+                + "ON ma.bu_id = bu.bu_id "
+                + "WHERE ma.ms_id = '" + ms_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -285,28 +286,27 @@ public class Meeting extends Sql {
      * @param bu_id
      * @return
      */
-    public boolean getMeetingAttendee(ArrayList<ArrayList<String>> result, int ms_id, String bu_id) {
+    public boolean getMeetingAttendee(ArrayList<ArrayList<String>> result, String ms_id, String bu_id) {
         _sql = "SELECT ma.*, bu.bu_nick "
                 + "FROM meeting_attendee ma "
                 + "JOIN bbb_user bu "
                 + "WHERE ma.bu_id = bu.bu_id "
-                + "AND ma.ms_id = " + ms_id + " "
+                + "AND ma.ms_id = '" + ms_id + "' "
                 + "AND ma.bu_id = '" + bu_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
-    
     /**
      * (0)bu_id (1)ms_id (2)m_id (1)mac_isattend
      * @param result
      * @param ms_id
      * @return
      */
-    public boolean getMeetingAttendance(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
+    public boolean getMeetingAttendance(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
         _sql = "SELECT * "
                 + "FROM meeting_attendance "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -317,11 +317,11 @@ public class Meeting extends Sql {
      * @param bu_id
      * @return
      */
-    public boolean getMeetingAttendance(ArrayList<ArrayList<String>> result, int ms_id, int m_id, String bu_id) {
+    public boolean getMeetingAttendance(ArrayList<ArrayList<String>> result, String ms_id, String m_id, String bu_id) {
         _sql = "SELECT * "
                 + "FROM meeting_attendance "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id + " "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
@@ -333,11 +333,11 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingGuest(ArrayList<ArrayList<String>> result, int ms_id, int m_id) {
+    public boolean getMeetingGuest(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
         _sql = "SELECT bu_id, mg_ismod "
                 + "FROM meeting_guest "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -349,20 +349,20 @@ public class Meeting extends Sql {
      * @param bu_id
      * @return
      */
-    public boolean getMeetingGuest(ArrayList<ArrayList<String>> result, int ms_id, int m_id, String bu_id) {
+    public boolean getMeetingGuest(ArrayList<ArrayList<String>> result, String ms_id, String m_id, String bu_id) {
         _sql = "SELECT bu_id, mg_ismod "
                 + "FROM meeting_guest "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id + " "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
-    public boolean getMeetingSetting(HashMap<String, Integer> result, int ms_id, int m_id) {
+    public boolean getMeetingSetting(HashMap<String, Integer> result, String ms_id, String m_id) {
         _sql = "SELECT m_setting "
                 + "FROM meeting "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
         boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
@@ -377,16 +377,30 @@ public class Meeting extends Sql {
         return flag;
     }
     
-    public boolean defaultMeetingSetting(int ms_id, int m_id) {
+    public boolean isMeeting(MyBoolean bool, String ms_id, String m_id) {
+        _sql = "SELECT m_id "
+                + "FROM meeting "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
+                + "LIMIT 1";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean defaultMeetingSetting(String ms_id, String m_id) {
         _sql = "UPDATE meeting as a "
                 + "CROSS JOIN (SELECT key_value FROM bbb_admin WHERE key_name='default_meeting') as b "
                 + "SET a.m_setting = b.key_value "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.updateDB(_sql);   
     }
     
-    public boolean setMeetingSetting(HashMap<String, Integer> map, int ms_id, int m_id) {
+    public boolean setMeetingSetting(HashMap<String, Integer> map, String ms_id, String m_id) {
         int value;
         value = (map.get(Settings.meeting_setting[0]) << 6)
                 + (map.get(Settings.meeting_setting[1]) << 5)
@@ -395,53 +409,53 @@ public class Meeting extends Sql {
                 + (map.get(Settings.meeting_setting[4]));
         _sql = "UPDATE meeting "
                 + "SET m_setting = " + value + " "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean setMeetingDescription(int ms_id, int m_id, String m_description) {
+    public boolean setMeetingDescription(String ms_id, String m_id, String m_description) {
         _sql = "UPDATE meeting "
                 + "SET m_description = '" + m_description + "' "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.updateDB(_sql);
     }
       
-    public boolean setMeetingIsCancel(int ms_id, int m_id, boolean m_iscancel) {
+    public boolean setMeetingIsCancel(String ms_id, String m_id, boolean m_iscancel) {
         int flag = (m_iscancel == true) ? 1 : 0;
         _sql = "UPDATE meeting "
                 + "SET m_iscancel = " + flag + " "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id;
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean setMeetingAttendance(String bu_id, int ms_id, int m_id, boolean mac_isattend) {
+    public boolean setMeetingAttendance(String bu_id, String ms_id, String m_id, boolean mac_isattend) {
         int flag = (mac_isattend == true) ? 1 : 0;
         _sql = "UPDATE meeting_attendance "
                 + "SET mac_isattend = " + flag + " "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id + " "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean setMeetingGuestIsMod(String bu_id, int ms_id, int m_id, boolean mg_ismod) {
+    public boolean setMeetingGuestIsMod(String bu_id, String ms_id, String m_id, boolean mg_ismod) {
         int flag = (mg_ismod == true) ? 1 : 0;
         _sql = "UPDATE meeting_guest "
                 + "SET mg_ismod = " + flag + " "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id + " "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean setMeetingAttendeeIsMod(String bu_id, int ms_id, boolean ma_ismod) {
+    public boolean setMeetingAttendeeIsMod(String bu_id, String ms_id, boolean ma_ismod) {
         int flag = (ma_ismod == true) ? 1 : 0;
         _sql = "UPDATE meeting_attendee "
                 + "SET ma_ismod = " + flag + " "
-                + "WHERE ms_id = " + ms_id + " "
+                + "WHERE ms_id = '" + ms_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
@@ -457,12 +471,12 @@ public class Meeting extends Sql {
      * @param m_duration
      * @return
      */
-    public boolean updateMeetingDuration(int num, int ms_id, int m_id, int m_duration) {
+    public boolean updateMeetingDuration(int num, String ms_id, String m_id, String m_duration) {
         _sql = "CALL sp_update_m_duration("
-                + num + ", "
-                + ms_id + ", "
-                + m_id + ", "
-                + m_duration + ")";
+                + num + ", '"
+                + ms_id + "', '"
+                + m_id + "', '"
+                + m_duration + "')";
         return _dbAccess.updateDB(_sql);
     }
     
@@ -477,39 +491,39 @@ public class Meeting extends Sql {
      * @param time (format HH:MM:SS)
      * @return
      */
-    public boolean updateMeetingTime(int num, int ms_id, int m_id, String time) {
+    public boolean updateMeetingTime(int num, String ms_id, String m_id, String time) {
         _sql = "CALL sp_update_m_time("
-                + num + ", "
-                + ms_id + ", "
-                + m_id + ", '"
+                + num + ", '"
+                + ms_id + "', '"
+                + m_id + "', '"
                 + time + "')";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean createMeetingPresentation(String mp_title, int ms_id, int m_id) {
+    public boolean createMeetingPresentation(String mp_title, String ms_id, String m_id) {
         _sql = "INSERT INTO meeting_presentation VALUES ('"
-                + mp_title + "', " + ms_id + ", " + m_id + ")";
+                + mp_title + "', '" + ms_id + "', '" + m_id + "')";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean createMeetingAttendee(String bu_id, int ms_id, boolean ma_ismod) {
+    public boolean createMeetingAttendee(String bu_id, String ms_id, boolean ma_ismod) {
         int flag = (ma_ismod == true) ? 1 : 0;
         _sql = "INSERT INTO meeting_attendee VALUES ('"
-                + bu_id + "', " + ms_id + ", " + flag + ")";
+                + bu_id + "', '" + ms_id + "', " + flag + ")";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean createMeetingAttendance(String bu_id, int ms_id, int m_id, boolean mac_attend) {
+    public boolean createMeetingAttendance(String bu_id, String ms_id, String m_id, boolean mac_attend) {
         int flag = (mac_attend == true) ? 1 : 0;
         _sql = "INSERT INTO meeting_attendance VALUES ('"
-                + bu_id + "', " + ms_id + ", " + m_id + ", " + flag + ")";
+                + bu_id + "', '" + ms_id + "', '" + m_id + "', " + flag + ")";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean createMeetingGuest(String bu_id, int ms_id, int m_id, boolean mg_ismod) {
+    public boolean createMeetingGuest(String bu_id, String ms_id, String m_id, boolean mg_ismod) {
         int flag = (mg_ismod == true) ? 1 : 0;
         _sql = "INSERT INTO meeting_guest VALUES ('"
-                + bu_id + "', " + ms_id + ", " + m_id + ", " + flag + ")";
+                + bu_id + "', '" + ms_id + "', '" + m_id + "', " + flag + ")";
         return _dbAccess.updateDB(_sql);
     }
     
@@ -552,12 +566,12 @@ public class Meeting extends Sql {
      * @return
      */
     public boolean createMeetingSchedule(String ms_title, String ms_inidatetime, 
-            String ms_spec, int ms_duration, String m_description, String bu_id) {
+            String ms_spec, String ms_duration, String m_description, String bu_id) {
         _sql = "CALL sp_create_ms('"
                 + ms_title + "', '"
                 + ms_inidatetime + "', '"
-                + ms_spec + "', "
-                + ms_duration + ", '"
+                + ms_spec + "', '"
+                + ms_duration + "', '"
                 + m_description + "', '"
                 + bu_id + "')";
         return _dbAccess.updateDB(_sql);
@@ -599,43 +613,43 @@ public class Meeting extends Sql {
      * @param m_description
      * @return
      */
-    public boolean editMeetingSchedule(int ms_id, String ms_inidatetime, 
+    public boolean editMeetingSchedule(String ms_id, String ms_inidatetime, 
             String ms_spec, String m_description) {
-        _sql = "CALL sp_edit_ms("
-                + ms_id + ", '"
+        _sql = "CALL sp_edit_ms('"
+                + ms_id + "', '"
                 + ms_inidatetime + "', '"
                 + ms_spec + "', '"
                 + m_description + "')";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean removeMeetingAttendance(String bu_id, int ms_id, int m_id) {
+    public boolean removeMeetingAttendance(String bu_id, String ms_id, String m_id) {
         _sql = "DELETE FROM meeting_attendance "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id + " "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean removeMeetingAttendee(String bu_id, int ms_id) {
+    public boolean removeMeetingAttendee(String bu_id, String ms_id) {
         _sql = "DELETE FROM meeting_attendee "
-                + "WHERE ms_id = " + ms_id + " "
+                + "WHERE ms_id = '" + ms_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean removeMeetingGuest(String bu_id, int ms_id, int m_id) {
+    public boolean removeMeetingGuest(String bu_id, String ms_id, String m_id) {
         _sql = "DELETE FROM meeting_guest "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id + " "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean removeMeetingPresentation(String mp_title, int ms_id, int m_id) {
+    public boolean removeMeetingPresentation(String mp_title, String ms_id, String m_id) {
         _sql = "DELETE FROM meeting_presentation "
-                + "WHERE ms_id = " + ms_id + " "
-                + "AND m_id = " + m_id + " "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
                 + "AND mp_title = '" + mp_title + "'";
         return _dbAccess.updateDB(_sql);
     }
@@ -646,8 +660,8 @@ public class Meeting extends Sql {
      * @param ms_id
      * @return
      */
-    public boolean removeMeetingSchedule(int ms_id) {
-        _sql = "CALL sp_delete_ms(" + ms_id + ")";
+    public boolean removeMeetingSchedule(String ms_id) {
+        _sql = "CALL sp_delete_ms('" + ms_id + "')";
         return _dbAccess.updateDB(_sql);
     }
 }

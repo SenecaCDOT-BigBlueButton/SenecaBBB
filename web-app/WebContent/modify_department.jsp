@@ -1,7 +1,8 @@
 <%@page import="db.DBConnection"%>
 <%@page import="sql.User"%>
+<%@page import="sql.Department"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -19,8 +20,11 @@
 <script type="text/javascript" src="js/componentController.js"></script>
 
 <%
+	boolean validFlag; 
 	User user = new User(dbaccess);
-	MyBoolean isDeptAdmin = new MyBoolean();
+	Department dept = new Department(dbaccess);
+	MyBoolean myBool = new MyBoolean();
+	String message;
 	//Start page validation
 	String userId = usersession.getUserId();
 	if (userId.equals("")) {
@@ -33,26 +37,42 @@
 	    response.sendRedirect("departments.jsp?message=Please do not mess with the URL");
 	    return;
 	}
-	d_code = d_code.trim();
-	d_name = d_name.trim();
-	if (d_code.equals("") || d_name.equals("")) {
-	    response.sendRedirect("departments.jsp?message=Please do not mess with the URL");
+	d_code = Validation.prepare(d_code);
+	d_name = Validation.prepare(d_name);
+	validFlag = Validation.checkDeptCode(d_code) && Validation.checkDeptName(d_name);
+	if (!validFlag) {
+	    response.sendRedirect("departments.jsp?message=" + Validation.getErrMsg());
+	    return;
+	}
+	if (!dept.isDepartment(myBool, d_code)) {
+	    dept.resetErrorFlag();
+        message =  "Could not verify department status: " + d_code
+            + "<br />SQL Error Code: " + dept.getErrCode() 
+            + "<br />Error Submission Code : MD01"
+            + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+        response.sendRedirect("logout.jsp?message=" + message);
+	    return;   
+	}
+	if (!myBool.get_value()) {
+	    response.sendRedirect("departments.jsp?message=Department with that code does not exist");
 	    return;
 	}
 	if (!usersession.isSuper()) {
-	    user.isDepartmentAdmin(isDeptAdmin, usersession.getUserId(), d_code);
-	    if (!isDeptAdmin.get_value()) {
-	    	response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
-	    	return;
-	    }
-	}
+	    if (!user.isDepartmentAdmin(myBool, usersession.getUserId(), d_code)) {
+		    user.resetErrorFlag();
+	        message =  "Could not verify department admin status for: " + usersession.getUserId()
+	            + "<br />SQL Error Code: " + user.getErrCode() 
+	            + "<br />Error Submission Code : MD02"
+	            + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	        response.sendRedirect("logout.jsp?message=" + message);
+		    return;   
+		}
+	    if (!myBool.get_value()) {
+		    response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
+		    return;
+		}	
+	}	
 	//End page validation
-	
-	String message = request.getParameter("message");
-	if (message == null || message == "null") {
-		message="";
-	}
-	
 	
 %>
 </head>

@@ -1,10 +1,6 @@
-<%@page import="db.DBConnection"%>
-<%@page import="sql.User"%>
-<%@page import="sql.Meeting"%>
-<%@page import="sql.Lecture"%>
+<%@page import="sql.*"%>
 <%@page import="java.util.*"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -17,203 +13,160 @@
 <link rel="icon" href="http://www.cssreset.com/favicon.png">
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
+<link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <script type="text/javascript" src="js/componentController.js"></script>
 <%
-    //Start page val_idation
-    String userId = usersession.getUserId();
-    if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
-        return;
-    }
-    if (dbaccess.getFlagStatus() == false) {
-        response.sendRedirect("index.jsp?error=Database connection error");
-        return;
-    } //End page val_idation
-    
-    String message = request.getParameter("message");
-    if (message == null || message == "null") {
-        message="";
-    }
-
-    // When user click on specific event in calender.jsp page, m_id,ms_id, or l_id, ls_id will be passed through url
-    // in view_event.jsp, I simply get the parameters in order to access database
-    int m_id=0;
-    int ms_id=0;
-    int l_id=0;
-    int ls_id=0;
-    if(request.getParameter("m_id")!=null && request.getParameter("ms_id")!=null){
-	     m_id = Integer.parseInt(request.getParameter("m_id"));
-	     ms_id = Integer.parseInt(request.getParameter("ms_id"));
+	//Start page validation
+	String userId = usersession.getUserId();
+	if (userId.equals("")) {
+		response.sendRedirect("index.jsp?message=Please log in");
+		return;
 	}
-    if(request.getParameter("l_id")!=null && request.getParameter("ls_id")!=null){
-         l_id = Integer.parseInt(request.getParameter("l_id"));
-         ls_id = Integer.parseInt(request.getParameter("ls_id"));
-    }
-
-    Boolean isMeeting=false;
-    if (m_id != 0 && ms_id != 0){
-    	isMeeting = true;
-    }
-    
-    //  For testing purpose, will modify after get m_id, ms_id,l_id,and ls_id form calendar.jsp
-    //  if (isMeeting){
-    String meetingDescription="";
-    String meetingPresentation="";
-    String meetingDateTime="";
-    String meetingDuration="";
-    String meetingCreators="";
-    String meetingSchedule="";
-    String lectureDescription="";
-    String lecturePresentation="";
-    String lectureDateTime="";
-    String lectureDuration="";
-    String lectureSchedule="";
-    ArrayList<ArrayList<String>>  mAttendees= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  mCreator= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  mDescription= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  mDuriation= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  mInitialDateTime= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  mPresentation= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  mSchedule= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  lAttendance= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  lCreator= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  lDescription= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  lDuriation= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  lInitialDateTime= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  lPresentation= new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>>  lSchedule= new ArrayList<ArrayList<String> >();
-    ArrayList<String> meetingAttendees = new ArrayList<String>();
-    
-    Date currentTime = new Date();
-    SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");     
-    if (isMeeting){
-	    Meeting meeting = new Meeting(dbaccess);   
-	    meeting.getMeetingDescription(mDescription,ms_id,m_id);
-	    meeting.getMeetingPresentation(mPresentation,ms_id,m_id);
-	    meeting.getMeetingInitialDatetime(mInitialDateTime,ms_id,m_id);
-	    meeting.getMeetingDuration(mDuriation,ms_id,m_id);
-	    meeting.getMeetingAttendee(mAttendees,ms_id);
-	    meeting.getMeetingCreators(mCreator,ms_id);
-	    meeting.getMeetingScheduleInfo(mSchedule,ms_id);	    
-	    meetingDescription = mDescription.get(0).get(0);
-	    meetingPresentation = mPresentation.get(0).get(0);
-	    meetingDateTime = mInitialDateTime.get(0).get(0);
-	    meetingDuration = mDuriation.get(0).get(0);
-	    meetingCreators = mCreator.get(0).get(0);
-	    meetingAttendees = mAttendees.get(0); 
-	  //Compare event time with current time
-	    if (currentTime.after(df.parse(meetingDateTime))){
-	        System.out.println("Display meeting attendance and show a link to video record file");//ToDo
-	    }
-	    else{
-	    	System.out.println("display potential meeting attendees and guests");
-	    }
-    }
-	else {   
-        Lecture lecture = new Lecture(dbaccess);
-	    lecture.getLectureDescription(lDescription,ls_id,l_id);
-	    lecture.getLecturePresentation(lPresentation,ls_id,l_id);
-	    lecture.getLectureScheduleInfo(lSchedule,ls_id);
-	    lecture.getLectureInitialDatetime(lInitialDateTime,ls_id,l_id);
-	    lecture.getLectureDuration(lDuriation, ls_id,l_id);
-	    lecture.getLectureAttendance(lAttendance, ls_id,l_id);       
-	    lectureDescription = lDescription.get(0).get(0);
-	    lecturePresentation = lPresentation.get(0).get(0);
-	    lectureDateTime = lInitialDateTime.get(0).get(0);
-	    lectureDuration = lDuriation.get(0).get(0);
-	  //Compare event time with current time
-	    if (currentTime.after(df.parse(lectureDateTime))){
-	        System.out.println("Display lecture attendance and show a link to video record file");//ToDo
-        }
-       else{
-            System.out.println("display lecture potential students and guests");
-        }
+	String message = request.getParameter("message");
+	if (message == null || message == "null") {
+		message="";
 	}
-           
-
+	User user = new User(dbaccess);
+	Meeting meeting = new Meeting(dbaccess);
+	Lecture lecture = new Lecture(dbaccess);
+	boolean validFlag; 
+	MyBoolean myBool = new MyBoolean();
+	// Denotes the relationship between the session user and current event being viewed:
+	//	(1) the session user created this meeting
+	//  (2) the session user is scheduled to attend this meeting
+	//  (3) the session user is teaching or guest teaching this lecture
+	//  (4) the session user is a student in this lecture session
+	int status = 0;
+	String m_id = request.getParameter("m_id");
+	String ms_id = request.getParameter("ms_id");
+	String l_id = request.getParameter("l_id");
+	String ls_id = request.getParameter("ls_id");
+	if (!(m_id==null || ms_id==null)) {
+	    m_id = Validation.prepare(m_id);
+	    ms_id = Validation.prepare(ms_id);
+	    validFlag = Validation.checkMId(m_id) && Validation.checkMsId(ms_id);
+	    if (!validFlag) {
+			response.sendRedirect("calender.jsp?message=" + Validation.getErrMsg());
+			return;
+		}
+		if (!meeting.isMeeting(myBool, ms_id, m_id)) {
+			meeting.resetErrorFlag();
+		    message =  "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" 
+		    	+ "<br />SQL Error Code: " + meeting.getErrCode() 
+		        + "<br />Error Submission Code : VE01"
+		        + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+		    response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+		}
+		if (!myBool.get_value()) {
+			response.sendRedirect("calendar.jsp?message=Meeting ms_id: " + ms_id + ", m_id: " + m_id + ") not found");
+			return;
+		}
+		  
+	} else if (!(l_id==null || ls_id==null)) {
+	    
+	} else {
+	    response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
+		return;
+	}
+	
+	
+	
+	
 %>
-
+<script type="text/javascript">
+/* TABLE */
+$(screen).ready(function() {
+	/* DEPARTMENT LIST */
+	$('#departmentList').dataTable({"sPaginationType": "full_numbers"});
+	$('#departmentList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+	$.fn.dataTableExt.sErrMode = 'throw';
+	$('.dataTables_filter input').attr("placeholder", "Filter entries");
+});
+/* SELECT BOX */
+$(function(){
+	$('select').selectmenu();
+});
+</script>
 </head>
 <body>
 <div id="page">
-    <jsp:include page="header.jsp"/>
-    <jsp:include page="menu.jsp"/>
-    <section>
-        <header> 
-            <!-- BREADCRUMB -->
-            <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="#" tabindex="14">view event</a></p>
-            <!-- PAGE NAME -->
-            <h1>View Event</h1>
-            <!-- WARNING MESSAGES -->
-            <div class="warningMessage"><%=message %></div>
-        </header>
-      
-            <article>
-                <header>
-                <h2>Brief Information</h2>                               
-                </header>
-                <div>    
-                  <p>Event Type:<%= isMeeting? "Meeting" : "Lecture" %></p>
-                  <p>Event Title: <%= isMeeting? meetingDescription : lectureDescription %></p> 
-                  <p>Event Presentation:<%= isMeeting? meetingPresentation : lecturePresentation %></p>
-                  <p>Event Date:<%= isMeeting? meetingDateTime : lectureDateTime %></p>
-                </div>
-            </article>
-        <form>
-            <article>
-                <header>
-                    <h2>Schedule Information</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
-                </header>
-                <div class="content">
-                    <fieldset>                  
-                       <table border="1">
-                           <tr>                      
-                               <td><%= isMeeting? "Title" : "Course" %></td>
-                               <td><%= isMeeting? "Date&Time" : "Section" %></td>
-                               <td><%= isMeeting? "Spec" : "Semestor" %></td>
-                               <td><%= isMeeting? "Duration" : "Date&Time" %></td>
-                               <td><%= isMeeting? "Creator" : "Spec" %></td>
-                               <td><%= isMeeting? "Comment" : "Duration" %></td>
-                           </tr>
-                           <tr> 
-                               <td><%= isMeeting? mSchedule.get(0).get(1) : lSchedule.get(0).get(1) %></td>
-                               <td><%= isMeeting? mSchedule.get(0).get(2) : lSchedule.get(0).get(2) %></td>
-                               <td><%= isMeeting? mSchedule.get(0).get(3) : lSchedule.get(0).get(3) %></td>
-                               <td><%= isMeeting? mSchedule.get(0).get(4) : lSchedule.get(0).get(4) %></td>
-                               <td><%= isMeeting? mSchedule.get(0).get(5) : lSchedule.get(0).get(5) %></td>
-                               <td><%= isMeeting? "" : lSchedule.get(0).get(6) %></td>
-                          </tr>
-                       </table>
-                    </fieldset>
-                </div>
-            </article>
-        </form>
-        <form>
-            <article>
-                <header>
-                    <h2>Event Attendees</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
-                </header>
-                <div class="content">
-                    <fieldset>
-                        <%  if (isMeeting) {
-	                        	for (int i=0;i<meetingAttendees.size();i++){ %> 
-	                        	  <p><%= meetingAttendees.get(i) %></p> 
-	                        	<% } %>                  
-                        <% } else{ 
-                        	for (int i=0;i<lAttendance.size();i++){%> 
-                        	      <p><%= lAttendance.get(i).get(0) %> </p>
-                        	<% }} %> 
-                        
-                    </fieldset>                                                
-                </div>
-            </article>
-        </form>
-    </section>
-    <jsp:include page="footer.jsp"/>
+	<jsp:include page="header.jsp"/>
+	<jsp:include page="menu.jsp"/>
+	<section>
+		<header>
+			<p><a href="calendar.jsp" tabindex="13">home</a> » <a href="departments.jsp" tabindex="14">departments</a></p>
+			<h1>Departments</h1>
+			<div class="warningMessage"><%=message %></div>
+		</header>
+		<form action="persist_user_settings.jsp" method="get">
+			<article>
+				<header>
+					<h2>Department List</h2>
+					<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/></header>
+				<div class="content">
+					<fieldset>
+						<div id="tableAddAttendee" class="tableComponent">
+							<table id="departmentList" border="0" cellpadding="0" cellspacing="0">
+								<thead>
+									<tr>
+										<th width="65" class="firstColumn" tabindex="16" title="Code">Code<span></span></th>
+										<th title="Name">Name<span></span></th>
+										<th width="65" title="View users" class="icons" align="center">Users</th>
+										<th width="65" title="Modify" class="icons" align="center">Modify</th>
+										<% if (usersession.isSuper()) { %>
+										<th width="65" title="Remove" class="icons" align="center">Remove</th>
+										<% } %>
+									</tr>
+								</thead>
+								<tbody>
+								<%
+									for (int i=0; i<deptList.size(); i++) {
+								%>
+									<tr>
+										<td class="row"><%= deptList.get(i).get(0) %></td>
+										<td><%= deptList.get(i).get(1) %></td>
+										<td class="icons" align="center"><a href="department_users.jsp?department=<%= deptList.get(i).get(0) %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
+										<td class="icons" align="center"><a href="modify_department.jsp?mod_d_code=<%= deptList.get(i).get(0) %>&mod_d_name=<%= deptList.get(i).get(1) %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
+										<% if (usersession.isSuper()) { %>
+										<td class="icons" align="center"><a href="departments.jsp?deptRemove=<%= deptList.get(i).get(0) %>" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
+										<% } %>
+									</tr>
+								<%
+									}
+								%>
+								</tbody>
+							</table>
+						</div>
+					</fieldset>
+				</div>
+			</article>
+			<article>
+				<h4></h4>
+				<fieldset>
+				<% if (usersession.isSuper()) { %>
+					<div class="actionButtons">
+						<button type="button" name="button" id="addDepartment" class="button" title="Click here to add a new department" onclick="window.location.href='create_departments.jsp'">Add department</button>
+					</div>
+				<% } %>
+				</fieldset>
+			</article>
+		</form>
+	</section>
+	<jsp:include page="footer.jsp"/>
 </div>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package sql;
 
+import helper.MyBoolean;
+
 import java.util.ArrayList;
 import db.DBAccess;
 
@@ -70,6 +72,23 @@ public class Department extends Sql {
     
     /**
      * Fields:<p>
+     * (0)bu_id (1)d_code (2)ud_isadmin (3)bu_nick
+     * @param result
+     * @param bu_id
+     * @param d_code
+     * @return
+     */
+    public boolean getDepartmentUser(ArrayList<ArrayList<String>> result, String d_code) {
+        _sql = "SELECT ud.*, bu.bu_nick "
+                + "FROM user_department ud "
+                + "JOIN bbb_user bu "
+                + "ON ud.bu_id = bu.bu_id "
+                + "WHERE ud.d_code = '" + d_code + "'";
+        return _dbAccess.queryDB(result, _sql);   
+    }
+    
+    /**
+     * Fields:<p>
      * (0)bu_id (1)d_code (2)ud_isadmin
      * @param result
      * @param bu_id
@@ -82,6 +101,19 @@ public class Department extends Sql {
                 + "WHERE bu_id = '" + bu_id + "' "
                 + "AND d_code = '" + d_code + "'";
         return _dbAccess.queryDB(result, _sql);   
+    }
+    
+    public boolean isDepartment(MyBoolean bool, String d_code) {
+        _sql = "SELECT d_code "
+                + "FROM department "
+                + "WHERE d_code = '" + d_code + "' "
+                + "LIMIT 1";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
     }
     
     public boolean setDepartmentCode(String old_d_code, String new_d_code) {

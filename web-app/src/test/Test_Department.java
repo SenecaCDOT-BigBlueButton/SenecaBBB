@@ -21,6 +21,8 @@ public class Test_Department extends Test_Helper {
         
         display(_department.getDepartmentUser(_result));
         
+        display(_department.getDepartmentUser(_result, "ABC"));
+        
         display(_department.getDepartmentUser(_result, "bli64", "ICT"));
         
         display(_department.setDepartmentAdmin("xdeng7", "ICT", true));

@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seneca | Departments</title>
+<title>Seneca | View Event</title>
 <link rel="icon" href="http://www.cssreset.com/favicon.png">
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
@@ -36,10 +36,6 @@
 		response.sendRedirect("index.jsp?message=Please log in");
 		return;
 	}
-	if (!(usersession.isDepartmentAdmin() || usersession.isSuper())) {
-	    response.sendRedirect("calendar.jsp");
-	    return;
-	}
 	//End page validation
 	
 	String message = request.getParameter("message");
@@ -49,7 +45,7 @@
 	
 	User user = new User(dbaccess);
 	Department dept = new Department(dbaccess);
-	MyBoolean prof = new MyBoolean();
+	MyBoolean myBool = new MyBoolean();
 	
 	String deptCode = request.getParameter("DeptCode");
 	String deptName = request.getParameter("DeptName");
@@ -203,9 +199,8 @@ $(function(){
 									<tr>
 										<td class="row"><%= deptList.get(i).get(0) %></td>
 										<td><%= deptList.get(i).get(1) %></td>
-										<td class="icons" align="center"><a href="department_users.jsp?DeptCode=<%= deptList.get(i).get(0) %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
-										<% //The ampersand symbol that are in some department names needs to be escaped to %26 before merged into GET URL %>
-										<td class="icons" align="center"><a href="modify_department.jsp?mod_d_code=<%= deptList.get(i).get(0) %>&mod_d_name=<%= deptList.get(i).get(1).replace("&", "%26") %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
+										<td class="icons" align="center"><a href="department_users.jsp?department=<%= deptList.get(i).get(0) %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
+										<td class="icons" align="center"><a href="modify_department.jsp?mod_d_code=<%= deptList.get(i).get(0) %>&mod_d_name=<%= deptList.get(i).get(1) %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
 										<% if (usersession.isSuper()) { %>
 										<td class="icons" align="center"><a href="departments.jsp?deptRemove=<%= deptList.get(i).get(0) %>" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
 										<% } %>

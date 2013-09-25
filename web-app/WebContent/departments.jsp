@@ -49,7 +49,7 @@
 	
 	User user = new User(dbaccess);
 	Department dept = new Department(dbaccess);
-	MyBoolean prof = new MyBoolean();
+	MyBoolean myBool = new MyBoolean();
 	
 	String deptCode = request.getParameter("DeptCode");
 	String deptName = request.getParameter("DeptName");
@@ -59,11 +59,9 @@
 	String modDeptName = request.getParameter("NewDeptName");
 	
 	if (deptCode!=null && deptName!=null) {
-	    // TO-DO List: deptCodeCreate(String)
-	    //             deptNameCreate(String)
 	    deptCode = Validation.prepare(deptCode);
 		deptName = Validation.prepare(deptName);
-	    validFlag = Validation.deptCodeCreate(deptCode) && Validation.deptNameCreate(deptName);
+	    validFlag = Validation.checkDeptCode(deptCode) && Validation.checkDeptName(deptName);
 	    if (validFlag) {
 	        if (!dept.createDepartment(deptCode, deptName)) {
 	            dept.resetErrorFlag();
@@ -71,8 +69,7 @@
 	                + "<br />SQL Error Code: " + dept.getErrCode() 
                     + "<br />Error Submission Code : D01"
                     + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
-	        }
-	        else {
+	        } else {
 	            message = "Department " + deptCode + " created"; 
 	        }
 	    } else {
@@ -82,21 +79,31 @@
 	
 	if (deptRemove!=null && usersession.isSuper()) {
 	    deptRemove = Validation.prepare(deptRemove);
-	 	// TO-DO List: deptCodeRemove(String)
-	    validFlag = Validation.deptCodeRemove(deptRemove);
+	    validFlag = Validation.checkDeptCode(deptRemove);
 	    if (validFlag) {
-	    	if (!dept.removeDepartment(deptRemove)) {
-            	dept.resetErrorFlag();
-            	message =  "Could not remove department " + deptRemove
-                	+ "<br />SQL Error Code: " + dept.getErrCode() 
-                	+ "<br />Error Submission Code : D02"
-                	+ "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
-        	}
-        	else {
-            	message = "Department " + deptRemove + " was removed";
-        	}
-	    }
-	    else {
+	        if (!dept.isDepartment(myBool, deptRemove)) {
+	    	    dept.resetErrorFlag();
+	    	    message =  "Could not verify department status: " + deptRemove
+	    	        + "<br />SQL Error Code: " + dept.getErrCode() 
+	    	        + "<br />Error Submission Code : D02"
+	    	        + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	    	    response.sendRedirect("logout.jsp?message=" + message);
+	    	    return;   
+	    	}
+	    	if (!myBool.get_value()) {
+	    	    message = "Department with that code does not exist";
+	    	} else {
+	    		if (!dept.removeDepartment(deptRemove)) {
+            		dept.resetErrorFlag();
+            		message =  "Could not remove department " + deptRemove
+                		+ "<br />SQL Error Code: " + dept.getErrCode() 
+                		+ "<br />Error Submission Code : D03"
+                		+ "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+        		} else {
+            		message = "Department " + deptRemove + " was removed";
+        		}
+	    	}
+	    } else {
 	        message = Validation.getErrMsg();
 	    }
 	}
@@ -105,19 +112,15 @@
 	    modDeptCode = Validation.prepare(modDeptCode);
 		modDeptName = Validation.prepare(modDeptName);
 		oldDeptCode = Validation.prepare(oldDeptCode);
-		// TO-DO List: deptCodeMod(String)
-	    //             deptNameMod(String)
-	    //             deptCodeOldMod(String)
-	    validFlag = Validation.deptCodeMod(modDeptCode) && Validation.deptNameMod(modDeptName) && Validation.deptCodeOldMod(oldDeptCode);
+	    validFlag = Validation.checkDeptCode(modDeptCode) && Validation.checkDeptName(modDeptName) && Validation.checkDeptCode(oldDeptCode);
 	    if (validFlag) {
 	        if (!dept.setMultiDepartment(oldDeptCode, modDeptCode, modDeptName)) {
 	            dept.resetErrorFlag();
 	            message =  "Could not modify department " + oldDeptCode
 	                + "<br />SQL Error Code: " + dept.getErrCode() 
-                    + "<br />Error Submission Code : D03"
+                    + "<br />Error Submission Code : D04"
                     + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
-	        }
-	        else {
+	        } else {
 	            message = "Department " + oldDeptCode + " was modified"; 
 	        }
 	    } else {
@@ -131,7 +134,7 @@
             dept.resetErrorFlag();
             message =  "Could not get department list"
                 + "<br />SQL Error Code: " + dept.getErrCode() 
-                + "<br />Error Submission Code : D03"
+                + "<br />Error Submission Code : D05"
                 + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
             response.sendRedirect("logout.jsp?message=" + message);
             return;
@@ -142,14 +145,13 @@
             dept.resetErrorFlag();
             message =  "Could not get department list"
                 + "<br />SQL Error Code: " + dept.getErrCode() 
-                + "<br />Error Submission Code : D04"
+                + "<br />Error Submission Code : D06"
                 + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
             response.sendRedirect("logout.jsp?message=" + message);
             return;
         }
 	}
-	
-	
+		
 %>
 <script type="text/javascript">
 /* TABLE */
@@ -203,7 +205,7 @@ $(function(){
 									<tr>
 										<td class="row"><%= deptList.get(i).get(0) %></td>
 										<td><%= deptList.get(i).get(1) %></td>
-										<td class="icons" align="center"><a href="department_users.jsp?DeptCode=<%= deptList.get(i).get(0) %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
+										<td class="icons" align="center"><a href="department_users.jsp?DeptCode=<%= deptList.get(i).get(0) %>" class="view"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
 										<% //The ampersand symbol that are in some department names needs to be escaped to %26 before merged into GET URL %>
 										<td class="icons" align="center"><a href="modify_department.jsp?mod_d_code=<%= deptList.get(i).get(0) %>&mod_d_name=<%= deptList.get(i).get(1).replace("&", "%26") %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
 										<% if (usersession.isSuper()) { %>

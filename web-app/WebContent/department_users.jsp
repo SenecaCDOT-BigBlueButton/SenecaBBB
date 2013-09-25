@@ -32,7 +32,7 @@
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <script type="text/javascript" src="js/componentController.js"></script>
 <%
-		
+	boolean validFlag; 
 	User user = new User(dbaccess);
 	Department dept = new Department(dbaccess);
 	MyBoolean myBool = new MyBoolean();
@@ -50,8 +50,8 @@
 	    return;
 	}
 	d_code = Validation.prepare(d_code);
-	if (d_code.equals("")) {
-	    response.sendRedirect("departments.jsp?message=Please do not mess with the URL");
+	if (!Validation.checkDeptCode(d_code)) {
+	    response.sendRedirect("departments.jsp?message=" + Validation.getErrMsg());
 	    return;
 	}
 	if (!dept.isDepartment(myBool, d_code)) {
@@ -192,9 +192,9 @@
 											%>
 											<td><%= adminStatus %></td>
 											<% if (usersession.isSuper()) { %>
-											<td class="icons" align="center"><a href="#" class="add"><img
+											<td class="icons" align="center"><a href="#" class="<%= adminStatus = (adminStatus.equals("Yes")) ? "remove" : "add" %>"><img
 													src="images/iconPlaceholder.svg" width="17" height="17"
-													title="Action description" alt="Action" /></a></td>
+													title="Set Admin Status: (+) given admin status (x) remove admin status" alt="Action" /></a></td>
 											<% }  %>
 										</tr>
 									<%

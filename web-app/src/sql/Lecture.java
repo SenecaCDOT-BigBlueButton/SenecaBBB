@@ -1,5 +1,7 @@
 package sql;
 
+import helper.MyBoolean;
+
 import java.util.ArrayList;
 
 import db.DBAccess;
@@ -38,11 +40,11 @@ public class Lecture extends Sql {
      * @param l_id
      * @return
      */
-    public boolean getLectureInfo(ArrayList<ArrayList<String>> result, int ls_id, int l_id) {
+    public boolean getLectureInfo(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
         _sql = "SELECT lecture.* "
                 + "FROM lecture "
-                + "WHERE lecture.ls_id = " + ls_id + " "
-                + "AND lecture.l_id = " + l_id;
+                + "WHERE lecture.ls_id = '" + ls_id + "' "
+                + "AND lecture.l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
 
@@ -56,10 +58,10 @@ public class Lecture extends Sql {
      * @param l_id
      * @return
      */
-    public boolean getLectureInfo(ArrayList<ArrayList<String>> result, int ls_id) {
+    public boolean getLectureInfo(ArrayList<ArrayList<String>> result, String ls_id) {
         _sql = "SELECT lecture.* "
                 + "FROM lecture "
-                + "WHERE ls_id = " + ls_id;
+                + "WHERE ls_id = '" + ls_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
 
@@ -84,10 +86,10 @@ public class Lecture extends Sql {
      * @param ls_id
      * @return
      */
-    public boolean getLectureScheduleInfo(ArrayList<ArrayList<String>> result, int ls_id) {
+    public boolean getLectureScheduleInfo(ArrayList<ArrayList<String>> result, String ls_id) {
         _sql = "SELECT * "
                 + "FROM lecture_schedule "
-                + "WHERE ls_id = " + ls_id;
+                + "WHERE ls_id = '" + ls_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
 
@@ -98,11 +100,11 @@ public class Lecture extends Sql {
      * @param l_id
      * @return
      */
-    public boolean getLectureDescription(ArrayList<ArrayList<String>> result, int ls_id, int l_id) {
+    public boolean getLectureDescription(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
         _sql = "SELECT l_description "
                 + "FROM lecture "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id;
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
 
@@ -113,11 +115,11 @@ public class Lecture extends Sql {
      * @param l_id
      * @return
      */
-    public boolean getLectureInitialDatetime(ArrayList<ArrayList<String>> result, int ls_id, int l_id) {
+    public boolean getLectureInitialDatetime(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
         _sql = "SELECT l_inidatetime "
                 + "FROM lecture "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id;
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
 
@@ -128,11 +130,11 @@ public class Lecture extends Sql {
      * @param l_id
      * @return
      */
-    public boolean getLectureDuration(ArrayList<ArrayList<String>> result, int ls_id, int l_id) {
+    public boolean getLectureDuration(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
         _sql = "SELECT l_duration "
                 + "FROM lecture "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id;
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
     } 
 
@@ -143,11 +145,11 @@ public class Lecture extends Sql {
      * @param l_id
      * @return
      */
-    public boolean getIsLectureCancelled(ArrayList<ArrayList<String>> result, int ls_id, int l_id) {
+    public boolean getIsLectureCancelled(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
         _sql = "SELECT l_iscancel "
                 + "FROM lecture "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id;
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
 
@@ -158,11 +160,11 @@ public class Lecture extends Sql {
      * @param l_id
      * @return
      */
-    public boolean getLectureModPass(ArrayList<ArrayList<String>> result, int ls_id, int l_id) {
+    public boolean getLectureModPass(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
         _sql = "SELECT l_modpass "
                 + "FROM lecture "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id;
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
 
@@ -173,11 +175,11 @@ public class Lecture extends Sql {
      * @param l_id
      * @return
      */
-    public boolean getLectureUserPass(ArrayList<ArrayList<String>> result, int ls_id, int l_id) {
+    public boolean getLectureUserPass(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
         _sql = "SELECT l_userpass "
                 + "FROM lecture "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id;
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
 
@@ -189,11 +191,11 @@ public class Lecture extends Sql {
      * @param l_id
      * @return
      */
-    public boolean getLecturePresentation(ArrayList<ArrayList<String>> result, int ls_id, int l_id) {
+    public boolean getLecturePresentation(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
         _sql = "SELECT lp_title "
                 + "FROM lecture_presentation "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id;
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
 
@@ -203,11 +205,11 @@ public class Lecture extends Sql {
      * @param ls_id
      * @return
      */
-    public boolean getLectureAttendance(ArrayList<ArrayList<String>> result, int ls_id, int l_id) {
+    public boolean getLectureAttendance(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
         _sql = "SELECT bu_id, la_isattend "
                 + "FROM lecture_attendance "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id;
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
 
@@ -218,10 +220,10 @@ public class Lecture extends Sql {
      * @param bu_id
      * @return
      */
-    public boolean getLectureAttendance(ArrayList<ArrayList<String>> result, int ls_id, int l_id, String bu_id) {
+    public boolean getLectureAttendance(ArrayList<ArrayList<String>> result, String ls_id, String l_id, String bu_id) {
         _sql = "SELECT bu_id, la_isattend "
                 + "FROM lecture_attendance "
-                + "WHERE ls_id = " + ls_id + " "
+                + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = " + l_id + " "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.queryDB(result, _sql);
@@ -234,11 +236,11 @@ public class Lecture extends Sql {
      * @param l_id
      * @return
      */
-    public boolean getLectureGuest(ArrayList<ArrayList<String>> result, int ls_id, int l_id) {
+    public boolean getLectureGuest(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
         _sql = "SELECT bu_id, gl_ismod "
                 + "FROM guest_lecturer "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id;
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
 
@@ -285,53 +287,66 @@ public class Lecture extends Sql {
      * @param bu_id
      * @return
      */
-    public boolean getLectureGuest(ArrayList<ArrayList<String>> result, int ls_id, int l_id, String bu_id) {
+    public boolean getLectureGuest(ArrayList<ArrayList<String>> result, String ls_id, String l_id, String bu_id) {
         _sql = "SELECT bu_id, gl_ismod "
                 + "FROM guest_lecturer "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id + " "
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
+    
+    public boolean isLecture(MyBoolean bool, String ls_id, String l_id) {
+        _sql = "SELECT l_id "
+                + "FROM lecture "
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "' "
+                + "LIMIT 1";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
 
-    public boolean setLectureDescription(int ls_id, int l_id, String l_description) {
+    public boolean setLectureDescription(String ls_id, String l_id, String l_description) {
         _sql = "UPDATE lecture "
                 + "SET l_description = '" + l_description + "' "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id;
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "'";
         return _dbAccess.updateDB(_sql);
     }
 
-    public boolean setLectureIsCancel(int ls_id, int l_id, boolean l_iscancel) {
+    public boolean setLectureIsCancel(String ls_id, String l_id, boolean l_iscancel) {
         int flag = (l_iscancel == true) ? 1 : 0;
         _sql = "UPDATE lecture "
                 + "SET l_iscancel = " + flag + " "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id;
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "'";
         return _dbAccess.updateDB(_sql);
     }
 
-    public boolean setLectureAttendance(String bu_id, int ls_id, int l_id, boolean la_isattend) {
+    public boolean setLectureAttendance(String bu_id, String ls_id, String l_id, boolean la_isattend) {
         int flag = (la_isattend == true) ? 1 : 0;
         _sql = "UPDATE lecture_attendance "
                 + "SET la_isattend = " + flag + " "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id + " "
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
 
-    public boolean setLectureGuestIsMod(String bu_id, int ls_id, int l_id, boolean gl_ismod) {
+    public boolean setLectureGuestIsMod(String bu_id, String ls_id, String l_id, boolean gl_ismod) {
         int flag = (gl_ismod == true) ? 1 : 0;
         _sql = "UPDATE guest_lecturer "
                 + "SET gl_ismod = " + flag + " "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id + " "
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     
-
     /**
      * 
      * @param num (1, 2, 3)<p>
@@ -343,12 +358,12 @@ public class Lecture extends Sql {
      * @param l_duration
      * @return
      */
-    public boolean updateLectureDuration(int num, int ls_id, int l_id, int l_duration) {
+    public boolean updateLectureDuration(int num, String ls_id, String l_id, String l_duration) {
         _sql = "CALL sp_update_l_duration("
-                + num + ", "
-                + ls_id + ", "
-                + l_id + ", "
-                + l_duration + ")";
+                + num + ", '"
+                + ls_id + "', '"
+                + l_id + "', '"
+                + l_duration + "')";
         return _dbAccess.updateDB(_sql);
     }
 
@@ -363,32 +378,32 @@ public class Lecture extends Sql {
      * @param time (format HH:MM:SS)
      * @return
      */
-    public boolean updateLectureTime(int num, int ls_id, int l_id, String time) {
+    public boolean updateLectureTime(int num, String ls_id, String l_id, String time) {
         _sql = "CALL sp_update_l_time("
-                + num + ", "
-                + ls_id + ", "
-                + l_id + ", '"
+                + num + ", '"
+                + ls_id + "', '"
+                + l_id + "', '"
                 + time + "')";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean createLecturePresentation(String lp_title, int ls_id, int l_id) {
+    public boolean createLecturePresentation(String lp_title, String ls_id, String l_id) {
         _sql = "INSERT INTO lecture_presentation VALUES ('"
-                + lp_title + "', " + ls_id + ", " + l_id + ")";
+                + lp_title + "', '" + ls_id + "', '" + l_id + "')";
         return _dbAccess.updateDB(_sql);
     }
 
-    public boolean createLectureAttendance(String bu_id, int ls_id, int l_id, boolean la_isattend) {
+    public boolean createLectureAttendance(String bu_id, String ls_id, String l_id, boolean la_isattend) {
         int flag = (la_isattend == true) ? 1 : 0;
         _sql = "INSERT INTO lecture_attendance VALUES ('"
-                + bu_id + "', " + ls_id + ", " + l_id + ", " + flag + ")";
+                + bu_id + "', '" + ls_id + "', '" + l_id + "', " + flag + ")";
         return _dbAccess.updateDB(_sql);
     }
 
-    public boolean createLectureGuest(String bu_id, int ls_id, int l_id, boolean gl_ismod) {
+    public boolean createLectureGuest(String bu_id, String ls_id, String l_id, boolean gl_ismod) {
         int flag = (gl_ismod == true) ? 1 : 0;
         _sql = "INSERT INTO guest_lecturer VALUES ('"
-                + bu_id + "', " + ls_id + ", " + l_id + ", " + flag + ")";
+                + bu_id + "', '" + ls_id + "', '" + l_id + "', " + flag + ")";
         return _dbAccess.updateDB(_sql);
     }
     
@@ -430,14 +445,14 @@ public class Lecture extends Sql {
      * @return
      */
     public boolean createLectureSchedule(String c_id, String sc_id, String sc_semesterid, 
-            String ls_inidatetime, String ls_spec, int ls_duration, String l_description) {
+            String ls_inidatetime, String ls_spec, String ls_duration, String l_description) {
         _sql = "CALL sp_create_ls('"
                 + c_id + "', '"
                 + sc_id + "', '"
                 + sc_semesterid + "', '"
                 + ls_inidatetime + "', '"
-                + ls_spec + "', "
-                + ls_duration + ", '"
+                + ls_spec + "', '"
+                + ls_duration + "', '"
                 + l_description + "')";
         return _dbAccess.updateDB(_sql);
     }
@@ -478,36 +493,36 @@ public class Lecture extends Sql {
      * @param l_description
      * @return
      */
-    public boolean editLectureSchedule(int ls_id, String ls_inidatetime, 
+    public boolean editLectureSchedule(String ls_id, String ls_inidatetime, 
             String ls_spec, String l_description) {
-        _sql = "CALL sp_edit_ls("
-                + ls_id + ", '"
+        _sql = "CALL sp_edit_ls('"
+                + ls_id + "', '"
                 + ls_inidatetime + "', '"
                 + ls_spec + "', '"
                 + l_description + "')";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean removeLectureAttendance(String bu_id, int ls_id, int l_id) {
+    public boolean removeLectureAttendance(String bu_id, String ls_id, String l_id) {
         _sql = "DELETE FROM lecture_attendance "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id + " "
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean removeLectureGuest(String bu_id, int ls_id, int l_id) {
+    public boolean removeLectureGuest(String bu_id, String ls_id, String l_id) {
         _sql = "DELETE FROM guest_lecturer "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id + " "
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     
-    public boolean removeLecturePresentation(String lp_title, int ls_id, int l_id) {
+    public boolean removeLecturePresentation(String lp_title, String ls_id, String l_id) {
         _sql = "DELETE FROM lecture_presentation "
-                + "WHERE ls_id = " + ls_id + " "
-                + "AND l_id = " + l_id + " "
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "' "
                 + "AND lp_title = '" + lp_title + "'";
         return _dbAccess.updateDB(_sql);
     }
@@ -518,8 +533,8 @@ public class Lecture extends Sql {
      * @param ls_id
      * @return
      */
-    public boolean removeMeetingSchedule(int ls_id) {
-        _sql = "CALL sp_delete_ls(" + ls_id + ")";
+    public boolean removeMeetingSchedule(String ls_id) {
+        _sql = "CALL sp_delete_ls('" + ls_id + "')";
         return _dbAccess.updateDB(_sql);
     }
 }

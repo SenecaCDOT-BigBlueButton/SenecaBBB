@@ -20,6 +20,7 @@
 <script type="text/javascript" src="js/componentController.js"></script>
 
 <%
+	boolean validFlag; 
 	User user = new User(dbaccess);
 	Department dept = new Department(dbaccess);
 	MyBoolean myBool = new MyBoolean();
@@ -38,8 +39,9 @@
 	}
 	d_code = Validation.prepare(d_code);
 	d_name = Validation.prepare(d_name);
-	if (d_code.equals("") || d_name.equals("")) {
-	    response.sendRedirect("departments.jsp?message=Please do not mess with the URL");
+	validFlag = Validation.checkDeptCode(d_code) && Validation.checkDeptName(d_name);
+	if (!validFlag) {
+	    response.sendRedirect("departments.jsp?message=" + Validation.getErrMsg());
 	    return;
 	}
 	if (!dept.isDepartment(myBool, d_code)) {

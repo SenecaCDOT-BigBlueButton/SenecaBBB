@@ -39,5 +39,13 @@ public class Test_Department extends Test_Helper {
         
         display(_department.removeDepartmentUser("non_ldap1", "IAT"));
         
+        try
+        {
+            System.out.println(Integer.parseInt("2323sss"));
+        }
+        catch (NumberFormatException e)
+        {
+            System.out.println("sdsd");
+        }
     }
 }

@@ -52,6 +52,8 @@
 	userSettings = usersession.getUserSettingsMask();
 	meetingSettings = usersession.getUserMeetingSettingsMask();
 	roleMask = usersession.getRoleMask();
+	System.out.println(userSettings);
+	System.out.println(roleMask);
 %>
 
 <script type="text/javascript">
@@ -79,103 +81,104 @@
 	    xmlhttp.open("GET","search.jsp?userName=" + userName,true);
 	    xmlhttp.send();
 	}
-$(document).ready(function() {
-	<%if (meetingSettings.get("isPrivateChatEnabled")==0){%>
-		$(".checkbox .box:eq(0)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(0)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
-	<%}%>	
-	<%if (meetingSettings.get("isViewerWebcamEnabled")==0){%>
-		$(".checkbox .box:eq(1)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(1)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
-	<%}%>	
-	<%if (meetingSettings.get("isMultiWhiteboard")==0){%>
-		$(".checkbox .box:eq(2)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(2)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
-	<%}%>	
-	<%if (meetingSettings.get("isRecorded")==0){%>
-		$(".checkbox .box:eq(3)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(3)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(3)").siblings().last().prop("checked", false);
-	<%}%>
-});
+	$(document).ready(function() {
+		<%if (meetingSettings.get("isPrivateChatEnabled")==0){%>
+			$(".checkbox .box:eq(0)").next(".checkmark").toggle();
+			$(".checkbox .box:eq(0)").attr("aria-checked", "false");
+			$(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
+		<%}%>	
+		<%if (meetingSettings.get("isViewerWebcamEnabled")==0){%>
+			$(".checkbox .box:eq(1)").next(".checkmark").toggle();
+			$(".checkbox .box:eq(1)").attr("aria-checked", "false");
+			$(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
+		<%}%>	
+		<%if (meetingSettings.get("isMultiWhiteboard")==0){%>
+			$(".checkbox .box:eq(2)").next(".checkmark").toggle();
+			$(".checkbox .box:eq(2)").attr("aria-checked", "false");
+			$(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
+		<%}%>	
+		<%if (meetingSettings.get("isRecorded")==0){%>
+			$(".checkbox .box:eq(3)").next(".checkmark").toggle();
+			$(".checkbox .box:eq(3)").attr("aria-checked", "false");
+			$(".checkbox .box:eq(3)").siblings().last().prop("checked", false);
+		<%}%>
+	});
 
-//Table
-$(screen).ready(function() {
-	/* ATTENDEES LIST */
-	$('#addAttendee').dataTable({
-		"bPaginate": false,
-        "bLengthChange": false,
-        "bFilter": false,
-        "bSort": true,
-        "bInfo": false,
-        "bAutoWidth": false});
-	$('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-	$.fn.dataTableExt.sErrMode = 'throw';
-	$('.dataTables_filter input').attr("placeholder", "Filter entries");
+	//Table
+	$(screen).ready(function() {
+		/* ATTENDEES LIST */
+		$('#addAttendee').dataTable({
+			"bPaginate": false,
+	        "bLengthChange": false,
+	        "bFilter": false,
+	        "bSort": true,
+	        "bInfo": false,
+	        "bAutoWidth": false});
+		$('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+		$.fn.dataTableExt.sErrMode = 'throw';
+		$('.dataTables_filter input').attr("placeholder", "Filter entries");
+			
+		/* ATTENDEES LIST */	
+		$('#attendeesList').dataTable({"sPaginationType": "full_numbers"});
+		$('#attendeesList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+		$.fn.dataTableExt.sErrMode = 'throw';
+		$('.dataTables_filter input').attr("placeholder", "Filter entries");
+	});
+	//Date picker
+	$(function(){
+		var month = new Array(12);
+		month[0]="January";
+		month[1]="February";
+		month[2]="March";
+		month[3]="April";
+		month[4]="May";
+		month[5]="June";
+		month[6]="July";
+		month[7]="August";
+		month[8]="September";
+		month[9]="October";
+		month[10]="November";
+		month[11]="December";
 		
-	/* ATTENDEES LIST */	
-	$('#attendeesList').dataTable({"sPaginationType": "full_numbers"});
-	$('#attendeesList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-	$.fn.dataTableExt.sErrMode = 'throw';
-	$('.dataTables_filter input').attr("placeholder", "Filter entries");
-});
-//Date picker
-$(function(){
-	var month = new Array(12);
-	month[0]="January";
-	month[1]="February";
-	month[2]="March";
-	month[3]="April";
-	month[4]="May";
-	month[5]="June";
-	month[6]="July";
-	month[7]="August";
-	month[8]="September";
-	month[9]="October";
-	month[10]="November";
-	month[11]="December";
-	
-	var datePickerStarts = {
-		showOn: "button",
-		buttonText:"",
-		minDate: 0,
-		maxDate: "+1Y",
-		onSelect:function(dateText){
-			var startDate = new Date(dateText);
-			$("#dropdownDayStarts").val(startDate.getUTCDate());
-			$("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
-			$("#dropdownYearStarts").val(startDate.getUTCFullYear());
-			$("#dropdownDayStarts").selectmenu({'refresh': true});
-			$("#dropdownMonthStarts").selectmenu({'refresh': true});
-			$("#dropdownYearStarts").selectmenu({'refresh': true});
-		}
-	};
-	var datePickerEnds = {
-		showOn: "button",
-		buttonText:"",
-		minDate: 0,
-		maxDate: "+1Y",
-		onSelect:function(dateText){
-			var endDate = new Date(dateText);
-			$("#dropdownDayEnds").val(endDate.getUTCDate());
-			$("#dropdownMonthEnds").val(month[endDate.getUTCMonth()]);
-			$("#dropdownYearEnds").val(endDate.getUTCFullYear());
-			$("#dropdownDayEnds").selectmenu({'refresh': true});
-			$("#dropdownMonthEnds").selectmenu({'refresh': true});
-			$("#dropdownYearEnds").selectmenu({'refresh': true});
-		}
-	};
-	$("#datePickerStarts").datepicker(datePickerStarts);
-	$("#datePickerEnds").datepicker(datePickerEnds);
-});
-//Select boxes
-$(function(){
-	$('select').selectmenu();
-});
+		var datePickerStarts = {
+			showOn: "button",
+			buttonText:"",
+			minDate: 0,
+			maxDate: "+1Y",
+			onSelect:function(dateText){
+				var startDate = new Date(dateText);
+				$("#dropdownDayStarts").val(startDate.getUTCDate());
+				$("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
+				$("#dropdownYearStarts").val(startDate.getUTCFullYear());
+				$("#dropdownDayStarts").selectmenu({'refresh': true});
+				$("#dropdownMonthStarts").selectmenu({'refresh': true});
+				$("#dropdownYearStarts").selectmenu({'refresh': true});
+			}
+		};
+		var datePickerEnds = {
+			showOn: "button",
+			buttonText:"",
+			minDate: 0,
+			maxDate: "+1Y",
+			onSelect:function(dateText){
+				var endDate = new Date(dateText);
+				$("#dropdownDayEnds").val(endDate.getUTCDate());
+				$("#dropdownMonthEnds").val(month[endDate.getUTCMonth()]);
+				$("#dropdownYearEnds").val(endDate.getUTCFullYear());
+				$("#dropdownDayEnds").selectmenu({'refresh': true});
+				$("#dropdownMonthEnds").selectmenu({'refresh': true});
+				$("#dropdownYearEnds").selectmenu({'refresh': true});
+			}
+		};
+		$("#datePickerStarts").datepicker(datePickerStarts);
+		$("#datePickerEnds").datepicker(datePickerEnds);
+	});
+	//Select boxes
+	$(function(){
+		$('select').selectmenu();
+	});
 </script>
+
 <body>
 <div id="page">
   <jsp:include page="header.jsp"/>

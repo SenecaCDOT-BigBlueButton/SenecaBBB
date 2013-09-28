@@ -42,6 +42,7 @@
 	User user = new User(dbaccess);
 	Meeting meeting = new Meeting(dbaccess);
 	Lecture lecture = new Lecture(dbaccess);
+	Section section = new Section(dbaccess);
 	boolean validFlag; 
 	MyBoolean myBool = new MyBoolean();
 	// Denotes the relationship between the session user and current event being viewed:
@@ -59,46 +60,207 @@
 	    ms_id = Validation.prepare(ms_id);
 	    validFlag = Validation.checkMId(m_id) && Validation.checkMsId(ms_id);
 	    if (!validFlag) {
-			response.sendRedirect("calender.jsp?message=" + Validation.getErrMsg());
+			response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
 			return;
 		}
-		if (!meeting.isMeeting(myBool, ms_id, m_id)) {
-			meeting.resetErrorFlag();
-		    message =  "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" 
-		    	+ "<br />SQL Error Code: " + meeting.getErrCode() 
-		        + "<br />Error Submission Code : VE01"
-		        + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+		if (!user.isMeetingCreator(myBool, ms_id, userId)) {
+		    message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE01");
 		    response.sendRedirect("logout.jsp?message=" + message);
 			return;   
 		}
-		if (!myBool.get_value()) {
-			response.sendRedirect("calendar.jsp?message=Meeting ms_id: " + ms_id + ", m_id: " + m_id + ") not found");
+		if (myBool.get_value()) {
+			status = 1;
+		}
+		if (status == 0) {
+		    if (!user.isMeetingAttendee(myBool, ms_id, m_id, userId)) {
+		        message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE02");
+			    response.sendRedirect("logout.jsp?message=" + message);
+				return;   
+			}
+			if (myBool.get_value()) {
+				status = 2;
+			}
+		}
+		if (status==0) {
+			response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
 			return;
 		}
-		  
 	} else if (!(l_id==null || ls_id==null)) {
-	    
+	    l_id = Validation.prepare(l_id);
+	    ls_id = Validation.prepare(ls_id);
+	    validFlag = Validation.checkLId(l_id) && Validation.checkLsId(ls_id);
+	    if (!validFlag) {
+			response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
+			return;
+		}
+		if (!user.isTeaching(myBool, ls_id, userId)) {
+		    message = "Could not verify meeting status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE03");
+		    response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+		}
+		if (myBool.get_value()) {
+			status = 3;
+		}
+		if (status == 0) {
+		    if (!user.isGuestTeaching(myBool, ls_id, l_id, userId)) {
+		        message =  "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE04");
+			    response.sendRedirect("logout.jsp?message=" + message);
+				return;   
+			}
+			if (myBool.get_value()) {
+				status = 4;
+			}
+		}
+		if (status == 0) {
+		    if (!user.isStudent(myBool, ls_id, l_id, userId)) {
+			    message =  "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE05");
+			    response.sendRedirect("logout.jsp?message=" + message);
+				return;   
+			}
+			if (myBool.get_value()) {
+				status = 5;
+			}
+		}
+		if (status==0) {
+			response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
+			return;
+		}
 	} else {
 	    response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
 		return;
 	}
+	// End page validation
 	
 	
-	
-	
+	ArrayList<ArrayList<String>> eventResult = new ArrayList<ArrayList<String>>();
+	ArrayList<ArrayList<String>> eventSResult = new ArrayList<ArrayList<String>>();
+	ArrayList<ArrayList<String>> eventAttendee = new ArrayList<ArrayList<String>>();
+	ArrayList<ArrayList<String>> eventGuest = new ArrayList<ArrayList<String>>();
+	ArrayList<ArrayList<String>> eventAttendance = new ArrayList<ArrayList<String>>();
+	String type = "";
+	if (status == 1) {
+	    if (!meeting.getMeetingInfo(eventResult, ms_id, m_id)) {
+	        message = meeting.getErrMsg("VE05");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!meeting.getMeetingScheduleInfo(eventSResult, ms_id)) {
+	        message = meeting.getErrMsg("VE06");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!meeting.getMeetingAttendee(eventAttendee, ms_id)) {
+	        message = meeting.getErrMsg("VE07");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!meeting.getMeetingGuest(eventGuest, ms_id, m_id)) {
+	        message = meeting.getErrMsg("VE07");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!meeting.getMeetingAttendance(eventAttendance, ms_id, m_id)) {
+	        message = meeting.getErrMsg("VE08");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+		type = "Meeting (C)";
+	} else if (status == 2) {
+	    if (!meeting.getMeetingInfo(eventResult, ms_id, m_id)) {
+	        message = meeting.getErrMsg("VE09");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!meeting.getMeetingScheduleInfo(eventSResult, ms_id)) {
+	        message = meeting.getErrMsg("VE10");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    type = "Meeting (A)";
+	} else if (status == 3) {
+	    if (!lecture.getLectureInfo(eventResult, ls_id, l_id)) {
+	        message = meeting.getErrMsg("VE11");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!lecture.getLectureScheduleInfo(eventSResult, ls_id)) {
+	        message = meeting.getErrMsg("VE12");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!section.getStudent(eventAttendee, ls_id)) {
+	        message = meeting.getErrMsg("VE13");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!lecture.getLectureGuest(eventGuest, ls_id, l_id)) {
+	        message = meeting.getErrMsg("VE14");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!lecture.getLectureAttendance(eventAttendance, ls_id, l_id)) {
+	        message = meeting.getErrMsg("VE15");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    type = "Lecture (T)";
+	} else if (status == 4) {
+	    if (!lecture.getLectureInfo(eventResult, ls_id, l_id)) {
+	        message = meeting.getErrMsg("VE16");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!lecture.getLectureScheduleInfo(eventSResult, ls_id)) {
+	        message = meeting.getErrMsg("VE17");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!section.getStudent(eventAttendee, ls_id)) {
+	        message = meeting.getErrMsg("VE18");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!lecture.getLectureAttendance(eventAttendance, ls_id, l_id)) {
+	        message = meeting.getErrMsg("VE19");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    type = "Lecture (G)";
+	} else if (status == 5) {
+	    if (!lecture.getLectureInfo(eventResult, ls_id, l_id)) {
+	        message = meeting.getErrMsg("VE20");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!lecture.getLectureScheduleInfo(eventSResult, ls_id)) {
+	        message = meeting.getErrMsg("VE21");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    type = "Lecture (S)";
+	}
+	String isCancel = (eventResult.get(0).get(4).equals("1")) ? "Yes" : "";
+	int i = 0;		                        
 %>
 <script type="text/javascript">
 /* TABLE */
 $(screen).ready(function() {
-	/* DEPARTMENT LIST */
-	$('#departmentList').dataTable({"sPaginationType": "full_numbers"});
-	$('#departmentList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+	/* CURRENT EVENT */
+	//$('#currentEvent').dataTable({"sPaginationType": "full_numbers"});
+	//$('#currentEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
 	$.fn.dataTableExt.sErrMode = 'throw';
 	$('.dataTables_filter input').attr("placeholder", "Filter entries");
 });
 /* SELECT BOX */
 $(function(){
 	$('select').selectmenu();
+});
+$(document).ready(function() {
+	//Hide some tables on load
+	$('#legendExpand').click();
+	$('#expandAttendee').click();
+	$('#expandGuest').click();
+	$('#expandAttendance').click();
 });
 </script>
 </head>
@@ -108,46 +270,42 @@ $(function(){
 	<jsp:include page="menu.jsp"/>
 	<section>
 		<header>
-			<p><a href="calendar.jsp" tabindex="13">home</a> » <a href="departments.jsp" tabindex="14">departments</a></p>
-			<h1>Departments</h1>
+			<p><a href="calendar.jsp" tabindex="13">home</a> » <a href="view_event.jsp" tabindex="14">viewEvent</a></p>
+			<h1>Current Event</h1>
 			<div class="warningMessage"><%=message %></div>
 		</header>
 		<form action="persist_user_settings.jsp" method="get">
 			<article>
 				<header>
-					<h2>Department List</h2>
-					<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/></header>
+					<h2>Current Event</h2>
+				</header>
 				<div class="content">
 					<fieldset>
-						<div id="tableAddAttendee" class="tableComponent">
-							<table id="departmentList" border="0" cellpadding="0" cellspacing="0">
+						<div id="currentEventDiv" class="tableComponent">
+							<table id="currentEvent" border="0" cellpadding="0" cellspacing="0">
 								<thead>
 									<tr>
-										<th width="65" class="firstColumn" tabindex="16" title="Code">Code<span></span></th>
-										<th title="Name">Name<span></span></th>
-										<th width="65" title="View users" class="icons" align="center">Users</th>
+										<th width="80" class="firstColumn" tabindex="16" title="Type">Type<span></span></th>
+										<th width="135" title="StartingTime">Starting Time<span></span></th>
+										<th width="100" title="duration">Duration (Min)<span></span></th>
+										<th width="130" title="isCancel">Event Cancelled<span></span></th>
+										<th title="description">Description<span></span></th>
+										<% if (status==1 || status==3 || status==4) { %>
 										<th width="65" title="Modify" class="icons" align="center">Modify</th>
-										<% if (usersession.isSuper()) { %>
-										<th width="65" title="Remove" class="icons" align="center">Remove</th>
 										<% } %>
 									</tr>
 								</thead>
 								<tbody>
-								<%
-									for (int i=0; i<deptList.size(); i++) {
-								%>
 									<tr>
-										<td class="row"><%= deptList.get(i).get(0) %></td>
-										<td><%= deptList.get(i).get(1) %></td>
-										<td class="icons" align="center"><a href="department_users.jsp?department=<%= deptList.get(i).get(0) %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
-										<td class="icons" align="center"><a href="modify_department.jsp?mod_d_code=<%= deptList.get(i).get(0) %>&mod_d_name=<%= deptList.get(i).get(1) %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
-										<% if (usersession.isSuper()) { %>
-										<td class="icons" align="center"><a href="departments.jsp?deptRemove=<%= deptList.get(i).get(0) %>" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
+										<td class="row"><%= type %></td>
+										<td><%= eventResult.get(0).get(2) %></td>
+										<td><%= eventResult.get(0).get(3) %></td>
+										<td><%= isCancel %></td>
+										<td><%= eventResult.get(0).get(5) %></td>
+										<% if (status==1 || status==3 || status==4) { %>
+										<td class="icons" align="center"><a href="" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
 										<% } %>
 									</tr>
-								<%
-									}
-								%>
 								</tbody>
 							</table>
 						</div>
@@ -155,14 +313,248 @@ $(function(){
 				</div>
 			</article>
 			<article>
-				<h4></h4>
-				<fieldset>
-				<% if (usersession.isSuper()) { %>
-					<div class="actionButtons">
-						<button type="button" name="button" id="addDepartment" class="button" title="Click here to add a new department" onclick="window.location.href='create_departments.jsp'">Add department</button>
-					</div>
+				<header>
+					<h2>Event Schedule</h2>
+					<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+				</header>
+				<div class="content">
+					<fieldset>
+						<div id="currentEventDiv" class="tableComponent">
+							<table id="currentEvent" border="0" cellpadding="0" cellspacing="0">
+								<thead>
+									<tr>
+									<% if (status==1 || status==2) { %>
+										<th class="firstColumn" tabindex="16">Title<span></span></th>
+										<th>Starting Time<span></span></th>
+										<th>Duration (Min)<span></span></th>
+										<th>Creator<span></span></th>
+									<% } else { %>
+										<th class="firstColumn" tabindex="16">Course<span></span></th>
+										<th>Section<span></span></th>
+										<th>Semester<span></span></th>
+										<th>Starting Time<span></span></th>
+										<th>Duration<span></span></th>
+									<% } %>
+									<% if (status==1 || status==3) { %>		
+										<th width="65" title="Modify" class="icons" align="center">Modify</th>
+									<% } %>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									<% if (status==1 || status==2) { %>
+										<td class="row"><%= eventSResult.get(0).get(1) %></td>
+										<td><%= eventSResult.get(0).get(2) %></td>
+										<td><%= eventSResult.get(0).get(4) %></td>
+										<td><%= eventSResult.get(0).get(5) %></td>
+									<% } else { %>
+										<td class="row"><%= eventSResult.get(0).get(1) %></td>
+										<td><%= eventSResult.get(0).get(2) %></td>
+										<td><%= eventSResult.get(0).get(3) %></td>
+										<td><%= eventSResult.get(0).get(4) %></td>
+										<td><%= eventSResult.get(0).get(6) %></td>
+									<% } %>
+									<% if (status==1 || status==3) { %>
+										<td class="icons" align="center"><a href="" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
+									<% } %>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</fieldset>
+				</div>
+			</article>
+			<% if (status==1 || status==3 || status==4) { %>
+			<article>
+				<header id="expandAttendee">
+				<% if (status==1) { %>
+					<h2>Meeting Attendee List</h2>
+				<% } else { %>
+					<h2>Student List</h2>
 				<% } %>
-				</fieldset>
+					<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+				</header>
+				<div class="content">
+					<fieldset>
+						<div id="currentEventDiv" class="tableComponent">
+							<table id="currentEvent" border="0" cellpadding="0" cellspacing="0">
+								<thead>
+									<tr>
+										<th class="firstColumn" tabindex="16">Id<span></span></th>
+										<th>Nick Name<span></span></th>
+										<th><%= (status==1) ? "Moderator" : "Banned" %><span></span></th>
+									</tr>
+								</thead>
+								<tbody>
+								<% for (i=0; i<eventAttendee.size(); i++) { %>
+									<tr>
+									<% if (status==1) { %>
+										<td class="row"><%= eventAttendee.get(i).get(0) %></td>
+										<td><%= eventAttendee.get(i).get(3) %></td>
+										<td><%= eventAttendee.get(i).get(2).equals("1") ? "Yes" : "" %></td>
+									<% } else { %>
+										<td class="row"><%= eventAttendee.get(i).get(0) %></td>
+										<td><%= eventAttendee.get(i).get(5) %></td>
+										<td><%= eventAttendee.get(i).get(4).equals("1") ? "Yes" : "" %></td>
+									<% } %>
+									</tr>
+								<% } %>
+								</tbody>
+							</table>
+						</div>
+					</fieldset>
+				</div>
+			</article>
+			<% } %>
+			<% if (status==1 || status==3) { %>
+			<article>
+				<header id="expandGuest">
+					<h2>Guest List</h2>
+					<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+				</header>
+				<div class="content">
+					<fieldset>
+						<div id="currentEventDiv" class="tableComponent">
+							<table id="currentEvent" border="0" cellpadding="0" cellspacing="0">
+								<thead>
+									<tr>
+									<% if (status==1 || status==2) { %>
+										<th class="firstColumn" tabindex="16">Title<span></span></th>
+										<th>Starting Time<span></span></th>
+										<th>Duration (Minute)<span></span></th>
+										<th>Creator<span></span></th>
+									<% } else { %>
+										<th class="firstColumn" tabindex="16">Course<span></span></th>
+										<th>Section<span></span></th>
+										<th>Semester<span></span></th>
+										<th>Starting Time<span></span></th>
+										<th>Duration<span></span></th>
+									<% } %>
+									<% if (status==1 || status==3) { %>		
+										<th width="65" title="Modify" class="icons" align="center">Modify</th>
+									<% } %>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									<% if (status==1 || status==2) { %>
+										<td class="row"><%= eventSResult.get(0).get(1) %></td>
+										<td><%= eventSResult.get(0).get(2) %></td>
+										<td><%= eventSResult.get(0).get(4) %></td>
+										<td><%= eventSResult.get(0).get(5) %></td>
+									<% } else { %>
+										<td class="row"><%= eventSResult.get(0).get(1) %></td>
+										<td><%= eventSResult.get(0).get(2) %></td>
+										<td><%= eventSResult.get(0).get(3) %></td>
+										<td><%= eventSResult.get(0).get(4) %></td>
+										<td><%= eventSResult.get(0).get(6) %></td>
+									<% } %>
+									<% if (status==1 || status==3) { %>
+										<td class="icons" align="center"><a href="" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
+									<% } %>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</fieldset>
+				</div>
+			</article>
+			<% } %>
+			<% if (status==1 || status==3 || status==4) { %>
+			<article>
+				<header id="expandAttendance">
+					<h2>Attendance List</h2>
+					<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+				</header>
+				<div class="content">
+					<fieldset>
+						<div id="currentEventDiv" class="tableComponent">
+							<table id="currentEvent" border="0" cellpadding="0" cellspacing="0">
+								<thead>
+									<tr>
+									<% if (status==1 || status==2) { %>
+										<th class="firstColumn" tabindex="16">Title<span></span></th>
+										<th>Starting Time<span></span></th>
+										<th>Duration (Min)<span></span></th>
+										<th>Creator<span></span></th>
+									<% } else { %>
+										<th class="firstColumn" tabindex="16">Course<span></span></th>
+										<th>Section<span></span></th>
+										<th>Semester<span></span></th>
+										<th>Starting Time<span></span></th>
+										<th>Duration<span></span></th>
+									<% } %>
+									<% if (status==1 || status==3) { %>		
+										<th width="65" title="Modify" class="icons" align="center">Modify</th>
+									<% } %>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									<% if (status==1 || status==2) { %>
+										<td class="row"><%= eventSResult.get(0).get(1) %></td>
+										<td><%= eventSResult.get(0).get(2) %></td>
+										<td><%= eventSResult.get(0).get(4) %></td>
+										<td><%= eventSResult.get(0).get(5) %></td>
+									<% } else { %>
+										<td class="row"><%= eventSResult.get(0).get(1) %></td>
+										<td><%= eventSResult.get(0).get(2) %></td>
+										<td><%= eventSResult.get(0).get(3) %></td>
+										<td><%= eventSResult.get(0).get(4) %></td>
+										<td><%= eventSResult.get(0).get(6) %></td>
+									<% } %>
+									<% if (status==1 || status==3) { %>
+										<td class="icons" align="center"><a href="" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
+									<% } %>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</fieldset>
+				</div>
+			</article>
+			<% } %>
+			<article>
+				<header id="legendExpand">
+							<h2>Legend</h2>
+							<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
+				</header>
+				<div class="content">
+					<fieldset>
+						<div class="tableComponent">
+							<table border="0" cellpadding="0" cellspacing="0">
+								<thead>
+									<tr>
+										<th class="firstColumn" tabindex="16" title="Type">Type<span></span></th>
+										<th title="legendDescription">Description<span></span></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="row">Meeting (C)</td>
+										<td>You created this meeting</td>
+									</tr>
+									<tr>
+										<td class="row">Meeting (A)</td>
+										<td>You are invited to this meeting</td>
+									</tr>
+									<tr>
+										<td class="row">Lecture (T)</td>
+										<td>You are teaching this lecture</td>
+									</tr>
+									<tr>
+										<td class="row">Lecture (G)</td>
+										<td>You are a guest in this lecture</td>
+									</tr>
+									<tr>
+										<td class="row">Lecture (S)</td>
+										<td>You are a student in this lecture</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</fieldset>
+				</div>
 			</article>
 		</form>
 	</section>

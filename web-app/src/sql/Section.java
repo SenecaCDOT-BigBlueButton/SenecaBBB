@@ -146,6 +146,25 @@ public class Section extends Sql {
     }
     
     /**
+     * get all students in a lecture<p>
+     * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid (4)s_isbanned (5)bu_nick
+     * @param result
+     * @return
+     */
+    public boolean getStudent(ArrayList<ArrayList<String>> result, String ls_id) {
+        _sql = "SELECT s.*, bu.bu_nick "
+                + "FROM student s "
+                + "JOIN lecture_schedule ls "
+                + "ON s.c_id = ls.c_id "
+                + "AND s.sc_id = ls.sc_id "
+                + "AND s.sc_semesterid = ls.sc_semesterid "
+                + "JOIN bbb_user bu "
+                + "ON bu.bu_id = s.bu_id "
+                + "WHERE ls.ls_id = '" + ls_id + "'";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
      * get all students of a particular section<p>
      * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid (4)s_isbanned
      * @param result

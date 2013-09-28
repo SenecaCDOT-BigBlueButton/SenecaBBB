@@ -45,11 +45,7 @@
 	    return;
 	}
 	if (!dept.isDepartment(myBool, d_code)) {
-	    dept.resetErrorFlag();
-        message =  "Could not verify department status: " + d_code
-            + "<br />SQL Error Code: " + dept.getErrCode() 
-            + "<br />Error Submission Code : MD01"
-            + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	    message = "Could not verify department status: " + d_code + dept.getErrMsg("MD01");
         response.sendRedirect("logout.jsp?message=" + message);
 	    return;   
 	}
@@ -59,11 +55,7 @@
 	}
 	if (!usersession.isSuper()) {
 	    if (!user.isDepartmentAdmin(myBool, usersession.getUserId(), d_code)) {
-		    user.resetErrorFlag();
-	        message =  "Could not verify department admin status for: " + usersession.getUserId()
-	            + "<br />SQL Error Code: " + user.getErrCode() 
-	            + "<br />Error Submission Code : MD02"
-	            + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	        message = "Could not verify department admin status for: " + usersession.getUserId() + dept.getErrMsg("MD02");
 	        response.sendRedirect("logout.jsp?message=" + message);
 		    return;   
 		}

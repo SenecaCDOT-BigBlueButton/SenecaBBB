@@ -444,6 +444,88 @@ public class User extends Sql {
      * NOT the method return boolean value, which is used to determine the success/failure of SQL execution
      */
     
+
+    public boolean isMeetingCreator(MyBoolean bool, String ms_id, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM meeting_schedule "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND bu_id = '" + bu_id + "' "
+                + "LIMIT 1";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    } 
+    
+    public boolean isMeetingAttendee(MyBoolean bool, String ms_id, String m_id, String bu_id) {
+        _sql = "(SELECT ma.bu_id "
+                + "FROM meeting_attendee ma "
+                + "WHERE ma.bu_id = '" + bu_id + "' "
+                + "AND ma.ms_id = '" + ms_id + "') "
+                + "UNION DISTINCT "
+                + "(SELECT mg.bu_id "
+                + "FROM meeting_guest mg "
+                + "WHERE mg.bu_id = '" + bu_id + "' "
+                + "AND mg.ms_id = '" + ms_id + "' "
+                + "AND mg.m_id = '" + m_id + "')";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    } 
+    
+    public boolean isTeaching(MyBoolean bool, String ls_id, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM professor p "
+                + "JOIN lecture_schedule ls "
+                + "ON p.c_id = ls.c_id "
+                + "AND p.sc_id = ls.sc_id "
+                + "AND p.sc_semesterid = ls.sc_semesterid "
+                + "WHERE ls.ls_id = '" + ls_id + "'"
+                + "AND p.bu_id = '" + bu_id + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isGuestTeaching(MyBoolean bool, String ls_id, String l_id, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM guest_lecturer gl "
+                + "WHERE gl.bu_id = '" + bu_id + "' "
+                + "AND gl.ls_id = '" + ls_id + "' "
+                + "AND gl.l_id = '" + l_id + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isStudent(MyBoolean bool, String ls_id, String l_id, String bu_id) {
+        _sql = "SELECT s.bu_id "
+                + "FROM student s "
+                + "JOIN lecture_schedule ls "
+                + "ON s.c_id = ls.c_id "
+                + "AND s.sc_id = ls.sc_id "
+                + "AND s.sc_semesterid = ls.sc_semesterid "
+                + "WHERE ls.ls_id = '" + ls_id + "'"
+                + "AND s.bu_id = '" + bu_id + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
     public boolean isProfessor(MyBoolean bool, String bu_id) {
         _sql = "SELECT 1 "
                 + "FROM professor "

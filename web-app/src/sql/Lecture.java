@@ -54,7 +54,6 @@ public class Lecture extends Sql {
      * (0)ls_id (1)l_id (2)l_inidatetime (3)l_duration (4)l_iscancel
      * (5)l_description (6)l_modpass (7)l_userpass
      * @param result
-     * @param ls_id
      * @param l_id
      * @return
      */
@@ -200,14 +199,16 @@ public class Lecture extends Sql {
     }
 
     /**
-     * (0)bu_id (1)la_isattend
+     * (0)bu_id (1)la_isattend (2)bu_nick
      * @param result
      * @param ls_id
      * @return
      */
     public boolean getLectureAttendance(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
-        _sql = "SELECT bu_id, la_isattend "
-                + "FROM lecture_attendance "
+        _sql = "SELECT la.bu_id, la.la_isattend, bu.bu_nick "
+                + "FROM lecture_attendance la "
+                + "JOIN bbb_user bu "
+                + "ON la.bu_id = bu.bu_id "
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
@@ -230,15 +231,17 @@ public class Lecture extends Sql {
     }
 
     /**
-     * (0)bu_id (1)gl_ismod
+     * (0)bu_id (1)gl_ismod (2)bu_nick
      * @param result
      * @param ls_id
      * @param l_id
      * @return
      */
     public boolean getLectureGuest(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
-        _sql = "SELECT bu_id, gl_ismod "
-                + "FROM guest_lecturer "
+        _sql = "SELECT gl.bu_id, gl.gl_ismod, bu.bu_id "
+                + "FROM guest_lecturer gl "
+                + "JOIN bbb_user bu "
+                + "ON gl.bu_id = bu.bu_id "
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
@@ -260,6 +263,12 @@ public class Lecture extends Sql {
     			+ "INNER JOIN professor ON lecture_schedule.c_id = professor.c_id AND lecture_schedule.sc_id = professor.sc_id AND lecture_schedule.sc_semesterid = professor.sc_semesterid "
     			+ "WHERE professor.bu_id = '" + bu_id +"') ";
     			
+    	String _GuestProfessor = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id " 
+                + "FROM lecture "
+                + "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
+                + "INNER JOIN guest_lecturer ON guest_lecturer.ls_id = lecture.ls_id AND lecture.l_id = guest_lecturer.l_id "
+                + "WHERE guest_lecturer.bu_id = '" + bu_id +"') ";
+    	
     	String _student = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id " 
     			+ "FROM lecture "
     			+ "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
@@ -267,9 +276,9 @@ public class Lecture extends Sql {
     			+ "WHERE student.bu_id = '" + bu_id +"') ";
     	
     	if (professor && student) {
-    		_sql = _professor + "UNION DISTINCT " + _student;
+    		_sql = _professor + "UNION DISTINCT " + _GuestProfessor + "UNION DISTINCT " + _student;
     	} else if (professor) {
-    		_sql = _professor;
+    		_sql = _professor + "UNION DISTINCT " + _GuestProfessor;
     	} else if (student) {
     		_sql = _student;
     	} else {

@@ -64,11 +64,7 @@
 	    validFlag = Validation.checkDeptCode(deptCode) && Validation.checkDeptName(deptName);
 	    if (validFlag) {
 	        if (!dept.createDepartment(deptCode, deptName)) {
-	            dept.resetErrorFlag();
-	            message =  "Could not create new department " + deptCode
-	                + "<br />SQL Error Code: " + dept.getErrCode() 
-                    + "<br />Error Submission Code : D01"
-                    + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	            message = "Could not create new department " + deptCode + dept.getErrMsg("D01");
 	        } else {
 	            message = "Department " + deptCode + " created"; 
 	        }
@@ -82,11 +78,7 @@
 	    validFlag = Validation.checkDeptCode(deptRemove);
 	    if (validFlag) {
 	        if (!dept.isDepartment(myBool, deptRemove)) {
-	    	    dept.resetErrorFlag();
-	    	    message =  "Could not verify department status: " + deptRemove
-	    	        + "<br />SQL Error Code: " + dept.getErrCode() 
-	    	        + "<br />Error Submission Code : D02"
-	    	        + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	            message = "Could not verify department status: " + deptRemove + dept.getErrMsg("D02");
 	    	    response.sendRedirect("logout.jsp?message=" + message);
 	    	    return;   
 	    	}
@@ -94,11 +86,8 @@
 	    	    message = "Department with that code does not exist";
 	    	} else {
 	    		if (!dept.removeDepartment(deptRemove)) {
+	    		    message = "Could not remove department " + deptRemove + dept.getErrMsg("D03");
             		dept.resetErrorFlag();
-            		message =  "Could not remove department " + deptRemove
-                		+ "<br />SQL Error Code: " + dept.getErrCode() 
-                		+ "<br />Error Submission Code : D03"
-                		+ "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
         		} else {
             		message = "Department " + deptRemove + " was removed";
         		}
@@ -115,11 +104,7 @@
 	    validFlag = Validation.checkDeptCode(modDeptCode) && Validation.checkDeptName(modDeptName) && Validation.checkDeptCode(oldDeptCode);
 	    if (validFlag) {
 	        if (!dept.setMultiDepartment(oldDeptCode, modDeptCode, modDeptName)) {
-	            dept.resetErrorFlag();
-	            message =  "Could not modify department " + oldDeptCode
-	                + "<br />SQL Error Code: " + dept.getErrCode() 
-                    + "<br />Error Submission Code : D04"
-                    + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	            message = "Could not modify department " + oldDeptCode + dept.getErrMsg("D04");
 	        } else {
 	            message = "Department " + oldDeptCode + " was modified"; 
 	        }
@@ -131,22 +116,14 @@
 	ArrayList<ArrayList<String>> deptList = new ArrayList<ArrayList<String>>();
 	if (usersession.isSuper()) {
 	    if (!dept.getDepartment(deptList)) {
-            dept.resetErrorFlag();
-            message =  "Could not get department list"
-                + "<br />SQL Error Code: " + dept.getErrCode() 
-                + "<br />Error Submission Code : D05"
-                + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	        message = "Could not get department list" + dept.getErrMsg("D05");
             response.sendRedirect("logout.jsp?message=" + message);
             return;
         }
 	}
 	else {
 	    if (!dept.getDepartment(deptList, userId)) {
-            dept.resetErrorFlag();
-            message =  "Could not get department list"
-                + "<br />SQL Error Code: " + dept.getErrCode() 
-                + "<br />Error Submission Code : D06"
-                + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	        message = "Could not get department list" + dept.getErrMsg("D06");
             response.sendRedirect("logout.jsp?message=" + message);
             return;
         }

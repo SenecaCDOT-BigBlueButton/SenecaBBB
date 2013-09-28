@@ -85,6 +85,7 @@
 			<header>
 				<p><a href="calendar.jsp" tabindex="13">home</a> » </p>
 				<h1>Calendar</h1>
+				<div class="warningMessage"><%=message %></div>
 			</header>
 				<form>
 					<article>

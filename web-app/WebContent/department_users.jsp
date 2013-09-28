@@ -55,11 +55,7 @@
 	    return;
 	}
 	if (!dept.isDepartment(myBool, d_code)) {
-	    dept.resetErrorFlag();
-	    message =  "Could not verify department status: " + d_code
-	        + "<br />SQL Error Code: " + dept.getErrCode() 
-	        + "<br />Error Submission Code : DU01"
-	        + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	    message = "Could not verify department status: "  + d_code + dept.getErrMsg("DU01");
 	    response.sendRedirect("logout.jsp?message=" + message);
 	    return;   
 	}
@@ -69,11 +65,7 @@
 	}
 	if (!usersession.isSuper()) {
 	    if (!user.isDepartmentAdmin(myBool, usersession.getUserId(), d_code)) {
-		    user.resetErrorFlag();
-	        message =  "Could not verify department admin status for: " + usersession.getUserId()
-	            + "<br />SQL Error Code: " + user.getErrCode() 
-	            + "<br />Error Submission Code : DU02"
-	            + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	        message = "Could not verify department admin status for: " + usersession.getUserId() + dept.getErrMsg("DU02");
 	        response.sendRedirect("logout.jsp?message=" + message);
 		    return;   
 		}
@@ -91,11 +83,7 @@
 	
 	ArrayList<ArrayList<String>> deptUserList = new ArrayList<ArrayList<String>>();
 	if (!dept.getDepartmentUser(deptUserList, d_code)) {
-    	dept.resetErrorFlag();
-        message =  "Could not get department list"
-        	+ "<br />SQL Error Code: " + dept.getErrCode() 
-            + "<br />Error Submission Code : DU03"
-            + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
+	    message = "Could not verify department user list" + dept.getErrMsg("DU03");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
 	}
@@ -186,13 +174,9 @@
 											<td class="row"><%= deptUserList.get(i).get(1) %></td>
 											<td><%= deptUserList.get(i).get(0) %></td>
 											<td><%= deptUserList.get(i).get(3) %></td>
-											<%
-												adminStatus = deptUserList.get(i).get(2);
-												adminStatus = (adminStatus.equals("1")) ? "Yes" : ""; 
-											%>
-											<td><%= adminStatus %></td>
+											<td><%= adminStatus = (deptUserList.get(i).get(2).equals("1")) ? "Yes" : "" %></td>
 											<% if (usersession.isSuper()) { %>
-											<td class="icons" align="center"><a href="#" class="<%= adminStatus = (adminStatus.equals("Yes")) ? "remove" : "add" %>"><img
+											<td class="icons" align="center"><a href="#" class="<%= (adminStatus.equals("Yes")) ? "remove" : "add" %>"><img
 													src="images/iconPlaceholder.svg" width="17" height="17"
 													title="Set Admin Status: (+) given admin status (x) remove admin status" alt="Action" /></a></td>
 											<% }  %>

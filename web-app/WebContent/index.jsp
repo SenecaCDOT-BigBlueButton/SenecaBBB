@@ -56,13 +56,13 @@
 <div id="page">
   <jsp:include page="header_plain.jsp"/>
   <section id="login">
+  	<header>
+		<div class="warningMessage"><%=message %></div>
+		<br /><br />
+	</header>
     <form id="login" name="formLogin" action="auth.jsp" onSubmit="return validate();" method="post">
       <article >
         <fieldset>
-          <div class="component">
-          	<!-- Prints 'message' on the screen. --><%System.out.println(message); %>
-            <label id="message" class="label"><%=message%></label>
-          </div>
           <div class="component">
             <label for="SenecaLDAPBBBLogin" class="label">Username:</label>
             <input type="text" name="SenecaLDAPBBBLogin" id="SenecaLDAPBBBLogin" class="input" tabindex="2" title="Please insert your username" required autofocus value="<%=bu_id%>">

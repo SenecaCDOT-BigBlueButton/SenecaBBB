@@ -80,7 +80,7 @@ public static String getMonthNumber(String month) {
     String eventType = request.getParameter("dropdownEventType");
     String c_id = request.getParameter("courseCode").split(" ")[0];
     String sc_id = request.getParameter("courseCode").split(" ")[1];
-    String sc_semesterid =request.getParameter("SemesterID");
+    String sc_semesterid =request.getParameter("courseCode").split(" ")[2];
     String spec = null;
 	
     //daily weekly recurrence

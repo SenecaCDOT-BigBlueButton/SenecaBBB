@@ -115,6 +115,20 @@ public class Section extends Sql {
     }
     
     /**
+     * get professor by bu_id<p>
+     * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid (4)sc_setting
+     * @param result
+     * @param bu_id
+     * @return
+     */
+    public boolean getProfessor(ArrayList<ArrayList<String>> result,String bu_id) {
+        _sql = "SELECT * "
+                + "FROM professor"
+        		+ "WHERE bu_id = '" + bu_id + "'";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
      * get professors teaching a particular section<p>
      * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid (4)sc_setting
      * @param result

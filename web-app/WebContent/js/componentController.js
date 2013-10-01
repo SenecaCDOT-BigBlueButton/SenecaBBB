@@ -12,6 +12,9 @@ $(screen).ready(function() {
 		$("#week").css("display", "none");
 		$("#selectOccursBy").css("display", "none");
 		$("#selectEnds").css("display", "none");
+		$("#lectureCourse").css("display", "none");
+		$("#lectureSection").css("display", "none");
+		$("#lectureSemester").css("display", "none");
 
 		//Setting default values for selects
 		$("#dropdownEventType").val("Meeting");
@@ -209,7 +212,23 @@ $(screen).ready(function() {
 		$("#dropdownMonthStarts").change(function(){
 			populateMonthStarts($("#dropdownMonthStarts").val());
 		});
-
+		
+		$("#dropdownEventType").change(function(e){
+			if($(e.target).val()=="Meeting"){
+				$("#lectureCourse").css("display", "none");
+				$("#lectureSection").css("display", "none");
+				$("#lectureSemester").css("display", "none");				
+			}
+			else{
+				$("#lectureCourse").css("display", "block");
+				$("#lectureSection").css("display", "block");
+				$("#lectureSemester").css("display", "block");
+				$("#courseCode").attr("required", "required");
+				$("#courseSection").attr("required", "required");
+				$("#SemesterID").attr("required", "required");
+			}
+		});
+		
 		//Change days field according to the current month
 		$("#dropdownMonthEnds").change(function(){
 			populateMonthEnds($("#dropdownMonthEnds").val());
@@ -281,8 +300,8 @@ $(screen).ready(function() {
 					});
 					
 					//Checking only the day of the week of the starting date
-					$("section form article fieldset div.component#week .weekday#"+dayOfTheWeek).attr("aria-checked", "true");
-					$("section form article fieldset div.component#week .weekday#"+dayOfTheWeek).toggleClass("selectedWeekday", true);
+					//$("section form article fieldset div.component#week .weekday#"+dayOfTheWeek).attr("aria-checked", "true");
+					//$("section form article fieldset div.component#week .weekday#"+dayOfTheWeek).toggleClass("selectedWeekday", true);
 					break;
 				case "Monthly":
 					$("#selectRepeatsEvery").css("display", "block");
@@ -297,7 +316,8 @@ $(screen).ready(function() {
 					$("#dropdownDayoftheMonth").selectmenu({'refresh': true});
 					$("#week").css("display", "none");
 					$("#selectDayoftheWeek").css("display", "none");
-					$("#selectEnds").css("display", "block");
+					//$("#selectEnds").css("display", "block");
+					$("#selectEnds").css("display", "none");
 					$("#occurrencesNumber").css("display", "block");
 					$("#occurrences").val("1");
 					$("#occurrenceEnds").css("display", "none");
@@ -326,7 +346,7 @@ $(screen).ready(function() {
 				case "Day of the month":
 					$("#selectDayoftheWeek").css("display", "none");
 					$("#selectDayoftheMonth").css("display", "block");
-					$("#dropdownDayoftheMonth").val("1st");
+					$("#dropdownDayoftheMonth").val("1st");					
 					$("#dropdownDayoftheMonth").selectmenu({'refresh': true});
 					break;
 				case "First occurrence of the day of the week":

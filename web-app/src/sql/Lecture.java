@@ -136,6 +136,19 @@ public class Lecture extends Sql {
                 + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
     } 
+    
+    /**
+     * (0)l_duration
+     * @param result
+     * @param bu_id
+     * @return
+     */
+    public boolean getProfessorCourse(ArrayList<ArrayList<String>> result, String bu_id) {
+        _sql = "SELECT c_id,sc_id,sc_semesterid "
+                + "FROM professor "
+                + "WHERE bu_id = '" + bu_id + "' ";              
+        return _dbAccess.queryDB(result, _sql);
+    } 
 
     /**
      * (0)l_iscancel

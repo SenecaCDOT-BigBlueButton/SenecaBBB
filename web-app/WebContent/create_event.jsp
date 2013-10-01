@@ -67,7 +67,7 @@
 	   section.getProfessor(professor,userId);
     }
     if(isSuper){
-	   section.getProfessor(professor);
+	   section.getSectionInfo(professor);
     }
 %>
 
@@ -281,18 +281,22 @@
               <textarea name="eventDescription" id="eventDescription" class="input" tabindex="15" title="Event title"  autofocus></textarea>
             </div>
             <div class="component" id="lectureCourse">
-              <label for="courseCode" class="label">Course ID:</label>
-              <select name="courseCode" id="courseCode" tabindex="15" title="Course Name" style="width: 402px"  autofocus>
-                  <% for(int i=0;i<professor.size();i++){  %><option value="<%= professor.get(i).get(1).concat(" ").concat(professor.get(i).get(2)) %>" ><%= professor.get(i).get(1).concat(" ").concat(professor.get(i).get(2)) %></option><% } %>
+              <label for="courseCode" class="label">Course Information:</label>
+           <select name="courseCode" id="courseCode" tabindex="15" title="Course Name" style="width: 402px"  autofocus>
+                  <% if(isProfessor){for(int i=0;i<professor.size();i++){  %>
+                  <option value="<%= professor.get(i).get(1).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %>" >
+                  <%= professor.get(i).get(1).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %></option>
+                  <% }
+                  }
+                  if(isSuper){ 
+                      for(int i=0;i<professor.size();i++){  %>
+                      <option value="<%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)) %>" >
+                      <%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)) %></option><%} }%>
+                  
               </select>
             </div>
 
-            <div class="component" id="lectureSemester">
-              <label for="SemesterID" class="label">Semester ID:</label>
-              <select name="SemesterID" id="SemesterID" tabindex="15" title="SemesterID"  style="width: 402px" autofocus>
-                 <% for(int i=0;i<professor.size();i++){  %><option value="<%= professor.get(i).get(3) %>" ><%= professor.get(i).get(3)%></option><% } %>
-              </select>
-            </div>
+
             <!-- 
             <div class="component">
               <div class="checkbox" title="Allow microphone sharing."> <span class="box" role="checkbox" aria-checked="true" tabindex="17" aria-labelledby="eventSetting1"></span>

@@ -11,6 +11,11 @@ public class Validation {
         return _errMsg;
     }
     
+    /**
+     * Use this method if you need to manipulate the string
+     * @param raw
+     * @return
+     */
     public static String prepare(String raw) {
         String ret;
         ret = raw.trim();
@@ -68,4 +73,9 @@ public class Validation {
         boolean flag = checkEmpty(ls_id, "Lecture Schedule Id") && isNumber(ls_id, "Lecture Schedule Id");
         return flag;
     }
-}
+    
+    public static boolean checkBuId(String bu_id) {
+        boolean flag = checkEmpty(bu_id, "User Id");
+        return flag;
+    }
+}    

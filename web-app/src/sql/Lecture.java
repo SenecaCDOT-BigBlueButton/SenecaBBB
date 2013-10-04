@@ -318,7 +318,7 @@ public class Lecture extends Sql {
         }
         return flag;
     }
-
+    
     public boolean setLectureDescription(String ls_id, String l_id, String l_description) {
         _sql = "UPDATE lecture "
                 + "SET l_description = '" + l_description + "' "

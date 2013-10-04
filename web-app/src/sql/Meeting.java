@@ -297,13 +297,13 @@ public class Meeting extends Sql {
     }
     
     /**
-     * (0)bu_id (1)ms_id (2)m_id (3)mac_isattend (4)bu_nick
+     * (0)bu_id (1)mac_isattend (2)bu_nick
      * @param result
      * @param ms_id
      * @return
      */
     public boolean getMeetingAttendance(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
-        _sql = "SELECT ma.*, bu.bu_nick "
+        _sql = "SELECT ma.bu_id, ma.mac_isattend, bu.bu_nick "
                 + "FROM meeting_attendance ma "
                 + "JOIN bbb_user bu "
                 + "ON bu.bu_id = ma.bu_id "

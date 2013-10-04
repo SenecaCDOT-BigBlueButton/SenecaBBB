@@ -459,24 +459,32 @@ public class User extends Sql {
         return flag;
     } 
     
-    public boolean isMeetingAttendee(MyBoolean bool, String ms_id, String m_id, String bu_id) {
-        _sql = "(SELECT ma.bu_id "
-                + "FROM meeting_attendee ma "
-                + "WHERE ma.bu_id = '" + bu_id + "' "
-                + "AND ma.ms_id = '" + ms_id + "') "
-                + "UNION DISTINCT "
-                + "(SELECT mg.bu_id "
-                + "FROM meeting_guest mg "
-                + "WHERE mg.bu_id = '" + bu_id + "' "
-                + "AND mg.ms_id = '" + ms_id + "' "
-                + "AND mg.m_id = '" + m_id + "')";
+    public boolean isMeetingAttendee(MyBoolean bool, String ms_id, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM meeting_attendee "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND bu_id = '" + bu_id + "'";
         ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
         boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
         return flag;
-    } 
+    }
+    
+    public boolean isMeetingGuest(MyBoolean bool, String ms_id, String m_id, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM meeting_guest "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
+                + "AND bu_id = '" + bu_id + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
     
     public boolean isTeaching(MyBoolean bool, String ls_id, String bu_id) {
         _sql = "SELECT 1 "
@@ -509,7 +517,7 @@ public class User extends Sql {
         return flag;
     }
     
-    public boolean isStudent(MyBoolean bool, String ls_id, String l_id, String bu_id) {
+    public boolean isLectureStudent(MyBoolean bool, String ls_id, String l_id, String bu_id) {
         _sql = "SELECT s.bu_id "
                 + "FROM student s "
                 + "JOIN lecture_schedule ls "
@@ -585,6 +593,19 @@ public class User extends Sql {
     public boolean isUser(MyBoolean bool, String bu_id) {
         _sql = "SELECT 1 "
                 + "FROM bbb_user "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "LIMIT 1";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isnonLDAP(MyBoolean bool, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM non_ldap_user "
                 + "WHERE bu_id = '" + bu_id + "' "
                 + "LIMIT 1";
         ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();

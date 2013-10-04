@@ -455,10 +455,27 @@ public class Meeting extends Sql {
         return _dbAccess.updateDB(_sql);
     }
     
+    public boolean setMeetingGuestIsMod(String bu_id, String ms_id, String m_id) {
+        _sql = "UPDATE meeting_guest "
+                + "SET mg_ismod = NOT mg_ismod "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
+                + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     public boolean setMeetingAttendeeIsMod(String bu_id, String ms_id, boolean ma_ismod) {
         int flag = (ma_ismod == true) ? 1 : 0;
         _sql = "UPDATE meeting_attendee "
                 + "SET ma_ismod = " + flag + " "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setMeetingAttendeeIsMod(String bu_id, String ms_id) {
+        _sql = "UPDATE meeting_attendee "
+                + "SET ma_ismod = not ma_ismod "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         return _dbAccess.updateDB(_sql);

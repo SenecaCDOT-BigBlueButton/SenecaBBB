@@ -68,7 +68,7 @@ public class Test_Meeting extends Test_Helper {
         display(_meeting.setMeetingAttendeeIsMod("capilkey", "1", true));
         
         display(_meeting.setMeetingGuestIsMod("fardad.soleimanloo", "2", "1", false));
-        
+        /**
         display(_meeting.createMeetingPresentation("mp_title1", "1", "5"));
         
         display(_meeting.createMeetingGuest("bli64", "1", "2", true));
@@ -94,13 +94,16 @@ public class Test_Meeting extends Test_Helper {
         display(_meeting.updateMeetingDuration(3, "1", "8", "150"));
         
         display(_meeting.updateMeetingTime(3, "1", "8", "05:05:05"));
-        
+        */
         //display(_meeting.removeMeetingSchedule(1));
         
         //display(_meeting.removeMeetingSchedule(2));
         
-        display(_meeting.createMeetingSchedule("something2", "2013-08-01 10:00:00", "3;1;6;1;0110010", "50", "m_description", "bli64"));
+        //display(_meeting.createMeetingSchedule("something2", "2013-08-01 10:00:00", "3;1;6;1;0110010", "50", "m_description", "bli64"));
         
-        display(_meeting.editMeetingSchedule("12", "2013-10-01 10:00:00", "4;1;5;3;30", "abc"));
+        //display(_meeting.editMeetingSchedule("12", "2013-10-01 10:00:00", "4;1;5;3;30", "abc"));
+        
+        display(_meeting.setMeetingAttendeeIsMod("bli64", "2"));
+        
     }
 }

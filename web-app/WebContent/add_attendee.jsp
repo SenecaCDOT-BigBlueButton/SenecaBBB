@@ -30,7 +30,7 @@
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <script type="text/javascript" src="js/componentController.js"></script>
-
+<%@ include file="search.jsp" %>
 <%
 	//Start page validation
 	String userId = usersession.getUserId();
@@ -79,10 +79,7 @@
 	
 	// Start User Search
 	int i = 0;
-	String type = "";
-	String toAdd = "";
 	boolean searchSucess = false;
-	ArrayList<ArrayList<String>> userInfo = new ArrayList<ArrayList<String>>();
 	String bu_id = request.getParameter("searchBox");
 	if (bu_id!=null) {
 	    bu_id = Validation.prepare(bu_id);
@@ -96,7 +93,7 @@
 			}
 		    // User already added
 		    if (myBool.get_value()) {
-				message = "User already a meeting attendee";
+				message = "User already added";
 			} else {
 			    if (!user.isUser(myBool, bu_id)) {
 				    message = user.getErrMsg("AA04");
@@ -104,23 +101,12 @@
 					return;   
 				}
 			    // User already in Database
-			    if (myBool.get_value()) {
-			        if (!user.isnonLDAP(myBool, bu_id)) {
-					    message = user.getErrMsg("AA05");
-					    response.sendRedirect("logout.jsp?message=" + message);
-						return;   
-					}
-			        if (myBool.get_value()) {
-						type = "Non LDAP";
-					} else {
-					    type = "LDAP";
-					}
+			    if (myBool.get_value()) {   
 			        searchSucess = true;
 				} else {
 				    // Found userId in LDAP
-				    if (ldap.search(bu_id)) {
+				    if (findUser(dbaccess, ldap, bu_id)) {
 				        searchSucess = true;
-				        type = "LDAP (Not In Database Yet)";
 				    } else {
 				        message = "User Not Found";
 				    }
@@ -130,9 +116,45 @@
 	}
 	// End User Search
 	
+	if (searchSucess) {
+	    if (!meeting.createMeetingAttendee(bu_id, ms_id, false)) {
+	        message = meeting.getErrMsg("AA05");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    } else {
+	        message = bu_id + " added to current meeting schedule";
+	    }
+	} else {
+	    String mod = request.getParameter("mod");
+		String remove = request.getParameter("remove");
+		if (mod != null) {
+		    mod = Validation.prepare(mod);
+		    if (!(Validation.checkBuId(mod))) {
+				message = Validation.getErrMsg();
+			} else {
+			    if (!meeting.setMeetingAttendeeIsMod(mod, ms_id)) {
+			        message = meeting.getErrMsg("AA06");
+			        response.sendRedirect("logout.jsp?message=" + message);
+					return;   
+			    }
+			}  
+		} else if (remove != null) {
+		    remove = Validation.prepare(remove);
+		    if (!(Validation.checkBuId(remove))) {
+				message = Validation.getErrMsg();
+			} else {
+			    if (!meeting.removeMeetingAttendee(remove, ms_id)) {
+			        message = meeting.getErrMsg("AA07");
+			        response.sendRedirect("logout.jsp?message=" + message);
+					return;   
+			    }		
+			}  
+		}
+	}
+	
 	ArrayList<ArrayList<String>> eventAttendee = new ArrayList<ArrayList<String>>();
 	if (!meeting.getMeetingAttendee(eventAttendee, ms_id)) {
-        message = meeting.getErrMsg("AA02");
+        message = meeting.getErrMsg("AA06");
         response.sendRedirect("logout.jsp?message=" + message);
 		return;   
     }		                        
@@ -174,6 +196,7 @@ $(function(){
 				<a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" tabindex="15">add_attendee</a></p>
 			<!-- PAGE NAME -->
 			<h1>Add Meeting Attendee</h1>
+			<br />
 			<!-- WARNING MESSAGES -->
 			<div class="warningMessage"><%=message %></div>
 		</header>
@@ -195,33 +218,6 @@ $(function(){
 					</fieldset>
 				</div>
 		    </article>
-		    <% if (searchSucess) { %>
-		    <article>
-				<div class="content">
-					<fieldset>
-						<div id="tableAddAttendee" class="tableComponent">
-			              <h4></h4>
-			              <table id="addAttendee" border="0" cellpadding="0" cellspacing="0">
-			                <thead>
-			                  <tr>
-			                    <th width="100" class="firstColumn" tabindex="16" title="UserId">User Id<span></span></th>
-			                    <th title="Type">Type<span></span></th>
-			                    <th width="65" title="Add" class="icons" align="center">Add</th>
-			                  </tr>
-			                </thead>
-			                <tbody>
-			                  <tr>
-			                    <td class="row"><%= bu_id %></td>
-			                    <td><%= type %></td>
-			                    <td class="icons" align="center"><a href="#" class="add"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Add user to attendees list" alt="Add"/></a></td>
-			                  </tr>
-			                </tbody>
-			              </table>
-			            </div>
-					</fieldset>
-				</div>
-			</article>
-			<% } %>
 			<article>
 				<header id="expandAttendee">
 					<h2>Meeting Attendee List</h2>
@@ -236,6 +232,8 @@ $(function(){
 										<th class="firstColumn" tabindex="16">Id<span></span></th>
 										<th>Nick Name<span></span></th>
 										<th>Moderator<span></span></th>
+										<th title="Action" class="icons" align="center">Modify</th>
+										<th width="65" title="Remove" class="icons" align="center">Remove</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -244,6 +242,14 @@ $(function(){
 										<td class="row"><%= eventAttendee.get(i).get(0) %></td>
 										<td><%= eventAttendee.get(i).get(3) %></td>
 										<td><%= eventAttendee.get(i).get(2).equals("1") ? "Yes" : "" %></td>
+										<td class="icons" align="center">
+											<a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&mod=<%= eventAttendee.get(i).get(0) %>" class="modify">
+											<img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
+										</a></td>
+										<td class="icons" align="center">
+											<a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&remove=<%= eventAttendee.get(i).get(0) %>" class="remove">
+											<img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
+										</a></td>
 									</tr>
 								<% } %>
 								</tbody>

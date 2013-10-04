@@ -134,6 +134,35 @@ public class Section extends Sql {
     }
     
     /**
+     * get classes that a professor is associated with
+     * (0)c_id (1)sc_id (2)sc_semesterid (3)sc_setting
+     * @param result
+     * @param bu_id
+     * @return
+     */
+    public boolean getClasses(ArrayList<ArrayList<String>> result, String bu_id) {
+    	_sql = "SELECT c_id, sc_id, sc_semesterid, sc_setting "
+    			+ "FROM professor "
+    			+ "WHERE bu_id = '" + bu_id + "' "
+    			+ "ORDER BY c_id, sc_id, sc_semesterid";
+    	return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * get classes that a professor is associated with
+     * (0)c_id (1)sc_id (2)sc_semesterid (3)sc_setting (4)bu_id
+     * @param result
+     * @param bu_id
+     * @return
+     */
+    public boolean getClasses(ArrayList<ArrayList<String>> result) {
+    	_sql = "SELECT c_id, sc_id, sc_semesterid, sc_setting, bu_id "
+    			+ "FROM professor "
+    			+ "ORDER BY c_id, sc_id, sc_semesterid";
+    	return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
      * get all students<p>
      * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid (4)s_isbanned
      * @param result

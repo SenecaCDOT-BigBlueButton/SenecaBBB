@@ -310,9 +310,14 @@ public class LDAPAuthenticate {
                 SearchResult sr = results.next();
                 Attributes at = sr.getAttributes();
               
+                //prints out all possible attributes
+//              for (NamingEnumeration<?> i = at.getAll(); i.hasMore();) {
+//                  System.out.println((Attribute) i.next());
+//              }
+                
                 position = ((sr.getName().split(","))[1].split("="))[1];
-                if (position.equals("Employee") || position.equals("Professor"))
-                  givenName = at.get(givenNameField).toString().split(": ")[1];
+                //if (position.equals("Employee")) // don't do this unless you have a password
+               //   givenName = at.get(givenNameField).toString().split(": ")[1];
                 userID = at.get(userIDField).toString().split(": ")[1];
 
                 authenticated = "true";
@@ -437,66 +442,6 @@ public class LDAPAuthenticate {
     private void reset() {
         position = userID = givenName = title = null;
     }
-/*
-    private void increaseStat(int num) {
-        try {
-            FileInputStream fstream = new FileInputStream("/var/lib/tomcat6/webapps/auth/WEB-INF/stats.txt");
-            // Get the object of DataInputStream  
-            DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String strLine;
-            StringBuilder sb = new StringBuilder("");
-
-            //Read File Line By Line  
-            for (int i = 1; (strLine = br.readLine()) != null; i++) {
-                if (i == num) {
-                    strLine = String.valueOf(Integer.valueOf(strLine) + 1);
-                }
-
-                sb.append(strLine + "\n");
-            }
-            //Close the input stream  
-            in.close();
-
-            Writer output = null;
-            File file = new File("/var/lib/tomcat6/webapps/auth/WEB-INF/stats.txt");
-            output = new BufferedWriter(new FileWriter(file));
-            output.write(sb.toString());
-
-            output.close();
-        } catch (Exception e2) {
-            try {
-                Writer output = null;
-                File file = new File("/var/lib/tomcat6/webapps/auth/WEB-INF/stats.txt");
-                output = new BufferedWriter(new FileWriter(file));
-                output.write("0\n0\n0");
-                output.close();
-            } catch (Exception e) { // the file could not be accessed
-                System.out.println("Could not access stats.txt, if developing ignore message");
-            }
-        }
-    }*/
-/*
-    public int[] readStats() {
-        int[] stats = {0, 0, 0};
-
-        try {
-            FileInputStream fstream = new FileInputStream("/var/lib/tomcat6/webapps/auth/WEB-INF/stats.txt");
-            // Get the object of DataInputStream  
-            DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String strLine;
-
-            //Read File Line By Line  
-            for (int i = 0; (strLine = br.readLine()) != null; i++) {
-                stats[i] = Integer.valueOf(strLine);
-            }
-            //Close the input stream  
-            in.close();
-        } catch (Exception e) {
-        }
-        return stats;
-    }*/
 
 	public String getEmailAddress() {
 		return emailAddress;

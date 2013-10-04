@@ -749,6 +749,43 @@ public class User extends Sql {
         return _dbAccess.updateDB(_sql);
     }
     
+    /**
+     * This creates a employee LDAP user
+     * to create a non-ldap user call this method first (1st part)
+     * then call method createNonLdapUser (2nd part)
+     * @param bu_id
+     * @param bu_comment
+     * @param bu_isldap
+     * @return
+     */
+    public boolean createEmployeeUser(String bu_id, String bu_comment, boolean bu_isldap) {
+        _sql = "INSERT INTO bbb_user " 
+                + "VALUES ('" + bu_id + "', '" + bu_id + "', 0, 1, '"
+                + bu_comment + "', SYSDATE(), " + bu_isldap + ", 0, "
+                + "(SELECT ur_id FROM user_role WHERE pr_name = 'employee'), "
+                + "(SELECT key_value FROM bbb_admin WHERE key_name='default_user'), "
+                + "(SELECT key_value FROM bbb_admin WHERE key_name='default_meeting'))";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
+     * This creates a employee LDAP user
+     * to create a non-ldap user call this method first (1st part)
+     * then call method createNonLdapUser (2nd part)
+     * @param bu_id
+     * @param bu_comment
+     * @param bu_isldap
+     * @return
+     */
+    public boolean createStudentUser(String bu_id, String bu_comment, boolean bu_isldap) {
+        _sql = "INSERT INTO bbb_user " 
+                + "VALUES ('" + bu_id + "', '" + bu_id + "', 0, 1, '"
+                + bu_comment + "', SYSDATE(), " + bu_isldap + ", 0, "
+                + "(SELECT ur_id FROM user_role WHERE pr_name = 'student'), "
+                + "(SELECT key_value FROM bbb_admin WHERE key_name='default_user'), "
+                + "(SELECT key_value FROM bbb_admin WHERE key_name='default_meeting'))";
+        return _dbAccess.updateDB(_sql);
+    }
     
     /**
      * 2nd part in creating non-ldap user

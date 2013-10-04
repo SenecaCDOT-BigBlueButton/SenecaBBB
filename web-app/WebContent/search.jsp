@@ -1,30 +1,36 @@
 <%@page import="sql.User"%>
-<jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
-<jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />
-<jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
-<jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
+<%@page import="ldap.LDAPAuthenticate" %>
+<%@page import="db.DBAccess" %>
+<%@page import="java.util.ArrayList" %>
 
-<%
-	String userId = usersession.getUserId();
-	if (userId.equals("") || dbaccess.getFlagStatus() == false) {
-		return;
-	}
-	else {
-		String userName = request.getParameter("userName");
-		
-		if (userName == "") {
-			out.write ("Please enter a username to search");
-		}
-		else {
-			if (ldap.search(userName)) {
-			  if (ldap.getPosition().equals("Employee") || ldap.getPosition().equals("Professor"))
-			  	out.write("{userName:'"+ldap.getUserID()+"',userType:'" +ldap.getPosition()+"',givenName:'" +ldap.getGivenName()+ "'}");
-			  else
-			    out.write("{'userName':'"+ldap.getUserID()+"','userType':" +ldap.getPosition()+ "'}");
+<%!
+public boolean findUser(DBAccess dbaccess, LDAPAuthenticate ldap, String bu_id) {
+	if (dbaccess.getFlagStatus() == false) {
+		return false;
+	} else {
+		if (bu_id == "") {
+			return false;
+		} else {
+			// search the db first
+			User user = new User(dbaccess);
+			ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+			user.getUserInfo(result, bu_id);
+			
+			if (result.size() > 0) { // user is already in the DB
+				return true;
+			} else {
+				// if found in LDAP create new bbb_user row in db
+				if (ldap.search(bu_id)) {
+					if (ldap.getPosition().equals("Employee"))
+						user.createEmployeeUser(bu_id, " ", true);
+					else
+						user.createStudentUser(bu_id, " ", true);
+					return true;
+				} else {
+					return false;
+				}
 			}
-			else
-			  out.write("User " + userName + " not found");
 		}
 	}
-	
+}
 %>

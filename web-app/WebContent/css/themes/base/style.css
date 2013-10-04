@@ -12,6 +12,13 @@ html, body {
 	font-weight: 400;
 	background-color: #E6E6E6;
 }
+
+.warningMessage{
+	color:red;
+	font-size:16px;
+	font-weight:bold;
+}
+
 option:hover {
 	background-color: #0F6;
 }
@@ -29,6 +36,8 @@ option:hover {
 	background-position: right top;
 	display: table;/*-webkit-filter: invert();*/
 }
+
+
 p {
 	margin: 0px;
 	padding: 0px;
@@ -383,6 +392,10 @@ section form article fieldset div.component label.label {
 	width: 620px;
 	float: none;
 	clear: both;
+}
+label.error{
+	color:red;
+	margin-left:220px;
 }
 section form article fieldset div.component input.input, div.dataTables_filter input, .searchBox {
 	height: 38px;
@@ -993,4 +1006,84 @@ footer div#copyright {
 	background-repeat: no-repeat;
 	cursor: pointer;
 	z-index: 990;
+}
+
+#startTime,#eventDuration {
+	float:left;
+	margin-left:16px;
+	width:135px;	
+	cursor: pointer;
+	
+}
+
+#eventDescription{
+	margin-left:16px;
+	width:398px;
+	float:left;
+	resize: none;
+	height:40px;
+	cursor: pointer;
+	
+}
+
+#itemList{
+	table-layout: fixed;
+    width: 900px;
+    clear: both;
+
+	
+}
+
+#itemList thead th {
+    font-size: 11px;
+    font-family: "ITCAvantGardeStd Demi";
+    font-style: normal;
+    font-weight: 600;
+    text-align: left;
+    color: #454545;
+    text-transform: uppercase;
+    padding-top: 30px;
+    padding-right: 0px;
+    padding-left: 10px;
+    padding-bottom: 20px;
+    border-left: 1px solid #EEEEEE;
+    background: #E0E0E0;
+    position: relative;
+    cursor: default;
+}
+
+#itemList tbody tr td {
+    position: relative;
+    padding-top: 15px;
+    padding-right: 0px;
+    padding-left: 10px;
+    padding-bottom: 15px;
+    font-size: 12px;
+    font-family: "ITCAvantGardeStd Md";
+    font-style: normal;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #838383;
+    border-left: 1px solid #EEEEEE;
+    border-right: 1px solid #EEEEEE;
+    background: #FFFFFF;
+}
+
+#courseCode, #deptCode, #sectionList{
+	border: 1px solid #AAAAAA;
+    color: #838383;
+    display: block;
+    float: right;
+    font-family: "ITCAvantGardeStd BkCn";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    height: 38px;
+    outline: medium none;
+    padding-left: 8px;
+    width: 402px;
+    z-index: 4;
+    text-align:left;
+    vertical-align:bottom;
 }

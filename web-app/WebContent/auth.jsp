@@ -61,7 +61,10 @@
 					user.getUserMeetingSetting(mask, userID);
 					usersession.setUserMeetingSettingsMask(mask);
 					user.getIsDepartmentAdmin(result, userID);
-					usersession.setDepartmentAdmin(result.get(0).get(0).equals("1"));
+					if (result.size() > 0)
+						usersession.setDepartmentAdmin(result.get(0).get(0).equals("1"));
+					else
+						usersession.setDepartmentAdmin(false);
 				}
 				response.sendRedirect("calendar.jsp");
 			}
@@ -80,7 +83,10 @@
 				usersession.setGivenName(userInfo.get(11) + " " + userInfo.get(12));
 				usersession.setSuper(userInfo.get(7).equals("1"));
 				user.getIsDepartmentAdmin(result, userID);
-				usersession.setDepartmentAdmin(result.get(0).get(0).equals("1"));
+				if (result.size() > 0)
+					usersession.setDepartmentAdmin(result.get(0).get(0).equals("1"));
+				else
+					usersession.setDepartmentAdmin(false);
 				usersession.setEmail(userInfo.get(13));
 				usersession.setNick(userInfo.get(1));
 				user.isProfessor(prof, userID);

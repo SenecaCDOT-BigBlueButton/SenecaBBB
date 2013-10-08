@@ -1087,3 +1087,17 @@ footer div#copyright {
     text-align:left;
     vertical-align:bottom;
 }
+#predefinedRoleList th:hover{
+	background:none;
+}
+
+.buttons #saveSetting{
+	margin-left:-200px;
+}
+
+#predefinedRoleList tbody tr td input{
+	color: #838383;
+    font-family: "ITCAvantGardeStd Md";
+    font-size: 12px;
+    font-style: normal;	
+}

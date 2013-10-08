@@ -34,18 +34,11 @@
     //Table
 	$(screen).ready(function() {
 	
-	    /* Course List */
-	    $('#courseList').dataTable({
-	        "bPaginate": true,
-	        "bLengthChange": true,
-	        "bFilter": true,
-	        "bSort": true,
-	        "bInfo": true,
-	        "bAutoWidth": false});
-	    $('#courseList').dataTable({"aoColumnDefs": [{ "bSortable": true, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+	    /* Course List */	    
+	    $('#courseList').dataTable({"sPaginationType": "full_numbers"});
+	    $('#courseList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
 	    $.fn.dataTableExt.sErrMode = 'throw';
-	    $('.dataTables_filter input').attr("placeholder", "Filter entries");       
-	    $('#courseList').dataTable({"sPaginationType": "full_numbers"});	    	
+	    $('.dataTables_filter input').attr("placeholder", "Filter entries");
 	});
 	</script>
 <%

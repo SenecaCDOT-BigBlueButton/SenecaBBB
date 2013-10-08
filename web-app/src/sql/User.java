@@ -430,9 +430,27 @@ public class User extends Sql {
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
             result.clear();
-            result.put(Settings.ur_rolemask[0], (value & (1<<2)) == 0 ? 0:1);
-            result.put(Settings.ur_rolemask[1], (value & (1<<1)) == 0 ? 0:1);
+            result.put(Settings.ur_rolemask[0], (value & (1<<1)) == 0 ? 0:1);
+            result.put(Settings.ur_rolemask[1], (value & 1) == 0 ? 0:1);
             result.put(Settings.ur_rolemask[2], (value & 1) == 0 ? 0:1);
+        }
+        return flag;
+    }
+    
+    public boolean getPredefinedUserRoleSetting(HashMap<String, Integer> result, String pr_name) {
+        _sql = "SELECT pr_defaultmask "
+                + "FROM predefined_role "
+                + "WHERE pr_name = '" + pr_name + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+            result.clear();
+            result.put(Settings.ur_rolemask[0], (value & (1<<1)) == 0 ? 0:1);
+            result.put(Settings.ur_rolemask[1], (value & 1) == 0 ? 0:1);
+         //   result.put(Settings.ur_rolemask[0], (value & (1<<2)) == 0 ? 0:1);
+         //   result.put(Settings.ur_rolemask[1], (value & (1<<1)) == 0 ? 0:1);
+         //   result.put(Settings.ur_rolemask[2], (value & 1) == 0 ? 0:1);
         }
         return flag;
     }

@@ -33,18 +33,11 @@
 	<script type="text/javascript">
 	//Table
 		$(screen).ready(function() {
-		    /* Subjects List */
-		    $('#subjectsList').dataTable({
-		        "bPaginate": true,
-		        "bLengthChange": true,
-		        "bFilter": true,
-		        "bSort": true,
-		        "bInfo": true,
-		        "bAutoWidth": false});
-		    $('#subjectsList').dataTable({"aoColumnDefs": [{ "bSortable": true, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-		    $.fn.dataTableExt.sErrMode = 'throw';
-		    $('.dataTables_filter input').attr("placeholder", "Filter entries");       
-		    $('#subjectsList').dataTable({"sPaginationType": "full_numbers"});
+		    /* Subjects List*/
+            $('#subjectsList').dataTable({"sPaginationType": "full_numbers"});
+            $('#subjectsList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $.fn.dataTableExt.sErrMode = 'throw';
+            $('.dataTables_filter input').attr("placeholder", "Filter entries");
 		    
 		});
 	</script>

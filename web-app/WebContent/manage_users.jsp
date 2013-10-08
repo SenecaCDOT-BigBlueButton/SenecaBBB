@@ -47,7 +47,7 @@ function searchUser(){
 
 //Table
 $(screen).ready(function() {
-    /* ATTENDEES LIST */
+    /* ATTENDEES LIST 
     $('#addAttendee').dataTable({
         "bPaginate": false,
         "bLengthChange": false,
@@ -56,9 +56,9 @@ $(screen).ready(function() {
         "bInfo": false,
         "bAutoWidth": false});
     $('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    $.fn.dataTableExt.sErrMode = 'throw';
+    */   $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
-        
+     
     /* ATTENDEES LIST */    
     $('#attendeesList').dataTable({"sPaginationType": "full_numbers"});
     $('#attendeesList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});

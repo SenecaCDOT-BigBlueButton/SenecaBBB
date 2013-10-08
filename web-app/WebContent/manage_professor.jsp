@@ -34,20 +34,12 @@
 //Table
 $(screen).ready(function() {
 
-    /* Course List */
-    $('#professorList').dataTable({
-        "bPaginate": true,
-        "bLengthChange": true,
-        "bFilter": true,
-        "bSort": true,
-        "bInfo": true,
-        "bAutoWidth": false});
-    $('#professorList').dataTable({"aoColumnDefs": [{ "bSortable": true, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    $.fn.dataTableExt.sErrMode = 'throw';
-    $('.dataTables_filter input').attr("placeholder", "Filter entries");       
+    /* Professor List */   
     $('#professorList').dataTable({"sPaginationType": "full_numbers"});
-    
-
+    $('#professorList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+    $.fn.dataTableExt.sErrMode = 'throw';
+    $('.dataTables_filter input').attr("placeholder", "Filter entries");
+       
 });
 </script>
 <%

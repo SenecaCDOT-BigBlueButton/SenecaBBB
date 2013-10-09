@@ -1101,3 +1101,17 @@ footer div#copyright {
     font-size: 12px;
     font-style: normal;	
 }
+
+div.contactus{
+	color: #454545;
+    font-family: "ITCAvantGardeStd BkCn";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    margin-left: 200px;   
+    text-align:left;
+}
+
+div.contactus p{
+	padding:5px;
+}

@@ -11,7 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Add Meeting Attendee</title>
+<title>Add Lecture Student</title>
 <link rel="icon" href="http://www.cssreset.com/favicon.png">
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
@@ -42,23 +42,24 @@
 	if (message == null || message == "null") {
 		message="";
 	}
-	String m_id = request.getParameter("m_id");
-	String ms_id = request.getParameter("ms_id");
-	if (m_id==null || ms_id==null) {
+	String l_id = request.getParameter("l_id");
+	String ls_id = request.getParameter("ls_id");
+	if (l_id==null || ls_id==null) {
 	    response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
 	    return;
 	}
-	m_id = Validation.prepare(m_id);
-    ms_id = Validation.prepare(ms_id);
-    if (!(Validation.checkMId(m_id) && Validation.checkMsId(ms_id))) {
+	l_id = Validation.prepare(l_id);
+    ls_id = Validation.prepare(ls_id);
+    if (!(Validation.checkLId(l_id) && Validation.checkLsId(ls_id))) {
 		response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
 		return;
 	}
 	User user = new User(dbaccess);
-	Meeting meeting = new Meeting(dbaccess);
+	Lecture lecture = new Lecture(dbaccess);
+	Section section = new Section(dbaccess);
 	MyBoolean myBool = new MyBoolean();	
-	if (!meeting.isMeeting(myBool, ms_id, m_id)) {
-	    message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AA01");
+	if (!lecture.isLecture(myBool, ls_id, l_id)) {
+	    message = lecture.getErrMsg("AS01");
 	    response.sendRedirect("logout.jsp?message=" + message);
 		return;   
 	}
@@ -66,8 +67,8 @@
 		response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
 		return;
 	}
-	if (!user.isMeetingCreator(myBool, ms_id, userId)) {
-	    message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AA02");
+	if (!user.isTeaching(myBool, ls_id, userId)) {
+	    message = user.getErrMsg("AS02");
 	    response.sendRedirect("logout.jsp?message=" + message);
 		return;   
 	}
@@ -86,8 +87,8 @@
 	    if (!(Validation.checkBuId(bu_id))) {
 			message = Validation.getErrMsg();
 		} else {
-		    if (!user.isMeetingAttendee(myBool, ms_id, bu_id)) {
-			    message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AA03");
+		    if (!user.isLectureStudent(myBool, ls_id, bu_id)) {
+			    message = user.getErrMsg("AS03");
 			    response.sendRedirect("logout.jsp?message=" + message);
 				return;   
 			}
@@ -96,7 +97,7 @@
 				message = "User already added";
 			} else {
 			    if (!user.isUser(myBool, bu_id)) {
-				    message = user.getErrMsg("AA04");
+				    message = user.getErrMsg("AS04");
 				    response.sendRedirect("logout.jsp?message=" + message);
 					return;   
 				}
@@ -117,23 +118,29 @@
 	// End User Search
 	
 	if (searchSucess) {
-	    if (!meeting.createMeetingAttendee(bu_id, ms_id, false)) {
-	        message = meeting.getErrMsg("AA05");
+	    ArrayList<ArrayList<String>> curCourse = new ArrayList<ArrayList<String>>();
+	    if (!lecture.getLectureScheduleInfo(curCourse, ls_id)) {
+	        message = lecture.getErrMsg("AS05");
+	        response.sendRedirect("logout.jsp?message=" + message);
+			return;   
+	    }
+	    if (!section.createStudent(bu_id, curCourse.get(0).get(1), curCourse.get(0).get(2), curCourse.get(0).get(3), false)) {
+	        message = section.getErrMsg("AS06");
 	        response.sendRedirect("logout.jsp?message=" + message);
 			return;   
 	    } else {
-	        message = bu_id + " added to meeting attendee list";
+	        message = bu_id + " added to student list";
 	    }
 	} else {
-	    String mod = request.getParameter("mod");
+		String mod = request.getParameter("mod");
 		String remove = request.getParameter("remove");
 		if (mod != null) {
 		    mod = Validation.prepare(mod);
 		    if (!(Validation.checkBuId(mod))) {
 				message = Validation.getErrMsg();
 			} else {
-			    if (!meeting.setMeetingAttendeeIsMod(mod, ms_id)) {
-			        message = meeting.getErrMsg("AA06");
+			    if (!user.setBannedFromLecture(mod, ls_id)) {
+			        message = lecture.getErrMsg("AS07");
 			        response.sendRedirect("logout.jsp?message=" + message);
 					return;   
 			    }
@@ -143,8 +150,24 @@
 		    if (!(Validation.checkBuId(remove))) {
 				message = Validation.getErrMsg();
 			} else {
-			    if (!meeting.removeMeetingAttendee(remove, ms_id)) {
-			        message = meeting.getErrMsg("AA07");
+			    if (!user.isLectureStudent(myBool, ls_id, remove)) {
+				    message = user.getErrMsg("AS09");
+				    response.sendRedirect("logout.jsp?message=" + message);
+					return;   
+				}
+			    // User Not in Student List
+			    if (!myBool.get_value()) {
+			        response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
+					return;
+				}
+			    ArrayList<ArrayList<String>> tempInfo = new ArrayList<ArrayList<String>>();
+			    if (!lecture.getLectureScheduleInfo(tempInfo, ls_id)) {
+			        message = lecture.getErrMsg("AS10");
+			        response.sendRedirect("logout.jsp?message=" + message);
+					return;   
+			    }
+			    if (!section.removeStudent(remove, tempInfo.get(0).get(1), tempInfo.get(0).get(2), tempInfo.get(0).get(3))) {
+			        message = lecture.getErrMsg("AS11");
 			        response.sendRedirect("logout.jsp?message=" + message);
 					return;   
 			    }		
@@ -152,9 +175,9 @@
 		}
 	}
 	
-	ArrayList<ArrayList<String>> eventAttendee = new ArrayList<ArrayList<String>>();
-	if (!meeting.getMeetingAttendee(eventAttendee, ms_id)) {
-        message = meeting.getErrMsg("AA08");
+	ArrayList<ArrayList<String>> stuList = new ArrayList<ArrayList<String>>();
+	if (!section.getStudent(stuList, ls_id)) {
+        message = lecture.getErrMsg("ALG12");
         response.sendRedirect("logout.jsp?message=" + message);
 		return;   
     }		                        
@@ -164,16 +187,16 @@
 /* TABLE */
 $(screen).ready(function() {
 	/* CURRENT EVENT */
-	$('#addAttendee').dataTable({
+	$('#addMGuest').dataTable({
 			"bPaginate": false,
 	        "bLengthChange": false,
 	        "bFilter": false,
 	        "bSort": false,
 	        "bInfo": false,
 	        "bAutoWidth": false});
-	$('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-	$('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
-	$('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+	$('#addMGuest').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+	$('#tbGuest').dataTable({"sPaginationType": "full_numbers"});
+	$('#tbGuest').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
 	$.fn.dataTableExt.sErrMode = 'throw';
 	$('.dataTables_filter input').attr("placeholder", "Filter entries");
 });
@@ -192,25 +215,25 @@ $(function(){
 		<header> 
 			<!-- BREADCRUMB -->
 			<p><a href="calendar.jsp" tabindex="13">home</a> » 
-				<a href="view_event.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" tabindex="14">view_event</a> » 
-				<a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" tabindex="15">add_attendee</a></p>
+				<a href="view_event.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" tabindex="14">view_event</a> » 
+				<a href="add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" tabindex="15">add_student</a></p>
 			<!-- PAGE NAME -->
-			<h1>Add Meeting Attendee</h1>
+			<h1>Add Student</h1>
 			<br />
 			<!-- WARNING MESSAGES -->
 			<div class="warningMessage"><%=message %></div>
 		</header>
-		<form name="addAttendee" method="get" action="add_attendee.jsp">
+		<form name="addMGuest" method="get" action="add_student.jsp">
 			<article>
 		        <header>
-		          <h2>Add attendee</h2>
+		          <h2>Add Student</h2>
 		          <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
 		        </header>
 		        <div class="content">
 					<fieldset>
 				        <div class="component">
-				        	<input type="hidden" name="ms_id" id="ms_id" value="<%= ms_id %>">
-				        	<input type="hidden" name="m_id" id="m_id" value="<%= m_id %>">  
+				        	<input type="hidden" name="ls_id" id="ls_id" value="<%= ls_id %>">
+				        	<input type="hidden" name="l_id" id="l_id" value="<%= l_id %>">  
 				            <label for="searchBoxAddAttendee" class="label">Search User:</label>
 		              		<input type="text" name="searchBox" id="searchBox" class="searchBox" tabindex="37" title="Search user">
 		              		<button type="submit" name="search" class="search" tabindex="38" title="Search user"></button><div id="responseDiv"></div>
@@ -219,35 +242,35 @@ $(function(){
 				</div>
 		    </article>
 			<article>
-				<header id="expandAttendee">
-					<h2>Meeting Attendee List</h2>
+				<header id="expandGuest">
+					<h2>Student List</h2>
 					<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
 				</header>
 				<div class="content">
 					<fieldset>
 						<div id="currentEventDiv" class="tableComponent">
-							<table id="tbAttendee" border="0" cellpadding="0" cellspacing="0">
+							<table id="tbGuest" border="0" cellpadding="0" cellspacing="0">
 								<thead>
 									<tr>
 										<th class="firstColumn" tabindex="16">Id<span></span></th>
 										<th>Nick Name<span></span></th>
-										<th>Moderator<span></span></th>
+										<th>Banned<span></span></th>
 										<th title="Action" class="icons" align="center">Modify</th>
 										<th width="65" title="Remove" class="icons" align="center">Remove</th>
 									</tr>
 								</thead>
 								<tbody>
-								<% for (i=0; i<eventAttendee.size(); i++) { %>
+								<% for (i=0; i<stuList.size(); i++) { %>
 									<tr>
-										<td class="row"><%= eventAttendee.get(i).get(0) %></td>
-										<td><%= eventAttendee.get(i).get(3) %></td>
-										<td><%= eventAttendee.get(i).get(2).equals("1") ? "Yes" : "" %></td>
+										<td class="row"><%= stuList.get(i).get(0) %></td>
+										<td><%= stuList.get(i).get(5) %></td>
+										<td><%= stuList.get(i).get(4).equals("1") ? "Yes" : "" %></td>
 										<td class="icons" align="center">
-											<a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&mod=<%= eventAttendee.get(i).get(0) %>" class="modify">
+											<a href="add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&mod=<%= stuList.get(i).get(0) %>" class="modify">
 											<img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
 										</a></td>
 										<td class="icons" align="center">
-											<a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&remove=<%= eventAttendee.get(i).get(0) %>" class="remove">
+											<a href="add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&remove=<%= stuList.get(i).get(0) %>" class="remove">
 											<img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
 										</a></td>
 									</tr>
@@ -263,7 +286,7 @@ $(function(){
 				<div class="component">
 					<div class="buttons">
 	                	<button type="button" name="button" id="returnButton"  class="button" title="Click here to return to view setting page" 
-	                    	onclick="window.location.href='view_event.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Return to Event Page</button>
+	                    	onclick="window.location.href='view_event.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Return to Event Page</button>
 	              	</div>
                	</div>
             </article>

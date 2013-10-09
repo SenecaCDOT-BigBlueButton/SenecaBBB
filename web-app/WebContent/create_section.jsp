@@ -9,18 +9,23 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Create Section</title>
-	<link rel="icon" href="http://www.cssreset.com/favicon.png">
-	<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
-	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
-	<script type="text/javascript" src="js/componentController.js"></script>
+    <link rel="icon" href="http://www.cssreset.com/favicon.png">
+    <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.timepicker.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
+    <link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>   
+    <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>    
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
 
 <%
     //Start page validation
@@ -130,6 +135,10 @@
                     }
 
                 }
+            });
+            //Select boxes
+            $(function(){
+                $('select').selectmenu();
             });
         });
     </script>

@@ -51,11 +51,20 @@
 	<link rel="icon" href="http://www.cssreset.com/favicon.png">
 	<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
+	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
+	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
+	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.timepicker.css">
+	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
+	<link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>	
 	<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-	<script type="text/javascript" src="js/componentController.js"></script>
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
+	<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
+	<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>	
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
 </head>
 
 <body>
@@ -71,39 +80,39 @@
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%= message %></div>
         </header>
-               <form name="createProfessor" id="createProfessor" method="post" action="persist_professor.jsp">
-            <article>
-                <header>
-                    <h2>Professor Form</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
-                </header>
-                <div class="content">
-                    <fieldset>
-                        <div class="component">
-                            <label for="professorid" class="label">Professor ID:</label>
-                            <input type="text" name="professorid" id="professorid" class="input" tabindex="2" title="Please Enter Professor id" >                         
-                        </div>
-                        <div class="component">
-                            <label for="sectionList" class="label">Section List:</label>
-                            <select name="sectionList" id="sectionList" title="Please Select a section">
-                            <% for(int i=0;i<allSection.size();i++){ %>
-                                <option><%= allSection.get(i).get(0).concat(" ").concat(allSection.get(i).get(1)).concat(" ").concat(allSection.get(i).get(2)).concat(" ").concat(allSection.get(i).get(3)) %>  </option><%} %>
-                            </select>
-                        </div>
-                        <div class="component">
-                            <div class="buttons">                        
-                               <button type="submit" name="createProfessor" id="createProfessor" class="button" title="Click here to create">Create</button>                                                                                       
-                               <button type="reset" name="resetCourse" id="resetCourse" class="button" title="Click here to reset">Reset</button>
-                               <button type="button" name="button" id="cancelCourse"  class="button" title="Click here to cancel" 
-                                onclick="window.location.href='manage_professor.jsp'">Cancel</button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
-            </article>
+        <form name="createProfessor" id="createProfessor" method="post" action="persist_professor.jsp">
+	        <article>
+	            <header>
+	                <h2>Professor Form</h2>
+	                <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+	            </header>
+	            <div class="content">
+	                <fieldset>
+	                    <div class="component">
+	                        <label for="professorid" class="label">Professor ID:</label>
+	                        <input type="text" name="professorid" id="professorid" class="input" tabindex="2" title="Please Enter Professor id" >                         
+	                    </div>
+	                    <div class="component">
+	                        <label for="sectionList" class="label">Section List:</label>
+	                        <select name="sectionList" id="sectionList" title="Please Select a section">
+	                        <% for(int i=0;i<allSection.size();i++){ %>
+	                            <option><%= allSection.get(i).get(0).concat(" ").concat(allSection.get(i).get(1)).concat(" ").concat(allSection.get(i).get(2)).concat(" ").concat(allSection.get(i).get(3)) %>  </option><%} %>
+	                        </select>
+	                    </div>
+	                    <div class="component">
+	                        <div class="buttons">                        
+	                           <button type="submit" name="createProfessor" id="createProfessor" class="button" title="Click here to create">Create</button>                                                                                       
+	                           <button type="reset" name="resetCourse" id="resetCourse" class="button" title="Click here to reset">Reset</button>
+	                           <button type="button" name="button" id="cancelCourse"  class="button" title="Click here to cancel" 
+	                            onclick="window.location.href='manage_professor.jsp'">Cancel</button>
+	                        </div>
+	                    </div>
+	                </fieldset>
+	            </div>
+	        </article>
         </form> 
     </section>
-       <script>    
+    <script>    
    // form validation, edit the regular expression pattern and error messages to meet your needs
        $(document).ready(function(){
             $('#createProfessor').validate({
@@ -121,8 +130,12 @@
                     }
                 }
             });
+            //Select boxes
+            $(function(){
+                $('select').selectmenu();
+            });
         });
-  </script>
+    </script>
     <jsp:include page="footer.jsp"/>
 </div>
 </body>

@@ -9,9 +9,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<head>
     <title>Seneca | System Settings</title>
     <link rel="icon" href="http://www.cssreset.com/favicon.png">
     <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
@@ -91,7 +90,7 @@
     <section>
         <header> 
             <!-- BREADCRUMB -->
-            <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="system_settings.jsp" tabindex="14">system settings</a></p>
+            <p><a href="calendar.jsp" tabindex="13">home</a> >> <a href="system_settings.jsp" tabindex="14">system settings</a></p>
             <!-- PAGE NAME -->
             <h1>System Settings</h1>
             <!-- WARNING MESSAGES -->
@@ -188,6 +187,12 @@
         		value = $(target).text();
         		$(target).attr('value',value);
         		console.log(value);
+        	});
+        	$("tr td:first-child").addClass("row");
+        	$("#predefinedRoleList thead tr th").click(function(e){
+        		var target = e.target;
+        		$(target).css({"background-color":"#454545","color":"#FFFFFF"}).siblings().css({"background-color":"#E0E0E0","color":"#454545"});
+        		
         	});
         });
     </script>

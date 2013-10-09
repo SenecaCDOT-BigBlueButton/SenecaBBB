@@ -27,9 +27,16 @@
 	            <p>Seneca@York Campus </p>
 	            <p>70 The Pond Road  </p>
 	            <p>Toronto, Ontario, M3J 3M6  </p>
-	            <p> Phone: (416) 491-5050  </p>
-	            <p>Fax: (416) 491-5050 </p>
-	            <p>Email:SuperAdmin@senecacollege.ca</p>
+	            <p>Phone: (416) 491-5050 ext 33220  </p>
+	            
+
+            </div>
+            <div class="contactus">                
+                <h2>Contact Persons</h2>
+                <p>Fardad Soleimanloo</p>
+                <p><a href="mailto:fardad.soleimanloo@senecacollege.ca?subject=senecaBBB">fardad.soleimanloo@senecacollege.ca</a></p>
+                <p>Chad Pilkey</P>
+                <p><a href="mailto:chad.pilkey@senecacollege.ca?subject=senecaBBB">chad.pilkey@senecacollege.ca</a></p>                             
             </div>
                             
             <!-- TODO: in order to let user contact super admin, it's better to allow use to send message here 

@@ -1115,3 +1115,16 @@ div.contactus{
 div.contactus p{
 	padding:5px;
 }
+
+div.contactus a:link, div.help a:link{
+     color:#FF0000;    
+}
+div.contactus a:visited, div.help a:visited{
+     color:#00FF00;    
+}
+div.contactus a:hover,div.help a:hover{
+     color:#FF00FF;    
+}
+div.contactus a:active,div.help a:active{
+     color:#0000FF;    
+}

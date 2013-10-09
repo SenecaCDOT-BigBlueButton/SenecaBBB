@@ -413,18 +413,18 @@ $(document).ready(function() {
 							</table>
 						</div>
 					</fieldset>
-					<hr />
-					<fieldset>
-						<div class="actionButtons">
+					<br /><hr /><br />
+					<div class="component">
+						<div class="buttons">
 						<% if (status==1) { %>
 							<button type="button" name="button" id="addAttendee" class="button" title="Click here to add Attendee" 
-								onclick="window.location.href='add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Add Attendee</button>
+								onclick="window.location.href='add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Attendee List</button>
 						<% } else if (status==3) { %>
 							<button type="button" name="button" id="addStudent" class="button" title="Click here to add Student" 
-								onclick="window.location.href='add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Add Student</button>
+								onclick="window.location.href='add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Student List</button>
 						<% } %>
-						</div>
-					</fieldset>
+	              		</div>
+               		</div>
 				</div>
 			</article>
 			<% } %>
@@ -457,18 +457,18 @@ $(document).ready(function() {
 							</table>
 						</div>
 					</fieldset>
-					<hr />
-					<fieldset>
-						<div class="actionButtons">
+					<br /><hr /><br />
+					<div class="component">
+						<div class="buttons">
 						<% if (status==1) { %>
 							<button type="button" name="button" id="addMGuest" class="button" title="Click here to add Meeting Guest" 
-								onclick="window.location.href='add_MGuest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Add Meeting Guest</button>
+								onclick="window.location.href='add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Guest List</button>
 						<% } else if (status==3) { %>
 							<button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Guest" 
-								onclick="window.location.href='add_LGuest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Add Lecture Guest</button>
+								onclick="window.location.href='add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Guest List</button>
 						<% } %>
-						</div>
-					</fieldset>
+	              		</div>
+               		</div>
 				</div>
 			</article>
 			<% } %>

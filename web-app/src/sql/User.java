@@ -535,7 +535,7 @@ public class User extends Sql {
         return flag;
     }
     
-    public boolean isLectureStudent(MyBoolean bool, String ls_id, String l_id, String bu_id) {
+    public boolean isLectureStudent(MyBoolean bool, String ls_id, String bu_id) {
         _sql = "SELECT s.bu_id "
                 + "FROM student s "
                 + "JOIN lecture_schedule ls "
@@ -812,6 +812,29 @@ public class User extends Sql {
                 + "AND c_id = '" + c_id + "' "
                 + "AND sc_id = '" + sc_id + "' "
                 + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setBannedFromSection(
+            String bu_id, String c_id, String sc_id, String sc_semesterid) {
+        _sql = "UPDATE student "
+                + "set s_isbanned = not s_isbanned "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "AND c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setBannedFromLecture(String bu_id, String ls_id) {
+        _sql = "UPDATE student s "
+                + "JOIN lecture_schedule ls "
+                + "ON s.c_id = ls.c_id "
+                + "AND s.sc_id = ls.sc_id "
+                + "AND s.sc_semesterid = ls.sc_semesterid "
+                + "SET s.s_isbanned = not s.s_isbanned "
+                + "WHERE s.bu_id = '" + bu_id + "' "
+                + "AND ls.ls_id = '" + ls_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     

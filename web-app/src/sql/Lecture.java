@@ -369,6 +369,15 @@ public class Lecture extends Sql {
         return _dbAccess.updateDB(_sql);
     }
     
+    public boolean setLectureGuestIsMod(String bu_id, String ls_id, String l_id) {
+        _sql = "UPDATE guest_lecturer "
+                + "SET gl_ismod = not gl_ismod "
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "' "
+                + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     /**
      * 
      * @param num (1, 2, 3)<p>

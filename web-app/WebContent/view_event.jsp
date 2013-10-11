@@ -140,7 +140,7 @@
 			}
 		}
 		if (status == 0) {
-		    if (!user.isLectureStudent(myBool, ls_id, l_id, userId)) {
+		    if (!user.isLectureStudent(myBool, ls_id, userId)) {
 			    message =  "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE05");
 			    response.sendRedirect("logout.jsp?message=" + message);
 				return;   

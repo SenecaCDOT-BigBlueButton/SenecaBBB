@@ -63,12 +63,6 @@
 	userSettings = usersession.getUserSettingsMask();
 	meetingSettings = usersession.getUserMeetingSettingsMask();
 	roleMask = usersession.getRoleMask();
-    if(isProfessor){
-	   section.getProfessor(professor,userId);
-    }
-    if(isSuper){
-	   section.getSectionInfo(professor);
-    }
 %>
 
 <script type="text/javascript">

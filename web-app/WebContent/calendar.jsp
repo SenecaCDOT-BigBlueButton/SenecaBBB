@@ -41,14 +41,14 @@
 	Meeting meet = new Meeting(dbaccess);
 	dbaccess.resetFlag();
 	System.out.println(meet.getMeetingsForUser(result, usersession.getUserId(), check1, check3));
-	System.out.println(dbaccess.getErrLog());
+	System.out.println("Meeting: " + meet.getErrLog());
 	System.out.println(result.size());
 	String meetingJSON = meetingDBToJSON(result);
 	
 	Lecture lect = new Lecture(dbaccess);
 	dbaccess.resetFlag();
 	System.out.println(lect.getLecturesForUser(result, usersession.getUserId(), check2, check4));
-	System.out.println(dbaccess.getErrLog());
+	System.out.println("Lecture: " + lect.getErrLog());
 	System.out.println(result.size());
 	String lectureJSON = lectureDBToJSON(result);
 	%>

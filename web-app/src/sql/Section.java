@@ -151,7 +151,7 @@ public class Section extends Sql {
      */
     public boolean getProfessor(ArrayList<ArrayList<String>> result,String bu_id) {
         _sql = "SELECT * "
-                + "FROM professor"
+                + "FROM professor "
         		+ "WHERE bu_id = '" + bu_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }

@@ -147,6 +147,15 @@ public class Department extends Sql {
         return _dbAccess.updateDB(_sql);
     }
     
+    public boolean setDepartmentAdmin(
+            String bu_id, String d_code) {
+        _sql = "UPDATE user_department "
+                + "set ud_isadmin = not ud_isadmin "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "AND d_code = '" + d_code + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     public boolean createDepartment(String d_code, String d_name) {
         _sql = "INSERT INTO department VALUES ('"
                 + d_code + "', '" + d_name + "')";

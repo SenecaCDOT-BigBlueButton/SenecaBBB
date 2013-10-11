@@ -39,7 +39,7 @@ public class Sql {
     
     public String getErrMsg(String code) {
         resetErrorFlag();
-        String retMsg = "<br />SQL Error Code: " + getErrLog() 
+        String retMsg = "<br />SQL Error Code: " + getErrCode() 
                 + "<br />Error Submission Code : " + code
                 + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
         return retMsg;

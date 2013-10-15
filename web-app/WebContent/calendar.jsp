@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Seneca | Change Settings</title>
+	<title>Seneca | Event Calendar</title>
 	<link rel="icon" href="http://www.cssreset.com/favicon.png">
 	<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">

@@ -24,20 +24,16 @@
 	else {
 		String message = "";
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
-		User user = new User(dbaccess);
-		
+		User user = new User(dbaccess);		
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
-		String email = request.getParameter("email");
-		
-		if (firstName == "" || lastName == "" || email == "") {
-			//response.sendRedirect("invite_guest.jsp?message=Please complete all fields&firstName=" + firstName + "&lastName=" + lastName + "&email=" + email);
-			out.write ("Please fill in all the fields");
-			return;
+		String email = request.getParameter("email");	
+		if (firstName == "" || lastName == "" || email == "" ) {
+			response.sendRedirect("invite_guest.jsp?message=Please fill all necessary information");			
 		}
 		else {
 			String bu_id = "guest." + firstName.toLowerCase().substring(0, 1) + lastName.toLowerCase();
-			String key = hash.createRandomSalt();
+			String key = hash.createRandomSalt();	
 			ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 			user.getUsersLike(result, bu_id);
 			System.out.println(result);
@@ -49,19 +45,25 @@
 					counter++;
 				result.remove(0);
 			}
-			if (counter > 0)
+			if (counter > 0){
 				bu_id += counter;
-			System.out.println(bu_id);
-			
+			}
+			session.setAttribute("key", key);
+			session.setAttribute("bu_id", bu_id);
+			session.setAttribute("email", email);
 			if (user.createUser(bu_id, "This is a guest account", false, 3)) {
 				if (user.createNonLdapUser(bu_id, firstName, lastName, key, key, email)) {
-					//response.sendRedirect("guest_setup.jsp?key=" + key + "&bu_id=" + bu_id);
-					out.write("User with username " + bu_id + " successfully created.");
+				//	response.sendRedirect("email.jsp?key=" + key + "&bu_id=" + bu_id + "&email=" + email);
+				    response.sendRedirect("email.jsp?&firstName=" + firstName + "&lastName=" + lastName);
+					//Send an email to guest to change a new password with the following link:
+				    //http://localhost:1550/SenecaBBB/guest_setup.jsp?" + key + "&bu_id=" + bu_id
+					//out.write("User with username " + bu_id + " successfully created.");
 					return;
 				}
 				else {
-					//response.sendRedirect("invite_guest.jsp?message=Please complete all fields&firstName=" + firstName + "&lastName=" + lastName + "&email=" + email);
-					out.write("Please fill in all fields");
+					//fallback to invite_guest.jsp and repopulate firstName, lastName,email
+					 response.sendRedirect("invite_guest.jsp?&message=Please complete all fields&firstName=" + firstName + "&lastName=" + lastName + "&email=" + email);
+					//out.write("Please fill in all fields");
 				}
 			}
 		}

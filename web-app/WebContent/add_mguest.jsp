@@ -213,10 +213,10 @@ $(function(){
 				        	<input type="hidden" name="m_id" id="m_id" value="<%= m_id %>">  
 				            <label for="searchBoxAddAttendee" class="label">Search User:</label>
 		              		<input type="text" name="searchBox" id="searchBox" class="searchBox" tabindex="37" title="Search user">
-		              		<button type="submit" name="search" class="search" tabindex="38" title="Search user"></button><div id="responseDiv"></div>
-				        </div>
+		              		<button type="submit" name="search" class="search" tabindex="38" title="Search user"></button><div id="responseDiv"></div>				                                       
+                        </div>				       
 					</fieldset>
-				</div>
+		        </div>
 		    </article>
 			<article>
 				<header id="expandGuest">
@@ -263,7 +263,8 @@ $(function(){
 				<div class="component">
 					<div class="buttons">
 	                	<button type="button" name="button" id="returnButton"  class="button" title="Click here to return to view setting page" 
-	                    	onclick="window.location.href='view_event.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Return to Event Page</button>
+	                    	onclick="window.location.href='view_event.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Return to Event Page</button>	              	                                        
+	              	
 	              	</div>
                	</div>
             </article>

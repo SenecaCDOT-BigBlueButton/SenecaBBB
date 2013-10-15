@@ -54,6 +54,20 @@ public class Admin extends Sql {
     }
     
     /**
+     * Get system settings information<p>
+     * Fields:<p>
+     * (0)key_name (1)key_title (2)key_value 
+     * @param result
+     * @return
+     */
+    public Boolean getSystemInfoByKeyName(ArrayList<ArrayList<String>> result,String key_name){
+        _sql = "SELECT * "
+                + "FROM bbb_admin "
+        		+ "WHERE key_name='" + key_name + "'";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
      * Get timeout setting on system<p>
      * Fields:<p>
      * (0)key_name (1)key_title (2)key_value 

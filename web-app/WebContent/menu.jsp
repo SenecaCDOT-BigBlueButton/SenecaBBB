@@ -23,6 +23,7 @@
 				}
 				if (usersession.isProfessor() || usersession.isSuper()){
 					out.write("<div class=\"menu\"><li id=\"classSettings\"><a href=\"class_settings.jsp\" tabindex=\"12\" title=\"Click here to manage class settings\">Class Settings</a></li></div>");
+					out.write("<div class=\"menu\"><li id=\"inviteGuest\"><a href=\"invite_guest.jsp\" tabindex=\"13\" title=\"Click here to create guest account\">Invite Guest</a></li></div>");					
 				}
 			%>
 		</ul>

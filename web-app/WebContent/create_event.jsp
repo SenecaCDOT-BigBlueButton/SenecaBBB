@@ -1,7 +1,6 @@
 <%@page import="db.DBConnection"%>
-<%@page import="sql.User"%>
+<%@page import="sql.*"%>
 <%@page import="java.util.*"%>
-<%@page import="sql.Section"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -19,7 +18,6 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
 <link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript" src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
@@ -56,6 +54,8 @@
 	
 	User user = new User(dbaccess);
     Section section = new Section(dbaccess);
+    Meeting meeting = new Meeting(dbaccess);
+    Lecture lecture = new Lecture(dbaccess);
     ArrayList<ArrayList<String>> professor = new ArrayList<ArrayList<String>>();
 	HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
 	HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
@@ -63,6 +63,10 @@
 	userSettings = usersession.getUserSettingsMask();
 	meetingSettings = usersession.getUserMeetingSettingsMask();
 	roleMask = usersession.getRoleMask();
+	if(isProfessor)
+	    lecture.getProfessorCourse(professor,userId);
+    if(isSuper)
+	    lecture.getAllProfessorCourse(professor);
 %>
 
 <script type="text/javascript">
@@ -111,11 +115,21 @@
 			$(".checkbox .box:eq(3)").attr("aria-checked", "false");
 			$(".checkbox .box:eq(3)").siblings().last().prop("checked", false);
 		<%}%>
+        $("#dropdownDayStarts").selectmenu({'refresh': true});
+        $("#dropdownMonthStarts").selectmenu({'refresh': true});
+        $("#dropdownYearStarts").selectmenu({'refresh': true});
+        $("#dropdownDayEnds").selectmenu({'refresh': true});
+        $("#dropdownMonthEnds").selectmenu({'refresh': true});
+        $("#dropdownYearEnds").selectmenu({'refresh': true});
+        $("#dropdownEventType").selectmenu({'refresh': true});
+        $("#dropdownRecurrence").selectmenu({'refresh': true});
+        $("#courseCode").selectmenu({'refresh': true});
+        $('#startTime').timepicker({ 'scrollDefaultNow': true });
 	});
-
+/*
 	//Table
 	$(screen).ready(function() {
-		/* ATTENDEES LIST */
+		// ATTENDEES LIST 
 		$('#addAttendee').dataTable({
 			"bPaginate": false,
 	        "bLengthChange": false,
@@ -127,15 +141,14 @@
 		$.fn.dataTableExt.sErrMode = 'throw';
 		$('.dataTables_filter input').attr("placeholder", "Filter entries");
 			
-		/* ATTENDEES LIST */	
+		// ATTENDEES LIST 	
 		$('#attendeesList').dataTable({"sPaginationType": "full_numbers"});
 		$('#attendeesList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
 		$.fn.dataTableExt.sErrMode = 'throw';
 		$('.dataTables_filter input').attr("placeholder", "Filter entries");
-		$('#startTime').timepicker({ 'scrollDefaultNow': true });
-
-
+		
 	});
+*/
 	//Date picker
 	$(function(){
 		var month = new Array(12);
@@ -162,9 +175,7 @@
 				$("#dropdownDayStarts").val(startDate.getUTCDate());
 				$("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
 				$("#dropdownYearStarts").val(startDate.getUTCFullYear());
-				$("#dropdownDayStarts").selectmenu({'refresh': true});
-				$("#dropdownMonthStarts").selectmenu({'refresh': true});
-				$("#dropdownYearStarts").selectmenu({'refresh': true});
+
 			}
 		};
 		var datePickerEnds = {
@@ -177,18 +188,13 @@
 				$("#dropdownDayEnds").val(endDate.getUTCDate());
 				$("#dropdownMonthEnds").val(month[endDate.getUTCMonth()]);
 				$("#dropdownYearEnds").val(endDate.getUTCFullYear());
-				$("#dropdownDayEnds").selectmenu({'refresh': true});
-				$("#dropdownMonthEnds").selectmenu({'refresh': true});
-				$("#dropdownYearEnds").selectmenu({'refresh': true});
+
 			}
 		};
 		$("#datePickerStarts").datepicker(datePickerStarts);
 		$("#datePickerEnds").datepicker(datePickerEnds);
 	});
-	//Select boxes
-	$(function(){
-		$('select').selectmenu();
-	});
+
 	
 </script>
 <script type="text/javascript">
@@ -276,17 +282,21 @@
             </div>
             <div class="component" id="lectureCourse">
               <label for="courseCode" class="label">Course Information:</label>
-           <select name="courseCode" id="courseCode" tabindex="15" title="Course Name" style="width: 402px"  autofocus>
-                  <% if(isProfessor){for(int i=0;i<professor.size();i++){  %>
-                  <option value="<%= professor.get(i).get(1).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %>" >
-                  <%= professor.get(i).get(1).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %></option>
+              <select name="courseCode" id="courseCode" tabindex="15" title="Course Name" style="width: 402px"  autofocus>
+                  <% if(isProfessor){
+                	  for(int i=0;i<professor.size();i++){  %>
+                          <option value="<%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)) %>" >
+                  <%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)) %></option>
                   <% }
                   }
-                  if(isSuper){ 
+                  else if(isSuper){ 
                       for(int i=0;i<professor.size();i++){  %>
-                      <option value="<%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)) %>" >
-                      <%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)) %></option><%} }%>
-                  
+                          <option value="<%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %>" >
+                          <%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %></option>
+                    <%}
+                  }else{%>
+                	  <%=" <option> You don't have any courses yet!</option>"%>
+                 <% }%>                 
               </select>
             </div>
 

@@ -151,6 +151,17 @@ public class Lecture extends Sql {
     } 
 
     /**
+     * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid
+     * @param result
+     * @return
+     */
+    public boolean getAllProfessorCourse(ArrayList<ArrayList<String>> result) {
+        _sql = "SELECT bu_id,c_id,sc_id,sc_semesterid "
+                + "FROM professor ";            
+        return _dbAccess.queryDB(result, _sql);
+    } 
+
+    /**
      * (0)l_iscancel
      * @param result
      * @param ls_id

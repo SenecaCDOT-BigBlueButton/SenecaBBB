@@ -43,6 +43,10 @@ public static String getMonthNumber(String month) {
 <% 
 	//Start page validation
 	String userId = usersession.getUserId();
+	Boolean isProfessor = false;
+	Boolean isSuper = false;
+	isProfessor=usersession.isProfessor();
+	isSuper =usersession.isSuper();
 	if (userId.equals("")) {
 		response.sendRedirect("index.jsp?error=Please log in");
 		return;
@@ -78,9 +82,19 @@ public static String getMonthNumber(String month) {
     String duration = request.getParameter("eventDuration");
     String description = request.getParameter("eventDescription");
     String eventType = request.getParameter("dropdownEventType");
-    String c_id = request.getParameter("courseCode").split(" ")[0];
-    String sc_id = request.getParameter("courseCode").split(" ")[1];
-    String sc_semesterid =request.getParameter("courseCode").split(" ")[2];
+    String c_id=null;
+    String sc_id=null;
+    String sc_semesterid=null;
+    if(isProfessor){
+	     c_id = request.getParameter("courseCode").split(" ")[0];
+	     sc_id = request.getParameter("courseCode").split(" ")[1];
+	     sc_semesterid =request.getParameter("courseCode").split(" ")[2];
+    }
+    if(isSuper){
+         c_id = request.getParameter("courseCode").split(" ")[1];
+         sc_id = request.getParameter("courseCode").split(" ")[2];
+         sc_semesterid =request.getParameter("courseCode").split(" ")[3];
+    }
     String spec = null;
 	
     //daily weekly recurrence

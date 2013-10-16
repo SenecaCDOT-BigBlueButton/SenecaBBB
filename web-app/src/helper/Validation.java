@@ -78,4 +78,10 @@ public class Validation {
         boolean flag = checkEmpty(bu_id, "User Id");
         return flag;
     }
+    
+    public static boolean checkPresentationTitle(String p_title) {
+        boolean flag = checkEmpty(p_title, "Presentation Title");
+        return flag;
+    }
+
 }    

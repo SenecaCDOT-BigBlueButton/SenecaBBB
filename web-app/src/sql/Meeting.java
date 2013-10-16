@@ -237,14 +237,14 @@ public class Meeting extends Sql {
     
     /**
      * Fields<p>
-     * (0)mp_title
+     * (0)mp_title (1)ls_id (2)l_id
      * @param result
      * @param ms_id
      * @param m_id
      * @return
      */
     public boolean getMeetingPresentation(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
-        _sql = "SELECT mp_title "
+        _sql = "SELECT * "
                 + "FROM meeting_presentation "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
@@ -395,6 +395,20 @@ public class Meeting extends Sql {
         return flag;
     }
     
+    public boolean isMPresentation(MyBoolean bool, String mp_title, String ms_id, String m_id) {
+        _sql = "SELECT 1 "
+                + "FROM meeting_presentation "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
+                + "AND mp_title = '" + mp_title + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
     public boolean defaultMeetingSetting(String ms_id, String m_id) {
         _sql = "UPDATE meeting as a "
                 + "CROSS JOIN (SELECT key_value FROM bbb_admin WHERE key_name='default_meeting') as b "
@@ -478,6 +492,14 @@ public class Meeting extends Sql {
                 + "SET ma_ismod = not ma_ismod "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setMeetingPresentation(String mp_title, String ms_id, String m_id) {
+        _sql = "UPDATE meeting_presentation "
+                + "SET mp_title = '" + mp_title + "' "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "WHERE m_id = '" + m_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     

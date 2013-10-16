@@ -208,14 +208,14 @@ public class Lecture extends Sql {
 
     /**
      * Fields<p>
-     * (0)lp_title
+     * (0)lp_title (1)ls_id (2)l_id
      * @param result
      * @param ls_id
      * @param l_id
      * @return
      */
     public boolean getLecturePresentation(ArrayList<ArrayList<String>> result, String ls_id, String l_id) {
-        _sql = "SELECT lp_title "
+        _sql = "SELECT * "
                 + "FROM lecture_presentation "
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "'";
@@ -343,6 +343,20 @@ public class Lecture extends Sql {
         return flag;
     }
     
+    public boolean isLPresentation(MyBoolean bool, String lp_title, String ls_id, String l_id) {
+        _sql = "SELECT 1 "
+                + "FROM lecture_presentation "
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "AND l_id = '" + l_id + "' "
+                + "AND lp_title = '" + lp_title + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
     public boolean setLectureDescription(String ls_id, String l_id, String l_description) {
         _sql = "UPDATE lecture "
                 + "SET l_description = '" + l_description + "' "
@@ -386,6 +400,14 @@ public class Lecture extends Sql {
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setLecturePresentation(String lp_title, String ls_id, String l_id) {
+        _sql = "UPDATE lecture_presentation "
+                + "SET lp_title = '" + lp_title + "' "
+                + "WHERE ls_id = '" + ls_id + "' "
+                + "WHERE l_id = '" + l_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     

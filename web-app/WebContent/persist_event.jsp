@@ -111,7 +111,7 @@ public static String getMonthNumber(String month) {
 
 	String dropdownOccursBy = request.getParameter("dropdownOccursBy");
 	String dropdownDayoftheMonth = request.getParameter("dropdownDayoftheMonth"); // when occurs by "day of the month"
-    String selectedDayofWeek =  request.getParameter("selectedDayofWeek");
+    String selectedDayofWeek =  request.getParameter("selectedDayofWeek"); // sunday is 0, saturday is 6
 	
 	//get proper event "spec" pattern
 	if (recurrence.equals("Only once")){
@@ -132,9 +132,11 @@ public static String getMonthNumber(String month) {
         System.out.println("Weekly");
          if(endType.equals("After # of occurrence(s)")){
             spec = "3;1;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(weekString);
+        }else if(endType.equals("After # of week(s)")){
+        	spec = "3;2;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(weekString);
         }
          else{
-            spec = "3;2;".concat(repeatEndDate).concat(";").concat(repeatEvery).concat(";").concat(weekString);
+            spec = "3;3;".concat(repeatEndDate).concat(";").concat(repeatEvery).concat(";").concat(weekString);
          }
          System.out.println("Week spec: ".concat(spec));
     }

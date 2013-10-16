@@ -464,7 +464,7 @@
               <label for="dropdownEnds" class="label">Ends:</label>
               <select name="dropdownEnds" id="dropdownEnds" title="Ends" tabindex="22" role="listbox" style="width: 402px">
                 <option role="option" selected="selected">After # of occurrence(s)</option>
-                <option role="option">On specified date</option>
+                <option role="option">On specified date</option>               
               </select>
             </div>
             <div id="occurrencesNumber" class="component">

@@ -279,7 +279,9 @@ $(screen).ready(function() {
 					$("#occurrencesNumber").css("display", "block");
 					$("#occurrences").val("1");
 					$("#occurrenceEnds").css("display", "none");
-					$("#dropdownEnds").append("<option role='option'>After # of week(s)</option>");
+					if($("#dropdownEnds").find("option").length == 2){
+						$("#dropdownEnds").append("<option role='option'>After # of week(s)</option>");
+					}
 					$("#dropdownEnds").val("After # of occurrence(s)");
 					$("#dropdownEnds").selectmenu({'refresh': true});
 					

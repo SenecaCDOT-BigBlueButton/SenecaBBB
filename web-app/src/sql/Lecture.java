@@ -427,6 +427,22 @@ public class Lecture extends Sql {
     }
 
     /**
+     * @param ls_id
+     * @param l_id
+     * @param ls_spec
+     * @param ls_duration
+     * @return
+     */
+    public boolean updateLectureSchedule(String ls_id,String ls_inidatetime,String ls_spec,String ls_duration) {
+        _sql = "UPDATE lecture_schedule "
+           	 + "SET ls_inidatetime= '" + ls_inidatetime + "' "
+           	 + ",ls_spec= '" + ls_spec + "' "
+           	 + ",ls_duration= '" + ls_duration + "' "
+           	 + " WHERE ls_id= '" + ls_id +"' ";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
      * 
      * @param num (1, 2, 3)<p>
      * (1) change the current Lecture only<p>

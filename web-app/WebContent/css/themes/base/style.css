@@ -636,10 +636,14 @@ section form .buttons .button:active, section form .buttons .actionButton:active
 	background-color: #9F100B;
 }
 /* WEEK - CHECKBOX AND RADIOBUTTON BUTTONS*/
-section form article fieldset div.component#week, section form article fieldset div.component#selectDayoftheWeek {
+section form article fieldset div.component#week, section form article fieldset div.component#selectDayoftheWeek,
+section form article fieldset div.component#weekCheckbox,section form article fieldset div.component#dayoftheWeek 
+{
 	margin-left: 216px;
 }
-section form article fieldset div.component#week .weekday, section form article fieldset div.component#selectDayoftheWeek .weekday {
+section form article fieldset div.component#week .weekday, section form article fieldset div.component#selectDayoftheWeek .weekday,
+section form article fieldset div.component#weekCheckbox .weekday,section form article fieldset div.component#dayoftheWeek .weekday 
+{
 	padding: 3px;
 	width: 50px;
 	height: 39px;
@@ -655,15 +659,22 @@ section form article fieldset div.component#week .weekday, section form article 
 	-o-transition: all 0.1s;
 	transition: all 0.1s;
 }
-section form article fieldset div.component#week .weekday:hover, section form article fieldset div.component#selectDayoftheWeek .weekday:hover {
+section form article fieldset div.component#week .weekday:hover, section form article fieldset div.component#selectDayoftheWeek .weekday:hover,
+section form article fieldset div.component#weekCheckbox .weekday:hover,section form article fieldset div.component#dayoftheWeek .weekday:hover
+{
 	background-color: #9F100B;
 }
-section form article fieldset div.component#week .weekday:active, section form article fieldset div.component#selectDayoftheWeek .weekday:active {
+section form article fieldset div.component#week .weekday:active, section form article fieldset div.component#selectDayoftheWeek .weekday:active,
+section form article fieldset div.component#weekCheckbox .weekday:active,section form article fieldset div.component#dayoftheWeek .weekday:active
+{
 	background-color: #9F100B;
 }
-section form article fieldset div.component#week .weekday.selectedWeekday, section form article fieldset div.component#selectDayoftheWeek .weekday.selectedWeekday {
+section form article fieldset div.component#week .weekday.selectedWeekday, section form article fieldset div.component#selectDayoftheWeek .weekday.selectedWeekday,
+section form article fieldset div.component#weekCheckbox .weekday.selectedWeekday,section form article fieldset div.component#dayoftheWeek .weekday.selectedWeekday
+{
 	background-color: #454545;
 }
+
 /* FOOTER */
 footer {
 	display: table-row;

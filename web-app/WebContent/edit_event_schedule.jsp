@@ -61,7 +61,7 @@
 	String endsDay ="";
 	String occurences ="";
 	String endDate ="";
-	String weeklyString ="";
+	String weeklyString ="abcdefg";
 	String dayOfMonth = "";
 	String firstOccurDayOfWeek = "";
 	String allProfessorforLecture ="";
@@ -235,9 +235,14 @@
     
 </script>
 <script type="text/javascript">
-   weekString = "0000000";
    $(document).ready(function() {   
-       $('#week button').click(function(e) {
+	   //get the populate weekString from an event spec
+       var weekString = $('#weekString').val();      
+       if(weekString === undefined ){
+           weekString="0000000";
+       }
+     //  var weekDayNumber =$('#selectedDayofWeek').val(); 
+       $('#weekCheckbox button').click(function(e) {   	   
            var target = $(e.target);
            var weekday = target.text();
            if (weekday=='Sun')
@@ -263,7 +268,7 @@
            $("#weekString").attr("value", weekString);
                  
         });
-       $("#selectDayoftheWeek button").click(function(e){
+       $("#dayoftheWeek button").click(function(e){
            var target = $(e.target);
            var weekday = target.text();
            if (weekday=='Sun')
@@ -295,7 +300,7 @@
         <p><a href="calendar.jsp" tabindex="13">home</a> » edit event schedule</p>
         <h1>Edit Event Schedule</h1>
       </header>
-       <form method="get" action="persist_event.jsp" id="eventForm">
+       <form method="get" action="update_event_schedule.jsp" id="eventForm">
       <article>
         <header>
           <h2>Event Details</h2>
@@ -448,7 +453,7 @@
                 <option role="option" <% if(!firstOccurDayOfWeek.equals("")){out.print("selected=selected");} %>>First occurrence of the day of the week</option>
               </select>
             </div>
-            <div id="selectDayoftheMonth" class="component">
+            <div id="dayoftheMonthOptions" class="component">
               <label for="dayoftheMonth" class="label">Day of the month:</label>
               <select name="dayoftheMonth" id="dayoftheMonth" title="Day of the month" tabindex="27" role="listbox" style="width: 402px">
                 <option role="option" value="1" <% if(dayOfMonth.equals("1")){out.print("selected=selected");} %>>1st</option>
@@ -486,27 +491,27 @@
               </select>
             </div>
  
-            <div id="week" class="component" role="group">
-              <button type="button" name="Sunday" id="Sunday" class="weekday" title="Sunday" role="checkbox" aria-checked="false" tabindex="28">Sun</button>
-              <button type="button" name="Monday" id="Monday" class="weekday" title="Monday" role="checkbox" aria-checked="false" aria-label="" tabindex="29">Mon</button>
-              <button type="button" name="Tuesday" id="Tuesday" class="weekday" title="Tuesday" role="checkbox" aria-checked="false" tabindex="30">Tue</button>
-              <button type="button" name="Wednesday" id="Wednesday" class="weekday" title="Wednesday" role="checkbox" aria-checked="false" tabindex="31">Wed</button>
-              <button type="button" name="Thursday" id="Thursday" class="weekday" title="Thursday" role="checkbox" aria-checked="false" tabindex="32">Thu</button>
-              <button type="button" name="Friday" id="Friday" class="weekday" title="Friday" role="checkbox" aria-checked="false" tabindex="33">Fri</button>
-              <button type="button" name="Saturday" id="Saturday" class="weekday" title="Saturday" role="checkbox" aria-checked="false" tabindex="34">Sat</button>
-              <input type="hidden" name="weekString" id="weekString" >
+            <div id="weekCheckbox" class="component" role="group">
+              <button type="button" name="Sunday" id="Sunday" <% if(weeklyString.charAt(0)=='0' || weeklyString.charAt(0)=='a'){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> title="Sunday" role="checkbox"  tabindex="28">Sun</button>
+              <button type="button" name="Monday" id="Monday" <% if(weeklyString.charAt(1)=='0' || weeklyString.charAt(1)=='b'){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> title="Monday" role="checkbox"  aria-label="" tabindex="29">Mon</button>
+              <button type="button" name="Tuesday" id="Tuesday" <% if(weeklyString.charAt(2)=='0' || weeklyString.charAt(2)=='c'){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %>title="Tuesday" role="checkbox"  tabindex="30">Tue</button>
+              <button type="button" name="Wednesday" id="Wednesday" <% if(weeklyString.charAt(3)=='0' || weeklyString.charAt(3)=='d'){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> title="Wednesday" role="checkbox" tabindex="31">Wed</button>
+              <button type="button" name="Thursday" id="Thursday" <% if(weeklyString.charAt(4)=='0' || weeklyString.charAt(4)=='e'){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> title="Thursday" role="checkbox"  tabindex="32">Thu</button>
+              <button type="button" name="Friday" id="Friday" <% if(weeklyString.charAt(5)=='0' || weeklyString.charAt(5)=='f'){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> title="Friday" role="checkbox"  tabindex="33">Fri</button>
+              <button type="button" name="Saturday" id="Saturday" <% if(weeklyString.charAt(6)=='0' || weeklyString.charAt(6)=='g'){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> title="Saturday" role="checkbox" tabindex="34">Sat</button>
+              <input type="hidden" name="weekString" id="weekString" value="<%= weeklyString.equals("abcdefg")?"000000":weeklyString %>">
             </div>
      
 
-            <div id="selectDayoftheWeek" class="component" role="radiogroup">
-              <button type="button" name="Sunday" id="Sunday" class="weekday" value="Sun" title="Sunday" role="radio" aria-checked="false" aria-label="Sunday" tabindex="28">Sun</button>
-              <button type="button" name="Monday" class="weekday" value="Mon" title="Monday" role="radio" aria-checked="false" aria-label="" tabindex="29">Mon</button>
-              <button type="button" name="Tuesday" class="weekday" value="Tue" title="Tuesday" role="radio" aria-checked="false" tabindex="30">Tue</button>
-              <button type="button" name="Wednesday" class="weekday" value="Wed" title="Wednesday" role="radio" aria-checked="false" tabindex="31">Wed</button>
-              <button type="button" name="Thursday" class="weekday" value="Thu" title="Thursday" role="radio" aria-checked="false" tabindex="32">Thu</button>
-              <button type="button" name="Friday" class="weekday" value="Fri" title="Friday" role="radio" aria-checked="false" tabindex="33">Fri</button>
-              <button type="button" name="Saturday" class="weekday" value="Sat" title="Saturday" role="radio" aria-checked="false" tabindex="34">Sat</button>
-              <input type="hidden" name="selectedDayofWeek" id="selectedDayofWeek" >
+            <div id="dayoftheWeek" class="component" role="radiogroup">
+              <button type="button" name="Sunday" id="Sunday" <% if(!firstOccurDayOfWeek.equals("0")){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> value="Sun" title="Sunday" role="radio"  aria-label="Sunday" tabindex="28">Sun</button>
+              <button type="button" name="Monday" <% if(!firstOccurDayOfWeek.equals("1")){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> value="Mon" title="Monday" role="radio"  aria-label="" tabindex="29">Mon</button>
+              <button type="button" name="Tuesday" <% if(!firstOccurDayOfWeek.equals("2")){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> value="Tue" title="Tuesday" role="radio"  tabindex="30">Tue</button>
+              <button type="button" name="Wednesday" <% if(!firstOccurDayOfWeek.equals("3")){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> value="Wed" title="Wednesday" role="radio"  tabindex="31">Wed</button>
+              <button type="button" name="Thursday" <% if(!firstOccurDayOfWeek.equals("4")){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> value="Thu" title="Thursday" role="radio"  tabindex="32">Thu</button>
+              <button type="button" name="Friday" <% if(!firstOccurDayOfWeek.equals("5")){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> value="Fri" title="Friday" role="radio"  tabindex="33">Fri</button>
+              <button type="button" name="Saturday" <% if(!firstOccurDayOfWeek.equals("6")){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> value="Sat" title="Saturday" role="radio" tabindex="34">Sat</button>
+              <input type="hidden" name="selectedDayofWeek" id="selectedDayofWeek"  value="<%= firstOccurDayOfWeek %>">
             </div>
             <div id="selectEnds" class="component">
               <label for="ends" class="label">Ends:</label>

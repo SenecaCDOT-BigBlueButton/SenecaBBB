@@ -483,6 +483,25 @@ public class Meeting extends Sql {
     
     /**
      * 
+     * @param ms_title<p>
+     * @param ms_id
+     * @param ms_spec
+     * @param m_duration
+     * @param ms_inidatetime
+     * @return
+     */
+    public boolean updateMeetingSchedule(String ms_id, String ms_title, String ms_inidatetime,String ms_spec,String ms_duration) {
+        _sql = "UPDATE meeting_schedule "
+        	 + "SET ms_title='" + ms_title + "' "
+        	 + ",ms_inidatetime= '" + ms_inidatetime + "' "
+        	 + ",ms_spec= '" + ms_spec + "' "
+        	 + ",ms_duration= '" + ms_duration + "' "
+        	 + " WHERE ms_id= '" + ms_id+"' ";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
+     * 
      * @param num (1, 2, 3)<p>
      * (1) change the current meeting only<p>
        (2) change all sessions after and including the current one<p>
@@ -500,6 +519,7 @@ public class Meeting extends Sql {
                 + m_duration + "')";
         return _dbAccess.updateDB(_sql);
     }
+    
     
     /**
      * 

@@ -350,9 +350,6 @@ $(screen).ready(function() {
 			switch ($(this).val()){
 				case "Daily":
 					$("#selectRepeatsEvery").css("display", "block");
-					//$("#repeatsEvery").attr("placeholder", "# of days");
-					$("#repeatsEvery").prop("required", "true");
-					$("#repeatsEvery").val("");
 					$("#selectOccursBy").css("display", "none");
 					$("#dayoftheMonthOptions").css("display", "none");
 					$("#weekCheckbox").css("display", "none");
@@ -361,14 +358,10 @@ $(screen).ready(function() {
 					$("#occurrencesNumber").css("display", "block");
 					$("#occurrences").val("1");
 					$("#occurrenceEnds").css("display", "none");
-				//	$("#dropdownEnds").val("After # of occurrence(s)");
 					$("#ends").selectmenu({'refresh': true});
 					break;
 				case "Weekly":
 					$("#selectRepeatsEvery").css("display", "block");
-					//$("#repeatsEvery").attr("placeholder", "# of weeks");
-					$("#repeatsEvery").prop("required", "true");
-					$("#repeatsEvery").val("");
 					$("#selectOccursBy").css("display", "none");
 					$("#dayoftheMonthOptions").css("display", "none");
 					$("#weekCheckbox").css("display", "block");
@@ -377,7 +370,9 @@ $(screen).ready(function() {
 					$("#occurrencesNumber").css("display", "block");
 					$("#occurrences").val("1");
 					$("#occurrenceEnds").css("display", "none");
-					$("#ends").append("<option role='option'>After # of week(s)</option>");
+					if($("#ends").find("option").length == 2){
+						$("#ends").append("<option role='option'>After # of week(s)</option>");
+					}
 				//	$("#dropdownEnds").val("After # of occurrence(s)");
 					$("#ends").selectmenu({'refresh': true});
 					
@@ -408,28 +403,20 @@ $(screen).ready(function() {
 					break;
 				case "Monthly":
 					$("#selectRepeatsEvery").css("display", "block");
-					//$("#repeatsEvery").attr("placeholder", "# of months");
-					$("#repeatsEvery").prop("required", "true");
-					$("#repeatsEvery").val("");
 					$("#selectOccursBy").css("display", "block");
-					//$("#dropdownOccursBy").val("Day of the month");
 					$("#occursBy").selectmenu({'refresh': true});
 					$("#dayoftheMonthOptions").css("display", "block");
-				//	$("#dropdownDayoftheMonth").val("1st");
 					$("#dayoftheMonth").selectmenu({'refresh': true});
 					$("#weekCheckbox").css("display", "none");
 					$("#dayoftheWeek").css("display", "none");
-					//$("#selectEnds").css("display", "block");
 					$("#selectEnds").css("display", "none");
 					$("#occurrencesNumber").css("display", "block");
 					$("#occurrences").val("1");
 					$("#occurrenceEnds").css("display", "none");
-				//	$("#dropdownEnds").val("After # of occurrence(s)");
 					$("#ends").selectmenu({'refresh': true});
 					break;
 				case "Only once":
 					$("#selectRepeatsEvery").css("display", "none");
-					$("#repeatsEvery").removeAttr("required");
 					$("#selectOccursBy").css("display", "none");
 					$("#dayoftheMonthOptions").css("display", "none");
 					$("#weekCheckbox").css("display", "none");
@@ -437,7 +424,6 @@ $(screen).ready(function() {
 					$("#selectEnds").css("display", "none");
 					$("#occurrencesNumber").css("display", "none");
 					$("#occurrenceEnds").css("display", "none");
-				//	$("#dropdownEnds").val("After # of occurrence(s)");
 					$("#ends").selectmenu({'refresh': true});
 					break;
 			}
@@ -448,9 +434,6 @@ $(screen).ready(function() {
 			switch ($('select#Recurrence').val()){
 				case "Daily":
 					$("#selectRepeatsEvery").css("display", "block");
-					//$("#repeatsEvery").attr("placeholder", "# of days");
-					$("#repeatsEvery").prop("required", "true");
-					$("#repeatsEvery").val("");
 					$("#selectOccursBy").css("display", "none");
 					$("#dayoftheMonthOptions").css("display", "none");
 					$("#weekCheckbox").css("display", "none");
@@ -459,14 +442,10 @@ $(screen).ready(function() {
 					$("#occurrencesNumber").css("display", "block");
 					$("#occurrences").val("1");
 					$("#occurrenceEnds").css("display", "none");
-				//	$("#dropdownEnds").val("After # of occurrence(s)");
 					$("#ends").selectmenu({'refresh': true});
 					break;
 				case "Weekly":
 					$("#selectRepeatsEvery").css("display", "block");
-					//$("#repeatsEvery").attr("placeholder", "# of weeks");
-					$("#repeatsEvery").prop("required", "true");
-					$("#repeatsEvery").val("");
 					$("#selectOccursBy").css("display", "none");
 					$("#dayoftheMonthOptions").css("display", "none");
 					$("#weekCheckbox").css("display", "block");
@@ -476,7 +455,6 @@ $(screen).ready(function() {
 					$("#occurrences").val("1");
 					$("#occurrenceEnds").css("display", "none");
 					$("#ends").append("<option role='option'>After # of week(s)</option>");
-				//	$("#dropdownEnds").val("After # of occurrence(s)");
 					$("#ends").selectmenu({'refresh': true});
 					
 					//Starting date
@@ -507,8 +485,8 @@ $(screen).ready(function() {
 				case "Monthly":
 					$("#selectRepeatsEvery").css("display", "block");
 					//$("#repeatsEvery").attr("placeholder", "# of months");
-					$("#repeatsEvery").prop("required", "true");
-					$("#repeatsEvery").val("");
+					//$("#repeatsEvery").prop("required", "true");
+					//$("#repeatsEvery").val("");
 					$("#selectOccursBy").css("display", "block");
 					$("#dropdownOccursBy").val("Day of the month");
 					$("#occursBy").selectmenu({'refresh': true});
@@ -527,7 +505,7 @@ $(screen).ready(function() {
 					break;
 				case "Only once":
 					$("#selectRepeatsEvery").css("display", "none");
-					$("#repeatsEvery").removeAttr("required");
+					//$("#repeatsEvery").removeAttr("required");
 					$("#selectOccursBy").css("display", "none");
 					$("#dayoftheMonthOptions").css("display", "none");
 					$("#weekCheckbox").css("display", "none");

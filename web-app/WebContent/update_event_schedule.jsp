@@ -73,10 +73,8 @@ public static String getMonthNumber(String month) {
     roleMask = usersession.getRoleMask();
     int nickName = roleMask.get("nickname");
     
-  //  String startMonthNumber=null;
     String endMonthNumber=null;
     endMonthNumber = getMonthNumber(request.getParameter("monthEnds"));
-  //  startMonthNumber = getMonthNumber(request.getParameter("dropdownMonthStarts"));    
     String eventId = request.getParameter("eventScheduleId");
     String title = request.getParameter("eventTitle");
     String eventType = request.getParameter("eventType");  
@@ -96,6 +94,7 @@ public static String getMonthNumber(String month) {
          sc_id = request.getParameter("courseInfo").split(" ")[2];
          sc_semesterid =request.getParameter("courseInfo").split(" ")[3];
     }
+    
     String spec = null;
     
     //daily weekly recurrence
@@ -153,13 +152,19 @@ public static String getMonthNumber(String month) {
     }   
     if(eventType.equals("Meeting")){   //update a meeting schedule
         System.out.println("update a meeting");        
-        meeting.updateMeetingSchedule(eventId, title,inidatetime, spec, duration);
-        response.sendRedirect("calendar.jsp?message=meeting updated successfully"); 
+       if( meeting.updateMeetingSchedule(eventId, title,inidatetime, spec, duration)){
+    	    response.sendRedirect("calendar.jsp?message=meeting updated successfully"); 
+       }else{
+    	    response.sendRedirect("calendar.jsp?message=update failure");  
+       }
     }
     else{ //update a lecture schedule
         System.out.println("update a lecture");
-        lecture.updateLectureSchedule(eventId, inidatetime, spec, duration);
-        response.sendRedirect("calendar.jsp?message=lecture updated successfully"); 
+        if(lecture.updateLectureSchedule(eventId, inidatetime, spec, duration)){
+            response.sendRedirect("calendar.jsp?message=lecture updated successfully"); 
+        }else{
+        	response.sendRedirect("calendar.jsp?message=update failure"); 
+        }
     }
     
 %>

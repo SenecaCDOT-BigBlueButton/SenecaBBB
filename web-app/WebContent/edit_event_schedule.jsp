@@ -14,7 +14,6 @@
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
-	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.timepicker.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -23,7 +22,6 @@
 	<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
-	<script type="text/javascript" src="js/ui/jquery.ui.datepicker.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.timepicker.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 	<script type="text/javascript" src="js/componentController.js"></script>
@@ -36,20 +34,59 @@
 	String ls_id = request.getParameter("ls_id");
 	String m_id = request.getParameter("m_id");
 	String l_id = request.getParameter("l_id");
-	ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>(); 
-	ArrayList<ArrayList<String>> lectureProfessor = new ArrayList<ArrayList<String>>();
-	Boolean isProfessor = false;
-	Boolean isSuper = false;
-    String userId = usersession.getUserId();
-	isProfessor=usersession.isProfessor();
-	isSuper =usersession.isSuper();
-    Section section = new Section(dbaccess);
-    Meeting meeting = new Meeting(dbaccess);
-    Lecture lecture = new Lecture(dbaccess);  
-	User user = new User(dbaccess);
-	MyBoolean myBool = new MyBoolean(); 
 	Boolean isMeeting = false;
 	Boolean isLecture = false;
+	Boolean isProfessor = false;
+	Boolean isSuper = false;
+	isProfessor=usersession.isProfessor();
+	isSuper =usersession.isSuper();
+	Section section = new Section(dbaccess);
+    String userId = usersession.getUserId();
+    Meeting meeting = new Meeting(dbaccess);
+    Lecture lecture = new Lecture(dbaccess); 
+    User user = new User(dbaccess);
+    MyBoolean myBool = new MyBoolean(); 
+    
+	//Start page validation
+    if (userId.equals("")) {
+        response.sendRedirect("index.jsp?error=Please log in");
+        return;
+    }
+    //only event creator and super admin have permission to edit event schedule
+    if(!(ms_id.equals("null")||ms_id.equals(null))){
+        if (!meeting.isMeeting(myBool, ms_id, m_id)) {
+            message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AA01");
+            response.sendRedirect("canlendar.jsp?message=" + message);
+            return;   
+        }
+        if (!(user.isMeetingCreator(myBool, ms_id, userId)||isSuper)) {
+            message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AA02");
+            response.sendRedirect("canlendar.jsp?message=" + message);
+            return;   
+        }
+        isMeeting = true;
+    }
+    if(!(ls_id.equals("null")||ls_id.equals(null))){
+        if (!lecture.isLecture(myBool, ls_id, l_id)) {
+            message = lecture.getErrMsg("ALG01");
+            response.sendRedirect("canlendar.jsp?message=" + message);
+            return;   
+        }
+        if (!(user.isTeaching(myBool, ls_id, userId) || isSuper)) {
+            message = user.getErrMsg("ALG02");
+            response.sendRedirect("canlendar.jsp?message=" + message);
+            return;   
+        }
+        isLecture=true;
+    }
+    
+    if (message == null || message == "null") {
+        message="";
+    }
+    //End page validation
+    
+	ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>(); 
+	ArrayList<ArrayList<String>> lectureProfessor = new ArrayList<ArrayList<String>>();
 	String courseInfo = "";
 	String startDate ="";
 	String startTime ="";
@@ -64,62 +101,17 @@
 	String weeklyString ="abcdefg";
 	String dayOfMonth = "";
 	String firstOccurDayOfWeek = "";
-	String allProfessorforLecture ="";
-	int numberOfProfessor=0;
-	
-	
-	
-	//Start page validation
-    if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
-        return;
-    }
-	//only event creator and super admin have permission to edit event schedule
-    if(!(ms_id.equals("null")||ms_id.equals(null))){
-	    if (!meeting.isMeeting(myBool, ms_id, m_id)) {
-	        message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AA01");
-	        response.sendRedirect("canlendar.jsp?message=" + message);
-	        return;   
-	    }
-	    if (!(user.isMeetingCreator(myBool, ms_id, userId)||isSuper)) {
-	        message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AA02");
-	        response.sendRedirect("canlendar.jsp?message=" + message);
-	        return;   
-	    }
-	    isMeeting = true;
-    }
-    if(!(ls_id.equals("null")||ls_id.equals(null))){
-   	    if (!lecture.isLecture(myBool, ls_id, l_id)) {
-   	        message = lecture.getErrMsg("ALG01");
-   	        response.sendRedirect("canlendar.jsp?message=" + message);
-   	        return;   
-   	    }
-   	    if (!(user.isTeaching(myBool, ls_id, userId) || isSuper)) {
-   	        message = user.getErrMsg("ALG02");
-   	        response.sendRedirect("canlendar.jsp?message=" + message);
-   	        return;   
-   	    }
-   	    isLecture=true;
-    }
-    
-    if (message == null || message == "null") {
-        message="";
-    }
-    //End page validation
+	String allProfessorforLecture ="";			
           
     if(isMeeting){
     	meeting.getMeetingScheduleInfo(result, ms_id);  	
-    	if(!(userId.equals(result.get(0).get(5)) || isSuper)){
-    		response.sendRedirect("calendar.jsp?message=You don't have permission to edit this event schedule!");
-    	}
-    	for(int i=0;i<result.get(0).size();i++)
-    	    System.out.println(result.get(0).get(i));
     }
     if(isLecture){
+    	//show the professor name,course,section, and semester information to super admin in course information field 
+    	//if the user is professor, only show course,section, and semester information
         lecture.getLectureScheduleInfo(result, ls_id);          
         lecture.getLectureProfessor(lectureProfessor, result.get(0).get(1), result.get(0).get(2), result.get(0).get(3));
-        for(int j=0;j<lectureProfessor.size();j++){
-        	numberOfProfessor += 1;
+        for(int j=0;j<lectureProfessor.size();j++){       	
         	allProfessorforLecture=allProfessorforLecture.concat(lectureProfessor.get(j).get(0)).concat(" ");
         }
         if(isSuper){
@@ -127,7 +119,6 @@
         }else{
         	courseInfo = result.get(0).get(1).concat(" ").concat(result.get(0).get(2)).concat(" ").concat(result.get(0).get(3));
         }
-        System.out.println(courseInfo);
     }
 
     ArrayList<ArrayList<String>> professor = new ArrayList<ArrayList<String>>();
@@ -137,10 +128,7 @@
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-    if(isProfessor)
-        lecture.getProfessorCourse(professor,userId);
-    if(isSuper)
-        lecture.getAllProfessorCourse(professor);
+
 %>
 
 <script type="text/javascript">   
@@ -168,11 +156,6 @@
         xmlhttp.send();
     }
     $(document).ready(function() { 
-        <%if (meetingSettings.get("isRecorded")==0){%>
-            $(".checkbox .box:eq(3)").next(".checkmark").toggle();
-            $(".checkbox .box:eq(3)").attr("aria-checked", "false");
-            $(".checkbox .box:eq(3)").siblings().last().prop("checked", false);
-        <%}%>
         $("#dropdownDayStarts").selectmenu({'refresh': true});
         $("#dropdownMonthStarts").selectmenu({'refresh': true});
         $("#dropdownYearStarts").selectmenu({'refresh': true});
@@ -185,63 +168,14 @@
         $('#startTime').timepicker({ 'scrollDefaultNow': true });
     });
 
-    //Date picker
-    $(function(){
-        var month = new Array(12);
-        month[0]="January";
-        month[1]="February";
-        month[2]="March";
-        month[3]="April";
-        month[4]="May";
-        month[5]="June";
-        month[6]="July";
-        month[7]="August";
-        month[8]="September";
-        month[9]="October";
-        month[10]="November";
-        month[11]="December";
-        
-        var datePickerStarts = {
-            showOn: "button",
-            buttonText:"",
-            minDate: 0,
-            maxDate: "+1Y",
-            onSelect:function(dateText){
-                var startDate = new Date(dateText);
-                $("#dropdownDayStarts").val(startDate.getUTCDate());
-                $("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
-                $("#dropdownYearStarts").val(startDate.getUTCFullYear());
-
-            }
-        };
-        var datePickerEnds = {
-            showOn: "button",
-            buttonText:"",
-            minDate: 0,
-            maxDate: "+1Y",
-            onSelect:function(dateText){
-                var endDate = new Date(dateText);
-                $("#dropdownDayEnds").val(endDate.getUTCDate());
-                $("#dropdownMonthEnds").val(month[endDate.getUTCMonth()]);
-                $("#dropdownYearEnds").val(endDate.getUTCFullYear());
-
-            }
-        };
-        $("#datePickerStarts").datepicker(datePickerStarts);
-        $("#datePickerEnds").datepicker(datePickerEnds);
-       
-    });
-
-    
 </script>
 <script type="text/javascript">
    $(document).ready(function() {   
-	   //get the populate weekString from an event spec
+	   //get the populate weekString from an event spec in database
        var weekString = $('#weekString').val();      
        if(weekString === undefined ){
            weekString="0000000";
        }
-     //  var weekDayNumber =$('#selectedDayofWeek').val(); 
        $('#weekCheckbox button').click(function(e) {   	   
            var target = $(e.target);
            var weekday = target.text();
@@ -526,8 +460,8 @@
 	                        out.print("selected=selected");
 	                    }                   
 	                } 
-                %>
-                >After # of occurrence(s)</option>
+                %> >After # of occurrence(s)</option>
+
                 <option role="option"
                 <% 
                     if(!(spec.charAt(0)=='1')){
@@ -538,8 +472,8 @@
                             out.print("selected=selected");
                         }                   
                     } 
-                %>
-                >On specified date</option>
+                %> >On specified date</option>
+                
               </select>
             </div>
             <div id="occurrencesNumber" class="component">
@@ -551,12 +485,12 @@
               <div class="datePicker" title="Choose a date" style="display:none">
                 <input name="datePickerEnds" id="datePickerEnds" class="datePicker" aria-disabled="true"  aria-hidden="true" aria-readonly="true" readonly>
               </div>
-              <select name="yearEnds" id="yearEnds" title="Year" tabindex="23" role="listbox" style="width: 100px">
+              <select name="yearEnds" id="yearEnds" title="Year" tabindex="23" role="listbox" style="width: 120px">
                 <option role="option" <% if(endsYear.equals("2013")){out.print("selected=selected");} %>>2013</option>
                 <option role="option" <% if(endsYear.equals("2014")){out.print("selected=selected");} %>>2014</option>
                 <option role="option" <% if(endsYear.equals("2015")){out.print("selected=selected");} %>>2015</option>
               </select>
-              <select name="dayEnds" id="dayEnds" title="Day" tabindex="22" role="listbox" style="width: 100px">
+              <select name="dayEnds" id="dayEnds" title="Day" tabindex="22" role="listbox" style="width: 120px">
                 <option role="option" value="1" <% if(endsDay.equals("01")){out.print("selected=selected");} %>>1st</option>
                 <option role="option" value="2" <% if(endsDay.equals("02")){out.print("selected=selected");} %>>2nd</option>
                 <option role="option" value="3" <% if(endsDay.equals("03")){out.print("selected=selected");} %>>3rd</option>
@@ -589,7 +523,7 @@
                 <option role="option" value="30" <% if(endsDay.equals("30")){out.print("selected=selected");} %>>30th</option>
                 <option role="option" value="31" <% if(endsDay.equals("31")){out.print("selected=selected");} %>>31st</option>
               </select>
-              <select name="monthEnds" id="monthEnds" title="Month" tabindex="21" role="listbox" style="width: 143px">
+              <select name="monthEnds" id="monthEnds" title="Month" tabindex="21" role="listbox" style="width: 153px">
                 <option role="option"   <% if(endsMonth.equals("01")){out.print("selected=selected");} %>>January</option>
                 <option role="option" <% if(endsMonth.equals("02")){out.print("selected=selected");} %>>February</option>
                 <option role="option" <% if(endsMonth.equals("03")){out.print("selected=selected");} %>>March</option>
@@ -607,14 +541,13 @@
           </fieldset>
         </div>
       </article>
-
       <article>
         <h4></h4>
         <fieldset>
           <div class="buttons">
             <button type="submit" name="submit" id="save" class="button" title="Click here to save inserted data">Save</button>
              <button type="reset" name="reset" id="reset" class="button" title="Click here to reset">Reset</button>                              
-            <button type="button" name="button" id="cancel"  class="button" title="Click here to cancel">Cancel</button>
+            <button type="button" name="button" id="cancel"  class="button" title="Click here to cancel" onclick="window.location.href='calendar.jsp'">Cancel</button>
           </div>
         </fieldset>
       </article>
@@ -630,10 +563,6 @@
                        required: true,
                        pattern: /^[- a-zA-Z0-9]+$/
                    },
-                   eventDescription:{
-                       required: false,
-                       pattern: /^[^<>]+$/
-                   },
                    startTime:{
                        required: true,
                        pattern: /^\s*[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\s*$/
@@ -643,11 +572,11 @@
                        range:[1,999]
                        
                    },
-                   repeatsEvery:{
+                   repeatsInterval:{
                        required: true,
                        range:[1,100]
                    },
-                   occurrences:{
+                   numberOfOccurrences:{
                        required: true,
                        range:[1,100]
                    }
@@ -658,11 +587,10 @@
                         pattern:"Please enter a valid Title.",
                         required:"Title is required"
                     },
-                    eventDescription:"Do not use <> ",
                     startTime:"Please enter a valid Time Format",
                     eventDuration:"Please enter a valid Number",
-                    repeatsEvery:"Please enter a valid Number",
-                    occurrences:"Please enter a valid Number"
+                    repeatsInterval:"Please enter a valid Number",
+                    numberOfOccurrences:"Please enter a valid Number"
                 }
             });
         });

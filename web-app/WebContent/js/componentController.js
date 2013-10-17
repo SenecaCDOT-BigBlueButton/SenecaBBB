@@ -6,10 +6,13 @@ $(screen).ready(function() {
 		/* SELECT BOXES */
 		$("#selectRepeatsEvery").css("display", "none");
 		$("#selectDayoftheMonth").css("display", "none");
+		$("#dayoftheMonthOptions").css("display", "none");
 		$("#selectDayoftheWeek").css("display", "none");
+		$("#dayoftheWeek").css("display", "none");
 		$("#occurrencesNumber").css("display", "none");
 		$("#occurrenceEnds").css("display", "none");
 		$("#week").css("display", "none");
+		$("#weekCheckbox").css("display", "none");
 		$("#selectOccursBy").css("display", "none");
 		$("#selectEnds").css("display", "none");
 		$("#lectureCourse").css("display", "none");
@@ -276,6 +279,9 @@ $(screen).ready(function() {
 					$("#occurrencesNumber").css("display", "block");
 					$("#occurrences").val("1");
 					$("#occurrenceEnds").css("display", "none");
+					if($("#dropdownEnds").find("option").length == 2){
+						$("#dropdownEnds").append("<option role='option'>After # of week(s)</option>");
+					}
 					$("#dropdownEnds").val("After # of occurrence(s)");
 					$("#dropdownEnds").selectmenu({'refresh': true});
 					
@@ -340,6 +346,181 @@ $(screen).ready(function() {
 			}
 		});
 
+
+		//Dropdown: Recurrence for edit event schedule page
+		$('select#Recurrence').change( function() {
+			switch ($(this).val()){
+				case "Daily":
+					$("#selectRepeatsEvery").css("display", "block");
+					$("#selectOccursBy").css("display", "none");
+					$("#dayoftheMonthOptions").css("display", "none");
+					$("#weekCheckbox").css("display", "none");
+					$("#dayoftheWeek").css("display", "none");
+					$("#selectEnds").css("display", "block");
+					$("#occurrencesNumber").css("display", "block");
+					$("#occurrences").val("1");
+					$("#occurrenceEnds").css("display", "none");
+					$("#ends").selectmenu({'refresh': true});
+					break;
+				case "Weekly":
+					$("#selectRepeatsEvery").css("display", "block");
+					$("#selectOccursBy").css("display", "none");
+					$("#dayoftheMonthOptions").css("display", "none");
+					$("#weekCheckbox").css("display", "block");
+					$("#dayoftheWeek").css("display", "none");
+					$("#selectEnds").css("display", "block");
+					$("#occurrencesNumber").css("display", "block");
+					$("#occurrences").val("1");
+					$("#occurrenceEnds").css("display", "none");
+					if($("#ends").find("option").length == 2){
+						$("#ends").append("<option role='option'>After # of week(s)</option>");
+					}
+				//	$("#dropdownEnds").val("After # of occurrence(s)");
+					$("#ends").selectmenu({'refresh': true});
+					
+					//Starting date
+					var data = new Date();//var data = new Date(2013,6,19);
+					
+					//Day of the week of the starting date
+					var weekday = new Array();
+					weekday[0]="Sunday";
+					weekday[1]="Monday";
+					weekday[2]="Tuesday";
+					weekday[3]="Wednesday";
+					weekday[4]="Thursday";
+					weekday[5]="Friday";
+					weekday[6]="Saturday";
+					var dayOfTheWeek = weekday[data.getUTCDay()];
+					
+					//Unchecking all days of the week
+					/*
+					$('section form article fieldset div.component#weekCheckbox .weekday').each(function() {
+						$(this).attr("aria-checked", "false");
+						$(this).toggleClass("selectedWeekday", false);
+					});
+					*/
+					//Checking only the day of the week of the starting date
+					//$("section form article fieldset div.component#week .weekday#"+dayOfTheWeek).attr("aria-checked", "true");
+					//$("section form article fieldset div.component#week .weekday#"+dayOfTheWeek).toggleClass("selectedWeekday", true);
+					break;
+				case "Monthly":
+					$("#selectRepeatsEvery").css("display", "block");
+					$("#selectOccursBy").css("display", "block");
+					$("#occursBy").selectmenu({'refresh': true});
+					$("#dayoftheMonthOptions").css("display", "block");
+					$("#dayoftheMonth").selectmenu({'refresh': true});
+					$("#weekCheckbox").css("display", "none");
+					$("#dayoftheWeek").css("display", "none");
+					$("#selectEnds").css("display", "none");
+					$("#occurrencesNumber").css("display", "block");
+					$("#occurrences").val("1");
+					$("#occurrenceEnds").css("display", "none");
+					$("#ends").selectmenu({'refresh': true});
+					break;
+				case "Only once":
+					$("#selectRepeatsEvery").css("display", "none");
+					$("#selectOccursBy").css("display", "none");
+					$("#dayoftheMonthOptions").css("display", "none");
+					$("#weekCheckbox").css("display", "none");
+					$("#dayoftheWeek").css("display", "none");
+					$("#selectEnds").css("display", "none");
+					$("#occurrencesNumber").css("display", "none");
+					$("#occurrenceEnds").css("display", "none");
+					$("#ends").selectmenu({'refresh': true});
+					break;
+			}
+		});
+
+		//Dropdown: Recurrence for edit event schedule page
+		$(screen).ready( function() {
+			switch ($('select#Recurrence').val()){
+				case "Daily":
+					$("#selectRepeatsEvery").css("display", "block");
+					$("#selectOccursBy").css("display", "none");
+					$("#dayoftheMonthOptions").css("display", "none");
+					$("#weekCheckbox").css("display", "none");
+					$("#dayoftheWeek").css("display", "none");
+					$("#selectEnds").css("display", "block");
+					$("#occurrencesNumber").css("display", "block");
+					$("#occurrences").val("1");
+					$("#occurrenceEnds").css("display", "none");
+					$("#ends").selectmenu({'refresh': true});
+					break;
+				case "Weekly":
+					$("#selectRepeatsEvery").css("display", "block");
+					$("#selectOccursBy").css("display", "none");
+					$("#dayoftheMonthOptions").css("display", "none");
+					$("#weekCheckbox").css("display", "block");
+					$("#dayoftheWeek").css("display", "none");
+					$("#selectEnds").css("display", "block");
+					$("#occurrencesNumber").css("display", "block");
+					$("#occurrences").val("1");
+					$("#occurrenceEnds").css("display", "none");
+					$("#ends").append("<option role='option'>After # of week(s)</option>");
+					$("#ends").selectmenu({'refresh': true});
+					
+					//Starting date
+					var data = new Date();//var data = new Date(2013,6,19);
+					
+					//Day of the week of the starting date
+					var weekday = new Array();
+					weekday[0]="Sunday";
+					weekday[1]="Monday";
+					weekday[2]="Tuesday";
+					weekday[3]="Wednesday";
+					weekday[4]="Thursday";
+					weekday[5]="Friday";
+					weekday[6]="Saturday";
+					var dayOfTheWeek = weekday[data.getUTCDay()];
+					
+					//Unchecking all days of the week
+					/*
+					$('section form article fieldset div.component#weekCheckbox .weekday').each(function() {
+						$(this).attr("aria-checked", "false");
+						$(this).toggleClass("selectedWeekday", false);
+					});
+					*/
+					//Checking only the day of the week of the starting date
+					//$("section form article fieldset div.component#week .weekday#"+dayOfTheWeek).attr("aria-checked", "true");
+					//$("section form article fieldset div.component#week .weekday#"+dayOfTheWeek).toggleClass("selectedWeekday", true);
+					break;
+				case "Monthly":
+					$("#selectRepeatsEvery").css("display", "block");
+					//$("#repeatsEvery").attr("placeholder", "# of months");
+					//$("#repeatsEvery").prop("required", "true");
+					//$("#repeatsEvery").val("");
+					$("#selectOccursBy").css("display", "block");
+					$("#dropdownOccursBy").val("Day of the month");
+					$("#occursBy").selectmenu({'refresh': true});
+					$("#dayoftheMonthOptions").css("display", "block");
+					//$("#dropdownDayoftheMonth").val("1st");
+					$("#dayoftheMonth").selectmenu({'refresh': true});
+					$("#weekCheckbox").css("display", "none");
+					$("#dayoftheWeek").css("display", "none");
+					//$("#selectEnds").css("display", "block");
+					$("#selectEnds").css("display", "none");
+					$("#occurrencesNumber").css("display", "block");
+					$("#occurrences").val("1");
+					$("#occurrenceEnds").css("display", "none");
+				//	$("#dropdownEnds").val("After # of occurrence(s)");
+					$("#ends").selectmenu({'refresh': true});
+					break;
+				case "Only once":
+					$("#selectRepeatsEvery").css("display", "none");
+					//$("#repeatsEvery").removeAttr("required");
+					$("#selectOccursBy").css("display", "none");
+					$("#dayoftheMonthOptions").css("display", "none");
+					$("#weekCheckbox").css("display", "none");
+					$("#dayoftheWeek").css("display", "none");
+					$("#selectEnds").css("display", "none");
+					$("#occurrencesNumber").css("display", "none");
+					$("#occurrenceEnds").css("display", "none");
+				//	$("#dropdownEnds").val("After # of occurrence(s)");
+					$("#ends").selectmenu({'refresh': true});
+					break;
+			}
+		});
+		
 		//Dropdown: Occurs By
 		$('select#dropdownOccursBy').change( function() {
 			switch ($(this).val()){
@@ -384,7 +565,94 @@ $(screen).ready(function() {
 			}
 		});
 		
-		/* Day of the Month */
+		
+		//Dropdown: Occurs By for edit event schedule page
+		$('select#occursBy').change( function() {
+			switch ($(this).val()){
+				case "Day of the month":
+					$("#dayoftheWeek").css("display", "none");
+					$("#dayoftheMonthOptions").css("display", "block");
+					//$("#dropdownDayoftheMonth").val("1st");					
+					$("#dayoftheMonth").selectmenu({'refresh': true});
+					break;
+				case "First occurrence of the day of the week":
+					$("#dayoftheWeek").css("display", "block");
+					$("#dayoftheMonthOptions").css("display", "none");
+					
+					//Starting date
+					var data = new Date();//var data = new Date(2013,6,19);
+					
+					//Day of the week of the starting date
+					var weekday = new Array();
+					weekday[0]="Sunday";
+					weekday[1]="Monday";
+					weekday[2]="Tuesday";
+					weekday[3]="Wednesday";
+					weekday[4]="Thursday";
+					weekday[5]="Friday";
+					weekday[6]="Saturday";
+					var dayOfTheWeek = weekday[data.getUTCDay()];
+					
+					//Unchecking all days of the week
+					/*
+					$('section form article fieldset div.component#dayoftheWeek .weekday').each(function() {
+						$(this).attr("aria-checked", "false");
+						$(this).toggleClass("selectedWeekday", false);
+					});
+					*/
+					//Checking only the day of the week of the starting date
+					$("section form article fieldset div.component#dayoftheWeek .weekday#"+dayOfTheWeek).attr("aria-checked", "true");
+					$("section form article fieldset div.component#dayoftheWeek .weekday#"+dayOfTheWeek).toggleClass("selectedWeekday", true);
+					break;
+			}
+		});
+		
+	
+		
+		//Dropdown: Occurs By for edit event page
+		$(screen).ready( function() {
+			if($('select#occursBy').attr("display")=="block"){
+				switch ($('select#occursBy').val()){
+					case "Day of the month":
+						$("#dayoftheWeek").css("display", "none");
+						$("#dayoftheMonthOptions").css("display", "block");
+						//$("#dropdownDayoftheMonth").val("1st");					
+						$("#dayoftheMonth").selectmenu({'refresh': true});
+						break;
+					case "First occurrence of the day of the week":
+						$("#dayoftheWeek").css("display", "block");
+						$("#dayoftheMonthOptions").css("display", "none");
+						
+						//Starting date
+						var data = new Date();//var data = new Date(2013,6,19);
+						
+						//Day of the week of the starting date
+						var weekday = new Array();
+						weekday[0]="Sunday";
+						weekday[1]="Monday";
+						weekday[2]="Tuesday";
+						weekday[3]="Wednesday";
+						weekday[4]="Thursday";
+						weekday[5]="Friday";
+						weekday[6]="Saturday";
+						var dayOfTheWeek = weekday[data.getUTCDay()];
+						
+						//Unchecking all days of the week
+						/*
+						$('section form article fieldset div.component#dayoftheWeek .weekday').each(function() {
+							$(this).attr("aria-checked", "false");
+							$(this).toggleClass("selectedWeekday", false);
+						});
+						*/
+						//Checking only the day of the week of the starting date
+						$("section form article fieldset div.component#dayoftheWeek .weekday#"+dayOfTheWeek).attr("aria-checked", "true");
+						$("section form article fieldset div.component#dayoftheWeek .weekday#"+dayOfTheWeek).toggleClass("selectedWeekday", true);
+						break;
+				}
+			}
+		});
+		
+	
 		//$("section form article fieldset div.component#selectDayoftheMonth #dayoftheMonth").jStepper({minValue:1, maxValue:31, minLength:1});
 
 		//Dropdown: Ends
@@ -406,6 +674,52 @@ $(screen).ready(function() {
 					$("#dropdownYearEnds").val($("#dropdownYearStarts").val());
 					$("#dropdownYearEnds").selectmenu({'refresh': true});
 					break;
+			}
+		});
+		
+		//Dropdown: Ends for edit event schedule
+		$('select#ends').change( function() {
+			switch ($(this).val()){
+				case "After # of occurrence(s)"://After # of occurrence(s)
+					$("#occurrencesNumber").css("display", "block");
+					$("#occurrencesNumber").text();
+					$("#occurrenceEnds").css("display", "none");
+					$("#occurrences").val("1");
+					break;
+				case "On specified date"://On specified date
+					$("#occurrencesNumber").css("display", "none");
+					$("#occurrenceEnds").css("display", "block");
+				//	$("#dropdownMonthEnds").val($("#dropdownMonthStarts").val());
+					$("#monthEnds").selectmenu({'refresh': true});
+				//	$("#dropdownDayEnds").val($("#dropdownDayStarts").val());
+					$("#dayEnds").selectmenu({'refresh': true});
+				//	$("#dropdownYearEnds").val($("#dropdownYearStarts").val());
+					$("#yearEnds").selectmenu({'refresh': true});
+					break;
+			}
+		});
+
+		// ends for edit event schedule
+		$(screen).ready( function() {
+			if($('select#Recurrence option:selected').text()!="Only once"){
+				switch ($('select#ends').val()){
+					case "After # of occurrence(s)"://After # of occurrence(s)
+						$("#occurrencesNumber").css("display", "block");
+						$("#occurrencesNumber").text();
+						$("#occurrenceEnds").css("display", "none");
+						$("#occurrences").val("1");
+						break;
+					case "On specified date"://On specified date
+						$("#occurrencesNumber").css("display", "none");
+						$("#occurrenceEnds").css("display", "block");
+					//	$("#dropdownMonthEnds").val($("#dropdownMonthStarts").val());
+						$("#monthEnds").selectmenu({'refresh': true});
+					//	$("#dropdownDayEnds").val($("#dropdownDayStarts").val());
+						$("#dayEnds").selectmenu({'refresh': true});
+					//	$("#dropdownYearEnds").val($("#dropdownYearStarts").val());
+						$("#yearEnds").selectmenu({'refresh': true});
+						break;
+				}
 			}
 		});
 
@@ -520,7 +834,7 @@ $(screen).ready(function() {
 		$('.radio .checkradio').click(function() {
 			$(this).toggle();
 		});
-
+		
 		/* Day of the Week checked for weekly events */
 		$("section form article fieldset div.component#week .weekday").click(function() {
 			$(this).attr("aria-checked", ($(this).attr("aria-checked") === "true" ? "false" : "true"));
@@ -530,7 +844,17 @@ $(screen).ready(function() {
 				$(this).toggleClass("selectedWeekday");
 			}
 		});
-
+		
+		/* Day of the Week checked for weekly events----using in edit event schedule page */
+		$("section form article fieldset div.component#weekCheckbox .weekday").click(function() {
+			$(this).attr("aria-checked", ($(this).attr("aria-checked") === "true" ? "false" : "true"));
+			if ($(this).attr("aria-checked") == "true"){
+				$(this).toggleClass("selectedWeekday");
+			} else {
+				$(this).toggleClass("selectedWeekday");
+			}
+		});
+		
 		/* Day of the Week checked for monthly events */
 		$("section form article fieldset div.component#selectDayoftheWeek .weekday").click(function() {
 			$("section form article fieldset div.component#selectDayoftheWeek .weekday").removeClass("selectedWeekday");
@@ -543,6 +867,19 @@ $(screen).ready(function() {
 			}
 		});
 
+		
+		/* Day of the Week checked for monthly events--using in edit event schedule page */
+		$("section form article fieldset div.component#dayoftheWeek .weekday").click(function() {
+			$("section form article fieldset div.component#dayoftheWeek .weekday").removeClass("selectedWeekday");
+			$("section form article fieldset div.component#dayoftheWeek .weekday").attr("aria-checked", false);
+			$(this).attr("aria-checked", ($(this).attr("aria-checked") === "true" ? "false" : "true"));
+			if ($(this).attr("aria-checked") == "true"){
+				$(this).toggleClass("selectedWeekday");
+			} else {
+				$(this).toggleClass("selectedWeekday");
+			}
+		});
+		
 		/* CLEAR MENU */		
 		function clear (){
 			$("aside nav li").each(function() {

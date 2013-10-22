@@ -61,28 +61,30 @@ public class Test_Lecture extends Test_Helper {
         
         display(_lecture.updateLectureDuration(2, "1", "9", "200"));
         
-        display(_lecture.updateLectureTime(3, "1", "10", "10:10:10"));
+        display(_lecture.updateLectureTime(3, "10", "1", "10:10:10"));
         
-        display(_lecture.createLecturePresentation("testing1", "1", "1"));
+        display(_lecture.getLectureInfo(_result, "10"));
         
-        display(_lecture.createLecturePresentation("testing2", "1", "1"));
+        //display(_lecture.createLecturePresentation("testing1", "1", "1"));
         
-        display(_lecture.createLectureGuest("bli64", "1", "1", true));
+        //display(_lecture.createLecturePresentation("testing2", "1", "1"));
         
-        display(_lecture.createLectureGuest("bo.li", "1", "1", false));
+        //display(_lecture.createLectureGuest("bli64", "1", "1", true));
         
-        display(_lecture.createLectureAttendance("bo.li", "1", "1", true));
+        //display(_lecture.createLectureGuest("bo.li", "1", "1", false));
         
-        display(_lecture.removeLectureAttendance("bo.li", "1", "1"));
+        //display(_lecture.createLectureAttendance("bo.li", "1", "1", true));
         
-        display(_lecture.removeLecturePresentation("testing1", "1", "1"));
+        //display(_lecture.removeLectureAttendance("bo.li", "1", "1"));
         
-        display(_lecture.removeLectureGuest("bo.li", "1", "1"));
+        //display(_lecture.removeLecturePresentation("testing1", "1", "1"));
         
-        display(_lecture.removeMeetingSchedule("2"));
+        //display(_lecture.removeLectureGuest("bo.li", "1", "1"));
         
-        display(_lecture.createLectureSchedule("PSY150", "A", "201305", "2013-08-01 10:00:00", "3;1;6;1;0110010", "50", "m_description"));
+        //display(_lecture.removeMeetingSchedule("2"));
         
-        display(_lecture.editLectureSchedule("10", "2013-10-01 10:00:00", "4;1;5;3;30", "abc"));
+        //display(_lecture.createLectureSchedule("PSY150", "A", "201305", "2013-08-01 10:00:00", "3;1;6;1;0110010", "50", "m_description"));
+        
+        //display(_lecture.editLectureSchedule("10", "2013-10-01 10:00:00", "4;1;5;3;30", "abc"));
     }
 }

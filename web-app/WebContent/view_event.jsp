@@ -294,11 +294,12 @@ $(document).ready(function() {
                             <table id="currentEvent" border="0" cellpadding="0" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th width="80" class="firstColumn" tabindex="16" title="Type">Type<span></span></th>
-                                        <th width="135" title="StartingTime">Starting Time<span></span></th>
-                                        <th width="100" title="duration">Duration (Min)<span></span></th>
-                                        <th width="130" title="isCancel">Event Cancelled<span></span></th>
-                                        <th title="description">Description<span></span></th>
+                                        <th class="firstColumn" tabindex="16" title="Type">Type<span></span></th>
+                                        <th title="StartingDate">Date<span></span></th>
+                                        <th title="StartingTime">Time<span></span></th>
+                                        <th title="duration">Duration<span></span></th>
+                                        <th title="isCancel">Cancelled<span></span></th>
+                                        <th width="300" title="description">Description<span></span></th>
                                         <% if (status==1 || status==3 || status==4) { %>
                                         <th width="65" title="Modify" class="icons" align="center">Modify</th>
                                         <% } %>
@@ -307,12 +308,21 @@ $(document).ready(function() {
                                 <tbody>
                                     <tr>
                                         <td class="row"><%= type %></td>
-                                        <td><%= eventResult.get(0).get(2) %></td>
-                                        <td><%= eventResult.get(0).get(3) %></td>
+                                        <td><%= eventResult.get(0).get(2).substring(0, 10) %></td>
+                                        <td><%= eventResult.get(0).get(2).substring(11, 19) %></td>
+                                        <td><%= eventResult.get(0).get(3) %> Minutes</td>
                                         <td><%= isCancel %></td>
                                         <td><%= eventResult.get(0).get(5) %></td>
-                                        <% if (status==1 || status==3 || status==4) { %>
-                                        <td class="icons" align="center"><a href="" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
+                                        <% if (status==1) { %>
+                                            <td class="icons" align="center">
+                                                <a href="edit_meeting.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="modify">
+                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting" alt="Modify"/>
+                                            </a></td>
+                                        <% } else if (status==3 || status==4) { %>
+                                            <td class="icons" align="center">
+                                                <a href="edit_lecture.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="modify">
+                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture" alt="Modify"/>
+                                            </a></td>
                                         <% } %>
                                     </tr>
                                 </tbody>
@@ -334,17 +344,17 @@ $(document).ready(function() {
                                     <tr>
                                     <% if (status==1 || status==2 || status==6) { %>
                                         <th class="firstColumn" tabindex="16">Title<span></span></th>
-                                        <th>Starting Time<span></span></th>
-                                        <th>Duration (Min)<span></span></th>
+                                        <th>Starting From<span></span></th>
+                                        <th>Duration<span></span></th>
                                         <th>Creator<span></span></th>
                                     <% } else { %>
                                         <th class="firstColumn" tabindex="16">Course<span></span></th>
                                         <th>Section<span></span></th>
                                         <th>Semester<span></span></th>
-                                        <th>Starting Time<span></span></th>
+                                        <th>Starting From<span></span></th>
                                         <th>Duration<span></span></th>
                                     <% } %>
-                                    <% if (status==1 || status==3) { %>        
+                                    <% if (status==1 || status==3) { %>
                                         <th width="65" title="Modify" class="icons" align="center">Modify</th>
                                     <% } %>
                                     </tr>
@@ -353,18 +363,26 @@ $(document).ready(function() {
                                     <tr>
                                     <% if (status==1 || status==2 || status==6) { %>
                                         <td class="row"><%= eventSResult.get(0).get(1) %></td>
-                                        <td><%= eventSResult.get(0).get(2) %></td>
-                                        <td><%= eventSResult.get(0).get(4) %></td>
+                                        <td><%= eventSResult.get(0).get(2).substring(0, 19) %></td>
+                                        <td><%= eventSResult.get(0).get(4) %> Minutes</td>
                                         <td><%= eventSResult.get(0).get(5) %></td>
                                     <% } else { %>
                                         <td class="row"><%= eventSResult.get(0).get(1) %></td>
                                         <td><%= eventSResult.get(0).get(2) %></td>
                                         <td><%= eventSResult.get(0).get(3) %></td>
-                                        <td><%= eventSResult.get(0).get(4) %></td>
-                                        <td><%= eventSResult.get(0).get(6) %></td>
+                                        <td><%= eventSResult.get(0).get(4).substring(0, 19) %></td>
+                                        <td><%= eventSResult.get(0).get(6) %> Minutes</td>
                                     <% } %>
-                                    <% if (status==1 || status==3) { %>
-                                        <td class="icons" align="center"><a href="" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
+                                    <% if (status==1) { %>
+                                        <td class="icons" align="center">
+                                            <a href="edit_event_schedule.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="modify">
+                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting schedule" alt="Modify"/>
+                                        </a></td>
+                                    <% } else if (status==3) { %>
+                                        <td class="icons" align="center">
+                                            <a href="edit_event_schedule.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="modify">
+                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture schedule" alt="Modify"/>
+                                        </a></td>
                                     <% } %>
                                     </tr>
                                 </tbody>

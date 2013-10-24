@@ -158,8 +158,6 @@
         return;
     }
     // End page validation
-    
-    
     ArrayList<ArrayList<String>> eventResult = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> eventSResult = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> eventAttendee = new ArrayList<ArrayList<String>>();
@@ -242,7 +240,53 @@
     }
         
     String isCancel = (eventResult.get(0).get(4).equals("1")) ? "Yes" : "";
-    int i = 0;                                
+    ArrayList<ArrayList<String>> modPassResult = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> viewerPassResult = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> creatorResult = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> lectureResult = new ArrayList<ArrayList<String>>();
+    String nickName = usersession.getNick();
+    String modPwd;
+    String viewerPwd;
+    String eventCreator="null";
+    String c_id,sc_id,sc_semesterid;
+    int i = 0;   
+    if(!isCancel.equals("Yes")){
+    	if (!(m_id==null || ms_id==null)) {
+    		meeting.getMeetingModPass(modPassResult, ms_id, m_id);
+    		meeting.getMeetingUserPass(viewerPassResult, ms_id, m_id);
+    		meeting.getMeetingCreators(creatorResult, ms_id);
+    		modPwd=modPassResult.get(0).get(0);
+    		viewerPwd=viewerPassResult.get(0).get(0);
+    		eventCreator=creatorResult.get(0).get(0);
+    		session.setAttribute("modPwd", modPwd);
+    		session.setAttribute("viewerPwd", viewerPwd);
+    		session.setAttribute("eventType", "Meeting");
+    		session.setAttribute("username", nickName);
+    		session.setAttribute("eventId", m_id);
+    		session.setAttribute("eventScheduleId",ms_id);
+    		session.setAttribute("meetingCreator", eventCreator);
+    		
+    	}
+        if (!(l_id==null || ls_id==null)) {
+            lecture.getLectureModPass(modPassResult, ls_id, l_id);
+            lecture.getLectureUserPass(viewerPassResult, ls_id, l_id);
+            lecture.getLectureScheduleInfo(lectureResult,ls_id);
+            c_id=lectureResult.get(0).get(1);
+            sc_id=lectureResult.get(0).get(2);
+            sc_semesterid=lectureResult.get(0).get(3);
+            lecture.getLectureProfessor(creatorResult, c_id, sc_id, sc_semesterid);
+            eventCreator=creatorResult.get(0).get(0);
+            modPwd=modPassResult.get(0).get(0);
+            viewerPwd=viewerPassResult.get(0).get(0);
+            session.setAttribute("modPwd", modPwd);
+            session.setAttribute("viewerPwd", viewerPwd);
+            session.setAttribute("eventType", "Lecture");
+            session.setAttribute("username", nickName);
+            session.setAttribute("eventId", l_id);
+            session.setAttribute("eventScheduleId",ls_id);
+            session.setAttribute("lectureProfessor", eventCreator);
+        }
+    }
 %>
 <script type="text/javascript">
 /* TABLE */
@@ -278,11 +322,34 @@ $(document).ready(function() {
     <jsp:include page="header.jsp"/>
     <jsp:include page="menu.jsp"/>
     <section>
-        <header>
-            <p><a href="calendar.jsp" tabindex="13">home</a> » </p>
-            <h1>Current Event</h1>
-            <div class="warningMessage"><%=message %></div>
-        </header>
+        <form name="joinEvent" id="joinEvent" method="post" action="join_event.jsp">
+            <article>
+		        <header>
+		            <p><a href="calendar.jsp" tabindex="13">home</a> » </p>
+		            <h1>Current Event</h1>
+		            <div class="warningMessage"><%=message %></div>
+		        </header>
+                <div class="content">
+                    <fieldset>
+                        <div class="component">
+                                <label for="eventType" class="label">Event Type:</label>
+                                <input type="text" name="eventType" id="eventType" class="input" readonly tabindex="3"  value="<%= (m_id==null)? "Lecture":"Meeting" %>" 
+                                 title="event id" >
+                                <label for="eventId" class="label">Event ID:</label>
+                                <input type="text" name="eventId" id="eventId" class="input" readonly tabindex="3"  value="<%= (m_id==null)? l_id:m_id %>" 
+                                 title="event id" >
+                                <label for="eventScheduleId" class="label">Schedule ID:</label>
+                                <input type="text" name="eventScheduleId" id="eventScheduleId" class="input" readonly tabindex="3"  value="<%= (ms_id==null)? ls_id:ms_id %>" 
+                                 title="event id" >
+                                <div class="buttons">
+                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="create" title="Click here to create room"><% if(eventCreator.equals(userId)){ out.print("Create Event Room");} else out.print("Join Event Room"); %>Join Event</button>
+                                </div>
+                        </div>                                                   
+                    </fieldset>
+                </div>
+            </article>
+        </form>
+
         <form action="persist_user_settings.jsp" method="get">
             <article>
                 <header>

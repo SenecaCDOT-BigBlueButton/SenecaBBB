@@ -53,7 +53,7 @@
         return;
     }
     //only event creator and super admin have permission to edit event schedule
-    if(!(ms_id.equals("null")||ms_id.equals(null))){
+    if(!(ms_id==null||ms_id.equals(""))){
         if (!meeting.isMeeting(myBool, ms_id, m_id)) {
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AA01");
             response.sendRedirect("canlendar.jsp?message=" + message);
@@ -66,7 +66,7 @@
         }
         isMeeting = true;
     }
-    if(!(ls_id.equals("null")||ls_id.equals(null))){
+    if(!(ls_id==null||ls_id.equals(""))){
         if (!lecture.isLecture(myBool, ls_id, l_id)) {
             message = lecture.getErrMsg("ALG01");
             response.sendRedirect("canlendar.jsp?message=" + message);

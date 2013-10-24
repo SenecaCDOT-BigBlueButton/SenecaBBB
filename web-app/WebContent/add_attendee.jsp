@@ -143,20 +143,30 @@
             if (!(Validation.checkBuId(remove))) {
                 message = Validation.getErrMsg();
             } else {
-                if (!meeting.removeMeetingAttendee(remove, ms_id)) {
-                    message = meeting.getErrMsg("AA07");
+                if (!user.isMeetingAttendee(myBool, ms_id, remove)) {
+                    message = user.getErrMsg("AA07");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 } else {
-                    message = remove + " was removed from attendee list";
-                }       
+                    if (myBool.get_value()) { 
+                        if (!meeting.removeMeetingAttendee(remove, ms_id)) {
+                            message = meeting.getErrMsg("AA08");
+                            response.sendRedirect("logout.jsp?message=" + message);
+                            return;   
+                        } else {
+                            message = remove + " was removed from attendee list";
+                        }                         
+                    } else {
+                        message = "User to be removed not in attendee list";   
+                    }
+                }              
             }  
         }
     }
     
     ArrayList<ArrayList<String>> eventAttendee = new ArrayList<ArrayList<String>>();
     if (!meeting.getMeetingAttendee(eventAttendee, ms_id)) {
-        message = meeting.getErrMsg("AA08");
+        message = meeting.getErrMsg("AA09");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }                                

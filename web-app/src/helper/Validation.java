@@ -32,12 +32,7 @@ public class Validation {
     }
     
     public static boolean isNumber(String str, String fieldName) {
-        boolean flag = true;
-        for(int i=0; i<str.length(); i++) {
-            if (flag) {
-                flag = (str.charAt(i) >= '0' && str.charAt(i) <= '9');
-            }
-        }
+        boolean flag = str.matches("^[0]*[1-9][0-9]*$");
         if (!flag) {
             _errMsg = fieldName + " must be a positive integer";
         }
@@ -83,5 +78,24 @@ public class Validation {
         boolean flag = checkEmpty(p_title, "Presentation Title");
         return flag;
     }
-
+    
+    public static boolean checkDescription(String description) {
+        boolean flag = true;
+        return flag;
+    }
+    
+    public static boolean checkDuration(String duration) {
+        boolean flag = checkEmpty(duration, "Duration") && isNumber(duration, "Duration");
+        return flag;
+    }
+    
+    public static boolean checkStartTime(String startTime) {
+        boolean flag = checkEmpty(startTime, "Presentation Title");
+        if (flag) {
+            flag = startTime.matches("^[0-9]{2}:[0-9]{2}:[0-9]{2}$");
+            _errMsg = "Start Time must in format: HH:MM:SS";
+        }
+        return flag;
+    }
+    
 }    

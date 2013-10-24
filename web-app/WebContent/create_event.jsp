@@ -63,7 +63,7 @@
 	userSettings = usersession.getUserSettingsMask();
 	meetingSettings = usersession.getUserMeetingSettingsMask();
 	roleMask = usersession.getRoleMask();
-	if(isProfessor)
+	if(isProfessor && !isSuper)
 	    lecture.getProfessorCourse(professor,userId);
     if(isSuper)
 	    lecture.getAllProfessorCourse(professor);
@@ -283,7 +283,7 @@
             <div class="component" id="lectureCourse">
               <label for="courseCode" class="label">Course Information:</label>
               <select name="courseCode" id="courseCode" tabindex="15" title="Course Name" style="width: 402px"  autofocus>
-                  <% if(isProfessor){
+                  <% if(isProfessor && !isSuper){
                 	  for(int i=0;i<professor.size();i++){  %>
                           <option value="<%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)) %>" >
                   <%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)) %></option>

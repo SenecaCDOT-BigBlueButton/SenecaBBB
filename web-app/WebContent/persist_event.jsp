@@ -85,12 +85,12 @@ public static String getMonthNumber(String month) {
     String c_id=null;
     String sc_id=null;
     String sc_semesterid=null;
-    if(isProfessor){
+    if(isProfessor && eventType.equals("Lecture")){
 	     c_id = request.getParameter("courseCode").split(" ")[0];
 	     sc_id = request.getParameter("courseCode").split(" ")[1];
 	     sc_semesterid =request.getParameter("courseCode").split(" ")[2];
     }
-    if(isSuper){
+    if(isSuper && eventType.equals("Lecture")){
          c_id = request.getParameter("courseCode").split(" ")[1];
          sc_id = request.getParameter("courseCode").split(" ")[2];
          sc_semesterid =request.getParameter("courseCode").split(" ")[3];

@@ -249,6 +249,8 @@
     String viewerPwd;
     String eventCreator="null";
     String c_id,sc_id,sc_semesterid;
+    String eventNameToJoin = request.getParameter("eventName");
+    System.out.println(eventNameToJoin+"===============");
     int i = 0;   
     if(!isCancel.equals("Yes")){
     	if (!(m_id==null || ms_id==null)) {
@@ -341,9 +343,13 @@ $(document).ready(function() {
                                 <label for="eventScheduleId" class="label">Schedule ID:</label>
                                 <input type="text" name="eventScheduleId" id="eventScheduleId" class="input" readonly tabindex="3"  value="<%= (ms_id==null)? ls_id:ms_id %>" 
                                  title="event id" >
+                                <%if (eventNameToJoin==null){ %>
                                 <div class="buttons">
-                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="create" title="Click here to create room"><% if(eventCreator.equals(userId)){ out.print("Create Event Room");} else out.print("Join Event Room"); %>Join Event</button>
-                                </div>
+                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="<%= eventCreator.equals(userId)?"Create":"Join" %>" title="Click here to create room"><% if(eventCreator.equals(userId)){ out.print("Create Event Room");} else out.print("Join Event Room"); %></button>
+                                </div><% }else{ %>
+                                 <div class="buttons">
+                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="backToSession" title="Click here to go back meeting session">Back to Meeting</button>
+                                </div><%} %>
                         </div>                                                   
                     </fieldset>
                 </div>

@@ -73,13 +73,15 @@ public static String getMonthNumber(String month) {
     roleMask = usersession.getRoleMask();
     int nickName = roleMask.get("nickname");
     
+    String startMonthNumber=null;
+    startMonthNumber = getMonthNumber(request.getParameter("dropdownMonthStarts"));
     String endMonthNumber=null;
     endMonthNumber = getMonthNumber(request.getParameter("monthEnds"));
     String eventId = request.getParameter("eventScheduleId");
     String title = request.getParameter("eventTitle");
     String eventType = request.getParameter("eventType");  
     String duration = request.getParameter("eventDuration");
-    String inidatetime = request.getParameter("startDate").concat(" ").concat(request.getParameter("startTime")).concat(".0");
+    String inidatetime = request.getParameter("dropdownYearStarts").concat("-").concat(startMonthNumber).concat("-").concat(request.getParameter("dropdownDayStarts")).concat(" ").concat(request.getParameter("startTime")).concat(".0");
   
     String c_id=null;
     String sc_id=null;
@@ -152,7 +154,7 @@ public static String getMonthNumber(String month) {
     }   
     if(eventType.equals("Meeting")){   //update a meeting schedule
         System.out.println("update a meeting");        
-       if( meeting.updateMeetingSchedule(eventId, title,inidatetime, spec, duration)){
+       if( meeting.updateMeetingSchedule(eventId, inidatetime, spec, "")){
     	    response.sendRedirect("calendar.jsp?message=meeting updated successfully"); 
        }else{
     	    response.sendRedirect("calendar.jsp?message=update failure");  
@@ -160,7 +162,7 @@ public static String getMonthNumber(String month) {
     }
     else{ //update a lecture schedule
         System.out.println("update a lecture");
-        if(lecture.updateLectureSchedule(eventId, inidatetime, spec, duration)){
+        if(lecture.updateLectureSchedule(eventId, inidatetime, spec, "")){
             response.sendRedirect("calendar.jsp?message=lecture updated successfully"); 
         }else{
         	response.sendRedirect("calendar.jsp?message=update failure"); 

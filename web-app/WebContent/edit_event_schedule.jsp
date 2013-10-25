@@ -242,8 +242,7 @@
         <div class="content">
           <fieldset>
             <div class="component">
-              <label for="eventScheduleId" class="label">Schedule ID:</label>
-              <input name="eventScheduleId" id="eventScheduleId" class="input" tabindex="14" title="Event Schedule ID" type="text" value="<%= isMeeting? ms_id:ls_id %>" readonly>
+              <input type="hidden" name="eventScheduleId" id="eventScheduleId" value="<%= isMeeting? ms_id:ls_id %>">
             </div>
             <% if(isMeeting){ %>
             <div class="component">
@@ -269,10 +268,10 @@
           <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/></header>
         <div class="content">
           <fieldset>
-            <div class="component" id="startsOn" style="display:none">
+            <div class="component" id="startsOn">
               <label for="dropdownMonthStarts" class="label">Start Date:</label>
               <div class="datePicker" title="Choose a date">
-                <input name="datePickerStarts" id="datePickerStarts" class="datePicker" aria-disabled="true"  aria-hidden="true" aria-readonly="true" readonly>                 
+                <input name="datePickerStarts" id="datePickerStarts" class="datePicker" aria-disabled="true"  aria-hidden="true" aria-readonly="true">                 
               </div>
               <select name="dropdownYearStarts" id="dropdownYearStarts" title="Year" tabindex="23" style="width: 100px">
               </select>
@@ -292,10 +291,6 @@
                 <option role="option">November</option>
                 <option role="option">December</option>
               </select>             
-            </div>
-            <div class="component" >
-              <label for="startDate" class="label">Start Date:</label> 
-              <input id="startDate" name="startDate"  type="text"  class="input"  tabindex="24" title="Start Date" value="<%= isMeeting? result.get(0).get(2).split(" ")[0]: result.get(0).get(4).split(" ")[0] %>" readonly/>            
             </div>
             <div class="component" >
               <label for="startTime" class="label">Start Time:</label> 
@@ -537,6 +532,10 @@
                 <option role="option" <% if(endsMonth.equals("11")){out.print("selected=selected");} %>>November</option>
                 <option role="option" <% if(endsMonth.equals("12")){out.print("selected=selected");} %>>December</option>
               </select>
+            </div>
+            <div class="component" >
+                <label for="eventDescription" class="label">Description:</label>
+                <textarea name="eventDescription" id="eventDescription" class="input" cols="35" rows="5" title="Description" autofocus></textarea>           
             </div>
           </fieldset>
         </div>

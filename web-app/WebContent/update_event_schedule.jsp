@@ -3,7 +3,7 @@
 <%@page import="sql.Meeting"%>
 <%@page import="sql.Lecture"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 
@@ -82,7 +82,10 @@ public static String getMonthNumber(String month) {
     String eventType = request.getParameter("eventType");  
     String duration = request.getParameter("eventDuration");
     String inidatetime = request.getParameter("dropdownYearStarts").concat("-").concat(startMonthNumber).concat("-").concat(request.getParameter("dropdownDayStarts")).concat(" ").concat(request.getParameter("startTime")).concat(".0");
-  
+    if (!(Validation.checkStartDateTime(inidatetime))) {
+        response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
+        return;
+    }
     String c_id=null;
     String sc_id=null;
     String sc_semesterid=null;

@@ -3,7 +3,7 @@
 <%@page import="sql.Meeting"%>
 <%@page import="sql.Lecture"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 
@@ -79,6 +79,11 @@ public static String getMonthNumber(String month) {
     startMonthNumber = getMonthNumber(request.getParameter("dropdownMonthStarts"));        
     String title = request.getParameter("eventTitle");
     String inidatetime = request.getParameter("dropdownYearStarts").concat("-").concat(startMonthNumber).concat("-").concat(request.getParameter("dropdownDayStarts")).concat(" ").concat(request.getParameter("startTime")).concat(".0");
+    //Validate inidatetime to ensure that it is later than current time
+    if (!(Validation.checkStartDateTime(inidatetime))) {
+        response.sendRedirect("create_event.jsp?message=" + Validation.getErrMsg());
+        return;
+    }
     String duration = request.getParameter("eventDuration");
     String description = request.getParameter("eventDescription");
     String eventType = request.getParameter("dropdownEventType");

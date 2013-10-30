@@ -1,5 +1,12 @@
 package helper;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 /**
  * Every method in class need to done, these are just skeletons
  */
@@ -98,4 +105,18 @@ public class Validation {
         return flag;
     }
     
+    public static boolean checkStartDateTime(String dateTime) throws ParseException {
+        boolean flag = checkEmpty(dateTime, "Start Date Time");
+        if (flag) {
+            Date date = new Date();
+            dateTime = dateTime.substring(0, 19);
+            DateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date d1 = (Date) f.parse(dateTime);
+            if (d1.compareTo(date) < 0) {
+                flag = false;
+                _errMsg = "Start Date Time must be later than current time";
+            }
+        }
+        return flag;
+    } 
 }    

@@ -505,25 +505,6 @@ public class Meeting extends Sql {
     
     /**
      * 
-     * @param ms_title<p>
-     * @param ms_id
-     * @param ms_spec
-     * @param m_duration
-     * @param ms_inidatetime
-     * @return
-     */
-    public boolean updateMeetingSchedule(String ms_id, String ms_title, String ms_inidatetime,String ms_spec,String ms_duration) {
-        _sql = "UPDATE meeting_schedule "
-        	 + "SET ms_title='" + ms_title + "' "
-        	 + ",ms_inidatetime= '" + ms_inidatetime + "' "
-        	 + ",ms_spec= '" + ms_spec + "' "
-        	 + ",ms_duration= '" + ms_duration + "' "
-        	 + " WHERE ms_id= '" + ms_id+"' ";
-        return _dbAccess.updateDB(_sql);
-    }
-    
-    /**
-     * 
      * @param num (1, 2, 3)<p>
      * (1) change the current meeting only<p>
        (2) change all sessions after and including the current one<p>
@@ -542,6 +523,51 @@ public class Meeting extends Sql {
         return _dbAccess.updateDB(_sql);
     }
     
+    /**
+     * Edit a meeting schedule, delete all future meetings, create new ones<p>
+     * ms_spec Format: Type;Subtype;Repeat-or-EndDate;Interval;Weekstring-or-DayOfMonth<p>
+     * Type 1: Single occurrence, no Subtype<p>
+     *      Example: 1<p>
+     * Type 2: Daily<p> 
+     *      2 Subtypes:<p>
+     *          (1) repeat for a number of times<p>
+     *          (2) repeat until a certain date<p>
+     *      Example: 2;1;6;2<p>
+     *               repeat 6 times with interval of 2 days<p> 
+     *               2;2;2013-10-01;7<p>
+     *               repeat until end date reached with interval of 7 days<p>
+     * Type 3: Weekly<p>
+     *      3 Subtypes:<p>
+     *          (1) repeat for a number of times<p>
+     *          (2) repeat for a number of weeks<p>
+     *          (3) repeat until end date is reached<p>
+     *      Weekstring: 0011000 Sun|Mon|Tues|Wed|Thurs|Fri|Sat<p>
+     *      Example: 3;1;6;1;0111110<p>
+     *               3;2;6;2;0110010<p>
+     *               3;3;2013-11-11;3;0110010<p>
+     * Type 4: Monthly<p>
+     *      2 Subtypes:<p>
+     *          (1) repeat on same day each month
+     *              (date will auto change to the last day of month for shortened month)
+     *          (2) repeat the first occurrence of day-of-week in a month
+     *      Example: 4;1;7;1;31<p>
+     *               4;2;5;1;3<p>
+     *               repeat on the first Tuesday of each month for 5 month, repeat every month
+     * @param ms_id
+     * @param ms_inidatetime (format: 'YYYY-MM-DD HH:MM:SS')
+     * @param ms_spec
+     * @param m_description
+     * @return
+     */
+    public boolean updateMeetingSchedule(String ms_id, String ms_inidatetime, 
+            String ms_spec, String m_description) {
+        _sql = "CALL sp_edit_ms('"
+                + ms_id + "', '"
+                + ms_inidatetime + "', '"
+                + ms_spec + "', '"
+                + m_description + "')";
+        return _dbAccess.updateDB(_sql);
+    }
     
     /**
      * 
@@ -637,52 +663,6 @@ public class Meeting extends Sql {
                 + ms_duration + "', '"
                 + m_description + "', '"
                 + bu_id + "')";
-        return _dbAccess.updateDB(_sql);
-    }
-    
-    /**
-     * Edit a meeting schedule, delete all future meetings, create new ones<p>
-     * ms_spec Format: Type;Subtype;Repeat-or-EndDate;Interval;Weekstring-or-DayOfMonth<p>
-     * Type 1: Single occurrence, no Subtype<p>
-     *      Example: 1<p>
-     * Type 2: Daily<p> 
-     *      2 Subtypes:<p>
-     *          (1) repeat for a number of times<p>
-     *          (2) repeat until a certain date<p>
-     *      Example: 2;1;6;2<p>
-     *               repeat 6 times with interval of 2 days<p> 
-     *               2;2;2013-10-01;7<p>
-     *               repeat until end date reached with interval of 7 days<p>
-     * Type 3: Weekly<p>
-     *      3 Subtypes:<p>
-     *          (1) repeat for a number of times<p>
-     *          (2) repeat for a number of weeks<p>
-     *          (3) repeat until end date is reached<p>
-     *      Weekstring: 0011000 Sun|Mon|Tues|Wed|Thurs|Fri|Sat<p>
-     *      Example: 3;1;6;1;0111110<p>
-     *               3;2;6;2;0110010<p>
-     *               3;3;2013-11-11;3;0110010<p>
-     * Type 4: Monthly<p>
-     *      2 Subtypes:<p>
-     *          (1) repeat on same day each month
-     *              (date will auto change to the last day of month for shortened month)
-     *          (2) repeat the first occurrence of day-of-week in a month
-     *      Example: 4;1;7;1;31<p>
-     *               4;2;5;1;3<p>
-     *               repeat on the first Tuesday of each month for 5 month, repeat every month
-     * @param ms_id
-     * @param ms_inidatetime (format: 'YYYY-MM-DD HH:MM:SS')
-     * @param ms_spec
-     * @param m_description
-     * @return
-     */
-    public boolean editMeetingSchedule(String ms_id, String ms_inidatetime, 
-            String ms_spec, String m_description) {
-        _sql = "CALL sp_edit_ms('"
-                + ms_id + "', '"
-                + ms_inidatetime + "', '"
-                + ms_spec + "', '"
-                + m_description + "')";
         return _dbAccess.updateDB(_sql);
     }
     

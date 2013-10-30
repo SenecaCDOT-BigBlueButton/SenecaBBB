@@ -257,6 +257,8 @@
       <header>
         <p><a href="calendar.jsp" tabindex="13">home</a> » create event</p>
         <h1>Create Event</h1>
+        <!-- WARNING MESSAGES -->
+            <div class="warningMessage"><%=message %></div>
       </header>
        <form method="get" action="persist_event.jsp" id="eventForm">
       <article>

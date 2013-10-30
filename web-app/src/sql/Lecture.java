@@ -447,22 +447,6 @@ public class Lecture extends Sql {
                 + l_duration + "')";
         return _dbAccess.updateDB(_sql);
     }
-
-    /**
-     * @param ls_id
-     * @param l_id
-     * @param ls_spec
-     * @param ls_duration
-     * @return
-     */
-    public boolean updateLectureSchedule(String ls_id,String ls_inidatetime,String ls_spec,String ls_duration) {
-        _sql = "UPDATE lecture_schedule "
-           	 + "SET ls_inidatetime= '" + ls_inidatetime + "' "
-           	 + ",ls_spec= '" + ls_spec + "' "
-           	 + ",ls_duration= '" + ls_duration + "' "
-           	 + " WHERE ls_id= '" + ls_id +"' ";
-        return _dbAccess.updateDB(_sql);
-    }
     
     /**
      * 
@@ -481,6 +465,52 @@ public class Lecture extends Sql {
                 + ls_id + "', '"
                 + l_id + "', '"
                 + time + "')";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    /**
+     * Edit a lecture schedule, delete all future lectures, create new ones<p>
+     * ms_spec Format: Type;Subtype;Repeat-or-EndDate;Interval;Weekstring-or-DayOfMonth<p>
+     * Type 1: Single occurrence, no Subtype<p>
+     *      Example: 1<p>
+     * Type 2: Daily<p> 
+     *      2 Subtypes:<p>
+     *          (1) repeat for a number of times<p>
+     *          (2) repeat until a certain date<p>
+     *      Example: 2;1;6;2<p>
+     *               repeat 6 times with interval of 2 days<p> 
+     *               2;2;2013-10-01;7<p>
+     *               repeat until end date reached with interval of 7 days<p>
+     * Type 3: Weekly<p>
+     *      3 Subtypes:<p>
+     *          (1) repeat for a number of times<p>
+     *          (2) repeat for a number of weeks<p>
+     *          (3) repeat until end date is reached<p>
+     *      Weekstring: 0011000 Sun|Mon|Tues|Wed|Thurs|Fri|Sat<p>
+     *      Example: 3;1;6;1;0111110<p>
+     *               3;2;6;2;0110010<p>
+     *               3;3;2013-11-11;3;0110010<p>
+     * Type 4: Monthly<p>
+     *      2 Subtypes:<p>
+     *          (1) repeat on same day each month
+     *              (date will auto change to the last day of month for shortened month)
+     *          (2) repeat the first occurrence of day-of-week in a month
+     *      Example: 4;1;7;1;31<p>
+     *               4;2;5;1;3<p>
+     *               repeat on the first Tuesday of each month for 5 month, repeat every month
+     * @param ls_id
+     * @param ls_inidatetime (format: 'YYYY-MM-DD HH:MM:SS')
+     * @param ls_spec
+     * @param l_description
+     * @return
+     */
+    public boolean updateLectureSchedule(String ls_id, String ls_inidatetime, 
+            String ls_spec, String l_description) {
+        _sql = "CALL sp_edit_ls('"
+                + ls_id + "', '"
+                + ls_inidatetime + "', '"
+                + ls_spec + "', '"
+                + l_description + "')";
         return _dbAccess.updateDB(_sql);
     }
     
@@ -550,52 +580,6 @@ public class Lecture extends Sql {
                 + ls_inidatetime + "', '"
                 + ls_spec + "', '"
                 + ls_duration + "', '"
-                + l_description + "')";
-        return _dbAccess.updateDB(_sql);
-    }
-    
-    /**
-     * Edit a lecture schedule, delete all future lectures, create new ones<p>
-     * ms_spec Format: Type;Subtype;Repeat-or-EndDate;Interval;Weekstring-or-DayOfMonth<p>
-     * Type 1: Single occurrence, no Subtype<p>
-     *      Example: 1<p>
-     * Type 2: Daily<p> 
-     *      2 Subtypes:<p>
-     *          (1) repeat for a number of times<p>
-     *          (2) repeat until a certain date<p>
-     *      Example: 2;1;6;2<p>
-     *               repeat 6 times with interval of 2 days<p> 
-     *               2;2;2013-10-01;7<p>
-     *               repeat until end date reached with interval of 7 days<p>
-     * Type 3: Weekly<p>
-     *      3 Subtypes:<p>
-     *          (1) repeat for a number of times<p>
-     *          (2) repeat for a number of weeks<p>
-     *          (3) repeat until end date is reached<p>
-     *      Weekstring: 0011000 Sun|Mon|Tues|Wed|Thurs|Fri|Sat<p>
-     *      Example: 3;1;6;1;0111110<p>
-     *               3;2;6;2;0110010<p>
-     *               3;3;2013-11-11;3;0110010<p>
-     * Type 4: Monthly<p>
-     *      2 Subtypes:<p>
-     *          (1) repeat on same day each month
-     *              (date will auto change to the last day of month for shortened month)
-     *          (2) repeat the first occurrence of day-of-week in a month
-     *      Example: 4;1;7;1;31<p>
-     *               4;2;5;1;3<p>
-     *               repeat on the first Tuesday of each month for 5 month, repeat every month
-     * @param ls_id
-     * @param ls_inidatetime (format: 'YYYY-MM-DD HH:MM:SS')
-     * @param ls_spec
-     * @param l_description
-     * @return
-     */
-    public boolean editLectureSchedule(String ls_id, String ls_inidatetime, 
-            String ls_spec, String l_description) {
-        _sql = "CALL sp_edit_ls('"
-                + ls_id + "', '"
-                + ls_inidatetime + "', '"
-                + ls_spec + "', '"
                 + l_description + "')";
         return _dbAccess.updateDB(_sql);
     }

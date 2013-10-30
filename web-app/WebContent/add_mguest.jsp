@@ -143,12 +143,22 @@
             if (!(Validation.checkBuId(remove))) {
                 message = Validation.getErrMsg();
             } else {
-                if (!meeting.removeMeetingGuest(remove, ms_id, m_id)) {
-                    message = meeting.getErrMsg("AMG07");
+                if (!user.isMeetingGuest(myBool, ms_id, m_id, remove)) {
+                    message = user.getErrMsg("AMG07");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 } else {
-                    message = remove + " was removed from guest list";
+                    if (myBool.get_value()) { 
+                        if (!meeting.removeMeetingGuest(remove, ms_id, m_id)) {
+                            message = meeting.getErrMsg("AMG08");
+                            response.sendRedirect("logout.jsp?message=" + message);
+                            return;   
+                        } else {
+                            message = remove + " was removed from guest list";
+                        }                           
+                    } else {
+                        message = "User to be removed not in guest list";   
+                    }
                 }        
             }  
         }

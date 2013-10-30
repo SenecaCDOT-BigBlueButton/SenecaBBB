@@ -239,9 +239,9 @@ BEGIN
 		WHEN 1 THEN
 			BEGIN
 				INSERT INTO meeting VALUES 
-					(_nextval, _count + 1, p_ms_inidatetime, p_ms_duration, 
+					(p_ms_id, _count + 1, p_ms_inidatetime, _duration, 
 					0, p_m_description, floor(rand() * 10000), floor(rand() * 10000), 
-					(SELECT m_setting FROM bbb_user WHERE bu_id = p_bu_id)); 
+					(SELECT m_setting FROM bbb_user WHERE bu_id = _bu_id)); 
 			END;
 		WHEN 2 THEN
 			BEGIN
@@ -805,7 +805,7 @@ BEGIN
 		WHEN 1 THEN
 			BEGIN
 				INSERT INTO lecture VALUES 
-					(_nextval, _count + 1, p_ls_inidatetime, p_ls_duration, 
+					(p_ls_id, _count + 1, p_ls_inidatetime, _duration, 
 					0, p_l_description, floor(rand() * 10000), floor(rand() * 10000)); 
 			END;
 		WHEN 2 THEN

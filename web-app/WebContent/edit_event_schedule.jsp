@@ -233,6 +233,8 @@
       <header>
         <p><a href="calendar.jsp" tabindex="13">home</a> » edit event schedule</p>
         <h1>Edit Event Schedule</h1>
+        <!-- WARNING MESSAGES -->
+        <div class="warningMessage"><%=message %></div>
       </header>
        <form method="get" action="update_event_schedule.jsp" id="eventForm">
       <article>
@@ -243,6 +245,7 @@
           <fieldset>
             <div class="component">
               <input type="hidden" name="eventScheduleId" id="eventScheduleId" value="<%= isMeeting? ms_id:ls_id %>">
+              <input type="hidden" name="eventId" id="eventId" value="<%= isMeeting? m_id:l_id %>">
             </div>
             <% if(isMeeting){ %>
             <div class="component">

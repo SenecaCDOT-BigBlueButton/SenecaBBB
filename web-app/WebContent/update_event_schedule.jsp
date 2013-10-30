@@ -78,13 +78,20 @@ public static String getMonthNumber(String month) {
     String endMonthNumber=null;
     endMonthNumber = getMonthNumber(request.getParameter("monthEnds"));
     String eventId = request.getParameter("eventScheduleId");
+    String e_Id = request.getParameter("eventId");
+    String eventDescription = request.getParameter("eventDescription");
     String title = request.getParameter("eventTitle");
     String eventType = request.getParameter("eventType");  
     String duration = request.getParameter("eventDuration");
     String inidatetime = request.getParameter("dropdownYearStarts").concat("-").concat(startMonthNumber).concat("-").concat(request.getParameter("dropdownDayStarts")).concat(" ").concat(request.getParameter("startTime")).concat(".0");
     if (!(Validation.checkStartDateTime(inidatetime))) {
-        response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
-        return;
+        if (eventType.equals("Meeting")) {
+            response.sendRedirect("edit_event_schedule.jsp?ms_id=" + eventId + "&m_id=" + e_Id + "&message=" + Validation.getErrMsg());
+            return;
+        } else {
+            response.sendRedirect("edit_event_schedule.jsp?ls_id=" + eventId + "&l_id=" + e_Id + "&message=" + Validation.getErrMsg());
+            return;
+        }
     }
     String c_id=null;
     String sc_id=null;
@@ -157,18 +164,28 @@ public static String getMonthNumber(String month) {
     }   
     if(eventType.equals("Meeting")){   //update a meeting schedule
         System.out.println("update a meeting");        
-       if( meeting.updateMeetingSchedule(eventId, inidatetime, spec, "")){
+       if( meeting.updateMeetingSchedule(eventId, inidatetime, spec, eventDescription)){
     	    response.sendRedirect("calendar.jsp?message=meeting updated successfully"); 
        }else{
     	    response.sendRedirect("calendar.jsp?message=update failure");  
        }
+       if(meeting.updateMeetingDuration(3, eventId, e_Id, duration)){
+           response.sendRedirect("calendar.jsp?message=meeting updated successfully"); 
+       }else{
+           response.sendRedirect("calendar.jsp?message=update failure");  
+       }
     }
     else{ //update a lecture schedule
         System.out.println("update a lecture");
-        if(lecture.updateLectureSchedule(eventId, inidatetime, spec, "")){
+        if(lecture.updateLectureSchedule(eventId, inidatetime, spec, eventDescription)){
             response.sendRedirect("calendar.jsp?message=lecture updated successfully"); 
         }else{
         	response.sendRedirect("calendar.jsp?message=update failure"); 
+        }
+        if(lecture.updateLectureDuration(3, eventId, e_Id, duration)){
+            response.sendRedirect("calendar.jsp?message=meeting updated successfully"); 
+        }else{
+            response.sendRedirect("calendar.jsp?message=update failure");  
         }
     }
     

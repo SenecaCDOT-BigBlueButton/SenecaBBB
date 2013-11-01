@@ -46,10 +46,12 @@
     boolean validFlag; 
     MyBoolean myBool = new MyBoolean();
     // Denotes the relationship between the session user and current event being viewed:
-    //    (1) the session user created this meeting
+    //  (1) the session user created this meeting
     //  (2) the session user is scheduled to attend this meeting
-    //  (3) the session user is teaching or guest teaching this lecture
-    //  (4) the session user is a student in this lecture session
+    //  (6) the session user is a guest in this meeting
+    //  (3) the session user is teaching this lecture
+    //  (4) the session user is guest teaching this lecture
+    //  (5) the session user is a student in this lecture session
     int status = 0;
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
@@ -421,6 +423,9 @@ $(document).ready(function() {
                                         <th>Starting From<span></span></th>
                                         <th>Duration<span></span></th>
                                     <% } %>
+                                    <% if (status==1 || status==2 || status==3 || status==5) { %>
+                                        <th width="65" title="Details" class="icons" align="center">Details</th>
+                                    <% } %>
                                     <% if (status==1 || status==3) { %>
                                         <th width="65" title="Modify" class="icons" align="center">Modify</th>
                                     <% } %>
@@ -439,6 +444,17 @@ $(document).ready(function() {
                                         <td><%= eventSResult.get(0).get(3) %></td>
                                         <td><%= eventSResult.get(0).get(4).substring(0, 19) %></td>
                                         <td><%= eventSResult.get(0).get(6) %> Minutes</td>
+                                    <% } %>
+                                    <% if (status==1 || status==2) { %>
+                                        <td class="icons" align="center">
+                                            <a href="view_event_schedule.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="view">
+                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event schedule" alt="View_Event"/>
+                                            </a></td>
+                                    <% } else if (status==3 || status==5) { %>
+                                        <td class="icons" align="center">
+                                            <a href="view_event_schedule.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="view">
+                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event schedule" alt="View_Event"/>
+                                            </a></td>
                                     <% } %>
                                     <% if (status==1) { %>
                                         <td class="icons" align="center">

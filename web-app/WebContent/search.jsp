@@ -22,6 +22,7 @@ public boolean findUser(DBAccess dbaccess, LDAPAuthenticate ldap, String bu_id) 
 				// if found in LDAP create new bbb_user row in db
 				if (ldap.search(bu_id)) {
 					if (ldap.getPosition().equals("Employee"))
+						
 						user.createEmployeeUser(bu_id, " ", true);
 					else
 						user.createStudentUser(bu_id, " ", true);

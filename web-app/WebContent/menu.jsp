@@ -7,6 +7,9 @@
 				<li id="calendar"><a href="calendar.jsp" tabindex="5" title="Click here to see your calendar of events">Calendar</a></li>
 			</div>
 			<div class="menu">
+                <li id="events"><a href="view_events.jsp" tabindex="5" title="Click here to see a list of upcoming events">Events</a></li>
+            </div>
+			<div class="menu">
 				<li id="createEvent"><a href="create_event.jsp" tabindex="6" title="Click here to create a new event">Create Event</a></li>
 			</div>
 			<div class="menu">

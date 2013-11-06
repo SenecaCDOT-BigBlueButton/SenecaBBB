@@ -114,48 +114,6 @@ public class Meeting extends Sql {
      * @param attended
      * @return
      */
-    public boolean getFutureMeetingsForUser(ArrayList<ArrayList<String>> result, String bu_id, boolean creator, boolean attendee) {
-    	String _creator = "(SELECT meeting.*, meeting_schedule.ms_title " 
-    			+ "FROM meeting "
-    			+ "INNER JOIN meeting_schedule ON meeting.ms_id = meeting_schedule.ms_id "
-    			+ "WHERE meeting_schedule.bu_id = '" + bu_id +"' "
-    			+ "AND m_inidatetime >= sysdate())";
-    			
-    	String _attendee = "(SELECT meeting.*, meeting_schedule.ms_title "
-                + "FROM meeting "
-        		+ "INNER JOIN meeting_schedule ON meeting.ms_id = meeting_schedule.ms_id "
-                + "INNER JOIN meeting_attendee ON meeting_schedule.ms_id = meeting_attendee.ms_id "
-                + "WHERE meeting_attendee.bu_id = '" + bu_id + "') "
-                + "UNION DISTINCT "
-                + "(SELECT meeting.*, meeting_schedule.ms_title "
-                + "FROM meeting "
-        		+ "INNER JOIN meeting_guest ON meeting.m_id = meeting_guest.m_id AND meeting.ms_id = meeting_guest.ms_id "
-        		+ "INNER JOIN meeting_schedule ON meeting.ms_id = meeting_schedule.ms_id "
-                + "WHERE meeting_guest.bu_id = '" + bu_id + "' "
-                + "AND m_inidatetime >= sysdate())";
-    	if (creator && attendee) {
-    		_sql = _creator + "UNION DISTINCT " + _attendee;
-    	} else if (creator) {
-    		_sql = _creator;
-    	} else if (attendee) {
-    		_sql = _attendee;
-    	} else {
-    		result.clear();
-    		return true;
-    	}
-    	return (_dbAccess.queryDB(result, _sql));// && _dbAccess.queryDB(result, _sql2) && _dbAccess.queryDB(result, _sql3);
-    }
-    
-    /**
-     * Fields:<p>
-     * (0)ms_id (1)m_id (2)m_inidatetime (3)m_duration (4)m_iscancel (5)m_description (6)m_modpass (7)m_userpass
-     * (8)m_setting(meeting) (9)ms_title
-     * @param result
-     * @param bu_id
-     * @param created
-     * @param attended
-     * @return
-     */
     public boolean getMeetingsForUser(ArrayList<ArrayList<String>> result, String bu_id, boolean creator, boolean attendee) {
         String _creator = "(SELECT meeting.*, meeting_schedule.ms_title " 
                 + "FROM meeting "

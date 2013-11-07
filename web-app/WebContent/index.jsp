@@ -2,9 +2,9 @@
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <jsp:useBean id="ldap" scope="session" class="ldap.LDAPAuthenticate" />
 <%
-	String error = request.getParameter("error");
-	if (error == null) {
-		error = "";
+	String message = request.getParameter("message");
+	if (message == null) {
+		message = "";
 	} 
 	String guestMessage = "";
 	String bu_id = "";
@@ -17,7 +17,7 @@
 			bu_id = "";
 		} 
 		else 
-			error = "Log in with username " + bu_id + "and the password you just set";
+			message = "Log in with username " + bu_id + "and the password you just set";
 	}	
 	if (usersession.getUserId() != "")
 		response.sendRedirect("calendar.jsp");
@@ -56,13 +56,13 @@
 <div id="page">
   <jsp:include page="header_plain.jsp"/>
   <section id="login">
+  	<header>
+		<div class="warningMessage"><%=message %></div>
+		<br /><br />
+	</header>
     <form id="login" name="formLogin" action="auth.jsp" onSubmit="return validate();" method="post">
       <article >
         <fieldset>
-          <div class="component">
-          	<!-- Prints 'error' on the screen. --><%System.out.println(error); %>
-            <label id="error" class="label"><%=error%></label>
-          </div>
           <div class="component">
             <label for="SenecaLDAPBBBLogin" class="label">Username:</label>
             <input type="text" name="SenecaLDAPBBBLogin" id="SenecaLDAPBBBLogin" class="input" tabindex="2" title="Please insert your username" required autofocus value="<%=bu_id%>">

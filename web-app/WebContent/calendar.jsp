@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Seneca | Change Settings</title>
+	<title>Seneca | Event Calendar</title>
 	<link rel="icon" href="http://www.cssreset.com/favicon.png">
 	<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
@@ -41,14 +41,14 @@
 	Meeting meet = new Meeting(dbaccess);
 	dbaccess.resetFlag();
 	System.out.println(meet.getMeetingsForUser(result, usersession.getUserId(), check1, check3));
-	System.out.println(dbaccess.getErrLog());
+	System.out.println("Meeting: " + meet.getErrLog());
 	System.out.println(result.size());
 	String meetingJSON = meetingDBToJSON(result);
 	
 	Lecture lect = new Lecture(dbaccess);
 	dbaccess.resetFlag();
 	System.out.println(lect.getLecturesForUser(result, usersession.getUserId(), check2, check4));
-	System.out.println(dbaccess.getErrLog());
+	System.out.println("Lecture: " + lect.getErrLog());
 	System.out.println(result.size());
 	String lectureJSON = lectureDBToJSON(result);
 	%>
@@ -63,7 +63,7 @@
 				editable: false,
 				allDayDefault: false,
 				events: [
-					<%= meetingJSON %>, <%= lectureJSON %>
+                    <%= meetingJSON %>, <%= lectureJSON %>
 				]
 			});
 			
@@ -80,6 +80,7 @@
 			<header>
 				<p><a href="calendar.jsp" tabindex="13">home</a> » </p>
 				<h1>Calendar</h1>
+				<div class="warningMessage"><%=message %></div>
 			</header>
 				<form>
 					<article>
@@ -146,7 +147,7 @@ public String meetingDBToJSON(ArrayList<ArrayList<String>> results) {
 			converted += ",";
 		
 		String [] date = results.get(i).get(2).split(" ");
-		converted += "{id: " + results.get(i).get(0) + ",title: '" + results.get(i).get(9) + "',start: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "),end: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "+" + results.get(i).get(3) + ")}";
+		converted += "{id: " + results.get(i).get(0) + ",title: '" + results.get(i).get(9) + "',start: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +", "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "),end: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +", "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "+" + results.get(i).get(3) + "),url:'view_event.jsp?ms_id="+results.get(i).get(0)+"&m_id="+results.get(i).get(1)+"'}";
 	}
 	return converted;
 }
@@ -159,7 +160,7 @@ public String lectureDBToJSON(ArrayList<ArrayList<String>> results) {
 			converted += ",";
 		
 		String [] date = results.get(i).get(2).split(" ");
-		converted += "{id: " + results.get(i).get(0) + ",title: '" + results.get(i).get(8) + results.get(i).get(9) + "',start: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "),end: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "+" + results.get(i).get(3) + ")}";
+		converted += "{id: " + results.get(i).get(0) + ",title: '" + results.get(i).get(8) + results.get(i).get(9) + "',start: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +", "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "),end: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +", "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "+" + results.get(i).get(3) + "),url:'view_event.jsp?ls_id="+results.get(i).get(0)+"&l_id="+results.get(i).get(1)+"'}";
 	}
 	return converted;
 }

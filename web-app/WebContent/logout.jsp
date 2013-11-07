@@ -13,5 +13,5 @@
 		message="";
 	}
 	session.invalidate();
-	response.sendRedirect("index.jsp?error=" + message);
+	response.sendRedirect("index.jsp?message=" + message);
 %>

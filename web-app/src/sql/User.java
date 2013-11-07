@@ -303,36 +303,6 @@ public class User extends Sql {
     }
 
     /**
-     * (0)ud_isadmin
-     * @param result
-     * @param bu_id
-     * @return
-     */
-    public boolean getIsDepartmentAdmin(ArrayList<ArrayList<String>> result, String bu_id) {
-        _sql = "SELECT ud_isadmin "
-                + "FROM user_department "
-                + "WHERE bu_id = '" + bu_id + "' "
-                + "ORDER BY ud_isadmin DESC "
-                + "LIMIT 1";
-        return _dbAccess.queryDB(result, _sql);
-    }
-    
-    /**
-     * (0)ud_isadmin
-     * @param result
-     * @param bu_id
-     * @param d_code
-     * @return
-     */
-    public boolean getIsDepartmentAdmin(ArrayList<ArrayList<String>> result, String bu_id, String d_code) {
-        _sql = "SELECT ud_isadmin "
-                + "FROM user_department "
-                + "WHERE bu_id = '" + bu_id + "' "
-                + "AND d_code = '" + d_code + "'";
-        return _dbAccess.queryDB(result, _sql);
-    }
-
-    /**
      * get setting methods 
      */
     
@@ -460,9 +430,27 @@ public class User extends Sql {
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
             result.clear();
-            result.put(Settings.ur_rolemask[0], (value & (1<<2)) == 0 ? 0:1);
-            result.put(Settings.ur_rolemask[1], (value & (1<<1)) == 0 ? 0:1);
+            result.put(Settings.ur_rolemask[0], (value & (1<<1)) == 0 ? 0:1);
+            result.put(Settings.ur_rolemask[1], (value & 1) == 0 ? 0:1);
             result.put(Settings.ur_rolemask[2], (value & 1) == 0 ? 0:1);
+        }
+        return flag;
+    }
+    
+    public boolean getPredefinedUserRoleSetting(HashMap<String, Integer> result, String pr_name) {
+        _sql = "SELECT pr_defaultmask "
+                + "FROM predefined_role "
+                + "WHERE pr_name = '" + pr_name + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+            result.clear();
+            result.put(Settings.ur_rolemask[0], (value & (1<<1)) == 0 ? 0:1);
+            result.put(Settings.ur_rolemask[1], (value & 1) == 0 ? 0:1);
+         //   result.put(Settings.ur_rolemask[0], (value & (1<<2)) == 0 ? 0:1);
+         //   result.put(Settings.ur_rolemask[1], (value & (1<<1)) == 0 ? 0:1);
+         //   result.put(Settings.ur_rolemask[2], (value & 1) == 0 ? 0:1);
         }
         return flag;
     }
@@ -473,6 +461,96 @@ public class User extends Sql {
      * WARNING: the return boolean value is the first parameter (boolean result)
      * NOT the method return boolean value, which is used to determine the success/failure of SQL execution
      */
+    
+
+    public boolean isMeetingCreator(MyBoolean bool, String ms_id, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM meeting_schedule "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND bu_id = '" + bu_id + "' "
+                + "LIMIT 1";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    } 
+    
+    public boolean isMeetingAttendee(MyBoolean bool, String ms_id, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM meeting_attendee "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND bu_id = '" + bu_id + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isMeetingGuest(MyBoolean bool, String ms_id, String m_id, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM meeting_guest "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
+                + "AND bu_id = '" + bu_id + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isTeaching(MyBoolean bool, String ls_id, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM professor p "
+                + "JOIN lecture_schedule ls "
+                + "ON p.c_id = ls.c_id "
+                + "AND p.sc_id = ls.sc_id "
+                + "AND p.sc_semesterid = ls.sc_semesterid "
+                + "WHERE ls.ls_id = '" + ls_id + "'"
+                + "AND p.bu_id = '" + bu_id + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isGuestTeaching(MyBoolean bool, String ls_id, String l_id, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM guest_lecturer gl "
+                + "WHERE gl.bu_id = '" + bu_id + "' "
+                + "AND gl.ls_id = '" + ls_id + "' "
+                + "AND gl.l_id = '" + l_id + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isLectureStudent(MyBoolean bool, String ls_id, String bu_id) {
+        _sql = "SELECT s.bu_id "
+                + "FROM student s "
+                + "JOIN lecture_schedule ls "
+                + "ON s.c_id = ls.c_id "
+                + "AND s.sc_id = ls.sc_id "
+                + "AND s.sc_semesterid = ls.sc_semesterid "
+                + "WHERE ls.ls_id = '" + ls_id + "'"
+                + "AND s.bu_id = '" + bu_id + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
     
     public boolean isProfessor(MyBoolean bool, String bu_id) {
         _sql = "SELECT 1 "
@@ -487,10 +565,40 @@ public class User extends Sql {
         return flag;
     }
     
-    public boolean isDepartmentAdmin(MyBoolean bool, String bu_id) {
+    public boolean isDepartmentUser(MyBoolean bool, String bu_id, String d_code) {
         _sql = "SELECT 1 "
                 + "FROM user_department "
                 + "WHERE bu_id = '" + bu_id + "' "
+                + "AND d_code = '" + d_code + "' "
+                + "LIMIT 1";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isDepartmentAdmin(MyBoolean bool, String bu_id) {
+        _sql = "SELECT ud_isadmin "
+                + "FROM user_department "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "AND ud_isadmin = 1 "
+                + "LIMIT 1";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isDepartmentAdmin(MyBoolean bool, String bu_id, String d_code) {
+        _sql = "SELECT ud_isadmin "
+                + "FROM user_department "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "AND d_code = '" + d_code + "' "
+                + "AND ud_isadmin = 1 "
                 + "LIMIT 1";
         ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
         boolean flag =_dbAccess.queryDB(tempResult, _sql);
@@ -503,6 +611,19 @@ public class User extends Sql {
     public boolean isUser(MyBoolean bool, String bu_id) {
         _sql = "SELECT 1 "
                 + "FROM bbb_user "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "LIMIT 1";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    public boolean isnonLDAP(MyBoolean bool, String bu_id) {
+        _sql = "SELECT 1 "
+                + "FROM non_ldap_user "
                 + "WHERE bu_id = '" + bu_id + "' "
                 + "LIMIT 1";
         ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
@@ -634,6 +755,13 @@ public class User extends Sql {
         return _dbAccess.updateDB(_sql);
     }
     
+    public boolean setEmail(String bu_id, String nu_email) {
+        _sql = "UPDATE non_ldap_user "
+                + "SET nu_email = '" +  nu_email + "' "
+                + "WHERE bu_id = '" + bu_id + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     public boolean setLastName(String bu_id, String nu_lastname) {
         _sql = "UPDATE non_ldap_user "
                 + "SET nu_lastname = '" +  nu_lastname + "' "
@@ -684,6 +812,29 @@ public class User extends Sql {
                 + "AND c_id = '" + c_id + "' "
                 + "AND sc_id = '" + sc_id + "' "
                 + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setBannedFromSection(
+            String bu_id, String c_id, String sc_id, String sc_semesterid) {
+        _sql = "UPDATE student "
+                + "set s_isbanned = not s_isbanned "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "AND c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
+    public boolean setBannedFromLecture(String bu_id, String ls_id) {
+        _sql = "UPDATE student s "
+                + "JOIN lecture_schedule ls "
+                + "ON s.c_id = ls.c_id "
+                + "AND s.sc_id = ls.sc_id "
+                + "AND s.sc_semesterid = ls.sc_semesterid "
+                + "SET s.s_isbanned = not s.s_isbanned "
+                + "WHERE s.bu_id = '" + bu_id + "' "
+                + "AND ls.ls_id = '" + ls_id + "'";
         return _dbAccess.updateDB(_sql);
     }
     

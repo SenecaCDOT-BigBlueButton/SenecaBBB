@@ -66,7 +66,7 @@ public class Test_Helper {
             }
         }
         else {
-            System.out.println(_test.getErrLog() + "\n");
+            System.out.println(_test.getErrCode() + " " + _test.getErrLog() + "\n");
         }
         System.out.println();
     }

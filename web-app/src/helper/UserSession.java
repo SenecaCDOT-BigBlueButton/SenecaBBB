@@ -1,4 +1,5 @@
 package helper;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UserSession {
@@ -17,8 +18,11 @@ public class UserSession {
 	private boolean isSuper = false;
 	private boolean isProfessor = false;
 	private boolean isDepartmentAdmin = false;
+	private ArrayList<ArrayList<String>> permissionList;
 	
-	public UserSession() {}
+	public UserSession() {
+	    permissionList = new ArrayList<ArrayList<String>>();
+	}
 	
 	public String getUserId() {
 		return userId;
@@ -119,5 +123,38 @@ public class UserSession {
 
 	public void setUserMeetingSettingsMask(HashMap<String, Integer> userMeetingSettingsMask) {
 		this.userMeetingSettingsMask = new HashMap<String,Integer>(userMeetingSettingsMask);
+	}
+	
+	public boolean inPermissionList(String type, String scheduleId, String eventId) {
+	    int i = 0;
+	    boolean flag = false;
+	    while (!flag && i<permissionList.size()) {
+	        if (permissionList.get(i).get(0).equals(type) && permissionList.get(i).get(1).equals(scheduleId) && permissionList.get(i).get(2).equals(eventId)) {
+	            flag = true;
+	        }
+	        i++;
+	    }
+	    return flag;
+	}
+	
+	public void addToPermissionList(String type, String scheduleId, String eventId, String status) {
+	    ArrayList<String> toAdd = new ArrayList<String>();
+	    toAdd.add(type);
+	    toAdd.add(scheduleId);
+	    toAdd.add(eventId);
+	    toAdd.add(status);
+	    permissionList.add(toAdd);
+    }
+	
+	public void setPermission(String type, String scheduleId, String eventId, String status) {
+	    int i = 0;
+        boolean flag = false;
+        while (!flag && i<permissionList.size()) {
+            if (permissionList.get(i).get(0).equals(type) && permissionList.get(i).get(1).equals(scheduleId) && permissionList.get(i).get(2).equals(eventId)) {
+                flag = true;
+                permissionList.get(i).set(3, status);
+            }
+            i++;
+        }   
 	}
 }

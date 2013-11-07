@@ -92,13 +92,41 @@ public class Section extends Sql {
     }
     
     /**
+     * Get all sections with same c_id<p>
+     * Results<p>
+     * (0)c_id (1)sc_id (2)sc_semesterid (3)d_code
+     * @param result
+     * @param c_id
+     * @return
+     */
+    public boolean getSectionInfoByCourse(ArrayList<ArrayList<String>> result, String c_id) {
+        _sql = "SELECT * "
+                + "FROM section "
+                + "WHERE c_id = '" + c_id + "' ";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * (0)c_id (1)c_name
+     * @param result
+     * @return
+     */
+    public boolean getCourse(ArrayList<ArrayList<String>> result,String c_id) {
+        _sql = "SELECT * "
+                + "FROM course "
+                + "WHERE c_id = '" + c_id + "'";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    
+    /**
      * (0)c_id (1)c_name
      * @param result
      * @return
      */
     public boolean getCourse(ArrayList<ArrayList<String>> result) {
         _sql = "SELECT * "
-                + "FROM course";
+                + "FROM course";            
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -111,6 +139,20 @@ public class Section extends Sql {
     public boolean getProfessor(ArrayList<ArrayList<String>> result) {
         _sql = "SELECT * "
                 + "FROM professor";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * get professor by bu_id<p>
+     * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid (4)sc_setting
+     * @param result
+     * @param bu_id
+     * @return
+     */
+    public boolean getProfessor(ArrayList<ArrayList<String>> result,String bu_id) {
+        _sql = "SELECT * "
+                + "FROM professor "
+        		+ "WHERE bu_id = '" + bu_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -161,6 +203,25 @@ public class Section extends Sql {
     			+ "ORDER BY c_id, sc_id, sc_semesterid";
     	return _dbAccess.queryDB(result, _sql);
     }
+    	
+    /**
+     * get lecture schedule for a particular section<p>
+     * (0)c_id (1)sc_id (2)sc_semesterid (3)sc_setting
+     * @param result
+     * @param c_id
+     * @param sc_id
+     * @param sc_semesterid
+     * @return
+     */
+    public boolean getLectureSchedule(ArrayList<ArrayList<String>> result, 
+            String c_id, String sc_id, String sc_semesterid) {
+        _sql = "SELECT * "
+                + "FROM lecture_schedule "
+                + "WHERE c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.queryDB(result, _sql);
+    }
     
     /**
      * get all students<p>
@@ -171,6 +232,25 @@ public class Section extends Sql {
     public boolean getStudent(ArrayList<ArrayList<String>> result) {
         _sql = "SELECT * "
                 + "FROM student";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * get all students in a lecture<p>
+     * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid (4)s_isbanned (5)bu_nick
+     * @param result
+     * @return
+     */
+    public boolean getStudent(ArrayList<ArrayList<String>> result, String ls_id) {
+        _sql = "SELECT s.*, bu.bu_nick "
+                + "FROM student s "
+                + "JOIN lecture_schedule ls "
+                + "ON s.c_id = ls.c_id "
+                + "AND s.sc_id = ls.sc_id "
+                + "AND s.sc_semesterid = ls.sc_semesterid "
+                + "JOIN bbb_user bu "
+                + "ON bu.bu_id = s.bu_id "
+                + "WHERE ls.ls_id = '" + ls_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     

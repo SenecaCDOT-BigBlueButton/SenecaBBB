@@ -12,6 +12,13 @@ html, body {
 	font-weight: 400;
 	background-color: #E6E6E6;
 }
+
+.warningMessage{
+	color:red;
+	font-size:16px;
+	font-weight:bold;
+}
+
 option:hover {
 	background-color: #0F6;
 }
@@ -29,6 +36,8 @@ option:hover {
 	background-position: right top;
 	display: table;/*-webkit-filter: invert();*/
 }
+
+
 p {
 	margin: 0px;
 	padding: 0px;
@@ -384,6 +393,10 @@ section form article fieldset div.component label.label {
 	float: none;
 	clear: both;
 }
+label.error{
+	color:red;
+	margin-left:220px;
+}
 section form article fieldset div.component input.input, div.dataTables_filter input, .searchBox {
 	height: 38px;
 	width: 394px;
@@ -623,10 +636,14 @@ section form .buttons .button:active, section form .buttons .actionButton:active
 	background-color: #9F100B;
 }
 /* WEEK - CHECKBOX AND RADIOBUTTON BUTTONS*/
-section form article fieldset div.component#week, section form article fieldset div.component#selectDayoftheWeek {
+section form article fieldset div.component#week, section form article fieldset div.component#selectDayoftheWeek,
+section form article fieldset div.component#weekCheckbox,section form article fieldset div.component#dayoftheWeek 
+{
 	margin-left: 216px;
 }
-section form article fieldset div.component#week .weekday, section form article fieldset div.component#selectDayoftheWeek .weekday {
+section form article fieldset div.component#week .weekday, section form article fieldset div.component#selectDayoftheWeek .weekday,
+section form article fieldset div.component#weekCheckbox .weekday,section form article fieldset div.component#dayoftheWeek .weekday 
+{
 	padding: 3px;
 	width: 50px;
 	height: 39px;
@@ -642,15 +659,22 @@ section form article fieldset div.component#week .weekday, section form article 
 	-o-transition: all 0.1s;
 	transition: all 0.1s;
 }
-section form article fieldset div.component#week .weekday:hover, section form article fieldset div.component#selectDayoftheWeek .weekday:hover {
+section form article fieldset div.component#week .weekday:hover, section form article fieldset div.component#selectDayoftheWeek .weekday:hover,
+section form article fieldset div.component#weekCheckbox .weekday:hover,section form article fieldset div.component#dayoftheWeek .weekday:hover
+{
 	background-color: #9F100B;
 }
-section form article fieldset div.component#week .weekday:active, section form article fieldset div.component#selectDayoftheWeek .weekday:active {
+section form article fieldset div.component#week .weekday:active, section form article fieldset div.component#selectDayoftheWeek .weekday:active,
+section form article fieldset div.component#weekCheckbox .weekday:active,section form article fieldset div.component#dayoftheWeek .weekday:active
+{
 	background-color: #9F100B;
 }
-section form article fieldset div.component#week .weekday.selectedWeekday, section form article fieldset div.component#selectDayoftheWeek .weekday.selectedWeekday {
+section form article fieldset div.component#week .weekday.selectedWeekday, section form article fieldset div.component#selectDayoftheWeek .weekday.selectedWeekday,
+section form article fieldset div.component#weekCheckbox .weekday.selectedWeekday,section form article fieldset div.component#dayoftheWeek .weekday.selectedWeekday
+{
 	background-color: #454545;
 }
+
 /* FOOTER */
 footer {
 	display: table-row;
@@ -994,3 +1018,125 @@ footer div#copyright {
 	cursor: pointer;
 	z-index: 990;
 }
+
+#startTime,#eventDuration {
+	float:left;
+	margin-left:16px;
+	width:135px;	
+	cursor: pointer;
+	
+}
+
+#eventDescription{
+	margin-left:16px;
+	width:398px;
+	float:left;
+	resize: none;
+	height:40px;
+	cursor: pointer;
+	
+}
+
+#itemList{
+	table-layout: fixed;
+    width: 900px;
+    clear: both;
+
+	
+}
+
+#itemList thead th {
+    font-size: 11px;
+    font-family: "ITCAvantGardeStd Demi";
+    font-style: normal;
+    font-weight: 600;
+    text-align: left;
+    color: #454545;
+    text-transform: uppercase;
+    padding-top: 30px;
+    padding-right: 0px;
+    padding-left: 10px;
+    padding-bottom: 20px;
+    border-left: 1px solid #EEEEEE;
+    background: #E0E0E0;
+    position: relative;
+    cursor: default;
+}
+
+#itemList tbody tr td {
+    position: relative;
+    padding-top: 15px;
+    padding-right: 0px;
+    padding-left: 10px;
+    padding-bottom: 15px;
+    font-size: 12px;
+    font-family: "ITCAvantGardeStd Md";
+    font-style: normal;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #838383;
+    border-left: 1px solid #EEEEEE;
+    border-right: 1px solid #EEEEEE;
+    background: #FFFFFF;
+}
+
+#courseCode, #deptCode, #sectionList{
+	border: 1px solid #AAAAAA;
+    color: #838383;
+    display: block;
+    float: right;
+    font-family: "ITCAvantGardeStd BkCn";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    height: 38px;
+    outline: medium none;
+    padding-left: 8px;
+    width: 402px;
+    z-index: 4;
+    text-align:left;
+    vertical-align:bottom;
+}
+#predefinedRoleList th:hover{
+	background:none;
+}
+
+.buttons #saveSetting{
+	margin-left:-200px;
+}
+
+#predefinedRoleList tbody tr td input{
+	color: #838383;
+    font-family: "ITCAvantGardeStd Md";
+    font-size: 12px;
+    font-style: normal;	
+}
+
+div.contactus{
+	color: #454545;
+    font-family: "ITCAvantGardeStd BkCn";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    margin-left: 200px;   
+    text-align:left;
+}
+
+div.contactus p{
+	padding:5px;
+}
+
+div.contactus a:link, div.help a:link{
+     color:#FF0000;    
+}
+div.contactus a:visited, div.help a:visited{
+     color:#00FF00;    
+}
+div.contactus a:hover,div.help a:hover{
+     color:#FF00FF;    
+}
+div.contactus a:active,div.help a:active{
+     color:#0000FF;    
+}
+

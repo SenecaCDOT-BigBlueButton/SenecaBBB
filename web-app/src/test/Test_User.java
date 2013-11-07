@@ -12,7 +12,7 @@ public class Test_User extends Test_Helper {
      * _group[3]: 'is' testing for existence
      * _group[4]: create or remove rows
      */
-    static int[] _group = {1, 0, 0, 0, 0};
+    static int[] _group = {0, 0, 1, 0, 0};
     
     public Test_User(DBAccess source) {
         super();
@@ -54,9 +54,9 @@ public class Test_User extends Test_Helper {
 
             display(_user.getComment(_result, "bli64"));
 
-            display(_user.getIsDepartmentAdmin(_result, "bli64", "ABC"));
+            //display(_user.getIsDepartmentAdmin(_result, "bli64", "ABC"));
             
-            display(_user.getIsDepartmentAdmin(_result, "bli64"));
+            //display(_user.getIsDepartmentAdmin(_result, "bli64"));
 
             display(_user.getIsSuperAdmin(_result, "fardad.soleimanloo"));
             
@@ -109,7 +109,7 @@ public class Test_User extends Test_Helper {
             
             display(_user.setDepartmentAdmin("bli64", "ICT", true));
             
-            display(_user.getIsDepartmentAdmin(_result, "bli64", "ICT"));
+            //display(_user.getIsDepartmentAdmin(_result, "bli64", "ICT"));
             
             display(_user.setSuperAdmin("bli64", true));
 
@@ -128,9 +128,9 @@ public class Test_User extends Test_Helper {
             
             display(_user.getUserMeetingSetting(_hm, "bo.li"));
 
-            display(_user.getSectionSetting(_hm, "bo.li", "INT222", "A", "201305"));
+            //display(_user.getSectionSetting(_hm, "bo.li", "INT222", "A", "201305"));
 
-            display(_user.getSectionSetting(_hm, "fardad.soleimanloo", "OOP344", "B", "201305"));
+            //display(_user.getSectionSetting(_hm, "fardad.soleimanloo", "OOP344", "B", "201305"));
             
             display(_user.setUserSetting(_bu_map, "bli64"));
             
@@ -140,9 +140,9 @@ public class Test_User extends Test_Helper {
             
             display(_user.getUserMeetingSetting(_hm, "bli64"));
             
-            display(_user.setSectionSetting(_section_map, "bo.li", "INT222", "A", "201305"));
+            //display(_user.setSectionSetting(_section_map, "bo.li", "INT222", "A", "201305"));
             
-            display(_user.getSectionSetting(_hm, "bo.li", "INT222", "A", "201305"));
+            //display(_user.getSectionSetting(_hm, "bo.li", "INT222", "A", "201305"));
             
             display(_user.defaultUserSetting("bli64"));
             
@@ -152,11 +152,11 @@ public class Test_User extends Test_Helper {
             
             display(_user.getUserMeetingSetting(_hm, "bli64"));
             
-            display(_user.defaultSectionSetting("bo.li", "INT222", "A", "201305"));
+            //display(_user.defaultSectionSetting("bo.li", "INT222", "A", "201305"));
             
-            display(_user.defaultSectionSetting("bo.li", "INT222", "B", "201305"));
+            //display(_user.defaultSectionSetting("bo.li", "INT222", "B", "201305"));
             
-            display(_user.getSectionSetting(_hm, "bo.li", "INT222", "A", "201305"));
+            //display(_user.getSectionSetting(_hm, "bo.li", "INT222", "A", "201305"));
             
             display(_user.getUserRoleSetting(_hm, 1));
             

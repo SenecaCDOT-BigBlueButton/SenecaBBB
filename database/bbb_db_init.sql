@@ -1693,4 +1693,9 @@ INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'employee', b'11');
 INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'student', b'01');
 INSERT INTO user_role VALUES (fn_next_id('next_ur_id'), 'guest', b'00');
 
+INSERT INTO non_ldap_user VALUES ('Admin01', 'Seneca', 'Admin', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('Admin02', 'Seneca', 'Admin', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('Guest01', 'Seneca', 'Guest', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('Guest02', 'Seneca', 'Guest', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('Guest03', 'Seneca', 'Guest', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
 

@@ -615,7 +615,7 @@ public class Lecture extends Sql {
      * @param ls_id
      * @return
      */
-    public boolean removeMeetingSchedule(String ls_id) {
+    public boolean removeLectureSchedule(String ls_id) {
         _sql = "CALL sp_delete_ls('" + ls_id + "')";
         return _dbAccess.updateDB(_sql);
     }

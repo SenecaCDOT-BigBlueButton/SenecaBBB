@@ -83,6 +83,10 @@ public class Validation {
     
     public static boolean checkPresentationTitle(String p_title) {
         boolean flag = checkEmpty(p_title, "Presentation Title");
+        if (flag) {
+            flag = p_title.matches("^[a-zA-Z0-9][a-zA-Z0-9: +-@&*()]*$");
+            _errMsg = "Invalid symbols inside presentation title";
+        }
         return flag;
     }
     

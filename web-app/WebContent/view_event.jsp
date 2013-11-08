@@ -1,6 +1,9 @@
 <%@page import="sql.*"%>
 <%@page import="java.util.*"%>
 <%@page import="helper.*"%>
+<%@page import="java.text.*"%>
+<%@page import="java.util.concurrent.TimeUnit"%>
+<%@ include file="bbb_api.jsp"%> 
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -31,6 +34,9 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    String url = null;
+    String eventTitle = request.getParameter("eventName"); 
+    String storedEventId="";
     if (userId.equals("")) {
         response.sendRedirect("index.jsp?message=Please log in");
         return;
@@ -106,12 +112,13 @@
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
             return;
         }
+        
     } else if (!(l_id==null || ls_id==null)) {
         l_id = Validation.prepare(l_id);
         ls_id = Validation.prepare(ls_id);
         validFlag = Validation.checkLId(l_id) && Validation.checkLsId(ls_id);
         if (!validFlag) {
-            response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
+         //   response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
             return;
         }
         if (!lecture.isLecture(myBool, ls_id, l_id)) {
@@ -242,53 +249,52 @@
     }
         
     String isCancel = (eventResult.get(0).get(4).equals("1")) ? "Yes" : "";
-    ArrayList<ArrayList<String>> modPassResult = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> viewerPassResult = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> creatorResult = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> lectureResult = new ArrayList<ArrayList<String>>();
-    String nickName = usersession.getNick();
-    String modPwd;
-    String viewerPwd;
+    ArrayList<ArrayList<String>> startTimeResult = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> durationResult = new ArrayList<ArrayList<String>>();
+    String startDate="";
+    String startTime="";
     String eventCreator="null";
+    String duration="";
     String c_id,sc_id,sc_semesterid;
+    MyBoolean isEventCreator = new MyBoolean();
+    MyBoolean isEventAttendee = new MyBoolean();
+    MyBoolean isEventGuest = new MyBoolean();
     int i = 0;   
     if(!isCancel.equals("Yes")){
-    	if (!(m_id==null || ms_id==null)) {
-    		meeting.getMeetingModPass(modPassResult, ms_id, m_id);
-    		meeting.getMeetingUserPass(viewerPassResult, ms_id, m_id);
+    	if (!(m_id==null || ms_id==null)) {            
+    		user.isMeetingCreator(isEventCreator, ms_id, userId);
+    	    user.isMeetingAttendee(isEventAttendee, ms_id, userId);
+    	    user.isMeetingGuest(isEventGuest, ms_id, m_id, userId);
     		meeting.getMeetingCreators(creatorResult, ms_id);
-    		modPwd=modPassResult.get(0).get(0);
-    		viewerPwd=viewerPassResult.get(0).get(0);
-    		eventCreator=creatorResult.get(0).get(0);
-    		session.setAttribute("modPwd", modPwd);
-    		session.setAttribute("viewerPwd", viewerPwd);
-    		session.setAttribute("eventType", "Meeting");
-    		session.setAttribute("username", nickName);
-    		session.setAttribute("eventId", m_id);
-    		session.setAttribute("eventScheduleId",ms_id);
-    		session.setAttribute("meetingCreator", eventCreator);
-    		
+    		meeting.getMeetingInitialDatetime(startTimeResult, ms_id, m_id);
+    		meeting.getMeetingDuration(durationResult, ms_id, m_id);
+    		duration = durationResult.get(0).get(0);
+    		startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
+    		startDate = startTimeResult.get(0).get(0).split(" ")[0];
+    		eventCreator=creatorResult.get(0).get(0);  	
+    		storedEventId = "Meeting-".concat(m_id).concat("-").concat(ms_id);
     	}
         if (!(l_id==null || ls_id==null)) {
-            lecture.getLectureModPass(modPassResult, ls_id, l_id);
-            lecture.getLectureUserPass(viewerPassResult, ls_id, l_id);
+            user.isTeaching(isEventCreator, ls_id, userId);            
+            user.isLectureStudent(isEventAttendee, ls_id, userId);         
+            user.isGuestTeaching(isEventGuest, ls_id, l_id, userId);
             lecture.getLectureScheduleInfo(lectureResult,ls_id);
+            lecture.getLectureInitialDatetime(startTimeResult, ls_id, l_id);
+            lecture.getLectureDuration(durationResult, ls_id, l_id);
             c_id=lectureResult.get(0).get(1);
             sc_id=lectureResult.get(0).get(2);
             sc_semesterid=lectureResult.get(0).get(3);
+            duration = durationResult.get(0).get(0);
+            startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
+            startDate = startTimeResult.get(0).get(0).split(" ")[0];
             lecture.getLectureProfessor(creatorResult, c_id, sc_id, sc_semesterid);
-            eventCreator=creatorResult.get(0).get(0);
-            modPwd=modPassResult.get(0).get(0);
-            viewerPwd=viewerPassResult.get(0).get(0);
-            session.setAttribute("modPwd", modPwd);
-            session.setAttribute("viewerPwd", viewerPwd);
-            session.setAttribute("eventType", "Lecture");
-            session.setAttribute("username", nickName);
-            session.setAttribute("eventId", l_id);
-            session.setAttribute("eventScheduleId",ls_id);
-            session.setAttribute("lectureProfessor", eventCreator);
+            eventCreator=creatorResult.get(0).get(0); 
+            storedEventId = "Lecture-".concat(l_id).concat("-").concat(ls_id);
         }
     }
+
 %>
 <script type="text/javascript">
 /* TABLE */
@@ -324,16 +330,25 @@ $(document).ready(function() {
     <jsp:include page="header.jsp"/>
     <jsp:include page="menu.jsp"/>
     <section>
-        <form name="joinEvent" id="joinEvent" method="post" action="join_event.jsp">
-            <article>
-		        <header>
-		            <p><a href="calendar.jsp" tabindex="13">home</a> » </p>
-		            <h1>Current Event</h1>
-		            <div class="warningMessage"><%=message %></div>
-		        </header>
-                <div class="content">
-                    <fieldset>
-                        <div class="component">
+        <% if(isEventCreator.get_value() || isEventAttendee.get_value() || isEventGuest.get_value()){ %>
+	        <form name="joinEvent" id="joinEvent" method="get" action="join_event.jsp?&eventId=<%= (m_id==null)? l_id:m_id %>&eventSchduleId=<%= (ms_id==null)? ls_id:ms_id %>&eventType=<%= (m_id==null)? "Lecture":"Meeting" %>">
+	            <article>
+			        <header>
+			            <p><a href="calendar.jsp" tabindex="13">home</a> » </p>
+			            <h1>Current Event</h1>
+			            <div class="warningMessage"><%=message %></div>
+			        </header>
+	                <div class="content">
+	                    <fieldset>	                       
+	                        <% 	                          	                           
+	                           if(eventTitle !=null){                        	   
+                                   url = getRecordings(eventTitle);  
+                                   System.out.println(url);
+	                           }else{
+	                        	   url = getRecordings(storedEventId);
+	                        	   System.out.println(url);
+	                           } %>
+	                        <div class="component" style="display:none">
                                 <label for="eventType" class="label">Event Type:</label>
                                 <input type="text" name="eventType" id="eventType" class="input" readonly tabindex="3"  value="<%= (m_id==null)? "Lecture":"Meeting" %>" 
                                  title="event id" >
@@ -343,15 +358,33 @@ $(document).ready(function() {
                                 <label for="eventScheduleId" class="label">Schedule ID:</label>
                                 <input type="text" name="eventScheduleId" id="eventScheduleId" class="input" readonly tabindex="3"  value="<%= (ms_id==null)? ls_id:ms_id %>" 
                                  title="event id" >
+	                        </div>                          
+                              
+                             <% Boolean startEvent = false;
+                                String expectStartTime = startTimeResult.get(0).get(0).substring(0,19);
+                                Date now = new Date();
+                                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Date expectStart = dateFormat.parse(expectStartTime);		                 
+		                        long timediff = expectStart.getTime() - now.getTime();
+		                        long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(timediff);
+		                        long eventDuration = (long)Integer.valueOf(duration);
+		                        if(diffMinutes<=10 &&diffMinutes>-eventDuration){
+		                        	startEvent = true;
+		                        }
+		                        if(startEvent){
+                             %>                      
+	                        <div class="component">
                                 <div class="buttons">
-                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="create" title="Click here to create room"><% if(eventCreator.equals(userId)){ out.print("Create Event Room");} else out.print("Join Event Room"); %>Join Event</button>
+                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="<%= isEventCreator.get_value()? "create":"join"  %>" title="Click here to go to the event" >
+                                    <% if(isEventCreator.get_value()){ out.print("Create");} else {out.print("Join");} if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
                                 </div>
-                        </div>                                                   
-                    </fieldset>
-                </div>
-            </article>
-        </form>
-
+                            </div>
+                            <% } %>                                                   
+	                    </fieldset>
+	                </div>
+	            </article>
+	        </form>                                       
+       <% } %>
         <form action="persist_user_settings.jsp" method="get">
             <article>
                 <header>
@@ -368,10 +401,12 @@ $(document).ready(function() {
                                         <th title="StartingTime">Time<span></span></th>
                                         <th title="duration">Duration<span></span></th>
                                         <th title="isCancel">Cancelled<span></span></th>
-                                        <th width="300" title="description">Description<span></span></th>
+                                        <th width="200" title="description">Description<span></span></th>
                                         <% if (status==1 || status==3 || status==4) { %>
                                         <th width="65" title="Modify" class="icons" align="center">Modify</th>
+                                        
                                         <% } %>
+                                        <th width="100" title="recording">Recording<span></span></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -393,6 +428,11 @@ $(document).ready(function() {
                                                 <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture" alt="Modify"/>
                                             </a></td>
                                         <% } %>
+                                        <td> <% if(url !=null && url !="") for(int j=0;j<url.split(" ").length;j++) {%>
+                                             <a <%  out.print("href="+url.split(" ")[j]);  %> style="color:blue">                    
+                                                <%  out.print("view recording "+ (j+1)); %>                      
+                                             </a></br> <% } else  out.print("Not Available"); %> 
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -692,3 +732,13 @@ $(document).ready(function() {
 </div>
 </body>
 </html>
+<%!
+	public long getDifferenceInMinutes (String currentDateTime,String eventStartDateTime) throws ParseException {
+	    SimpleDateFormat df=new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+	    Date d1=df.parse(currentDateTime);
+	    Date d2=df.parse(eventStartDateTime);
+	    long d1Ms=d1.getTime();
+	    long d2Ms=d2.getTime();
+	    return Math.abs((d1Ms-d2Ms)/60000);
+	  }
+%>

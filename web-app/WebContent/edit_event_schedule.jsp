@@ -548,8 +548,22 @@
         <fieldset>
           <div class="buttons">
             <button type="submit" name="submit" id="save" class="button" title="Click here to save inserted data">Save</button>
-             <button type="reset" name="reset" id="reset" class="button" title="Click here to reset">Reset</button>                              
-            <button type="button" name="button" id="cancel"  class="button" title="Click here to cancel" onclick="window.location.href='calendar.jsp'">Cancel</button>
+            <button type="reset" name="reset" id="reset" class="button" title="Click here to reset">Reset</button>
+            <% if (ms_id!=null) { %>                              
+            <button type="button" name="button" id="cancel"  class="button" title="Click here to cancel" onclick="window.location.href='view_event_schedule.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Cancel</button>
+            <% } else { %>
+            <button type="button" name="button" id="cancel"  class="button" title="Click here to cancel" onclick="window.location.href='view_event_schedule.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Cancel</button>
+            <% } %>
+          </div>
+        </fieldset>
+        <h4></h4>
+        <fieldset>
+          <div class="buttons">
+            <% if (ms_id!=null) { %>                    
+            <button type="button" name="button" id="delete"  class="button" title="Click here to delete schedule" onclick="window.location.href='delete_event.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Delete This Schedule</button>
+            <% } else { %>
+            <button type="button" name="button" id="delete"  class="button" title="Click here to delete schedule" onclick="window.location.href='delete_event.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Delete This Schedule</button>
+            <% } %>
           </div>
         </fieldset>
       </article>

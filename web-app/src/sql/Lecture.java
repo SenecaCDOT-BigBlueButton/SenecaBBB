@@ -1,8 +1,10 @@
 package sql;
 
 import helper.MyBoolean;
+import helper.Settings;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import db.DBAccess;
 
@@ -224,6 +226,34 @@ public class Lecture extends Sql {
     }
 
     /**
+     * (0)sc_setting
+     * @param result
+     * @param c_id
+     * @param sc_id
+     * @param sc_semesterid
+     * @return
+     */
+    public boolean getLectureSetting(HashMap<String, Integer> result, String c_id, String sc_id, String sc_semesterid) {
+        _sql = "SELECT sc_setting "
+                + "FROM professor "
+                + "WHERE c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+            result.clear();
+            result.put(Settings.section_setting[0], (value & (1<<6)) == 0 ? 0:1);
+            result.put(Settings.section_setting[1], (value & (1<<5)) == 0 ? 0:1);
+            result.put(Settings.section_setting[2], (value & (1<<4)) == 0 ? 0:1);
+            result.put(Settings.section_setting[3], (value & (1<<3)) == 0 ? 0:1);
+            result.put(Settings.section_setting[4], (value & (1<<2)) + (value & (1<<1)) + (value & 1));
+        }
+        return flag;
+    }
+        
+    /**
      * Fields<p>
      * (0)lp_title (1)ls_id (2)l_id
      * @param result
@@ -383,6 +413,21 @@ public class Lecture extends Sql {
         return _dbAccess.updateDB(_sql);
     }
 
+    public boolean setLectureSetting(HashMap<String, Integer> map, String c_id, String sc_id, String sc_semesterid) {
+        int value;
+        value = (map.get(Settings.section_setting[0]) << 6)
+                + (map.get(Settings.section_setting[1]) << 5)
+                + (map.get(Settings.section_setting[2]) << 4)
+                + (map.get(Settings.section_setting[3]) << 3)
+                + (map.get(Settings.section_setting[4]));
+        _sql = "UPDATE professor "
+                + "SET sc_setting = " + value + " "
+                + "WHERE c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     public boolean setLectureIsCancel(String ls_id, String l_id, boolean l_iscancel) {
         int flag = (l_iscancel == true) ? 1 : 0;
         _sql = "UPDATE lecture "

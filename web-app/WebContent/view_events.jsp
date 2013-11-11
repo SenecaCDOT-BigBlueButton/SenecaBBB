@@ -30,7 +30,9 @@
 <script type="text/javascript" src="js/componentController.js"></script>
 <%
     //Start page validation
+    System.out.println("==============");
     String userId = usersession.getUserId();
+    
     if (userId.equals("")) {
         response.sendRedirect("index.jsp?message=Please log in");
         return;
@@ -71,6 +73,7 @@ $(screen).ready(function() {
     $('#tbLectures').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
+    $('.calendarIcon').append('<img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>');
 });
 /* SELECT BOX */
 $(function(){
@@ -117,17 +120,7 @@ $(document).ready(function() {
                                 </thead>
                                 <tbody>
                                     <% for (i=0; i<meetings.size(); i++) { %>
-                                    <tr>
-                                        <td><%= meetings.get(i).get(9) %></td>
-                                        <td><%= meetings.get(i).get(2).substring(0, 19) %></td>
-                                        <td><%= meetings.get(i).get(3) %> Minutes</td>
-                                        <td><%= (meetings.get(i).get(4).equals("1")) ? "Yes" : "" %></td>
-                                        <td><%= meetings.get(i).get(5) %></td>
-                                        <td class="icons" align="center">
-                                                <a href="view_event.jsp?ms_id=<%= meetings.get(i).get(0) %>&m_id=<%= meetings.get(i).get(1) %>" class="view">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
-                                                </a></td>
-                                    </tr>
+<tr><td><%= meetings.get(i).get(9) %></td><td><%= meetings.get(i).get(2).substring(0, 19) %></td><td><%= meetings.get(i).get(3) %> Minutes</td><td><%= (meetings.get(i).get(4).equals("1")) ? "Yes" : "" %></td><td><%= meetings.get(i).get(5) %></td><td class="icons" align="center"><a href="view_event.jsp?ms_id=<%= meetings.get(i).get(0) %>&m_id=<%= meetings.get(i).get(1) %>" class="view calendarIcon"></a></td></tr>
                                     <% } %>
                                 </tbody>
                             </table>
@@ -155,18 +148,7 @@ $(document).ready(function() {
                                 </thead>
                                 <tbody>
                                     <% for (i=0; i<lectures.size(); i++) { %>
-                                    <tr>
-                                        <td><% out.print(lectures.get(i).get(8) + lectures.get(i).get(9) + " (" + lectures.get(i).get(10) + ")"); %></td>
-                                        <td><%= lectures.get(i).get(2).substring(0, 19) %></td>
-                                        <td><%= lectures.get(i).get(3) %> Minutes</td>
-                                        <td><%= (lectures.get(i).get(4).equals("1")) ? "Yes" : "" %></td>
-                                        <td><%= lectures.get(i).get(5) %></td>
-                                        <td class="icons" align="center">
-                                                <a href="view_event.jsp?ls_id=<%= lectures.get(i).get(0) %>&l_id=<%= lectures.get(i).get(1) %>" class="view">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
-                                                </a></td>
-                                    </tr>
-                                    <% } %>
+<tr><td><% out.print(lectures.get(i).get(8) + lectures.get(i).get(9) + " (" + lectures.get(i).get(10) + ")"); %></td><td><%= lectures.get(i).get(2).substring(0, 19) %></td><td><%= lectures.get(i).get(3) %> Minutes</td><td><%= (lectures.get(i).get(4).equals("1")) ? "Yes" : "" %></td><td><%= lectures.get(i).get(5) %></td><td class="icons" align="center"><a href="view_event.jsp?ls_id=<%= lectures.get(i).get(0) %>&l_id=<%= lectures.get(i).get(1) %>" class="view calendarIcon"></a></td></tr><% } %>
                                 </tbody>
                             </table>
                         </div>

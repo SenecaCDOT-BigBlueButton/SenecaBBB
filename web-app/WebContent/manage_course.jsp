@@ -39,6 +39,13 @@
 	    $('#courseList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
 	    $.fn.dataTableExt.sErrMode = 'throw';
 	    $('.dataTables_filter input').attr("placeholder", "Filter entries");
+	    $(".remove").click(function(){
+	        return window.confirm("Are you sure to remove this item?");;
+	    });   
+	});
+	/* SELECT BOX */
+	$(function(){
+	    $('select').selectmenu();
 	});
 	</script>
 <%
@@ -125,7 +132,7 @@
 		                </fieldset>
 	                </div>
 	            </article>
-                <div class="actionButtons">
+                <div class="actionButtons" style="margin-top:10px;">
                     <button type="button" name="button" id="addCourse" class="button" title="Click here to add a new subject" onclick="window.location.href='create_course.jsp'">Add Course</button>
                 </div>	
 	        </form>

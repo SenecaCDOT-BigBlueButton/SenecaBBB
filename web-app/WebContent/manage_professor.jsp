@@ -39,7 +39,13 @@ $(screen).ready(function() {
     $('#professorList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
-       
+    $(".remove").click(function(){
+        return window.confirm("Are you sure to remove this item?");;
+    });      
+});
+/* SELECT BOX */
+$(function(){
+    $('select').selectmenu();
 });
 </script>
 <%
@@ -122,7 +128,7 @@ $(screen).ready(function() {
                             <td ><%= allProfessors.get(j).get(1) %></td>   
                             <td ><%= allProfessors.get(j).get(2) %></td>  
                             <td ><%= allProfessors.get(j).get(3) %></td>                     
-                            <td  align="center"><a href="persist_professor.jsp?bu_id=<%= allProfessors.get(j).get(0) %>&c_id=<%= allProfessors.get(j).get(1) %>&sc_id=<%= allProfessors.get(j).get(2) %>&sc_semesterid=<%= allProfessors.get(j).get(3) %>&toDel=1" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove course" alt="Remove"/></a></td>
+                            <td  align="center"><a href="persist_professor.jsp?bu_id=<%= allProfessors.get(j).get(0) %>&c_id=<%= allProfessors.get(j).get(1) %>&sc_id=<%= allProfessors.get(j).get(2) %>&sc_semesterid=<%= allProfessors.get(j).get(3) %>&toDel=1" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove Professor" alt="Remove"/></a></td>
                           </tr><% } %>
                         </tbody>
                       </table>
@@ -131,7 +137,7 @@ $(screen).ready(function() {
                 </fieldset>
                 </div>
             </article>
-                     <div class="actionButtons">
+                     <div class="actionButtons" style="margin-top:10px">
                         <button type="button" name="button" id="addProfessor" class="button" title="Click here to add a professor" onclick="window.location.href='create_professor.jsp'">Add Professor</button>
                     </div>
 

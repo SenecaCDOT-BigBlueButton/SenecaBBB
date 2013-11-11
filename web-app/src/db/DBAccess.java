@@ -98,7 +98,7 @@ public class DBAccess {
             _flag = openConnection();
             if (!_flag) { //check connection error
                 _errCode = "C1";
-                _errLog = "SQLException: Bad or No Connection";
+                _errLog = "Bad or No Connection";
             }
             else {
                 try {
@@ -114,7 +114,7 @@ public class DBAccess {
                     }
                 }
                 catch (SQLException e) {
-                    _errLog = "SQLException: " + e.getMessage();
+                    _errLog = e.getMessage();
                     _flag = false;
                 }
                 finally {
@@ -138,7 +138,7 @@ public class DBAccess {
         if(_flag) { //statement do no execute if there is previous error
             _flag = openConnection();
             if (!_flag) {
-                _errLog = "SQLException: Bad or No Connection";
+                _errLog = "Bad or No Connection";
             }
             else {
                 try {
@@ -147,7 +147,7 @@ public class DBAccess {
                 }
                 catch (SQLException e) {
                     _errCode = Integer.toString(e.getErrorCode());
-                    _errLog = "SQLException: " + e.getMessage();
+                    _errLog = e.getMessage();
                     _flag = false;
                 }
                 finally {

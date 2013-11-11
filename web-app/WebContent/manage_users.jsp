@@ -16,8 +16,16 @@
 <link rel="icon" href="http://www.cssreset.com/favicon.png">
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <script type="text/javascript" src="js/componentController.js"></script>
 <script type="text/javascript">
@@ -56,7 +64,8 @@ $(screen).ready(function() {
         "bInfo": false,
         "bAutoWidth": false});
     $('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    */   $.fn.dataTableExt.sErrMode = 'throw';
+    */   
+    $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
      
     /* ATTENDEES LIST */    
@@ -64,6 +73,10 @@ $(screen).ready(function() {
     $('#attendeesList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
+});
+/* SELECT BOX */
+$(function(){
+    $('select').selectmenu();
 });
 </script>
 <%
@@ -154,7 +167,6 @@ $(screen).ready(function() {
                     </fieldset>
                 </div>
             </article>
-
         </form>
     </section>
     <jsp:include page="footer.jsp"/>

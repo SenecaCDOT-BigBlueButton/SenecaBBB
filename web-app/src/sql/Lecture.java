@@ -1,8 +1,10 @@
 package sql;
 
 import helper.MyBoolean;
+import helper.Settings;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import db.DBAccess;
 
@@ -224,6 +226,34 @@ public class Lecture extends Sql {
     }
 
     /**
+     * (0)sc_setting
+     * @param result
+     * @param c_id
+     * @param sc_id
+     * @param sc_semesterid
+     * @return
+     */
+    public boolean getLectureSetting(HashMap<String, Integer> result, String c_id, String sc_id, String sc_semesterid) {
+        _sql = "SELECT sc_setting "
+                + "FROM professor "
+                + "WHERE c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+            result.clear();
+            result.put(Settings.section_setting[0], (value & (1<<6)) == 0 ? 0:1);
+            result.put(Settings.section_setting[1], (value & (1<<5)) == 0 ? 0:1);
+            result.put(Settings.section_setting[2], (value & (1<<4)) == 0 ? 0:1);
+            result.put(Settings.section_setting[3], (value & (1<<3)) == 0 ? 0:1);
+            result.put(Settings.section_setting[4], (value & (1<<2)) + (value & (1<<1)) + (value & 1));
+        }
+        return flag;
+    }
+        
+    /**
      * Fields<p>
      * (0)lp_title (1)ls_id (2)l_id
      * @param result
@@ -290,7 +320,8 @@ public class Lecture extends Sql {
 
     /**
      * Fields:<p>
-     * (0)ls_id (1)l_id (2)l_inidatetime (3)l_duration (4)l_iscancel (5)l_description (6)l_modpass (7)l_userpass (8)c_name
+     * (0)ls_id (1)l_id (2)l_inidatetime (3)l_duration (4)l_iscancel (5)l_description (6)l_modpass (7)l_userpass 
+     * (8)c_id (9)sc_id (10)sc_semesterid
      * @param result
      * @param bu_id
      * @param professor
@@ -298,19 +329,19 @@ public class Lecture extends Sql {
      * @return
      */
     public boolean getLecturesForUser(ArrayList<ArrayList<String>> result, String bu_id, boolean professor, boolean student) {
-    	String _professor = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id " 
+    	String _professor = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id, lecture_schedule.sc_semesterid " 
     			+ "FROM lecture "
     			+ "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
     			+ "INNER JOIN professor ON lecture_schedule.c_id = professor.c_id AND lecture_schedule.sc_id = professor.sc_id AND lecture_schedule.sc_semesterid = professor.sc_semesterid "
     			+ "WHERE professor.bu_id = '" + bu_id +"') ";
     			
-    	String _GuestProfessor = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id " 
+    	String _GuestProfessor = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id, lecture_schedule.sc_semesterid " 
                 + "FROM lecture "
                 + "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
                 + "INNER JOIN guest_lecturer ON guest_lecturer.ls_id = lecture.ls_id AND lecture.l_id = guest_lecturer.l_id "
                 + "WHERE guest_lecturer.bu_id = '" + bu_id +"') ";
     	
-    	String _student = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id " 
+    	String _student = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id, lecture_schedule.sc_semesterid " 
     			+ "FROM lecture "
     			+ "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
     			+ "INNER JOIN student ON lecture_schedule.c_id = student.c_id AND lecture_schedule.sc_id = student.sc_id AND lecture_schedule.sc_semesterid = student.sc_semesterid "
@@ -327,50 +358,6 @@ public class Lecture extends Sql {
     		return true;
     	}
     	return (_dbAccess.queryDB(result, _sql));
-    }
-    
-    /**
-     * Fields:<p>
-     * (0)ls_id (1)l_id (2)l_inidatetime (3)l_duration (4)l_iscancel (5)l_description (6)l_modpass (7)l_userpass (8)c_name
-     * @param result
-     * @param bu_id
-     * @param professor
-     * @param student
-     * @return
-     */
-    public boolean getFutureLecturesForUser(ArrayList<ArrayList<String>> result, String bu_id, boolean professor, boolean student) {
-        String _professor = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id " 
-                + "FROM lecture "
-                + "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
-                + "INNER JOIN professor ON lecture_schedule.c_id = professor.c_id AND lecture_schedule.sc_id = professor.sc_id AND lecture_schedule.sc_semesterid = professor.sc_semesterid "
-                + "WHERE professor.bu_id = '" + bu_id +"' "
-                + "AND m_inidatetime >= sysdate())";
-                
-        String _GuestProfessor = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id " 
-                + "FROM lecture "
-                + "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
-                + "INNER JOIN guest_lecturer ON guest_lecturer.ls_id = lecture.ls_id AND lecture.l_id = guest_lecturer.l_id "
-                + "WHERE guest_lecturer.bu_id = '" + bu_id +"' "
-                + "AND m_inidatetime >= sysdate())";
-        
-        String _student = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id " 
-                + "FROM lecture "
-                + "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
-                + "INNER JOIN student ON lecture_schedule.c_id = student.c_id AND lecture_schedule.sc_id = student.sc_id AND lecture_schedule.sc_semesterid = student.sc_semesterid "
-                + "WHERE student.bu_id = '" + bu_id +"' "
-                + "AND m_inidatetime >= sysdate())";
-        
-        if (professor && student) {
-            _sql = _professor + "UNION DISTINCT " + _GuestProfessor + "UNION DISTINCT " + _student;
-        } else if (professor) {
-            _sql = _professor + "UNION DISTINCT " + _GuestProfessor;
-        } else if (student) {
-            _sql = _student;
-        } else {
-            result.clear();
-            return true;
-        }
-        return (_dbAccess.queryDB(result, _sql));
     }
     
     /**
@@ -426,6 +413,21 @@ public class Lecture extends Sql {
         return _dbAccess.updateDB(_sql);
     }
 
+    public boolean setLectureSetting(HashMap<String, Integer> map, String c_id, String sc_id, String sc_semesterid) {
+        int value;
+        value = (map.get(Settings.section_setting[0]) << 6)
+                + (map.get(Settings.section_setting[1]) << 5)
+                + (map.get(Settings.section_setting[2]) << 4)
+                + (map.get(Settings.section_setting[3]) << 3)
+                + (map.get(Settings.section_setting[4]));
+        _sql = "UPDATE professor "
+                + "SET sc_setting = " + value + " "
+                + "WHERE c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     public boolean setLectureIsCancel(String ls_id, String l_id, boolean l_iscancel) {
         int flag = (l_iscancel == true) ? 1 : 0;
         _sql = "UPDATE lecture "
@@ -658,7 +660,7 @@ public class Lecture extends Sql {
      * @param ls_id
      * @return
      */
-    public boolean removeMeetingSchedule(String ls_id) {
+    public boolean removeLectureSchedule(String ls_id) {
         _sql = "CALL sp_delete_ls('" + ls_id + "')";
         return _dbAccess.updateDB(_sql);
     }

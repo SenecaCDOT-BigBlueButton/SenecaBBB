@@ -16,45 +16,36 @@
 <link rel="icon" href="http://www.cssreset.com/favicon.png">
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
+<link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <script type="text/javascript" src="js/componentController.js"></script>
 <script type="text/javascript" >
 //Table
 $(screen).ready(function() {
     /* Meetings List */
-    $('#allMeetings').dataTable({
-        "bPaginate": false,
-        "bLengthChange": false,
-        "bFilter": false,
-        "bSort": true,
-        "bInfo": false,
-        "bAutoWidth": false});
-    $('#allMeetings').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    $.fn.dataTableExt.sErrMode = 'throw';
-    $('.dataTables_filter input').attr("placeholder", "Filter entries");
-        
     $('#meetingsList').dataTable({"sPaginationType": "full_numbers"});
-    $('#meetingsList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    $.fn.dataTableExt.sErrMode = 'throw';
-    
+    $('#meetingsList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});    
     /* Lectures List */
-    $('#allLectures').dataTable({
-        "bPaginate": false,
-        "bLengthChange": false,
-        "bFilter": false,
-        "bSort": true,
-        "bInfo": false,
-        "bAutoWidth": false});
-    $('#allLectures').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    $.fn.dataTableExt.sErrMode = 'throw';
-    $('.dataTables_filter input').attr("placeholder", "Filter entries");
-        
     $('#lectureList').dataTable({"sPaginationType": "full_numbers"});
     $('#lectureList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
+});
+/* SELECT BOX */
+$(function(){
+    $('select').selectmenu();
 });
 </script>
 <%
@@ -136,11 +127,7 @@ $(screen).ready(function() {
                                     </thead>
                                     <tbody>
                                     <% for(int i=0;i<meetingResult.size();i++){%>
-                                      <tr>
-                                        <% for(int j=0;j<meetingResult.get(i).size();j++){%>                                     
-                                        <td><%= meetingResult.get(i).get(j) %></td>
-                                         <% } %>                                                     
-                                      </tr><%}%>
+                                      <tr><% for(int j=0;j<meetingResult.get(i).size();j++){%><td><%= meetingResult.get(i).get(j) %></td><% } %></tr><%}%>
                                     </tbody>
                                 </table>
                             </div>
@@ -169,16 +156,13 @@ $(screen).ready(function() {
                                         <th width="80" title="l_modpass" tabindex="34">lmpass<span></span></th>
                                         <th width="80" title="l_userpass" tabindex="35">lupass<span></span></th>
                                         <th width="80" title="course" tabindex="36">Course<span></span></th>
-                                        <th width="80" title="lecture_title" tabindex="37">Section<span></span></th>                                                                                                                 
+                                        <th width="80" title="lecture_title" tabindex="37">Section<span></span></th>   
+                                        <th width="80" title="semesterId" tabindex="37">Semester<span></span></th>                                                                                                               
                                       </tr>
                                     </thead>
                                     <tbody>
                                     <% for(int i=0;i<lectureResult.size();i++){%>
-                                      <tr>
-                                        <% for(int j=0;j<lectureResult.get(i).size();j++){%>                                     
-                                        <td><%= lectureResult.get(i).get(j) %></td>
-                                         <% } %>                                                                                          
-                                      </tr><%}%>
+                                      <tr><% for(int j=0;j<lectureResult.get(i).size();j++){%><td><%= lectureResult.get(i).get(j) %></td><% } %></tr><%}%>
                                     </tbody>
                                 </table>
                             </div>

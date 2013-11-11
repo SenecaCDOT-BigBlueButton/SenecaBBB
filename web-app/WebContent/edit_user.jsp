@@ -116,7 +116,7 @@
                         </div>
                         <div class="component">
                             <div class="buttons">  
-                               <input type="submit" name="removeUser" id="removeUser" class="button" value="Ban" title="Click here to Ban User">
+                               <input type="submit" name="removeUser" id="removeUser" class="button" value="Ban User" title="Click here to Ban User">
                             </div>
                         </div>
 

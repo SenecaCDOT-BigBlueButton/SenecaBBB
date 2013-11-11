@@ -30,7 +30,6 @@
 <script type="text/javascript" src="js/componentController.js"></script>
 <%
     //Start page validation
-    System.out.println("==============");
     String userId = usersession.getUserId();
     
     if (userId.equals("")) {

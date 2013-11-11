@@ -40,6 +40,10 @@
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
             
         });
+        /* SELECT BOX */
+        $(function(){
+            $('select').selectmenu();
+        });
     </script>
     <%
     //Start page validation

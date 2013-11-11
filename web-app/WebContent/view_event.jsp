@@ -300,6 +300,10 @@
 /* TABLE */
 $(screen).ready(function() {
     /* CURRENT EVENT */
+    $('#currentEvent').dataTable({"sPaginationType": "full_numbers"});
+    $('#currentEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});    
+    $('#currentEventS').dataTable({"sPaginationType": "full_numbers"});
+    $('#currentEventS').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});      
     $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
     $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $('#tbGuest').dataTable({"sPaginationType": "full_numbers"});
@@ -429,7 +433,7 @@ $(document).ready(function() {
                                             </a></td>
                                         <% } %>
                                         <td> <% if(url !=null && url !="") for(int j=0;j<url.split(" ").length;j++) {%>
-                                             <a <%  out.print("href="+url.split(" ")[j]);  %> style="color:blue">                    
+                                             <a <%  out.print("href=" +url.split(" ")[j]);  %> style="color:blue" target="_blank">                    
                                                 <%  out.print("view recording "+ (j+1)); %>                      
                                              </a></br> <% } else  out.print("Not Available"); %> 
                                         </td>

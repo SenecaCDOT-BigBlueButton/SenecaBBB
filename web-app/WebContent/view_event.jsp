@@ -392,60 +392,6 @@ $(document).ready(function() {
         <form action="persist_user_settings.jsp" method="get">
             <article>
                 <header>
-                    <h2>Current Event</h2>
-                </header>
-                <div class="content">
-                    <fieldset>
-                        <div id="currentEventDiv" class="tableComponent">
-                            <table id="currentEvent" border="0" cellpadding="0" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th class="firstColumn" tabindex="16" title="Type">Type<span></span></th>
-                                        <th title="StartingDate">Date<span></span></th>
-                                        <th title="StartingTime">Time<span></span></th>
-                                        <th title="duration">Duration<span></span></th>
-                                        <th title="isCancel">Cancelled<span></span></th>
-                                        <th width="200" title="description">Description<span></span></th>
-                                        <% if (status==1 || status==3 || status==4) { %>
-                                        <th width="65" title="Modify" class="icons" align="center">Modify</th>
-                                        
-                                        <% } %>
-                                        <th width="100" title="recording">Recording<span></span></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="row"><%= type %></td>
-                                        <td><%= eventResult.get(0).get(2).substring(0, 10) %></td>
-                                        <td><%= eventResult.get(0).get(2).substring(11, 19) %></td>
-                                        <td><%= eventResult.get(0).get(3) %> Minutes</td>
-                                        <td><%= isCancel %></td>
-                                        <td><%= eventResult.get(0).get(5) %></td>
-                                        <% if (status==1) { %>
-                                            <td class="icons" align="center">
-                                                <a href="edit_meeting.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="modify">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting" alt="Modify"/>
-                                            </a></td>
-                                        <% } else if (status==3 || status==4) { %>
-                                            <td class="icons" align="center">
-                                                <a href="edit_lecture.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="modify">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture" alt="Modify"/>
-                                            </a></td>
-                                        <% } %>
-                                        <td> <% if(url !=null && url !="") for(int j=0;j<url.split(" ").length;j++) {%>
-                                             <a <%  out.print("href=" +url.split(" ")[j]);  %> style="color:blue" target="_blank">                    
-                                                <%  out.print("view recording "+ (j+1)); %>                      
-                                             </a></br> <% } else  out.print("Not Available"); %> 
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
-                </div>
-            </article>
-            <article>
-                <header>
                     <h2>Event Schedule</h2>
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
@@ -511,6 +457,60 @@ $(document).ready(function() {
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture schedule" alt="Modify"/>
                                         </a></td>
                                     <% } %>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+            </article>
+            <article>
+                <header>
+                    <h2>Current Event</h2>
+                </header>
+                <div class="content">
+                    <fieldset>
+                        <div id="currentEventDiv" class="tableComponent">
+                            <table id="currentEvent" border="0" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="firstColumn" tabindex="16" title="Type">Type<span></span></th>
+                                        <th title="StartingDate">Date<span></span></th>
+                                        <th title="StartingTime">Time<span></span></th>
+                                        <th title="duration">Duration<span></span></th>
+                                        <th title="isCancel">Cancelled<span></span></th>
+                                        <th width="200" title="description">Description<span></span></th>
+                                        <% if (status==1 || status==3 || status==4) { %>
+                                        <th width="65" title="Modify" class="icons" align="center">Modify</th>
+                                        
+                                        <% } %>
+                                        <th width="100" title="recording">Recording<span></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="row"><%= type %></td>
+                                        <td><%= eventResult.get(0).get(2).substring(0, 10) %></td>
+                                        <td><%= eventResult.get(0).get(2).substring(11, 19) %></td>
+                                        <td><%= eventResult.get(0).get(3) %> Minutes</td>
+                                        <td><%= isCancel %></td>
+                                        <td><%= eventResult.get(0).get(5) %></td>
+                                        <% if (status==1) { %>
+                                            <td class="icons" align="center">
+                                                <a href="edit_meeting.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="modify">
+                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting" alt="Modify"/>
+                                            </a></td>
+                                        <% } else if (status==3 || status==4) { %>
+                                            <td class="icons" align="center">
+                                                <a href="edit_lecture.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="modify">
+                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture" alt="Modify"/>
+                                            </a></td>
+                                        <% } %>
+                                        <td> <% if(url !=null && url !="") for(int j=0;j<url.split(" ").length;j++) {%>
+                                             <a <%  out.print("href=" +url.split(" ")[j]);  %> style="color:blue" target="_blank">                    
+                                                <%  out.print("view recording "+ (j+1)); %>                      
+                                             </a></br> <% } else  out.print("Not Available"); %> 
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

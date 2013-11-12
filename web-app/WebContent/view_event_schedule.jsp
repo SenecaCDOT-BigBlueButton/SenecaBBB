@@ -122,6 +122,7 @@
     // End page validation
     ArrayList<ArrayList<String>> eventResult = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> eventSResult = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> eventAttendee = new ArrayList<ArrayList<String>>();
     String type = "";
     if (status == 1 || status == 2) {
         if (!meeting.getMeetingInfo(eventResult, ms_id)) {
@@ -134,16 +135,30 @@
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
+        if (status==1) {
+            if (!meeting.getMeetingAttendee(eventAttendee, ms_id)) {
+                message = meeting.getErrMsg("VES07");
+                response.sendRedirect("logout.jsp?message=" + message);
+                return;   
+            }
+        }
     } else {
         if (!lecture.getLectureInfo(eventResult, ls_id)) {
-            message = lecture.getErrMsg("VES07");
+            message = lecture.getErrMsg("VES08");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!lecture.getLectureScheduleInfo(eventSResult, ls_id)) {
-            message = lecture.getErrMsg("VES08");
+            message = lecture.getErrMsg("VES09");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
+        }
+        if (status==3) {
+            if (!section.getStudent(eventAttendee, ls_id)) {
+                message = lecture.getErrMsg("VES10");
+                response.sendRedirect("logout.jsp?message=" + message);
+                return;   
+            }
         }
     }
     int i;
@@ -154,6 +169,8 @@ $(screen).ready(function() {
     /* CURRENT EVENT */
     $('#currentEvent').dataTable({"sPaginationType": "full_numbers"});
     $('#currentEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+    $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
+    $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
 });
@@ -300,6 +317,60 @@ $(document).ready(function() {
                     </fieldset>
                 </div>
             </article>
+            <% if (status==1 || status==3) { %>
+            <article>
+                <header id="expandAttendee">
+                <% if (status==1) { %>
+                    <h2>Attendee List</h2>
+                <% } else { %>
+                    <h2>Student List</h2>
+                <% } %>
+                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                </header>
+                <div class="content">
+                    <fieldset>
+                        <div id="currentEventDiv" class="tableComponent">
+                            <table id="tbAttendee" border="0" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="firstColumn" tabindex="16">Id<span></span></th>
+                                        <th>Nick Name<span></span></th>
+                                        <th><%= (status==1) ? "Moderator" : "Banned" %><span></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <% for (i=0; i<eventAttendee.size(); i++) { %>
+                                    <tr>
+                                    <% if (status==1) { %>
+                                        <td class="row"><%= eventAttendee.get(i).get(0) %></td>
+                                        <td><%= eventAttendee.get(i).get(3) %></td>
+                                        <td><%= eventAttendee.get(i).get(2).equals("1") ? "Yes" : "" %></td>
+                                    <% } else { %>
+                                        <td class="row"><%= eventAttendee.get(i).get(0) %></td>
+                                        <td><%= eventAttendee.get(i).get(5) %></td>
+                                        <td><%= eventAttendee.get(i).get(4).equals("1") ? "Yes" : "" %></td>
+                                    <% } %>
+                                    </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                    <br /><hr /><br />
+                    <div class="component">
+                        <div class="buttons">
+                        <% if (status==1) { %>
+                            <button type="button" name="button" id="addAttendee" class="button" title="Click here to add Attendee" 
+                                onclick="window.location.href='add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Attendee List</button>
+                        <% } else if (status==3) { %>
+                            <button type="button" name="button" id="addStudent" class="button" title="Click here to add Student" 
+                                onclick="window.location.href='add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Student List</button>
+                        <% } %>
+                          </div>
+                       </div>
+                </div>
+            </article>
+            <% } %>
             <article>
                 <br /><hr /><br />
                 <div class="component">

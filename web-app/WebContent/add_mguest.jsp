@@ -188,6 +188,9 @@ $(screen).ready(function() {
     $('#tbGuest').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
+    $(".remove").click(function(){
+        return window.confirm("Remove this person from list?");
+    });
 });
 /* SELECT BOX */
 $(function(){

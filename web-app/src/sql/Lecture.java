@@ -433,7 +433,8 @@ public class Lecture extends Sql {
         _sql = "UPDATE lecture "
                 + "SET l_iscancel = " + flag + " "
                 + "WHERE ls_id = '" + ls_id + "' "
-                + "AND l_id = '" + l_id + "'";
+                + "AND l_id = '" + l_id + "' " 
+                + "AND l_inidatetime > sysdate()";
         return _dbAccess.updateDB(_sql);
     }
 

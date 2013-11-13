@@ -371,20 +371,6 @@ $(document).ready(function() {
                 </div>
             </article>
             <% } %>
-            <article>
-                <br /><hr /><br />
-                <div class="component">
-                    <div class="buttons">
-                        <% if (status == 1 || status==2) { %>
-                            <button type="button" name="button" id="returnButton"  class="button" title="Click here to return to event page" 
-                                onclick="window.location.href='view_event.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Return to Event Page</button>
-                        <% } else { %>
-                            <button type="button" name="button" id="returnButton"  class="button" title="Click here to return to event page" 
-                                onclick="window.location.href='view_event.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Return to Event Page</button> 
-                        <% } %>
-                      </div>
-                   </div>
-            </article>
         </form>
     </section>
     <jsp:include page="footer.jsp"/>

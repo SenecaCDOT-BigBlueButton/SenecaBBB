@@ -40,7 +40,7 @@
 	    $.fn.dataTableExt.sErrMode = 'throw';
 	    $('.dataTables_filter input').attr("placeholder", "Filter entries");
 	    $(".remove").click(function(){
-	        return window.confirm("Are you sure to remove this item?");;
+	        return window.confirm("Remove this item from list?");
 	    });   
 	});
 	/* SELECT BOX */

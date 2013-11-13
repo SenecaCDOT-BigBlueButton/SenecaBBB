@@ -445,7 +445,8 @@ public class Meeting extends Sql {
         _sql = "UPDATE meeting "
                 + "SET m_iscancel = " + flag + " "
                 + "WHERE ms_id = '" + ms_id + "' "
-                + "AND m_id = '" + m_id + "'";
+                + "AND m_id = '" + m_id + "' "
+                + "AND m_inidatetime > sysdate()";
         return _dbAccess.updateDB(_sql);
     }
     

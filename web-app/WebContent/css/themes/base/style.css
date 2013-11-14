@@ -1140,3 +1140,27 @@ div.contactus a:active,div.help a:active{
      color:#0000FF;    
 }
 
+#studentListFile {
+    color: BLACK;
+    cursor: pointer;
+    font-size: 16px;
+    height: 39px;
+    margin-left: 0;
+    margin-right: 18px;
+    min-width: 85px;
+    padding: 8px 15px;
+}
+
+#submitFile {
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    height: 39px;
+    margin-left: 215px;
+    margin-right: 8px;
+    min-width: 15px;
+    padding: 8px 15px;
+    background-color: #CD352B;
+    
+}
+

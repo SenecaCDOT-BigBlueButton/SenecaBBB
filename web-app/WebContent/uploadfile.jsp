@@ -14,6 +14,26 @@
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <%@ include file="search.jsp" %>
 <%
+
+	//Start page validation
+	String userId = usersession.getUserId();
+	Boolean isSuper = usersession.isSuper();
+	Boolean isProfessor = usersession.isProfessor();
+	if (userId.equals("")) {
+	    response.sendRedirect("index.jsp?error=Please log in");
+	    return;
+	}
+	if (dbaccess.getFlagStatus() == false) {
+	    response.sendRedirect("index.jsp?error=Database connection error");
+	    return;
+	} 
+	if (!isSuper && !isProfessor) {
+	    response.sendRedirect("calendar.jsp?message=You don't have permissions to view that page.");
+	    return;
+	}
+	
+	//End page validation
+	
 // (request.getParameter("testData") != null) {
     ArrayList<String> singleResult = new ArrayList<String>();
     ArrayList<String> studentListResult = new ArrayList<String>();

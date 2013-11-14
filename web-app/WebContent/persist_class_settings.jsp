@@ -13,7 +13,7 @@
         response.sendRedirect("index.jsp?error=Please log in");
         return;
     }
-    if (!usersession.isSuper()) {
+    if (!usersession.isSuper() && !usersession.isProfessor() ) {
         response.sendRedirect("calendar.jsp?message=You don't have permission to access this page");
         return;
     }

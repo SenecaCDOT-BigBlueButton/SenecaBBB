@@ -34,6 +34,8 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    Boolean isProfessor = usersession.isProfessor();
+    Boolean isSuper = usersession.isSuper();
     if (userId.equals("")) {
         response.sendRedirect("index.jsp?error=Please log in");
         return;
@@ -42,11 +44,11 @@
         response.sendRedirect("index.jsp?error=Database connection error");
         return;
     } 
-    if (!usersession.isSuper()) {
+    if (!isSuper && !isProfessor) {
         response.sendRedirect("calendar.jsp?message=You don't have permissions to view that page.");
         return;
     }
-    
+
     //End page validation
     String c_id = "";
     String sc_id = "";
@@ -54,6 +56,7 @@
     String professorid = "";
     String message = request.getParameter("message");
     String errMessage = request.getParameter("errMessage");
+    String removeStudentId = request.getParameter("removeStudent");
     String selectedclass;
 
     if (message == null || message == "null") {
@@ -71,6 +74,7 @@
     HashMap<String, Integer> scSettingResult = new HashMap<String, Integer>(0);
     ArrayList<ArrayList<String>> profList = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> stuList = new ArrayList<ArrayList<String>>();
+    
     if(selectedclass==null){ 	
     	message="Please choose a class to add students";
     }else if(selectedclass.split("-").length == 4){
@@ -98,10 +102,36 @@
 
 ArrayList<ArrayList<String>> listofclasses = new ArrayList<ArrayList<String>>();
 ArrayList<ArrayList<String>> nickNameResult = new ArrayList<ArrayList<String>>();
-section.getProfessor(listofclasses); // get every class
+if(isSuper){
+     section.getProfessor(listofclasses); // get every class
+}else if(isProfessor){
+	section.getProfessor(listofclasses, userId);//get classes for current professor
+}else{
+    response.sendRedirect("calendar.jsp?message=You don't have permissions to view that page.");
+    return;
+}
+
 if (listofclasses.size() < 0){
     message = "There are no classes to show";
 } 
+
+//to remove a student from section
+if (removeStudentId != null) {
+	removeStudentId = Validation.prepare(removeStudentId);
+    if (!(Validation.checkBuId(removeStudentId))) {
+        message = Validation.getErrMsg();
+    } else {
+        ArrayList<ArrayList<String>> tempInfo = new ArrayList<ArrayList<String>>();
+        if (!section.removeStudent(removeStudentId,c_id, sc_id, sc_semesterid)) {
+            message = lecture.getErrMsg("AS11");
+            response.sendRedirect("logout.jsp?message=" + message);
+            return;   
+        } else {
+            message = removeStudentId + " was removed from student list";
+            response.sendRedirect("class_settings.jsp?class="+ selectedclass + "&message=" + message);
+        }      
+    }  
+}
 %>
     <script type='text/javascript'>
         /* CLASS SELECT BOX */
@@ -112,25 +142,22 @@ if (listofclasses.size() < 0){
                 }
             });
         });
-        
-        var promptForStudent = function () {
-            var userId = prompt("Enter a student id", "Search");
-            if (userId && userId != "") {
-                window.location.href = "class_settings.jsp?class=<%= selectedclass %>&userId="+userId;
-            }
-        }
-        
+
         $(screen).ready(function() {
             /* Student List Table */
             $('#studentListTable').dataTable({"sPaginationType": "full_numbers"});
             $('#studentListTable').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
             $.fn.dataTableExt.sErrMode = 'throw';
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
+            $(".remove").click(function(){
+                return window.confirm("Remove this student from list?");
+            }); 
         });
             /* Select Box */
         $(function(){
             $('select').selectmenu();
         });
+            
     </script>
 </head>
 
@@ -158,23 +185,23 @@ if (listofclasses.size() < 0){
 						<select name="class" id="classSel" title="Class select box. Use the alt key in combination 
 							with the arrow keys to select an option." tabindex="1" role="listbox" style="width: 402px">
 							<option role='option' selected disabled>Choose a class</option>
-							<% if (usersession.isSuper()){
-									for (int j=0; j < listofclasses.size(); ++j) {								
-										String fullclass = listofclasses.get(j).get(1) + "-" + listofclasses.get(j).get(2)+ "-" + listofclasses.get(j).get(3) + "-" + listofclasses.get(j).get(0);
-										out.println("<option role='option' " + (fullclass.equals(selectedclass)?"selected":"") +">" + fullclass + "</option>");
-									}
-							   }
+							<% 
+								for (int j=0; j < listofclasses.size(); ++j) {								
+									String fullclass = listofclasses.get(j).get(1) + "-" + listofclasses.get(j).get(2)+ "-" + listofclasses.get(j).get(3) + "-" + listofclasses.get(j).get(0);
+									out.println("<option role='option' " + (fullclass.equals(selectedclass)?"selected":"") +">" + fullclass + "</option>");
+								}
+							   
 							%>
 						</select>
 					</div>
-					<% } %>
+					<% } if(isProfessor){%>
 					<div class="component">
 						<div class="checkbox" title="Meetings you created."> <span class="box" role="checkbox" <%= (profSettings==1 ? "aria-checked='true'" : "aria-checked='false'") %> tabindex="17" aria-labelledby="recorded"></span>
 							<label class="checkmark" <% if (profSettings==1) out.print(""); else out.print("style='display:none'"); %>></label>
 							<label class="text" id="recorded">Recorded lectures</label>
 							<input type="checkbox" name="recordedBox" <% if(profSettings==1) out.print("checked='checked'"); else out.print(""); %> aria-disabled="true" />
 						</div>
-					</div>
+					</div><% } %>
 				</fieldset>
 			    <fieldset>
 	                <div class="component">
@@ -236,7 +263,7 @@ if (listofclasses.size() < 0){
                                         <td><% if(user.getNickName(nickNameResult, stuList.get(k).get(0))) out.print(nickNameResult.get(0).get(0)); %></td>
                                         <td><%= stuList.get(k).get(4)%></td>
                                         <td class="icons" align="center">
-                                            <a href="" class="remove">
+                                            <a href="<%= "class_settings.jsp?class="+ selectedclass + "&removeStudent=" + stuList.get(k).get(0) %>" class="remove">
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                         </a></td>
                                     </tr>

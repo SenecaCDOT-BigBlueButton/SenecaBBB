@@ -1,6 +1,10 @@
 package sql;
 
+import helper.Settings;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import db.DBAccess;
 
 /**
@@ -223,6 +227,36 @@ public class Section extends Sql {
         return _dbAccess.queryDB(result, _sql);
     }
     
+    /**
+     * get section setting for a particular section<p>
+     * (0)sc_setting
+     * @param result
+     * @param c_id
+     * @param sc_id
+     * @param sc_semesterid
+     * @param bu_id
+     * @return
+     */
+    public boolean getSectionSetting(HashMap<String, Integer> result, String c_id, String sc_id,String sc_semesterid,String bu_id) {
+        _sql = "SELECT sc_setting "
+                + "FROM professor "
+                + "WHERE c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "' "
+                + "AND bu_id = '" + bu_id + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+            result.clear();
+            result.put(Settings.section_setting[0], (value & (1<<6)) == 0 ? 0:1);
+            result.put(Settings.section_setting[1], (value & (1<<5)) == 0 ? 0:1);
+            result.put(Settings.section_setting[2], (value & (1<<4)) == 0 ? 0:1);
+            result.put(Settings.section_setting[3], (value & (1<<3)) == 0 ? 0:1);
+            result.put(Settings.section_setting[4], (value & (1<<2)) + (value & (1<<1)) + (value & 1));
+        }
+        return flag;
+    }
     /**
      * get all students<p>
      * (0)bu_id (1)c_id (2)sc_id (3)sc_semesterid (4)s_isbanned

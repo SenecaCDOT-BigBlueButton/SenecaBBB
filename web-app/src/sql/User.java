@@ -552,6 +552,22 @@ public class User extends Sql {
         return flag;
     }
     
+    public boolean isLectureStudent(MyBoolean bool, String c_id,  String sc_id, String sc_semesterid,String bu_id) {
+        _sql = "SELECT * "
+                + "FROM student "
+                + "WHERE c_id = '" + c_id + "'"
+                + " AND sc_id = '" + sc_id + "'"
+                + " AND sc_semesterid = '" + sc_semesterid + "'"
+                + " AND bu_id = '" + bu_id + "'";
+        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
+    
+    
     public boolean isProfessor(MyBoolean bool, String bu_id) {
         _sql = "SELECT 1 "
                 + "FROM professor "

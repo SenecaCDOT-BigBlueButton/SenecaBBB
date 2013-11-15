@@ -343,14 +343,15 @@ $(document).ready(function() {
     <jsp:include page="header.jsp"/>
     <jsp:include page="menu.jsp"/>
     <section>
+        <header>
+            <p><a href="calendar.jsp" tabindex="13">home</a> » </p>
+            <h1>Current Event</h1>
+            <a href="help_viewEvent.jsp" target="_blank">help</a> 
+            <div class="warningMessage"><%=message %></div>
+        </header>
         <% if(isEventCreator.get_value() || isEventAttendee.get_value() || isEventGuest.get_value()){ %>
 	        <form name="joinEvent" id="joinEvent" method="get" action="join_event.jsp?&eventId=<%= (m_id==null)? l_id:m_id %>&eventSchduleId=<%= (ms_id==null)? ls_id:ms_id %>&eventType=<%= (m_id==null)? "Lecture":"Meeting" %>">
 	            <article>
-			        <header>
-			            <p><a href="calendar.jsp" tabindex="13">home</a> » </p>
-			            <h1>Current Event</h1>
-			            <div class="warningMessage"><%=message %></div>
-			        </header>
 	                <div class="content">
 	                    <fieldset>	                       
 	                        <% 	                          	                           

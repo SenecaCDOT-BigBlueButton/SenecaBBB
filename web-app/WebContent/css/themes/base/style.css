@@ -789,9 +789,11 @@ footer div#copyright {
 .tableComponent table thead th.icons:after {
 	display: none;
 }
+/*
 .tableComponent table thead th:hover {
 	background: #454545;
 }
+*/
 .tableComponent table thead th.sorting {
 	background-color: #E0E0E0;
 	margin-top: -20px;

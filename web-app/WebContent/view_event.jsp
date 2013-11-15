@@ -302,10 +302,10 @@
 /* TABLE */
 $(screen).ready(function() {
     /* CURRENT EVENT */
-    $('#currentEvent').dataTable({"sPaginationType": "full_numbers"});
-    $('#currentEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});    
-    $('#currentEventS').dataTable({"sPaginationType": "full_numbers"});
-    $('#currentEventS').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});      
+   // $('#currentEvent').dataTable({"sPaginationType": "full_numbers"});
+   // $('#currentEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});    
+  //  $('#currentEventS').dataTable({"sPaginationType": "full_numbers"});
+  //  $('#currentEventS').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});      
     $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
     $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $('#tbGuest').dataTable({"sPaginationType": "full_numbers"});

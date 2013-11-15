@@ -1027,7 +1027,7 @@ footer div#copyright {
 	
 }
 
-#eventDescription{
+#eventDescription, #description{
 	margin-left:16px;
 	width:398px;
 	float:left;

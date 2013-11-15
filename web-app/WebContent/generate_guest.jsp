@@ -19,6 +19,7 @@
 	String userId = usersession.getUserId();
 	HashMap<String, Integer> roleMask = usersession.getRoleMask();
 	if (userId.equals("") || dbaccess.getFlagStatus() == false || roleMask.get("guestAccountCreation") == 0) {
+		response.sendRedirect("invite_guest.jsp?message=You don't have permission to create guest account");
 		return;
 	}
 	else {

@@ -348,11 +348,9 @@
 	                    <fieldset>	                       
 	                        <% 	                          	                           
 	                           if(eventTitle !=null){                        	   
-                                 //  url = getRecordings(eventTitle);  
-                                   System.out.println(url);
+                                   url = getRecordings(eventTitle);  
 	                           }else{
-	                        	//   url = getRecordings(storedEventId);
-	                        	   System.out.println(url);
+	                        	   url = getRecordings(storedEventId);
 	                           } %>
 	                        <div class="component" style="display:none">
                                 <label for="eventType" class="label">Event Type:</label>

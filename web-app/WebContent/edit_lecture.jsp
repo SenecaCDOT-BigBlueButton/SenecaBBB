@@ -28,7 +28,6 @@
 <script type="text/javascript" src="js/ui/jquery.timepicker.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-<script type="text/javascript" src="js/componentController.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
 
@@ -179,9 +178,50 @@
 /* TABLE */
 $(screen).ready(function() {
     /* CURRENT EVENT */   
+    $('#tbEvent').dataTable({"sPaginationType": "full_numbers"});
+    $('#tbEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});        
     $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
     $('#startTime').timepicker({ 'scrollDefaultNow': true });
+    
+    /* CHECKBOXES */
+    $('.checkbox .box').keydown(function() {
+        if (event.which == 13){
+            event.preventDefault(event);
+            $(this).next(".checkmark").toggle();
+            $(this).attr("aria-checked", ($(this).attr("aria-checked") === "true" ? "false" : "true"));
+            
+            if (($(this).siblings().last().is(":checked"))){
+                $(this).siblings().last().prop("checked", false);
+            } else {
+                $(this).siblings().last().prop("checked", true);
+            }
+        }
+    });
+    
+    $('.checkbox .box').click(function(event) {
+        $(this).next(".checkmark").toggle();
+        
+        if (($(this).attr("aria-checked") === "true")) {
+            $(this).attr("aria-checked", "false");
+            ($(this).siblings().last())[0].checked = false;
+        } else {
+            $(this).attr("aria-checked", "true");
+            ($(this).siblings().last())[0].checked = true;
+        }
+    });
+    
+    $('.checkbox .checkmark').click(function() {
+        $(this).toggle();
+        
+        if (($(this).siblings().first().attr("aria-checked") === "true")) {
+            $(this).siblings().first().attr("aria-checked", "false");
+            ($(this).siblings().last())[0].checked = false;
+        } else {
+            $(this).siblings().first().attr("aria-checked", "true");
+            ($(this).siblings().last())[0].checked = true;
+        }
+    });
 });
 /* SELECT BOX */
 $(function(){

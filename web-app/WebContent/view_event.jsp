@@ -30,7 +30,9 @@
 <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-<script type="text/javascript" src="js/componentController.js"></script>
+
+
+
 <%
     //Start page validation
     String userId = usersession.getUserId();
@@ -300,10 +302,10 @@
 /* TABLE */
 $(screen).ready(function() {
     /* CURRENT EVENT */
-    //$('#currentEvent').dataTable({"sPaginationType": "full_numbers"});
-    //$('#currentEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});    
-    //$('#currentEventS').dataTable({"sPaginationType": "full_numbers"});
-    //$('#currentEventS').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});      
+    $('#currentEvent').dataTable({"sPaginationType": "full_numbers"});
+    $('#currentEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});    
+    $('#currentEventS').dataTable({"sPaginationType": "full_numbers"});
+    $('#currentEventS').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});      
     $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
     $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $('#tbGuest').dataTable({"sPaginationType": "full_numbers"});
@@ -312,15 +314,22 @@ $(screen).ready(function() {
     $('#tbAttendance').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $('#tbPresentation').dataTable({"sPaginationType": "full_numbers"});
     $('#tbPresentation').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    $.fn.dataTableExt.sErrMode = 'throw';
+    $('#legend').dataTable({"sPaginationType": "full_numbers"});
+    $('#legend').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});       
+    $.fn.dataTableExt.sErrMode = "throw";
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
 });
 /* SELECT BOX */
 $(function(){
     $('select').selectmenu();
 });
+
 $(document).ready(function() {
     //Hide some tables on load
+    $('article header').click(function() {
+        $(this).next(".content").slideToggle(500);
+        $(this).find("img").toggleClass("expandContent");
+    });
     $('#legendExpand').click();
     $('#expandAttendee').click();
     $('#expandGuest').click();
@@ -692,7 +701,7 @@ $(document).ready(function() {
                 <div class="content">
                     <fieldset>
                         <div class="tableComponent">
-                            <table border="0" cellpadding="0" cellspacing="0">
+                            <table id="legend" border="0" cellpadding="0" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th class="firstColumn" tabindex="16" title="Type">Type<span></span></th>
@@ -736,13 +745,4 @@ $(document).ready(function() {
 </div>
 </body>
 </html>
-<%!
-	public long getDifferenceInMinutes (String currentDateTime,String eventStartDateTime) throws ParseException {
-	    SimpleDateFormat df=new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-	    Date d1=df.parse(currentDateTime);
-	    Date d2=df.parse(eventStartDateTime);
-	    long d1Ms=d1.getTime();
-	    long d2Ms=d2.getTime();
-	    return Math.abs((d1Ms-d2Ms)/60000);
-	  }
-%>
+

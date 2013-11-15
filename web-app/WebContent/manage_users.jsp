@@ -27,7 +27,7 @@
 <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-<script type="text/javascript" src="js/componentController.js"></script>
+
 <script type="text/javascript">
 function searchUser(){
     var xmlhttp;
@@ -63,14 +63,13 @@ $(screen).ready(function() {
         "bSort": true,
         "bInfo": false,
         "bAutoWidth": false});
-    $('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    */   
+    $('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});    
     $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
-     
-    /* ATTENDEES LIST */    
-    $('#attendeesList').dataTable({"sPaginationType": "full_numbers"});
-    $('#attendeesList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+    */  
+    /* USERS LIST */    
+    $('#usersList').dataTable({"sPaginationType": "full_numbers"});
+    $('#usersList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
 });
@@ -134,7 +133,7 @@ $(function(){
                     <fieldset>
                         <div class="component">
                             <div class="tableComponent">
-				                <table id="attendeesList" border="0" cellpadding="0" cellspacing="0">
+				                <table id="usersList" border="0" cellpadding="0" cellspacing="0">
 									<thead>
 									  <tr>
 									    <th width="50" class="firstColumn" tabindex="16" title="Username">ID<span></span></th>

@@ -22,7 +22,7 @@
 	<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
-	<script type="text/javascript" src="js/componentController.js"></script>
+	<script type="text/javascript" src="js/checkboxController.js"></script>
 	<%
 	String message = request.getParameter("message");
 	if (message == null || message == "null") {
@@ -55,31 +55,59 @@
         return;   
     }
 	String lectureJSON = lectureDBToJSON(result);
-	%>
-	<script type='text/javascript'>
-		$(document).ready(function() {
-			$('#fullcalendar').fullCalendar({
-				header: {
-					left: 'prev,next today',
-					center: 'title',
-					right: 'month,agendaWeek,agendaDay'
-				},
-				editable: false,
-				allDayDefault: false,
-				events: [
-                    <%= meetingJSON %>, <%= lectureJSON %>
-				]
+	
+	String eventJSON;
+	if(!lectureJSON.isEmpty() && !meetingJSON.isEmpty())
+	    eventJSON=lectureJSON.concat(",").concat(meetingJSON);
+	else if(!lectureJSON.isEmpty() && meetingJSON.isEmpty())
+		eventJSON = lectureJSON;
+	else if(lectureJSON.isEmpty() && !meetingJSON.isEmpty())
+		eventJSON= meetingJSON;
+	else
+		eventJSON ="";
+	
+	if(!eventJSON.equals("")) {%>
+		<script type='text/javascript'>
+			$(document).ready(function() {
+				$('#fullcalendar').fullCalendar({
+					header: {
+						left: 'prev,next today',
+						center: 'title',
+						right: 'month,agendaWeek,agendaDay'
+					},
+					editable: false,
+					allDayDefault: false,
+					events: [<%= eventJSON %>]	                    					
+				});
 			});
-			
-			// make the filter options hidden once the page has loaded
-			$('#filterOptions').click();
-		});
-	</script>
+		</script>
+	<%}
+	else{ %>
+	   <script type='text/javascript'>
+        $(document).ready(function() {
+            $('#fullcalendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                editable: false,
+                allDayDefault: false,
+            });          
+        });
+    </script>
+	<%} %>
 </head>
 <body>
 	<div id="page">
 		<jsp:include page="header.jsp"/>
 		<jsp:include page="menu.jsp"/>
+		<script>
+		$(screen).ready(function(){
+            // make the filter options hidden once the page has loaded
+            $('#filterOptions').click();
+		});
+		</script>
 		<section>
 			<header>
 				<p><a href="calendar.jsp" tabindex="13">home</a> » </p>

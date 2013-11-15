@@ -17,11 +17,8 @@
     <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
     <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
     <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
     <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
-    <link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
     <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
@@ -29,7 +26,6 @@
     <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-    <script type="text/javascript" src="js/componentController.js"></script>
     <script type="text/javascript">
         //Table
         $(screen).ready(function() {
@@ -148,6 +144,7 @@
                 </header>
                 <div class="content">
                      <fieldset>
+                     <div calss="component">
                         <div class="tableComponent">
                           <table id="bbb_adminTable" border="0" cellpadding="0" cellspacing="0">
                             <thead>
@@ -161,7 +158,7 @@
                             <tbody>
                               <%for(int j=0;j<systemInfo.size();j++) {%>
                               <tr>
-                                <td><%= systemInfo.get(j).get(0) %></td>
+                                <td class="row"><%= systemInfo.get(j).get(0) %></td>
                                 <td><%= systemInfo.get(j).get(1)%></td>
                                 <td><input type="text" name="key_value"  style="border:none" value="<%= systemInfo.get(j).get(2)%>" <% if(systemInfo.get(j).get(0).indexOf("next")>=0 || systemInfo.get(j).get(0).indexOf("default")>=0) out.print("readonly=readonly"); %>></td>
                                 <td class="icons" align="center" >
@@ -170,6 +167,7 @@
                               </tr><% } %>
                             </tbody>
                           </table>
+                        </div>
                         </div>
                     </fieldset>
                 </div>          

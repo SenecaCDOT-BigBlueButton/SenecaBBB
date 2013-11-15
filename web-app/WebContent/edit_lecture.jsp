@@ -178,10 +178,10 @@
 /* TABLE */
 $(screen).ready(function() {
     /* CURRENT EVENT */   
-    $('#tbEvent').dataTable({"sPaginationType": "full_numbers"});
-    $('#tbEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});        
-    $.fn.dataTableExt.sErrMode = 'throw';
-    $('.dataTables_filter input').attr("placeholder", "Filter entries");
+ //   $('#tbEvent').dataTable({"sPaginationType": "full_numbers"});
+  //  $('#tbEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});        
+  //  $.fn.dataTableExt.sErrMode = 'throw';
+  //  $('.dataTables_filter input').attr("placeholder", "Filter entries");
     $('#startTime').timepicker({ 'scrollDefaultNow': true });
     
     /* CHECKBOXES */

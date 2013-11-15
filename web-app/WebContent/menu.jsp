@@ -1,6 +1,6 @@
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
+<script type="text/javascript" src="js/menuController.js"></script>
 <aside>
-
 	<nav>
 		<ul>
 			<div class="menu">

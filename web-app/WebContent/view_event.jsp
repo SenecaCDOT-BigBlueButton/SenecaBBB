@@ -18,11 +18,8 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
-<link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript" src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
@@ -30,8 +27,6 @@
 <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-
-
 
 <%
     //Start page validation
@@ -300,48 +295,46 @@
 %>
 <script type="text/javascript">
 /* TABLE */
-$(screen).ready(function() {
-    /* CURRENT EVENT */
-   // $('#currentEvent').dataTable({"sPaginationType": "full_numbers"});
-   // $('#currentEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});    
-  //  $('#currentEventS').dataTable({"sPaginationType": "full_numbers"});
-  //  $('#currentEventS').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});      
-    $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
-    $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    $('#tbGuest').dataTable({"sPaginationType": "full_numbers"});
-    $('#tbGuest').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    $('#tbAttendance').dataTable({"sPaginationType": "full_numbers"});
-    $('#tbAttendance').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    $('#tbPresentation').dataTable({"sPaginationType": "full_numbers"});
-    $('#tbPresentation').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    $('#legend').dataTable({"sPaginationType": "full_numbers"});
-    $('#legend').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});       
-    $.fn.dataTableExt.sErrMode = "throw";
-    $('.dataTables_filter input').attr("placeholder", "Filter entries");
-});
-/* SELECT BOX */
-$(function(){
-    $('select').selectmenu();
-});
+	$(screen).ready(function() {
+	    /* CURRENT EVENT */
+	   // $('#currentEvent').dataTable({"sPaginationType": "full_numbers"});
+	   // $('#currentEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});    
+	  //  $('#currentEventS').dataTable({"sPaginationType": "full_numbers"});
+	  //  $('#currentEventS').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});      
+	    $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
+	    $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+	    $('#tbGuest').dataTable({"sPaginationType": "full_numbers"});
+	    $('#tbGuest').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+	    $('#tbAttendance').dataTable({"sPaginationType": "full_numbers"});
+	    $('#tbAttendance').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+	    $('#tbPresentation').dataTable({"sPaginationType": "full_numbers"});
+	    $('#tbPresentation').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+	    $('#legend').dataTable({"sPaginationType": "full_numbers"});
+	    $('#legend').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});       
+	    $.fn.dataTableExt.sErrMode = "throw";
+	    $('.dataTables_filter input').attr("placeholder", "Filter entries");
+	});
+	/* SELECT BOX */
+	$(function(){
+	    $('select').selectmenu();
+	});
 
-$(document).ready(function() {
-    //Hide some tables on load
-    $('article header').click(function() {
-        $(this).next(".content").slideToggle(500);
-        $(this).find("img").toggleClass("expandContent");
-    });
-    $('#legendExpand').click();
-    $('#expandAttendee').click();
-    $('#expandGuest').click();
-    $('#expandAttendance').click();
-    $('#expandPresentation').click();
-});
 </script>
 </head>
 <body>
 <div id="page">
     <jsp:include page="header.jsp"/>
     <jsp:include page="menu.jsp"/>
+    <script type="text/javascript">
+	    $(document).ready(function() {
+	        //Hide some tables on load
+	        $('#legendExpand').click();
+	        $('#expandAttendee').click();
+	        $('#expandGuest').click();
+	        $('#expandAttendance').click();
+	        $('#expandPresentation').click();
+	    });
+    </script>
     <section>
         <% if(isEventCreator.get_value() || isEventAttendee.get_value() || isEventGuest.get_value()){ %>
 	        <form name="joinEvent" id="joinEvent" method="get" action="join_event.jsp?&eventId=<%= (m_id==null)? l_id:m_id %>&eventSchduleId=<%= (ms_id==null)? ls_id:ms_id %>&eventType=<%= (m_id==null)? "Lecture":"Meeting" %>">
@@ -355,10 +348,10 @@ $(document).ready(function() {
 	                    <fieldset>	                       
 	                        <% 	                          	                           
 	                           if(eventTitle !=null){                        	   
-                                   url = getRecordings(eventTitle);  
+                                 //  url = getRecordings(eventTitle);  
                                    System.out.println(url);
 	                           }else{
-	                        	   url = getRecordings(storedEventId);
+	                        	//   url = getRecordings(storedEventId);
 	                        	   System.out.println(url);
 	                           } %>
 	                        <div class="component" style="display:none">

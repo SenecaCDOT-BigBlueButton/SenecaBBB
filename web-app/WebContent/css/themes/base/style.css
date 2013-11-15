@@ -1030,6 +1030,11 @@ footer div#copyright {
 }
 
 #eventDescription, #description{
+	border: 1px solid #AAAAAA;
+	font-family: "ITCAvantGardeStd BkCn";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
 	margin-left:16px;
 	width:398px;
 	float:left;
@@ -1037,6 +1042,11 @@ footer div#copyright {
 	height:40px;
 	cursor: pointer;
 	
+}
+
+#eventDescription:focus, #description:focus{
+    outline: none;
+    border: 1px solid #9F100B;
 }
 
 #itemList{

@@ -27,7 +27,7 @@
 <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-<script type="text/javascript" src="js/componentController.js"></script>
+
 <%
     //Start page validation
     String userId = usersession.getUserId();
@@ -102,6 +102,7 @@ $(document).ready(function() {
             <article>
                 <header>
                     <h2>Meeting List</h2>
+                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/></header>      
                 </header>
                 <div class="content">
                     <fieldset>
@@ -130,6 +131,7 @@ $(document).ready(function() {
             <article>
                 <header>
                     <h2>Lecture List</h2>
+                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/></header>      
                 </header>
                 <div class="content">
                     <fieldset>

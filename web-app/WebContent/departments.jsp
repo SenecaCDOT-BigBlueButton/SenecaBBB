@@ -56,7 +56,7 @@
 	String modDeptName = request.getParameter("NewDeptName");
 	
 	if (deptCode!=null && deptName!=null) {
-	    deptCode = Validation.prepare(deptCode);
+	    deptCode = Validation.prepare(deptCode).toUpperCase();
 		deptName = Validation.prepare(deptName);
 	    validFlag = Validation.checkDeptCode(deptCode) && Validation.checkDeptName(deptName);
 	    if (validFlag) {

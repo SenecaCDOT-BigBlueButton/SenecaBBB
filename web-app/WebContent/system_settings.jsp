@@ -26,21 +26,6 @@
     <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-    <script type="text/javascript">
-        //Table
-        $(screen).ready(function() {
-            /* Admin Key Name List */
-            $('#bbb_adminTable').dataTable({"sPaginationType": "full_numbers"});
-            $('#bbb_adminTable').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-            $.fn.dataTableExt.sErrMode = 'throw';
-            $('.dataTables_filter input').attr("placeholder", "Filter entries");
-            
-        });
-        /* SELECT BOX */
-        $(function(){
-            $('select').selectmenu();
-        });
-    </script>
     <%
     //Start page validation
     String userId = usersession.getUserId();
@@ -49,7 +34,7 @@
         return;
     }
     if (!usersession.isSuper()) {
-        response.sendRedirect("calendar.jsp");
+        response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
@@ -82,6 +67,21 @@
     int recordableMeeting = 0;
         
     %>
+    <script type="text/javascript">
+        //Table
+        $(screen).ready(function() {
+            /* Admin Key Name List */
+            $('#bbb_adminTable').dataTable({"sPaginationType": "full_numbers"});
+            $('#bbb_adminTable').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $.fn.dataTableExt.sErrMode = 'throw';
+            $('.dataTables_filter input').attr("placeholder", "Filter entries");
+            
+        });
+        /* SELECT BOX */
+        $(function(){
+            $('select').selectmenu();
+        });
+    </script>
 </head>
 <body>
 <div id="page">
@@ -149,9 +149,9 @@
                           <table id="bbb_adminTable" border="0" cellpadding="0" cellspacing="0">
                             <thead>
                               <tr>
-                                <th width="100" class="firstColumn" tabindex="16" title="keyName">key name<span></span></th>
+                                <th width="150" class="firstColumn" tabindex="16" title="keyName">key name<span></span></th>
                                 <th  title="keytitle">key title<span></span></th>
-                                <th  width="100" title="value">key value<span></span></th> 
+                                <th  width="150" title="value">key value<span></span></th> 
                                 <th  width="50" title="edit">edit<span></span></th>                               
                               </tr>
                             </thead>
@@ -160,7 +160,7 @@
                               <tr>
                                 <td class="row"><%= systemInfo.get(j).get(0) %></td>
                                 <td><%= systemInfo.get(j).get(1)%></td>
-                                <td><input type="text" name="key_value"  style="border:none" value="<%= systemInfo.get(j).get(2)%>" <% if(systemInfo.get(j).get(0).indexOf("next")>=0 || systemInfo.get(j).get(0).indexOf("default")>=0) out.print("readonly=readonly"); %>></td>
+                                <td><%= systemInfo.get(j).get(2)%></td>
                                 <td class="icons" align="center" >
                                     <a <% if(systemInfo.get(j).get(0).indexOf("next")>=0 || systemInfo.get(j).get(0).indexOf("default")>=0) out.print("style='display:none'"); %> href="edit_bbb_admin.jsp?key_name=<%= systemInfo.get(j).get(0) %>&key_title=<%= systemInfo.get(j).get(1) %>&key_value=<%= systemInfo.get(j).get(2) %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="modify bbb_admin" alt="Edit"/></a>
                                 </td>
@@ -178,7 +178,6 @@
         $(document).ready(function(){
         	$( "form :checkbox" ).click(function(e){
         		target = e.target;
-        		console.log(target);
         		if($(target).siblings().attr('value')==1){
         			$(target).siblings().attr('value',0);
         		}else
@@ -188,7 +187,6 @@
         		target = e.target;
         		value = $(target).text();
         		$(target).attr('value',value);
-        		console.log(value);
         	});
         	$("tr td:first-child").addClass("row");
         	$("#predefinedRoleList thead tr th").click(function(e){

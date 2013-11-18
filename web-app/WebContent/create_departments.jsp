@@ -7,16 +7,17 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Create Department</title>
-<link rel="icon" href="http://www.cssreset.com/favicon.png">
-<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-<script type="text/javascript" src="js/componentController.js"></script>
+	<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Create Department</title>
+	<link rel="icon" href="http://www.cssreset.com/favicon.png">
+	<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
+	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
 
 <%
 	//Start page validation
@@ -51,7 +52,7 @@
 			<!-- WARNING MESSAGES -->
 			<div class="warningMessage"></div>
 		</header>
-		<form name="createDept" method="post" action="departments.jsp">
+		<form name="createDept" id="createDept" method="post" action="departments.jsp">
 			<article>
 				<header>
 					<h2>Department Form</h2>
@@ -80,6 +81,34 @@
 			</article>
 		</form>
 	</section>
+	   <script>    
+   // form validation, edit the regular expression pattern and error messages to meet your needs
+       $(document).ready(function(){
+            $('#createDept').validate({
+                validateOnBlur : true,
+                rules: {
+                	DeptCode: {
+                       required: true,
+                       pattern: /^\s*[a-zA-z]{3}\s*$/
+                   },
+                   DeptName:{
+                       required: true,
+                       pattern: /^\s*[a-zA-z&#\ \/-]+\s*$/
+                   }
+                },
+                messages: {
+                	DeptCode: { 
+                        pattern:"Please enter a valid department code",
+                        required:"department code is required"
+                    },
+                    DeptName:{
+                        required: "department name is required",
+                        pattern: "Please enter a valid department name"
+                    }
+                }
+            });
+        });
+  </script>
 	<jsp:include page="footer.jsp"/>
 </div>
 </body>

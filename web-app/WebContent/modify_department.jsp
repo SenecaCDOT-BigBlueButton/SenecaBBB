@@ -17,7 +17,8 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-<script type="text/javascript" src="js/componentController.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
 
 <%
 	boolean validFlag; 
@@ -75,13 +76,13 @@
 	<section>
 		<header> 
 			<!-- BREADCRUMB -->
-			<p><a href="calendar.jsp" tabindex="13">home</a> » <a href="departments.jsp" tabindex="14">departments</a> »<a href="create_departments.jsp" tabindex="15">create department</a></p>
+			<p><a href="calendar.jsp" tabindex="13">home</a> » <a href="departments.jsp" tabindex="14">departments</a> »<a href="create_departments.jsp" tabindex="15">modify department</a></p>
 			<!-- PAGE NAME -->
-			<h1>Create Department</h1>
+			<h1>Modify Department</h1>
 			<!-- WARNING MESSAGES -->
 			<div class="warningMessage"></div>
 		</header>
-		<form name="modifyDept" method="post" action="departments.jsp">
+		<form name="modifyDept" id="modifyDept" method="post" action="departments.jsp">
 			<article>
 				<header>
 					<h2>Modify Department Form</h2>
@@ -114,6 +115,34 @@
 			</article>
 		</form>
 	</section>
+	<script>
+	   // form validation, edit the regular expression pattern and error messages to meet your needs
+	      $(document).ready(function(){
+	           $('#modifyDept').validate({
+	               validateOnBlur : true,
+	               rules: {
+	            	   NewDeptCode: {
+	                      required: true,
+	                      pattern: /^\s*[a-zA-z]{3}\s*$/
+	                  },
+	                  NewDeptName:{
+	                      required: true,
+	                      pattern: /^\s*[a-zA-z&#\ \/-]+\s*$/
+	                  }
+	               },
+	               messages: {
+	            	   NewDeptCode: { 
+	                       pattern:"Please enter a valid department code",
+	                       required:"department code is required"
+	                   },
+	                   NewDeptName:{
+	                       required: "department name is required",
+	                       pattern: "Please enter a valid department name"
+	                   }
+	               }
+	           });
+	       });
+	 </script>
 	<jsp:include page="footer.jsp"/>
 </div>
 </body>

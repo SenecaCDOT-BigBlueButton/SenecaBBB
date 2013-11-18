@@ -72,6 +72,7 @@ $(screen).ready(function() {
     $('#usersList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
+
 });
 /* SELECT BOX */
 $(function(){
@@ -83,6 +84,10 @@ $(function(){
     String userId = usersession.getUserId();
     if (userId.equals("")) {
         response.sendRedirect("index.jsp?error=Please log in");
+        return;
+    }
+    if (!usersession.isSuper()) {
+        response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
@@ -136,28 +141,26 @@ $(function(){
 				                <table id="usersList" border="0" cellpadding="0" cellspacing="0">
 									<thead>
 									  <tr>
-									    <th width="50" class="firstColumn" tabindex="16" title="Username">ID<span></span></th>
-									    <th title="Name">User Name<span></span></th>
-									    <th width="100" title="Last Name">Last Name<span></span></th>
-									    <th width="200" title="Email">Email<span></span></th>
-									    <th width="100" title="Created Time">Created Time<span></span></th>
-									    <th width="65" title="View Schedule" class="icons"  align="center">Schedule</th>
-									    <th width="65" title="Edit" class="icons"  align="center">Edit</th>
-									    <th width="65" title="Remove" class="icons" align="center">Ban</th>
+									    <th width="100" class="firstColumn" tabindex="16" title="Username">ID<span></span></th>
+									    <th title="Name">Is Banned<span></span></th>
+									    <th width="100" title="Last Name">Is Active<span></span></th>
+									    <th width="200" title="Email">Is Ldap<span></span></th>
+									    <th width="100" title="Created Time">Is Super<span></span></th>
+									    <th width="100" title="View Schedule" class="icons"  align="center">Schedule</th>
+									    <th width="65" title="Edit" class="icons"  align="center">Edit</th>								    
 									  </tr>
 									</thead>
 									<tbody>
 									<% for(int i=0;i<allUserInfo.size();i++){ %>							   
 									  <tr>
 									    <td class="row"><%= allUserInfo.get(i).get(0) %></td>
-									    <td><%= allUserInfo.get(i).get(11) %></td>
-									    <td><%= allUserInfo.get(i).get(12) %></td>
-									    <td><%= allUserInfo.get(i).get(13) %></td>
-									    <td><%= allUserInfo.get(i).get(14) %></td>
-									    <td  class="icons" align="center"><a class="search" href='view_schedule.jsp?id=<%= allUserInfo.get(i).get(0) %>' ><img alt="Search" src="images/iconPlaceholder.svg" width="17" height="17" title="User Schedule" /></a></td>
-									    <td class="icons" align="center"><a class="modify" href='edit_user.jsp?id=<%= allUserInfo.get(i).get(0) %>' ><img alt="Edit" src="images/iconPlaceholder.svg" width="17" height="17" title="Edit User" /></a></td>
-									    <td class="icons" align="center"><a href="edit_user.jsp?id=<%= allUserInfo.get(i).get(0) %>" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Ban user from system" alt="Ban"/></a></td>
-									  </tr>
+									    <td><%= allUserInfo.get(i).get(2) %></td>
+									    <td><%= allUserInfo.get(i).get(3) %></td>
+									    <td><%= allUserInfo.get(i).get(6) %></td>
+									    <td><%= allUserInfo.get(i).get(7) %></td>
+									    <td class="icons" align="center"><a class="search"  style="margin-right:40px" href='view_schedule.jsp?id=<%= allUserInfo.get(i).get(0) %>' ><img alt="Search" src="images/iconPlaceholder.svg" width="17" height="17" title="User Schedule" /></a></td>
+									    <td class="icons" align="center"><a class="modify" href= <%= "edit_user.jsp?id=" +  allUserInfo.get(i).get(0)  +"&action=edit" %>><img alt="Edit" src="images/iconPlaceholder.svg" width="17" height="17" title="Edit User" /></a></td>
+									 </tr>
 								   <%}%>
 									</tbody>
 				                </table>

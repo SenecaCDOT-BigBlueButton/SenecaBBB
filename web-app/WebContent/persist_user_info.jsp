@@ -2,7 +2,7 @@
 <%@page import="hash.PasswordHash"%>
 <%@page import="sql.User"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <%@page import= "sql.User" %>
 <%@page import= "helper.Settings" %>
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
@@ -11,58 +11,115 @@
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <%@ page language="java" import="java.sql.*" errorPage=""%>
 <%
+	//Start page validation
+	String userId = usersession.getUserId();
+    String message="";
+	if (userId.equals("")) {
+	    response.sendRedirect("index.jsp?error=Please log in");
+	    return;
+	}
+	if (!usersession.isSuper()) {
+	    response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
+	    return;
+	}
+	if (dbaccess.getFlagStatus() == false) {
+	    response.sendRedirect("index.jsp?error=Database connection error");
+	    return;
+	} //End page validation
+
     Boolean IsBanned = false;
     Boolean IsActive = false;
-    Boolean IsSuperAdmin = false;
-    if(request.getParameter("bbbUserIsBanned").charAt(0)=='1'){
+    Boolean IsLdap = false;
+    Boolean IsSuper = false;
+    if(request.getParameter("bbbUserIsBanned") !=null && request.getParameter("bbbUserIsBanned").equals("1")){
         IsBanned = true;        
+    }  
+    if(request.getParameter("bbbUserIsLdap")!=null && request.getParameter("bbbUserIsLdap").equals("1")){
+    	IsLdap = true;
     }
-    if(request.getParameter("bbbUserIsActive").charAt(0)=='1'){
-        IsActive = true;       
-    }   
-    request.getParameter("removeUser");
-    request.getParameter("updateUser");
-    HashMap<String, Integer> map = new HashMap<String, Integer>();
+    if(request.getParameter("bbbUserIsSuper")!=null && request.getParameter("bbbUserIsSuper").equals("1")){
+    	IsSuper = true;
+    }
+    if(request.getParameter("bbbUserIsActive")!=null && request.getParameter("bbbUserIsActive").equals("1")){
+    	IsActive = true;
+    }
+    String bu_id = request.getParameter("bbbUserId");
+    boolean searchSucess = false;
+    MyBoolean myBoolean = new MyBoolean();
     User user = new User(dbaccess);
-    String currentUserId = usersession.getUserId();
-    ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>> ();
-    user.getIsSuperAdmin(result, currentUserId);
-    System.out.println(currentUserId);
-    System.out.println(result.get(0).get(0));
-    if (result.get(0).get(0).charAt(0)=='1'){
-    	IsSuperAdmin = true;
+    if (bu_id!=null) {
+        bu_id = Validation.prepare(bu_id);
+        if (!(Validation.checkBuId(bu_id))) {
+            message = Validation.getErrMsg();
+            response.sendRedirect("calendar.jsp?message=" + message);
+            return; 
+        } 
+        else {
+            if (!user.isUser(myBoolean, bu_id)) {
+                message = user.getErrMsg("AS04");
+                response.sendRedirect("calendar.jsp?message=" + message);
+                return;   
+            }
+            // User already in Database
+            if (myBoolean.get_value()) {   
+                searchSucess = true;
+            } 
+            else {
+                message = "Invalid User Id";
+                response.sendRedirect("calendar.jsp?message=" + message);
+                return;
+            }
+        }
     }
-    System.out.println(IsSuperAdmin);
-    String option="";
-    if(request.getParameter("updateUser")!=null){
-    	option = request.getParameter("updateUser");
-    }
-    if(request.getParameter("removeUser")!=null){
-        option = request.getParameter("removeUser");
-    }
-    if (IsSuperAdmin){   
-    	if( option.compareTo("update") == 0) {
-		    user.setName(request.getParameter("bbbUserId"), request.getParameter("bbbUserName"));
-		    user.setLastName(request.getParameter("bbbUserId"), request.getParameter("bbbUserLastName"));
-		    user.setNickName(request.getParameter("bbbUserId"), request.getParameter("bbbUserNick"));
-		    user.setEmail(request.getParameter("bbbUserId"), request.getParameter("bbbUserEmail"));
-		    user.setActive(request.getParameter("bbbUserId"), IsActive);
-		    user.setBannedFromSystem(request.getParameter("bbbUserId"), IsBanned);		    
-		    System.out.println("Updated Successfully!!");
+    // End User Validatation
+    HashMap<String, Integer> map = new HashMap<String, Integer>();
+    ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+
+    Boolean mybool = false;
+    if(searchSucess && !IsLdap){
+	    mybool=user.setActive(bu_id, IsActive);
+	    if(mybool){
+	        mybool=user.setBannedFromSystem(bu_id, IsBanned);   
+	    }
+	    if(mybool){
+	        mybool=user.setSuperAdmin(bu_id, IsSuper);   
+	    }
+	    if(mybool){
+		    mybool = user.setName(bu_id, request.getParameter("bbbUserName"));
+	    }
+		if(mybool){
+			mybool=user.setLastName(bu_id, request.getParameter("bbbUserLastName"));
+		}
+		if(mybool){
+		    mybool=user.setEmail(bu_id, request.getParameter("bbbUserEmail"));
+		}
+		if(mybool){
+		     response.sendRedirect("manage_users.jsp?message=Updated A Non_Ldap_User Successfully!!!");
+		     return;
+		}else{
+			 response.sendRedirect("manage_users.jsp?message=Fail to Updated A Non_Ldap_User !!!");
+			 return;	
+		}
+	}else if(searchSucess && IsLdap){
+	    mybool=user.setActive(bu_id, IsActive);
+        if(mybool){
+            mybool=user.setBannedFromSystem(bu_id, IsBanned);   
+        }
+        if(mybool){
+            mybool=user.setSuperAdmin(bu_id, IsSuper);   
+        }
+        if(mybool){
+            response.sendRedirect("manage_users.jsp?message=Updated A Ldap_User Successfully!!!");
+            return;
+       }else{
+            response.sendRedirect("manage_users.jsp?message=Fail to Updated A Ldap_User !!!");
+            return;    
        }
-       if (option.compareTo("Ban")==0){
-    	user.setBannedFromSystem(request.getParameter("bbbUserId"),true);   	
-    	System.out.println("Deleted Successfully!!");
-       }
-    }
-    else{   	
-    	System.out.println("No authentication to edit or delete user information!!!");
-    	
-    }
-    if( option.compareTo("update") == 0)
-        response.sendRedirect("manage_users.jsp?message=Updated Successfully!!!");
-    else if( option.compareTo("Ban") == 0)
-    	response.sendRedirect("manage_users.jsp?message=Ban User from System Successfully!!!");
-    else
-    	response.sendRedirect("manage_users.jsp?message=No authentication to edit or delete user information!!!");
+	}
+    else{
+		response.sendRedirect("manage_users.jsp?message=Invalid user information!");
+		return;
+	}
+   			
+
 %>

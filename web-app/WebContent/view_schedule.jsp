@@ -18,11 +18,8 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
-<link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript" src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
@@ -30,7 +27,6 @@
 <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-<script type="text/javascript" src="js/componentController.js"></script>
 <script type="text/javascript" >
 //Table
 $(screen).ready(function() {
@@ -53,6 +49,10 @@ $(function(){
     String userId = usersession.getUserId();
     if (userId.equals("")) {
         response.sendRedirect("index.jsp?error=Please log in");
+        return;
+    }
+    if (!usersession.isSuper()) {
+        response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
@@ -97,6 +97,7 @@ $(function(){
             <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="manage_users.jsp" tabindex="14">manage users</a>» <a href="view_schedule.jsp" tabindex="15">view user schedule</a></p>
             <!-- PAGE NAME -->
             <h1>User Schedule</h1>
+            <div style="text-align:right"><%= "User ID: "+ userID %></div>
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%=message %></div>
         </header>
@@ -127,7 +128,7 @@ $(function(){
                                     </thead>
                                     <tbody>
                                     <% for(int i=0;i<meetingResult.size();i++){%>
-                                      <tr><% for(int j=0;j<meetingResult.get(i).size();j++){%><td><%= meetingResult.get(i).get(j) %></td><% } %></tr><%}%>
+                                      <tr><% for(int j=0;j<meetingResult.get(i).size();j++){%><td <% if(j==0) out.println("class='row'"); %>><%= meetingResult.get(i).get(j) %></td><% } %></tr><%}%>
                                     </tbody>
                                 </table>
                             </div>
@@ -162,7 +163,7 @@ $(function(){
                                     </thead>
                                     <tbody>
                                     <% for(int i=0;i<lectureResult.size();i++){%>
-                                      <tr><% for(int j=0;j<lectureResult.get(i).size();j++){%><td><%= lectureResult.get(i).get(j) %></td><% } %></tr><%}%>
+                                      <tr><% for(int j=0;j<lectureResult.get(i).size();j++){%><td <% if(j==0) out.println("class='row'"); %>><%= lectureResult.get(i).get(j) %></td><% } %></tr><%}%>
                                     </tbody>
                                 </table>
                             </div>

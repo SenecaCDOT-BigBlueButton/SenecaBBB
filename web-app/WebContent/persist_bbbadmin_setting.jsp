@@ -9,15 +9,15 @@
     //Start page validation
     String userId = usersession.getUserId();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
+        response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!(usersession.isSuper())) {
-        response.sendRedirect("calendar.jsp");
+        response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
-        response.sendRedirect("index.jsp?error=Database connection error");
+        response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
     
@@ -66,16 +66,19 @@
     if(key_name.equals("timeout")){
         admin.setTimeout(key_value);
         response.sendRedirect("system_settings.jsp?message=System Timeout Setting Saved Successfully!");
+        return;
     }
     
     if(key_name.equals("welcome_msg")){
         admin.setWelcomeMsg(key_value);
         response.sendRedirect("system_settings.jsp?message=System Welcome message Setting Saved Successfully!");
+        return;
     }
     
     if(key_name.equals("recording_msg")){
         admin.setRecordingMsg(key_value);
         response.sendRedirect("system_settings.jsp?message=System Recording Message Setting Saved Successfully!");
+        return;
     }
 
 %>

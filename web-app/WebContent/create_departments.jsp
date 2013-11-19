@@ -26,8 +26,9 @@
 		response.sendRedirect("index.jsp?message=Please log in");
 		return;
 	}
-	if(!usersession.isSuper()) {
+	if(!usersession.isSuper() && !usersession.isDepartmentAdmin()) {
 	    response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
+	    return;
 	}//End page validation
 	
 	String message = request.getParameter("message");

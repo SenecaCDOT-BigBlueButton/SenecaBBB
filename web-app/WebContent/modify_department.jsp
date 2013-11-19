@@ -21,17 +21,23 @@
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
 
 <%
+	//Start page validation
+	String userId = usersession.getUserId();
+	if (userId.equals("")) {
+	    response.sendRedirect("index.jsp?message=Please log in");
+	    return;
+	}
+	if(!usersession.isSuper() && !usersession.isDepartmentAdmin()) {
+	    response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
+	    return;
+	}
+	//End page validation
+
 	boolean validFlag; 
 	User user = new User(dbaccess);
 	Department dept = new Department(dbaccess);
 	MyBoolean myBool = new MyBoolean();
 	String message;
-	//Start page validation
-	String userId = usersession.getUserId();
-	if (userId.equals("")) {
-		response.sendRedirect("index.jsp?message=Please log in");
-		return;
-	}
 	String d_code = request.getParameter("mod_d_code");
 	String d_name = request.getParameter("mod_d_name");
 	if (d_code==null || d_name==null) {

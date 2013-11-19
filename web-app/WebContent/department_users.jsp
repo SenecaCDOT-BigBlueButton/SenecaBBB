@@ -9,43 +9,42 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seneca | Department Users</title>
-<link rel="icon" href="http://www.cssreset.com/favicon.png">
-<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
-<link rel="stylesheet" type="text/css" media="all"
-    href="css/themes/base/style.css">
-<link rel="stylesheet" type="text/css" media="all"
-    href="css/themes/base/jquery.ui.core.css">
-<link rel="stylesheet" type="text/css" media="all"
-    href="css/themes/base/jquery.ui.theme.css">
-<link rel="stylesheet" type="text/css" media="all"
-    href="css/themes/base/jquery.ui.selectmenu.css">
-<script type="text/javascript"
-    src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-<script type="text/javascript" src="js/componentController.js"></script>
+	<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Seneca | Department Users</title>
+	<link rel="icon" href="http://www.cssreset.com/favicon.png">
+	<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
+	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
+	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
+	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
+	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+	<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
+	<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
+	<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <%@ include file="search.jsp" %>
 <%
-    boolean validFlag; 
+	//Start page validation
+	String userId = usersession.getUserId();
+	if (userId.equals("")) {
+	    response.sendRedirect("index.jsp?message=Please log in");
+	    return;
+	}
+	if(!usersession.isSuper() && !usersession.isDepartmentAdmin()) {
+	    response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
+	    return;
+	}//End page validation
+	
+	boolean validFlag; 
     User user = new User(dbaccess);
     Department dept = new Department(dbaccess);
     MyBoolean myBool = new MyBoolean();
     String message;
     String adminStatus = "";
-    //Start page validation
-    String userId = usersession.getUserId();
-    if (userId.equals("")) {
-        response.sendRedirect("index.jsp?message=Please log in");
-        return;
-    }
     String d_code = request.getParameter("DeptCode");
     if (d_code==null) {
         response.sendRedirect("departments.jsp?message=Please do not mess with the URL");
@@ -192,6 +191,9 @@
         });
         $.fn.dataTableExt.sErrMode = 'throw';
         $('.dataTables_filter input').attr("placeholder", "Filter entries");
+        $(".remove").click(function(){
+            return window.confirm("Remove this user from list?");
+        });  
     });
     $(function() {
         $('select').selectmenu();

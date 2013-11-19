@@ -10,15 +10,15 @@
     //Start page validation
     String userId = usersession.getUserId();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
+        response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!(usersession.isDepartmentAdmin() || usersession.isSuper())) {
-        response.sendRedirect("calendar.jsp");
+        response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
-        response.sendRedirect("index.jsp?error=Database connection error");
+        response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
     
@@ -61,10 +61,12 @@
     if(del == null ){  
     	if(result.size()==0){// make sure the bu_id is registered in database
     		 response.sendRedirect("create_professor.jsp?message=Professor ID Not in Database"); 
+    	     return;
     	}
     	else{
 	        section.createProfessor(bu_id, c_id, sc_id,sc_semesterid);      
-	        response.sendRedirect("manage_professor.jsp?message=Professor created");    
+	        response.sendRedirect("manage_professor.jsp?message=Professor created"); 
+	        return;
 	    }    
     }else{
         section.removeProfessor(bu_id, c_id, sc_id,sc_semesterid);      

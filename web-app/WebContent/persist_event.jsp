@@ -48,11 +48,11 @@ public static String getMonthNumber(String month) {
 	isProfessor=usersession.isProfessor();
 	isSuper =usersession.isSuper();
 	if (userId.equals("")) {
-		response.sendRedirect("index.jsp?error=Please log in");
+		response.sendRedirect("index.jsp?message=Please log in");
 		return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
-		response.sendRedirect("index.jsp?error=Database connection error");
+		response.sendRedirect("index.jsp?message=Database connection error");
 		return;
 	} //End page validation
 	
@@ -120,22 +120,18 @@ public static String getMonthNumber(String month) {
 	
 	//get proper event "spec" pattern
 	if (recurrence.equals("Only once")){
-        System.out.println("Only once");
         spec="1";       
     }
     else if(recurrence.equals("Daily")){
-        System.out.println("Daily");
         if(endType.equals("After # of occurrence(s)")){
             spec = "2;1;".concat(numberOfOccurrences).concat(";").concat(repeatEvery);
         }
         else{
             spec = "2;2;".concat(repeatEndDate).concat(repeatEvery);
         }
-        System.out.println("Daily spec: ".concat(spec));
     }
     else if(recurrence.equals("Weekly")){
-        System.out.println("Weekly");
-         if(endType.equals("After # of occurrence(s)")){
+        if(endType.equals("After # of occurrence(s)")){
             spec = "3;1;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(weekString);
         }else if(endType.equals("After # of week(s)")){
         	spec = "3;2;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(weekString);
@@ -143,31 +139,31 @@ public static String getMonthNumber(String month) {
          else{
             spec = "3;3;".concat(repeatEndDate).concat(";").concat(repeatEvery).concat(";").concat(weekString);
          }
-         System.out.println("Week spec: ".concat(spec));
     }
     else{
-        System.out.println("Monthly");
         if(dropdownOccursBy.equals("Day of the month")){                  
              spec = "4;1;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(dropdownDayoftheMonth);                    
         }
         else{
             spec = "4;2;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(selectedDayofWeek);    
         }
-        System.out.println("Monthly spec: ".concat(spec));
     }	
-	if(eventType.equals("Meeting")){   //create a meeting event
-    	System.out.println("Create a meeting");
-		
-	    meeting.createMeetingSchedule(title, inidatetime, spec, duration, description, userId);
+	if(eventType.equals("Meeting")){   //create a meeting event		
+	   if(meeting.createMeetingSchedule(title, inidatetime, spec, duration, description, userId)){
+		   response.sendRedirect("calendar.jsp?message=Meeting schedule created"); 
+		   return;
+	   }else{
+		   response.sendRedirect("calendar.jsp?message=Fail to create meeting schedule");
+		   return;
+	   }
     }
     else{ //creating a lecture event
-    	System.out.println("create a lecture");
-        lecture.createLectureSchedule(c_id, sc_id, sc_semesterid, inidatetime, spec, duration, description);
-
-    }
-	
-%>
-
-<%  
-    response.sendRedirect("calendar.jsp?message=event created"); 
+        if(lecture.createLectureSchedule(c_id, sc_id, sc_semesterid, inidatetime, spec, duration, description)){
+            response.sendRedirect("calendar.jsp?message=Lecture schedule created"); 
+            return;
+        }else{
+        	response.sendRedirect("calendar.jsp?message=Fail to create lecture schedule");
+        }
+    }	
+    
 %>

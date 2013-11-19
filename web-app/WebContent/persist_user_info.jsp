@@ -15,7 +15,7 @@
 	String userId = usersession.getUserId();
     String message="";
 	if (userId.equals("")) {
-	    response.sendRedirect("index.jsp?error=Please log in");
+	    response.sendRedirect("index.jsp?message=Please log in");
 	    return;
 	}
 	if (!usersession.isSuper()) {
@@ -23,7 +23,7 @@
 	    return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
-	    response.sendRedirect("index.jsp?error=Database connection error");
+	    response.sendRedirect("index.jsp?message=Database connection error");
 	    return;
 	} //End page validation
 
@@ -118,7 +118,6 @@
 	}
     else{
 		response.sendRedirect("manage_users.jsp?message=Invalid user information!");
-		return;
 	}
    			
 

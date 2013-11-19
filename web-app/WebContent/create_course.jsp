@@ -51,7 +51,6 @@
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-	<script type="text/javascript" src="js/componentController.js"></script>
 	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
 </head>
@@ -84,25 +83,25 @@
                     <fieldset>
                         <div class="component">
                             <label for="CourseCode" class="label">Course Code:</label>
-                            <input type="text" name="CourseCode" id="CourseCode" class="input" tabindex="2"  value="<%= c_id %>" 
+                            <input type="text" name="CourseCode" id="CourseCode" class="input" tabindex="16"  value="<%= c_id %>" 
                            <% if (toEdit.equals("1") ||(toDel.equals("1"))){%> readonly="<%= true %>" <%} %>title="Please Enter Course code" >
                           
                         </div>
                         <div class="component">
                             <label for="CourseName" class="label">Course Name:</label>
-                            <input type="text" name="CourseName" id="CourseName" class="input" tabindex="3"  value="<%= c_name %>" 
+                            <input type="text" name="CourseName" id="CourseName" class="input" tabindex="17"  value="<%= c_name %>" 
                             <% if (toDel.equals("1")){%> readonly="<%= true %>" <%} %> title="Please Enter Course Name" >
                         </div>
                         <div class="component">
                             <div class="buttons">
                             <% if(c_id.equals("")) {%>
-                                   <button type="submit" name="createCourse" id="createCourse" class="button" title="Click here to create">Create</button><%}
+                                   <button type="submit" name="createCourse" id="createCourse" class="button" tabindex="18" title="Click here to create">Create</button><%}
                              else if(toEdit.equals("1")){ %>
-                                   <button type="submit" name="updateCourse" id="updateCourse" class="button"  title="Click here to update">Update</button><%}
+                                   <button type="submit" name="updateCourse" id="updateCourse" class="button"  tabindex="19" title="Click here to update">Update</button><%}
                              else { %>
-                               <button type="submit" name="deleteCourse" id="deleteCourse" class="button" value="del" title="Click here to delete">Delete</button><%} %>                          
-                               <button type="reset" name="resetCourse" id="resetCourse" class="button" title="Click here to reset">Reset</button>
-                               <button type="button" name="button" id="cancelCourse"  class="button" title="Click here to cancel" 
+                               <button type="submit" name="deleteCourse" id="deleteCourse" class="button" value="del"  tabindex="20" title="Click here to delete">Delete</button><%} %>                          
+                               <button type="reset" name="resetCourse" id="resetCourse" class="button"  tabindex="21" title="Click here to reset">Reset</button>
+                               <button type="button" name="button" id="cancelCourse"  class="button" tabindex="22" title="Click here to cancel" 
                                 onclick="window.location.href='manage_course.jsp'">Cancel</button>
                             </div>
                         </div>

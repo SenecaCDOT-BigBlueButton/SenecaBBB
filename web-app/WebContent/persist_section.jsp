@@ -10,15 +10,15 @@
     //Start page validation
     String userId = usersession.getUserId();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
+        response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!(usersession.isDepartmentAdmin() || usersession.isSuper())) {
-        response.sendRedirect("calendar.jsp");
+        response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
-        response.sendRedirect("index.jsp?error=Database connection error");
+        response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
     
@@ -55,13 +55,16 @@
     if(toDel==null){
     	if(sectionInUse.size()>0){
     		response.sendRedirect("subjects.jsp?message= duplicated section, please create a new one");
+    		return;
     	}else{
 		    section.createSection(c_id, sc_id, sc_semesterid, d_code);
 		    response.sendRedirect("subjects.jsp?message=section created");
+		    return;
 	    }
     }else{
     	if(studentInSection.size()>0 || professorInSection.size()>0 || sectionInSchedule.size()>0){
     		response.sendRedirect("subjects.jsp?message= section in use,could not be removed");
+    		return;
     	}else{
 	        section.removeSection(c_id, sc_id, sc_semesterid);
 	        response.sendRedirect("subjects.jsp?message=section removed successfully");    	

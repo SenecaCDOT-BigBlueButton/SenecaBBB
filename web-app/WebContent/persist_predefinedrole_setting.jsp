@@ -9,15 +9,15 @@
     //Start page validation
     String userId = usersession.getUserId();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
+        response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!(usersession.isSuper())) {
-        response.sendRedirect("calendar.jsp");
+        response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
-        response.sendRedirect("index.jsp?error=Database connection error");
+        response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
     
@@ -48,6 +48,7 @@
     employeePrdefinedroleMask.put("guestAccountCreation",Integer.parseInt(request.getParameter("guestAccountCreate-employee")));   
 	if(!admin.setPredefinedDefaultMask(employeePrdefinedroleMask,"employee")){
 	    response.sendRedirect("system_settings.jsp?message=Database error!");
+	    return;
 	}
     
     studentPrdefinedroleMask.clear();
@@ -55,6 +56,7 @@
     studentPrdefinedroleMask.put("guestAccountCreation",Integer.parseInt(request.getParameter("guestAccountCreate-student")));
     if(!admin.setPredefinedDefaultMask(studentPrdefinedroleMask,"student")){
         response.sendRedirect("system_settings.jsp?message=Database error!");
+        return;
     }
     
     guestPrdefinedroleMask.clear();
@@ -62,6 +64,7 @@
     guestPrdefinedroleMask.put("guestAccountCreation",Integer.parseInt(request.getParameter("guestAccountCreate-guest")));
     if(!admin.setPredefinedDefaultMask(guestPrdefinedroleMask,"guest")){
         response.sendRedirect("system_settings.jsp?message=Database error!");
+        return;
     }
     
     response.sendRedirect("system_settings.jsp?message=Predefined RoleMask Setting Saved Successfully!");

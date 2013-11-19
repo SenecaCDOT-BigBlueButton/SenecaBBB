@@ -10,15 +10,15 @@
     //Start page validation
     String userId = usersession.getUserId();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
+        response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!(usersession.isDepartmentAdmin() || usersession.isSuper())) {
-        response.sendRedirect("calendar.jsp");
+        response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
-        response.sendRedirect("index.jsp?error=Database connection error");
+        response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
     
@@ -46,18 +46,20 @@
     section.setCourseName(c_id,c_name);
     section.getCourse(courseList,c_id);
     section.getSectionInfoByCourse(courseInSection, c_id);
-    System.out.println(del);
-    if(del ==null ){
+    if(del == null ){
 	    if(courseList.size()==0){
 	        section.createCourse(c_id, c_name);      
 	        response.sendRedirect("manage_course.jsp?message=Course created");
+	        return;
 	    }else{
 	    	section.setCourseName(c_id,c_name);
 	    	response.sendRedirect("manage_course.jsp?message=Course Modified");
+	    	return;
 	    }   
     }else{
     	if(courseInSection.size()>0){
     		response.sendRedirect("manage_course.jsp?message=Course In Use, Could not be deleted");
+    		return;
     	}else{
     		section.removeCourse(c_id);
     		response.sendRedirect("manage_course.jsp?message=Course deleted Successfully");

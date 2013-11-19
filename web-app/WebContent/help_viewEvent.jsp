@@ -111,18 +111,18 @@ $(document).ready(function() {
                     <h2>What is the Current Event Type?</h2>
                     <ol>
                         <li>Event can be a meeting or lecture.<br />
-                        <li>For meeting event, you can be:
+                        <li>For meeting event, there are 3 subtypes:
                                 <ol>
                                     <li>Meeting (C): You are the creator of this meeting event</li>
                                     <li>Meeting (A): You are invited to attend all events in the current meeting schedule</li>
-                                    <li>Meeting (G): You are invited to attend the current event</li>
+                                    <li>Meeting (G): You are invited to attend the current event as a guest</li>
                                 </ol>
                         </li>
-                        <li>For lecture event, you can be:
+                        <li>For lecture event, there are 3 subtypes:
                                 <ol>
                                     <li>Lecture (T): You are scheduled to teach this session</li>
-                                    <li>Meeting (A): You are a student and should attend all sessions in the current lecture schedule</li>
-                                    <li>Meeting (G): You are invited to attend the current event</li>
+                                    <li>Lecture (S): You are a student and should attend all sessions in the current lecture schedule</li>
+                                    <li>Lecture (G): You are invited to attend the current event as a guest</li>
                                 </ol>
                         </li>
                         <li>The above information is available in the Legend table on the bottom of the View Event page.</li>

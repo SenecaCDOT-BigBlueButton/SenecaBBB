@@ -214,9 +214,9 @@ html .fc, .fc table {
 	z-index: 9;
 }
 .fc-event {
-	border: 1px solid #3a87ad; /* default BORDER color */
-	background-color: #3a87ad; /* default BACKGROUND color */
-	color: #fff;               /* default TEXT color */
+	border: 1px solid #9A9CFF; /* default BORDER color */
+	background-color: #9A9CFF; /* default BACKGROUND color */
+	color: #000;               /* default TEXT color */
 	font-size: .85em;
 	cursor: default;
 }
@@ -236,6 +236,7 @@ a.fc-event, .fc-event-draggable {
 }
 .fc-event-time, .fc-event-title {
 	padding: 0 1px;
+	padding-left: 5px;
 }
 .fc .ui-resizable-handle {
 	display: block;
@@ -311,6 +312,7 @@ table.fc-border-separate {
 .fc-grid .fc-day-number {
 	float: right;
 	padding: 0 2px;
+    font-weight:bold;
 }
 .fc-grid .fc-other-month .fc-day-number {
 	opacity: 0.3;

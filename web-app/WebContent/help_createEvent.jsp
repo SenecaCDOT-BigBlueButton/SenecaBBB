@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seneca | Help: View Event</title>
+<title>Seneca | Help: Create Event</title>
 <link rel="icon" href="http://www.cssreset.com/favicon.png">
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
@@ -78,12 +78,23 @@ $(document).ready(function() {
             <div class="content">
                 <fieldset>
                 <hr />
-                    <h2>What is the Event Schedule?</h2>
+                    <h2>What is the difference between event and event schedule?</h2>
                     <ol>
                         <li>Every event belongs to an event schedule, even if the event occurs only once.</li>
-                        <li>Event schedule is displayed in the first table, click on the DETAILS icon to see all events in the schedule.</li>
-                        <li>Event schedule can be modified by its creator (meeting event) or the professor (lecture event).</li>
-                        <li>A MODIFY icon will appear if you are eligible to edit the schedule.</li>
+                    </ol>
+                </fieldset>
+            </div>
+        </article>
+         <article>
+            <div class="content">
+                <fieldset>
+                <hr />
+                    <h2>What schedule options are available?</h2>
+                    <ol>
+                        <li>Only once: single event that occurs only once.</li>
+                        <li>Daily: all events happen in a single fixed interval</li>
+                        <li>Weekly: events will happen by day of the week, mutiple days of week possible</li>
+                        <li>Monthly: events will happen by day of the month, multiple days of month NOT possible</li> 
                     </ol>
                 </fieldset>
             </div>
@@ -92,7 +103,7 @@ $(document).ready(function() {
             <div class="content">
                 <fieldset>
                 <hr />
-                    <h2>How can I create a conference session?</h2>
+                    <h2>Tutorial: Create daily schedule</h2>
                     <ol>
                         <li>Check the DATE and TIME fields in the Current Event table, conference session is available 10 minutes before event time<br />
                             and lasts for the duration specified in the Current Event (NOT the Event Schedule) table.</li>

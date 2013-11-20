@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seneca | Help: View Event</title>
+<title>Seneca | Help: View Event Schedule</title>
 <link rel="icon" href="http://www.cssreset.com/favicon.png">
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
@@ -92,52 +92,11 @@ $(document).ready(function() {
             <div class="content">
                 <fieldset>
                 <hr />
-                    <h2>How can I create a conference session?</h2>
+                    <h2>How can I add guest or presentation?</h2>
                     <ol>
-                        <li>Check the DATE and TIME fields in the Current Event table, conference session is available 10 minutes before event time<br />
-                            and lasts for the duration specified in the Current Event (NOT the Event Schedule) table.</li>
-                        <li>When video session becomes available, a "Create Event" link will appear above the Event Schedule table,<br />
-                            click on the link to start the conference session.</li>
-                        <li>You can only create a conference session if you are the creator or professor of the current event.<br />
-                            Check the TYPE field in Current Event table to determine your role.</li>
-                    </ol>
-                </fieldset>
-            </div>
-        </article>
-        <article>
-            <div class="content">
-                <fieldset>
-                <hr />
-                    <h2>What is the Current Event Type?</h2>
-                    <ol>
-                        <li>Event can be a meeting or lecture.<br />
-                        <li>For meeting event, there are 3 subtypes:
-                                <ol>
-                                    <li>Meeting (C): You are the creator of this meeting event</li>
-                                    <li>Meeting (A): You are invited to attend all events in the current meeting schedule</li>
-                                    <li>Meeting (G): You are invited to attend the current event as a guest</li>
-                                </ol>
-                        </li>
-                        <li>For lecture event, there are 3 subtypes:
-                                <ol>
-                                    <li>Lecture (T): You are scheduled to teach this session</li>
-                                    <li>Lecture (S): You are a student and should attend all sessions in the current lecture schedule</li>
-                                    <li>Lecture (G): You are invited to attend the current event as a guest</li>
-                                </ol>
-                        </li>
-                        <li>The above information is also available in the Legend table on the bottom of the View Event page.</li>
-                    </ol>
-                </fieldset>
-            </div>
-        </article>
-        <article>
-            <div class="content">
-                <fieldset>
-                <hr />
-                    <h2>What is Recording?</h2>
-                    <ol>
-                        <li>BiGBlueButton allows video recording of sessions.<br />
-                        <li>If there were recordings made of the selected event, you will find links to them on View_Event page after the session ended.</li>
+                        <li>Only attendee/student belongs to the entire event schedule.</li>
+                        <li>Guest and presentation are for individual event.
+                        <li>Click the DETAILS icon in the Event List table to show an event in details and add guest or presentation there.</li>
                     </ol>
                 </fieldset>
             </div>

@@ -3966,7 +3966,6 @@ function AgendaEventRenderer() {
 		}else{
 			html += "div";
 		}
-		console.log("====================");
 		html +=
 			" class='" + classes.join(' ') + "'" +
 			" style=" +

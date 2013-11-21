@@ -23,17 +23,17 @@
 		// User exists in LDAP
 		if (ldap.search(request.getParameter("SenecaLDAPBBBLogin"), request.getParameter("SenecaLDAPBBBLoginPass"))) {
 			if (ldap.getAccessLevel() < 0) {
-				response.sendRedirect("banned.jsp");
+				response.sendRedirect("index.jsp?message=You don't have permission to access the system!");
 			} else {
 				int ur_id=0;
-				if (ldap.getAccessLevel() == 10) {
+				if ( ldap.getPosition()!=null && ldap.getPosition().equals("Student")) {
 					usersession.setUserLevel("student");
 					ur_id=2;
-				} else if (ldap.getAccessLevel() == 20) {
+				} else if ( ldap.getPosition()!=null && ldap.getPosition().equals("Employee")) {
 					usersession.setUserLevel("employee");
 					ur_id=1;
-				} else if (ldap.getAccessLevel() == 30) {
-					usersession.setUserLevel("professor");
+				} else {
+					usersession.setUserLevel("guest");
 					ur_id=3;
 				}
 				usersession.setUserId(ldap.getUserID());

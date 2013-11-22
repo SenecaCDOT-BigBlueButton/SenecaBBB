@@ -19,3 +19,4 @@ local.properties
 .svn
 _notes
 web-app/WebContent/bbb_api_conf.jsp
+web-app/WebContent/WEB-INF/classes/config/config.properties

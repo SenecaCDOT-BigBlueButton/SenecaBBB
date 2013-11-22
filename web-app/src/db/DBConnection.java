@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
+import config.Config;
+import helper.GetExceptionLog;
 
 public class DBConnection {
     private static DBConnection _dbSingleton = null;
@@ -15,6 +17,7 @@ public class DBConnection {
     private boolean _flag; //true: connection pool success, false: connection pool failed
     private String _errCode = null;
     private String _errLog = null;
+    GetExceptionLog elog = new GetExceptionLog();
 
     /** A private Constructor prevents any other class from instantiating. */
     private DBConnection() {
@@ -40,22 +43,25 @@ public class DBConnection {
             _errCode = Integer.toString(e.getErrorCode());
             _errLog = e.getMessage();
             _flag = false;
+            elog.writeLog("[DBConnection: ] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());
         }
         if (_flag) {
             try {
                 BoneCPConfig config = new BoneCPConfig();
-                config.setJdbcUrl("jdbc:mysql://localhost:3309/db");
-                config.setUsername("senecaBBB"); 
-                config.setPassword("db");
+                config.setJdbcUrl(Config.getProperty("jdburl")+Config.getProperty("databasename"));
+                config.setUsername(Config.getProperty("databaseuser")); 
+                config.setPassword(Config.getProperty("databasepass"));
                 config.setMinConnectionsPerPartition(5);
                 config.setMaxConnectionsPerPartition(30);
                 config.setPartitionCount(5);
                 _pool = new BoneCP(config); // setup the connection pool
+                
             }
             catch (SQLException e) {
                 _errCode = Integer.toString(e.getErrorCode());
                 _errLog = e.getMessage();
                 _flag = false;
+                elog.writeLog("[DBConnection: ] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());
             }
         }
     }
@@ -70,10 +76,11 @@ public class DBConnection {
             try {
                 conn = _pool.getConnection();
                 _flag = true;
-            } catch (SQLException e) {
+            } catch (SQLException e) {           
                 conn = null; //To be safe, since I don't know the actual behavior of getConnection
                 _errCode = Integer.toString(e.getErrorCode());
                 _errLog = e.getMessage();
+                elog.writeLog("[DBConnection: ] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());
                 _flag = false;
             }
         }
@@ -95,4 +102,5 @@ public class DBConnection {
     public String getErrCode() {
         return _errCode;
     }
+
 }

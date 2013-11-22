@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import helper.GetExceptionLog;
+
 /**
  * One DBAccess object is created per session by using Bean:
  * <jsp:useBean id="db" scope="session" class="db.DBAccess" />
@@ -21,6 +23,8 @@ public class DBAccess {
     private String _errCode = null;
     private String _errLog = null;
     private boolean _flag = true; 
+    
+    GetExceptionLog elog = new GetExceptionLog();
     //private ArrayList<Connection> toClose; 
 
     public DBAccess() {
@@ -117,6 +121,7 @@ public class DBAccess {
                     _errCode = Integer.toString(e.getErrorCode());
                     _errLog = e.getMessage();
                     _flag = false;
+                    elog.writeLog("[queryDB: ] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());                    
                 }
                 finally {
                     _flag = closeConnection() && _flag; 
@@ -151,6 +156,7 @@ public class DBAccess {
                     _errCode = Integer.toString(e.getErrorCode());
                     _errLog = e.getMessage();
                     _flag = false;
+                    elog.writeLog("[updateDB: ] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());                   
                 }
                 finally {
                     _flag = closeConnection() && _flag; 

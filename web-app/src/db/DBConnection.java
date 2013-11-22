@@ -13,6 +13,8 @@ public class DBConnection {
     private static DBConnection _dbSingleton = null;
     private static BoneCP _pool = null;
     private boolean _flag; //true: connection pool success, false: connection pool failed
+    private String _errCode = null;
+    private String _errLog = null;
 
     /** A private Constructor prevents any other class from instantiating. */
     private DBConnection() {
@@ -24,7 +26,6 @@ public class DBConnection {
         catch (ClassNotFoundException e) {
             _flag = false;
         }
-
         Driver driver = null;
         try {
             driver = (Driver)c.newInstance();
@@ -36,6 +37,8 @@ public class DBConnection {
             DriverManager.registerDriver(driver);
         }
         catch (SQLException e) {
+            _errCode = Integer.toString(e.getErrorCode());
+            _errLog = e.getMessage();
             _flag = false;
         }
         if (_flag) {
@@ -50,6 +53,8 @@ public class DBConnection {
                 _pool = new BoneCP(config); // setup the connection pool
             }
             catch (SQLException e) {
+                _errCode = Integer.toString(e.getErrorCode());
+                _errLog = e.getMessage();
                 _flag = false;
             }
         }
@@ -67,6 +72,8 @@ public class DBConnection {
                 _flag = true;
             } catch (SQLException e) {
                 conn = null; //To be safe, since I don't know the actual behavior of getConnection
+                _errCode = Integer.toString(e.getErrorCode());
+                _errLog = e.getMessage();
                 _flag = false;
             }
         }
@@ -79,5 +86,13 @@ public class DBConnection {
             _dbSingleton = new DBConnection();
         }
         return _dbSingleton;
+    }
+    
+    public String getErrLog() {
+        return _errLog;
+    }
+    
+    public String getErrCode() {
+        return _errCode;
     }
 }

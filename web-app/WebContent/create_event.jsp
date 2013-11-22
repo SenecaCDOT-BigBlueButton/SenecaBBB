@@ -257,6 +257,7 @@
       <header>
         <p><a href="calendar.jsp" tabindex="13">home</a> » create event</p>
         <h1>Create Event</h1>
+        <a href="help_createEvent.jsp" target="_blank">help</a> 
         <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%=message %></div>
       </header>

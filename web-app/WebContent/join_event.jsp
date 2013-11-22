@@ -1,6 +1,7 @@
 <%@page import="sql.*"%>
 <%@page import="java.util.*"%>
 <%@page import="helper.*"%>
+<%@page import="config.*"%>
 <%@ include file="bbb_api.jsp"%> 
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
@@ -66,30 +67,42 @@
 
  String logOutUrl="";
  if(eventType.equals("Meeting")){
-     logOutUrl = "http://localhost:1550/SenecaBBB/view_event.jsp?ms_id=" + eventScheduleId + "&m_id=" + eventId +"&eventName="+ eventTitle;   
+     logOutUrl = "view_event.jsp?ms_id=" + eventScheduleId + "&m_id=" + eventId +"&eventName="+ eventTitle;   
  }
  if(eventType.equals("Lecture")){
-     logOutUrl = "http://localhost:1550/SenecaBBB/view_event.jsp?ls_id=" + eventScheduleId + "&l_id=" + eventId +"&eventName="+ eventTitle;
+     logOutUrl = "view_event.jsp?ls_id=" + eventScheduleId + "&l_id=" + eventId +"&eventName="+ eventTitle;
  }
 
  String welcome = "Welcome to Seneca BigBlueButton Web Conferencing System!";
  String joinURL;
  String isMeetingRunning = isMeetingRunning(eventTitle);
+ 
+ //moderator creates the meeting if meeting is not running
  if(isMeetingRunning.equals("false") && action.equals("create")){
      Map<String,String> metadata=new HashMap<String,String>();    
      metadata.put("title", eventTitle);     
      metadata.put("type", eventType);
-     metadata.put("logoutURL", logOutUrl);
+     metadata.put("logoutURL", Config.getProperty("domain")+logOutUrl);
      joinURL = getJoinURL(username,eventTitle,isRecorded, welcome, modPwd, viewerPwd, metadata, null);
      response.sendRedirect(joinURL);
- }else{
+     return;
+ }
+ //if event is not created, redirect attendee back to the view_event page
+ else if(isMeetingRunning.equals("false") && action.equals("join")){
+     response.sendRedirect(logOutUrl+"&message=Event is not ready, please come back later!");
+     return;
+ }
+
+ else{
 	 if(action.equals("create")){
 		 joinURL = getJoinMeetingURL(username, eventTitle, modPwd);
 		 response.sendRedirect(joinURL);
+		 return;
 	 }else if(action.equals("join")){
 		 if(isMeetingRunning.equals("false")){
-			 String err = "event not start yet";
+			 String err = "Event is not ready, please come back later!";
 			 response.sendRedirect(logOutUrl + "&message=" + err);
+			 return;
 		 }else{
 		     joinURL = getJoinURLViewer(username, eventTitle, viewerPwd);
 		     response.sendRedirect(joinURL);

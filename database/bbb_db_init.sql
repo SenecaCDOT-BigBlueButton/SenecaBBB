@@ -1699,9 +1699,9 @@ INSERT INTO bbb_user VALUES ('Guest01', 'Guest01', 0, 1, NULL, sysdate(), 0, 0, 
 INSERT INTO bbb_user VALUES ('Guest02', 'Guest02', 0, 1, NULL, sysdate(), 0, 0, 3, b'001', b'0011001');
 INSERT INTO bbb_user VALUES ('Guest03', 'Guest03', 0, 1, NULL, sysdate(), 0, 0, 3, b'001', b'0011001');
 
-INSERT INTO non_ldap_user VALUES ('Admin01', 'Seneca', 'Admin', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
-INSERT INTO non_ldap_user VALUES ('Admin02', 'Seneca', 'Admin', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
-INSERT INTO non_ldap_user VALUES ('Guest01', 'Seneca', 'Guest', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
-INSERT INTO non_ldap_user VALUES ('Guest02', 'Seneca', 'Guest', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
-INSERT INTO non_ldap_user VALUES ('Guest03', 'Seneca', 'Guest', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('Admin_Master', 'Seneca', 'Master_Master', 'e21888e52a54760f192df4ca6be847597fcd6510cc809b33', '56adf32a3c517dd89ddd85fe8fa47be1a6cc716d08980a4f', 'placeholder', SYSDATE());
+
+INSERT INTO non_ldap_user VALUES ('Guest_01', 'Seneca', 'Guest', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('Guest_02', 'Seneca', 'Guest', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('Guest_03', 'Seneca', 'Guest', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
 

@@ -475,7 +475,7 @@
               <input type="number" name="occurrences" id="occurrences" class="input" tabindex="36" title="Occurrences"  placeholder="# of occurrences" min="1" value="1"/>
             </div>
             <div id="occurrenceEnds" class="component">
-              <label for="dropdownMonthEnds" class="label">Date:</label>
+              <label for="dropdownMonthEnds" class="label">End Date:</label>
               <div class="datePicker" title="Choose a date">
               	<input name="datePickerEnds" id="datePickerEnds" class="datePicker" aria-disabled="true"  aria-hidden="true" aria-readonly="true" readonly>
               </div>

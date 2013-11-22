@@ -68,7 +68,7 @@ $(document).ready(function() {
     <section>
         <header> 
             <!-- BREADCRUMB -->
-            <h1>Help Page: View Event</h1>
+            <h1>Help Page: Create/Edit Event</h1>
             <br />
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%=message %></div>
@@ -91,10 +91,10 @@ $(document).ready(function() {
                 <hr />
                     <h2>What schedule options are available?</h2>
                     <ol>
-                        <li>Only once: single event that occurs only once.</li>
-                        <li>Daily: all events happen in a single fixed interval</li>
-                        <li>Weekly: events will happen by day of the week, mutiple days of week possible</li>
-                        <li>Monthly: events will happen by day of the month, multiple days of month NOT possible</li> 
+                        <li><b>Only once:</b> single event that occurs only once.</li>
+                        <li><b>Daily:</b> all events happen in a single fixed interval</li>
+                        <li><b>Weekly:</b> events will happen by day of the week, mutiple days of week possible</li>
+                        <li><b>Monthly:</b> events will happen by day of the month, multiple days of month NOT possible</li> 
                     </ol>
                 </fieldset>
             </div>
@@ -105,12 +105,19 @@ $(document).ready(function() {
                 <hr />
                     <h2>Tutorial: Create daily schedule</h2>
                     <ol>
-                        <li>Check the DATE and TIME fields in the Current Event table, conference session is available 10 minutes before event time<br />
-                            and lasts for the duration specified in the Current Event (NOT the Event Schedule) table.</li>
-                        <li>When video session becomes available, a "Create Event" link will appear above the Event Schedule table,<br />
-                            click on the link to start the conference session.</li>
-                        <li>You can only create a conference session if you are the creator or professor of the current event.<br />
-                            Check the TYPE field in Current Event table to determine your role.</li>
+                        <li>Choose START DATE and START TIME, note that the start datetime must be later than current datetime.</li>
+                        <li>Enter EVENT DURATION in minutes (positive interger only).</li>
+                        <li>Choose the Daily option in the RECURRENCE dropdown list.</li>
+                        <li>Enter the interval between events in the REPEATS EVERY field (positive integer only).<br />
+                            Example: Enter the number 2 means the event repeats every 2 days.</li>
+                        <li>Choose when this schedule ends, there are 2 options:
+                            <ol>
+                                <li><b>After # of occurrence(s):</b> schedule stops after a fixed number of events have occurred.<br />
+                                    You must enter the number of events (positive integer) in the OCCURRENCES field.</li>
+                                <li><b>On specified date:</b> schedule will run until a date is reached.<br />
+                                    You must enter the schedule termination date in the END DATE field.</li>
+                            </ol>
+                        </li>
                     </ol>
                 </fieldset>
             </div>
@@ -119,24 +126,26 @@ $(document).ready(function() {
             <div class="content">
                 <fieldset>
                 <hr />
-                    <h2>What is the Current Event Type?</h2>
+                    <h2>Tutorial: Create weekly schedule</h2>
                     <ol>
-                        <li>Event can be a meeting or lecture.<br />
-                        <li>For meeting event, there are 3 subtypes:
-                                <ol>
-                                    <li>Meeting (C): You are the creator of this meeting event</li>
-                                    <li>Meeting (A): You are invited to attend all events in the current meeting schedule</li>
-                                    <li>Meeting (G): You are invited to attend the current event as a guest</li>
-                                </ol>
+                        <li>Choose START DATE and START TIME, note that the start datetime must be later than current datetime.</li>
+                        <li>Enter EVENT DURATION in minutes (positive interger only).</li>
+                        <li>Choose the Weekly option in the RECURRENCE dropdown list.</li>
+                        <li>In the REPEATS EVERY field, enter the interval between events (positive integer only).<br />
+                            Example: Enter the number 2 means that an event repeats every 2 weeks.</li>
+                        <li>Select the day(s) of the week by clicking on the corresponding icons, selected icons will be appear in grey.</li>
+                        <li>Choose when this schedule ends, there are 3 options:
+                            <ol>
+                                <li><b>After # of occurrence(s):</b> schedule stops after a fixed number of events have occurred.<br />
+                                    You must enter the number of events (positive integer) in the OCCURRENCES field.<br />
+                                    Note that this counts the total number of events.</li>
+                                <li><b>On specified date:</b> schedule will run until a date is reached.<br />
+                                    You must enter the schedule termination date in the END DATE field.</li>
+                                <li><b>After # of occurrence(s):</b> schedule stops after a fixed number of event weeks have occurred.<br />
+                                    You must enter the number of events (positive integer) in the OCCURRENCES field.<br />
+                                    Note that this only counts the number of event weeks (weeks with no event do not count).</li>  
+                            </ol>
                         </li>
-                        <li>For lecture event, there are 3 subtypes:
-                                <ol>
-                                    <li>Lecture (T): You are scheduled to teach this session</li>
-                                    <li>Lecture (S): You are a student and should attend all sessions in the current lecture schedule</li>
-                                    <li>Lecture (G): You are invited to attend the current event as a guest</li>
-                                </ol>
-                        </li>
-                        <li>The above information is also available in the Legend table on the bottom of the View Event page.</li>
                     </ol>
                 </fieldset>
             </div>
@@ -145,10 +154,23 @@ $(document).ready(function() {
             <div class="content">
                 <fieldset>
                 <hr />
-                    <h2>What is Recording?</h2>
+                    <h2>Tutorial: Create monthly schedule</h2>
                     <ol>
-                        <li>BiGBlueButton allows video recording of sessions.<br />
-                        <li>If there were recordings made of the selected event, you will find links to them on View_Event page after the session ended.</li>
+                        <li>Choose START DATE and START TIME, note that the start datetime must be later than current datetime.</li>
+                        <li>Enter EVENT DURATION in minutes (positive interger only).</li>
+                        <li>Choose the Monthly option in the RECURRENCE dropdown list.</li>
+                        <li>In the REPEATS EVERY field, enter the interval between events (positive integer only).<br />
+                            Example: Enter the number 2 means that an event repeats every 2 months.</li>
+                        <li>In the OCCURS BY field, there are 2 options:
+                            <ol>
+                                <li><b>Day of the month:</b> events occur on a fixed date each month, 
+                                    if the selected day do not exist in a month (29th, 30th, or 31th), 
+                                    then the event will occur on the last day of month).</li>
+                                <li><b>First occurrence of the day of the week:</b> events will occur each month on the first occurrence of the selected day of week.<br />
+                                    Example: select Monday means event occurs on the first Monday of the scheduled months.</li>
+                            </ol>
+                        </li>
+                        <li>In the OCCURRENCES field, enter the total number of events.</li>
                     </ol>
                 </fieldset>
             </div>

@@ -94,8 +94,8 @@ $(document).ready(function() {
                 <hr />
                     <h2>How can I create a conference session?</h2>
                     <ol>
-                        <li>Check the DATE and TIME fields in the Current Event table, conference session is available 10 minutes before event time<br />
-                            and lasts for the duration specified in the Current Event (NOT the Event Schedule) table.</li>
+                        <li>Check the DATE and TIME fields in the Current Event table, conference session is available 10 minutes before event start time<br />
+                            and lasts for the duration specified in the Current Event table.</li>
                         <li>When video session becomes available, a "Create Event" link will appear above the Event Schedule table,<br />
                             click on the link to start the conference session.</li>
                         <li>You can only create a conference session if you are the creator or professor of the current event.<br />
@@ -136,7 +136,7 @@ $(document).ready(function() {
                 <hr />
                     <h2>What is Recording?</h2>
                     <ol>
-                        <li>BiGBlueButton allows video recording of sessions.<br />
+                        <li>BigBlueButton allows video recording of sessions.<br />
                         <li>If there were recordings made of the selected event, you will find links to them on View_Event page after the session ended.</li>
                     </ol>
                 </fieldset>

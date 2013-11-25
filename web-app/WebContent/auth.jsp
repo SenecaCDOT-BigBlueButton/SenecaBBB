@@ -23,17 +23,17 @@
 		// User exists in LDAP
 		if (ldap.search(request.getParameter("SenecaLDAPBBBLogin"), request.getParameter("SenecaLDAPBBBLoginPass"))) {
 			if (ldap.getAccessLevel() < 0) {
-				response.sendRedirect("banned.jsp");
+				response.sendRedirect("index.jsp?message=Sorry,you don't have permission to access this system!");
 			} else {
 				int ur_id=0;
-				if (ldap.getAccessLevel() == 10) {
+				if (ldap.getPosition().equals("Student")) {
 					usersession.setUserLevel("student");
 					ur_id=2;
-				} else if (ldap.getAccessLevel() == 20) {
+				} else if (ldap.getPosition().equals("Employee")) {
 					usersession.setUserLevel("employee");
 					ur_id=1;
-				} else if (ldap.getAccessLevel() == 30) {
-					usersession.setUserLevel("professor");
+				} else {
+					usersession.setUserLevel("Guest");
 					ur_id=3;
 				}
 				usersession.setUserId(ldap.getUserID());
@@ -67,7 +67,8 @@
 					usersession.setProfessor(prof.get_value());
 					usersession.setDepartmentAdmin(depAdmin.get_value());
 				}
-				response.sendRedirect("calendar.jsp");
+				response.sendRedirect("calendar.jsp?message=Welcome to bbbman!");
+				return;
 			}
 		}
 		// User is registered in database.
@@ -100,16 +101,19 @@
 					usersession.setUserLevel(userInfo.get(15));
 				}
 				usersession.setLDAP(false);
-				response.sendRedirect("calendar.jsp");
-				String message = "User login successfully.";
+				response.sendRedirect("calendar.jsp?message=User login successfully");
+				return;
 			} 
 			else {
-				System.out.println("***** "+user.getErrLog());
+	            String message = "Invalid username and/or password.";
+	            response.sendRedirect("index.jsp?message=" + message);
+	            return;
 			}
 		// User doesn't exist in database or LDAP
 		} else {
 			String message = "Invalid username and/or password.";
 			response.sendRedirect("index.jsp?message=" + message);
+			return;
 		}
 	} else {
 		String message = "Invalid username and/or password.**";

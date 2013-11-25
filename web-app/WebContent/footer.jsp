@@ -1,3 +1,4 @@
+<%@page import="config.Config"%>
 <footer>
     <nav id="footerMenu">
       <ul>
@@ -8,5 +9,8 @@
         <li><a href="help.jsp" title="Click here to obtain help information">Help</a></li>
       </ul>
     </nav>
-    <div id="copyright">Copyright © 2013 - Seneca College of Applied Arts and Technology</div>
+    <div id="copyright">
+        <p style="font-size:16px;">Version: <%= Config.getProperty("version") %></p>
+        <p>Copyright © 2013 - Seneca College of Applied Arts and Technology</p>
+    </div>
   </footer>

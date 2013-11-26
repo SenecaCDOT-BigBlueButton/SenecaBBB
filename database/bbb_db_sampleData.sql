@@ -47,53 +47,53 @@ INSERT INTO user_department VALUES ('bli64', 'ICT', 0);
 INSERT INTO user_department VALUES ('xdeng7', 'ICT', 0);
 
 INSERT INTO course VALUES ('PSY100', 'Introduction to Psychology');
-INSERT INTO section VALUES ('PSY100', 'A', '201305', 'IAT');
-INSERT INTO section VALUES ('PSY100', 'B', '201305', 'IAT');
+INSERT INTO section VALUES ('PSY100', 'A', '20131', 'IAT');
+INSERT INTO section VALUES ('PSY100', 'B', '20131', 'IAT');
 
 INSERT INTO course VALUES ('PSY150', 'Organizational Behaviour');
-INSERT INTO section VALUES ('PSY150', 'A', '201305', 'IAT');
-INSERT INTO section VALUES ('PSY150', 'B', '201305', 'IAT');
+INSERT INTO section VALUES ('PSY150', 'A', '20131', 'IAT');
+INSERT INTO section VALUES ('PSY150', 'B', '20131', 'IAT');
 
 INSERT INTO course VALUES ('INT222', 'Internet I - Internet Fundamentals');
-INSERT INTO section VALUES ('INT222', 'A', '201305', 'ICT');
-INSERT INTO section VALUES ('INT222', 'B', '201305', 'ICT');
+INSERT INTO section VALUES ('INT222', 'A', '20131', 'ICT');
+INSERT INTO section VALUES ('INT222', 'B', '20131', 'ICT');
 
 INSERT INTO course VALUES ('IPC144', 'Introduction To Programming Using C');
-INSERT INTO section VALUES ('IPC144', 'A', '201305', 'ICT');
-INSERT INTO section VALUES ('IPC144', 'B', '201305', 'ICT');
+INSERT INTO section VALUES ('IPC144', 'A', '20131', 'ICT');
+INSERT INTO section VALUES ('IPC144', 'B', '20131', 'ICT');
 
 INSERT INTO course VALUES ('OOP344', 'Object Oriented Programming II Using C++');
-INSERT INTO section VALUES ('OOP344', 'A', '201305', 'ICT');
-INSERT INTO section VALUES ('OOP344', 'B', '201305', 'ICT');
+INSERT INTO section VALUES ('OOP344', 'A', '20131', 'ICT');
+INSERT INTO section VALUES ('OOP344', 'B', '20131', 'ICT');
 
-INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'A', '201305', b'0011110');
-INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'B', '201305', b'0011110');
-INSERT INTO professor VALUES ('bo.li', 'INT222', 'A', '201305', b'0011110');
-INSERT INTO professor VALUES ('bo.li', 'INT222', 'B', '201305', b'0011110');
-INSERT INTO professor VALUES ('chad.pilkey', 'PSY100', 'A', '201305', b'0011110');
-INSERT INTO professor VALUES ('chad.pilkey', 'PSY100', 'B', '201305', b'0011110');
-INSERT INTO professor VALUES ('justin.robinson', 'IPC144', 'A', '201305', b'0011110');
-INSERT INTO professor VALUES ('justin.robinson', 'IPC144', 'B', '201305', b'0011110');
-INSERT INTO professor VALUES ('non_ldap2', 'PSY150', 'A', '201305', b'0011110');
-INSERT INTO professor VALUES ('non_ldap2', 'PSY150', 'B', '201305', b'0011110');
+INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'A', '20131', b'0011110');
+INSERT INTO professor VALUES ('fardad.soleimanloo', 'OOP344', 'B', '20131', b'0011110');
+INSERT INTO professor VALUES ('bo.li', 'INT222', 'A', '20131', b'0011110');
+INSERT INTO professor VALUES ('bo.li', 'INT222', 'B', '20131', b'0011110');
+INSERT INTO professor VALUES ('chad.pilkey', 'PSY100', 'A', '20131', b'0011110');
+INSERT INTO professor VALUES ('chad.pilkey', 'PSY100', 'B', '20131', b'0011110');
+INSERT INTO professor VALUES ('justin.robinson', 'IPC144', 'A', '20131', b'0011110');
+INSERT INTO professor VALUES ('justin.robinson', 'IPC144', 'B', '20131', b'0011110');
+INSERT INTO professor VALUES ('non_ldap2', 'PSY150', 'A', '20131', b'0011110');
+INSERT INTO professor VALUES ('non_ldap2', 'PSY150', 'B', '20131', b'0011110');
 
-INSERT INTO student VALUES ('jtrobins', 'OOP344', 'A', '201305', 0);
-INSERT INTO student VALUES ('bli64', 'OOP344', 'A', '201305', 0);
-INSERT INTO student VALUES ('xdeng7', 'OOP344', 'A', '201305', 0);
-INSERT INTO student VALUES ('rwstanica', 'OOP344', 'B', '201305', 0);
-INSERT INTO student VALUES ('non_ldap1', 'OOP344', 'B', '201305', 0);
-INSERT INTO student VALUES ('non_ldap2', 'OOP344', 'B', '201305', 0);
+INSERT INTO student VALUES ('jtrobins', 'OOP344', 'A', '20131', 0);
+INSERT INTO student VALUES ('bli64', 'OOP344', 'A', '20131', 0);
+INSERT INTO student VALUES ('xdeng7', 'OOP344', 'A', '20131', 0);
+INSERT INTO student VALUES ('rwstanica', 'OOP344', 'B', '20131', 0);
+INSERT INTO student VALUES ('non_ldap1', 'OOP344', 'B', '20131', 0);
+INSERT INTO student VALUES ('non_ldap2', 'OOP344', 'B', '20131', 0);
 
-CALL sp_create_ls('OOP344', 'A', '201305', '2013-07-01 10:00:00', '2;1;5;1', 50, 'OOP344A');
-CALL sp_create_ls('OOP344', 'B', '201305', '2013-09-03 10:00:00', '2;2;2013-10-01;6', 50, 'OOP344B');
-CALL sp_create_ls('IPC144', 'A', '201305', '2013-08-03 10:00:00', '1', 50, 'IPC144');
-CALL sp_create_ls('IPC144', 'B', '201305', '2013-08-03 10:00:00', '3;1;10;2;0011000', 50, 'IPC144');
-CALL sp_create_ls('PSY100', 'A', '201305', '2013-08-03 10:00:00', '3;2;10;2;0100000', 50, 'PSY100');
-CALL sp_create_ls('PSY100', 'B', '201305', '2013-08-03 10:00:00', '3;3;2013-11-11;3;0100001', 50, 'PSY100');
-CALL sp_create_ls('PSY150', 'A', '201305', '2013-08-03 10:00:00', '4;1;7;1;31', 50, 'PSY150');
-CALL sp_create_ls('PSY150', 'B', '201305', '2013-08-23 10:00:00', '4;1;7;2;5', 50, 'PSY150');
-CALL sp_create_ls('INT222', 'A', '201305', '2013-08-05 10:00:00', '4;2;7;1;1', 50, 'PSY150');
-CALL sp_create_ls('INT222', 'B', '201305', '2013-08-23 10:00:00', '4;2;7;2;2', 50, 'PSY150');
+CALL sp_create_ls('OOP344', 'A', '20131', '2013-07-01 10:00:00', '2;1;5;1', 50, 'OOP344A');
+CALL sp_create_ls('OOP344', 'B', '20131', '2013-09-03 10:00:00', '2;2;2013-10-01;6', 50, 'OOP344B');
+CALL sp_create_ls('IPC144', 'A', '20131', '2013-08-03 10:00:00', '1', 50, 'IPC144');
+CALL sp_create_ls('IPC144', 'B', '20131', '2013-08-03 10:00:00', '3;1;10;2;0011000', 50, 'IPC144');
+CALL sp_create_ls('PSY100', 'A', '20131', '2013-08-03 10:00:00', '3;2;10;2;0100000', 50, 'PSY100');
+CALL sp_create_ls('PSY100', 'B', '20131', '2013-08-03 10:00:00', '3;3;2013-11-11;3;0100001', 50, 'PSY100');
+CALL sp_create_ls('PSY150', 'A', '20131', '2013-08-03 10:00:00', '4;1;7;1;31', 50, 'PSY150');
+CALL sp_create_ls('PSY150', 'B', '20131', '2013-08-23 10:00:00', '4;1;7;2;5', 50, 'PSY150');
+CALL sp_create_ls('INT222', 'A', '20131', '2013-08-05 10:00:00', '4;2;7;1;1', 50, 'PSY150');
+CALL sp_create_ls('INT222', 'B', '20131', '2013-08-23 10:00:00', '4;2;7;2;2', 50, 'PSY150');
 
 INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 1, 1);
 INSERT INTO lecture_presentation VALUES ('Bit-Wise Operations', 1, 2);

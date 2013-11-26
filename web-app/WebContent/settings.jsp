@@ -50,9 +50,7 @@
 	meetingSettings = usersession.getUserMeetingSettingsMask();
 	roleMask = usersession.getRoleMask();
 	String nickName=null;
-    nickName = usersession.getNick();
-	
-	System.out.println(roleMask.get("nickname"));
+    nickName = usersession.getNick();	
 
 %>
 <script type="text/javascript">

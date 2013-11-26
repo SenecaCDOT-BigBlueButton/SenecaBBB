@@ -71,7 +71,6 @@ public static String getMonthNumber(String month) {
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-    int nickName = roleMask.get("nickname");
     
     String startMonthNumber=null;
     startMonthNumber = getMonthNumber(request.getParameter("dropdownMonthStarts"));

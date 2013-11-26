@@ -73,7 +73,6 @@ $(function(){
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-    int nickName = roleMask.get("nickname");
     
     //get all events schedule for specified userID
     String userID = request.getParameter("id");   

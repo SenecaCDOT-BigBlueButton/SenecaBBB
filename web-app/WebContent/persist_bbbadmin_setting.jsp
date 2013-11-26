@@ -38,7 +38,6 @@
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-    int nickName = roleMask.get("nickname");
   
     String key_name = request.getParameter("key_name");
     String key_value = request.getParameter("key_value");

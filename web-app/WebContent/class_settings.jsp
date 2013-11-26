@@ -149,7 +149,14 @@ if (removeStudentId != null) {
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
             $(".remove").click(function(){
                 return window.confirm("Remove this student from list?");
-            }); 
+            });
+            $("#submitFile").click(function(){
+            	var filename = $("#studentListFile").val();
+            	if(filename.length<1){
+            		alert("Please choose a file to upload!");
+            		return false;
+            	}
+            });
         });
             /* Select Box */
         $(function(){

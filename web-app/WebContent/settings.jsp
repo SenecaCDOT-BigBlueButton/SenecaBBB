@@ -45,11 +45,15 @@
 	MyBoolean prof = new MyBoolean();
 	HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
 	HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
-	HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
-	userSettings = usersession.getUserSettingsMask();
+	HashMap<String, Integer> roleMask = new HashMap<String, Integer>();	
+	userSettings = usersession.getUserSettingsMask();	
 	meetingSettings = usersession.getUserMeetingSettingsMask();
 	roleMask = usersession.getRoleMask();
-	int nickName = roleMask.get("nickname");
+	String nickName=null;
+    nickName = usersession.getNick();
+	
+	System.out.println(roleMask.get("nickname"));
+
 %>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -103,10 +107,10 @@ $(document).ready(function() {
 					<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/></header>
 				<div class="content">
 					<fieldset>
-						<%if (nickName == 1) { %>
+						<%if (nickName != null) { %>
 						<div class="component">
 							<label for="nickname" class="label">Nickname:</label>
-							<input type="text" name="nickname" id="nickname" class="input" tabindex="15" title="Nickname" value=<%=usersession.getNick() %>>
+							<input type="text" name="nickname" id="nickname" class="input" tabindex="15" title="Nickname" value=<%= nickName %>>
 						</div>
 						<%}%>
 						<div class="component">

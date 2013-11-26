@@ -58,18 +58,18 @@
 				else if(result.get(0).get(5)==null){
 					usersession.setNick(ldap.getGivenName());
 					user.setLastLogin(userID);
-	                user.setNickName(userID, ldap.getGivenName());
-                    user.getDefaultUserSetting(userSettingMask);
-                    user.getPredefinedUserRoleSetting(userRoleMask,usersession.getUserLevel());
-                    usersession.setRoleMask(userRoleMask);
-                    usersession.setUserSettingsMask(userSettingMask);
-                    userSettingMask.clear();
-                    user.getDefaultMeetingSetting(userSettingMask);
-                    usersession.setUserMeetingSettingsMask(userSettingMask);	
+					user.setNickName(userID, ldap.getGivenName());
+					user.getDefaultUserSetting(userSettingMask);
+					user.getPredefinedUserRoleSetting(userRoleMask,usersession.getUserLevel());
+					usersession.setRoleMask(userRoleMask);
+					usersession.setUserSettingsMask(userSettingMask);
+					userSettingMask.clear();
+					user.getDefaultMeetingSetting(userSettingMask);
+					usersession.setUserMeetingSettingsMask(userSettingMask);	
 				}
 				//User exists in db and not the first login
 				else {
-					user.getUserRoleSetting(userRoleMask, ur_id);
+		            user.getUserRoleSetting(userRoleMask, ur_id);
 					usersession.setRoleMask(userRoleMask);
 					usersession.setNick(result.get(0).get(1));
 					usersession.setSuper(result.get(0).get(7).equals("1"));
@@ -123,18 +123,18 @@
 				return;
 			} 
 			else {
-	            String message = "Invalid username and/or password.";
-	            response.sendRedirect("index.jsp?message=" + message);
-	            return;
+				String message = "Invalid username and/or password.";
+				response.sendRedirect("index.jsp?message=" + message);
+				return;
 			}
 		// User doesn't exist in database or LDAP
 		} else {
-			String message = "Invalid username and/or password.";
-			response.sendRedirect("index.jsp?message=" + message);
-			return;
+				String message = "Invalid username and/or password.";
+				response.sendRedirect("index.jsp?message=" + message);
+				return;
 		}
 	} else {
-		String message = "Invalid username and/or password.**";
-		response.sendRedirect("index.jsp?message=" + message);
+			String message = "Invalid username and/or password.**";
+			response.sendRedirect("index.jsp?message=" + message);
 	}
 %>

@@ -90,3 +90,15 @@ mailtransportprotocol=XXXXXX
 	
 #email port
 mailport=XXXXXX
+
+#from email
+fromemail=XXXXXX
+
+#from email username
+fromusername=XXXXXX
+
+#from email password
+frompassword=XXXXXX
+
+#email signature
+emailsignature=XXXXXX

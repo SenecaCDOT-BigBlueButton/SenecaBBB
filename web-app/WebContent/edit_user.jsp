@@ -48,7 +48,6 @@
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-    int nickName = roleMask.get("nickname");    
     ArrayList<ArrayList<String>>  bbbUserInfo= new ArrayList<ArrayList<String> >();
 
     

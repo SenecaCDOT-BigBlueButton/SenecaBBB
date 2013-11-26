@@ -59,7 +59,6 @@
     HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
     userSettings = usersession.getUserSettingsMask();
     roleMask = usersession.getRoleMask();
-    int nickName = roleMask.get("nickname");
 
     admin.getPreDefinedRole(predefinedRole);
     admin.getSystemInfo(systemInfo);

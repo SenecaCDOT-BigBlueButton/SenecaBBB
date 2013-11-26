@@ -35,7 +35,6 @@
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-    int nickName = roleMask.get("nickname");
     
     ArrayList<ArrayList<String>> professorInSection = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> studentInSection = new ArrayList<ArrayList<String>>();

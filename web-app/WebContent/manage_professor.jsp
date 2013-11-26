@@ -79,9 +79,7 @@ $(function(){
     HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
-    roleMask = usersession.getRoleMask();
-    int nickName = roleMask.get("nickname");
-    
+    roleMask = usersession.getRoleMask();    
     section.getProfessor(allProfessors);
     
 %>

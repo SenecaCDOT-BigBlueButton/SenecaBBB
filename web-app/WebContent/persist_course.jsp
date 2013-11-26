@@ -35,7 +35,6 @@
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-    int nickName = roleMask.get("nickname");
     
     String c_id = request.getParameter("CourseCode").trim();
     String c_name = request.getParameter("CourseName").trim();

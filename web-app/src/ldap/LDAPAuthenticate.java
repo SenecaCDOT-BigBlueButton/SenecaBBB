@@ -259,7 +259,7 @@ public class LDAPAuthenticate {
                 SearchResult sr = results.next();
                 Attributes at = sr.getAttributes();
 
-                givenName = at.get(givenNameField).toString().split(": ")[1];
+                givenName = at.get("cn").toString().split(": ")[1];
 
                 if (at.get(titleField) != null) {
                     title = at.get(titleField).toString().split(": ")[1];

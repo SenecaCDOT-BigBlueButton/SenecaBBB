@@ -196,11 +196,11 @@ public class Test_User extends Test_Helper {
 
         if (_group[4] == 1) {
             
-            display(_user.createUser("test10", "", true, 1));
+            display(_user.createUser("test10","test10", "", true, 1));
 
             display(_user.getUserInfo(_result, "test10"));
 
-            display(_user.createUser("nutest1", "comment", false, 3));
+            display(_user.createUser("nutest1","nutest1", "comment", false, 3));
             
             display(_user.createNonLdapUser("nutest1", "some", "name", "xsdwe", "sdsd", "nu_email@gmail.com"));
 

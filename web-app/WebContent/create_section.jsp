@@ -85,7 +85,15 @@
                         </div>
                         <div class="component">
                             <label for="semesterID" class="label">Semester ID:</label>
-                            <input type="text" name="semesterID" id="semesterID" class="input" tabindex="5" title="Please Enter semester id" >
+                            <select  name="semesterID" id="semesterID"  style="width: 402px;" tabindex="2" title="Please Select course code" >
+                                <% int curYear = Calendar.getInstance().get(Calendar.YEAR); %>
+                                <option><%= curYear + "1" %></option>
+                                <option><%= curYear + "2" %></option>
+                                <option><%= curYear + "3" %></option>
+                                <option><%= curYear + 1 + "1" %></option>
+                                <option><%= curYear + 1 + "2" %></option>
+                                <option><%= curYear + 1 + "3" %></option>
+                            </select>
                         </div>  
                         <div class="component">
                             <label for="deptCode" class="label">Department ID:</label>
@@ -113,22 +121,22 @@
             $('#createSection').validate({
                 validateOnBlur : true,
                 rules: {
-                	semesterID: {
-                       required: true,
-                       pattern: /^\s*[0-9]{6}\s*$/
-                   },
+                	//semesterID: {
+                    //   required: true,
+                    //   pattern: /^\s*[0-9]{6}\s*$/
+                   //},
                    courseSection:{
                        required: true,
                        pattern: /^\s*[A-Z][A-Z]?\s*$/
                    }                  
                 },
                 messages: {
-                	semesterID: { 
-                        pattern:"Please enter a valid id: yyyymm.",
-                        required:"Title is required"
-                    },
+                	//semesterID: { 
+                    //    pattern:"Please enter a valid id: yyyymm.",
+                    //    required:"Title is required"
+                    //},
                     courseSection:{
-                    	required:"Title is required",
+                    	required:"Section ID is requried",
                     	pattern:"Please enter a valid section, upper case only, max 2 letters"
                     }
 

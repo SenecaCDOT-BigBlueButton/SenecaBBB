@@ -1698,7 +1698,7 @@ INSERT INTO bbb_user VALUES ('Guest_01', 'Guest01', 0, 1, NULL, sysdate(), 0, 0,
 INSERT INTO bbb_user VALUES ('Guest_02', 'Guest02', 0, 1, NULL, sysdate(), 0, 0, 3, b'001', b'0011001');
 INSERT INTO bbb_user VALUES ('Guest_03', 'Guest03', 0, 1, NULL, sysdate(), 0, 0, 3, b'001', b'0011001');
 
-INSERT INTO non_ldap_user VALUES ('Admin_Master', 'Seneca', 'Master_Master', '1533af41dc5b4dd97aa2da55d0fe610bb4cab4dfa2399a15', '28defc06475bb8faa7ec6e567968c52f3915bfbc5e580cc3', 'placeholder', SYSDATE());
+INSERT INTO non_ldap_user VALUES ('Admin_Master', 'Seneca', 'Master', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', '3dad4112be64b0bdca3f6f545ac862582b92a2207d2a85bc', 'placeholder', SYSDATE());
 INSERT INTO non_ldap_user VALUES ('Guest_01', 'Seneca', 'Guest', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
 INSERT INTO non_ldap_user VALUES ('Guest_02', 'Seneca', 'Guest', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());
 INSERT INTO non_ldap_user VALUES ('Guest_03', 'Seneca', 'Guest', 'a1a544e0e4a718d209755833ef6ffa85c14e2cbe7ebdd45a', 'c0b0354c1aa652e186d75525bd1f60a5f5b856e3acc230f4', 'placeholder', SYSDATE());

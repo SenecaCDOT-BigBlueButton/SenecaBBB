@@ -1021,29 +1021,38 @@ footer div#copyright {
 	z-index: 990;
 }
 
-#startTime,#eventDuration {
+#eventDuration {
 	float:left;
 	margin-left:16px;
-	width:135px;	
-	cursor: pointer;
-	
+	width:135px;		
+}
+
+#startTime{
+	float:left;
+    margin-left:16px;
+    width:135px;
+    cursor:pointer;    
 }
 
 #eventDescription, #description{
 	border: 1px solid #AAAAAA;
 	font-family: "ITCAvantGardeStd BkCn";
+    color: #838383;
     font-size: 15px;
     font-style: normal;
     font-weight: 400;
 	margin-left:16px;
-	width:398px;
-	float:left;
+	width:394px;
 	resize: none;
-	height:40px;
-	cursor: pointer;
-	
+	height:38px;
+	display: block;
+    float: right;
+	z-index: 4;	
+    outline: medium none;
+    padding-left: 8px;
+  
 }
-
+   
 #eventDescription:focus, #description:focus{
     outline: none;
     border: 1px solid #9F100B;

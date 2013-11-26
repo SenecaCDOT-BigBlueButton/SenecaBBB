@@ -57,17 +57,19 @@
 				// User exists in our db but first time login
 				else if(result.get(0).get(5)==null){
 					usersession.setNick(ldap.getGivenName());
-                    user.getDefaultUserSetting(userSettingMask);
-                    user.getPredefinedUserRoleSetting(userRoleMask,usersession.getUserLevel());
-                    usersession.setRoleMask(userRoleMask);
-                    usersession.setUserSettingsMask(userSettingMask);
-                    userSettingMask.clear();
-                    user.getDefaultMeetingSetting(userSettingMask);
-                    usersession.setUserMeetingSettingsMask(userSettingMask);	
+					user.setLastLogin(userID);
+					user.setNickName(userID, ldap.getGivenName());
+					user.getDefaultUserSetting(userSettingMask);
+					user.getPredefinedUserRoleSetting(userRoleMask,usersession.getUserLevel());
+					usersession.setRoleMask(userRoleMask);
+					usersession.setUserSettingsMask(userSettingMask);
+					userSettingMask.clear();
+					user.getDefaultMeetingSetting(userSettingMask);
+					usersession.setUserMeetingSettingsMask(userSettingMask);	
 				}
 				//User exists in db and not the first login
 				else {
-					user.getUserRoleSetting(userRoleMask, ur_id);
+		            user.getUserRoleSetting(userRoleMask, ur_id);
 					usersession.setRoleMask(userRoleMask);
 					usersession.setNick(result.get(0).get(1));
 					usersession.setSuper(result.get(0).get(7).equals("1"));
@@ -80,6 +82,7 @@
 					user.isDepartmentAdmin(depAdmin, userID);
 					usersession.setProfessor(prof.get_value());
 					usersession.setDepartmentAdmin(depAdmin.get_value());
+					user.setLastLogin(userID);
 				}
 				response.sendRedirect("calendar.jsp?message=Welcome to bbbman!");
 				return;
@@ -94,6 +97,7 @@
 				user.getUserSetting(userSettingMask, userID);
 				usersession.setUserSettingsMask(userSettingMask);
 				usersession.setUserId(userID);
+				user.setLastLogin(userID);
 				usersession.setGivenName(userInfo.get(11) + " " + userInfo.get(12));
 				usersession.setSuper(userInfo.get(7).equals("1"));
 				usersession.setEmail(userInfo.get(13));
@@ -107,7 +111,7 @@
 				usersession.setUserMeetingSettingsMask(userSettingMask);
 				userSettingMask.clear();
 				user.getUserRoleSetting(userRoleMask, ur_id);
-				usersession.setRoleMask(userRoleMask);
+				usersession.setRoleMask(userRoleMask);				
 				if (prof.get_value()) {
 					usersession.setUserLevel("professor");
 				}
@@ -119,18 +123,18 @@
 				return;
 			} 
 			else {
-	            String message = "Invalid username and/or password.";
-	            response.sendRedirect("index.jsp?message=" + message);
-	            return;
+				String message = "Invalid username and/or password.";
+				response.sendRedirect("index.jsp?message=" + message);
+				return;
 			}
 		// User doesn't exist in database or LDAP
 		} else {
-			String message = "Invalid username and/or password.";
-			response.sendRedirect("index.jsp?message=" + message);
-			return;
+				String message = "Invalid username and/or password.";
+				response.sendRedirect("index.jsp?message=" + message);
+				return;
 		}
 	} else {
-		String message = "Invalid username and/or password.**";
-		response.sendRedirect("index.jsp?message=" + message);
+			String message = "Invalid username and/or password.**";
+			response.sendRedirect("index.jsp?message=" + message);
 	}
 %>

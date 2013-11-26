@@ -7,20 +7,22 @@
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <%
-    String message="";
-    HashMap<String, Integer> roleMask = usersession.getRoleMask();
 	//Start page validation
 	String userId = usersession.getUserId();
+	String message;
+	HashMap<String, Integer> roleMask = usersession.getRoleMask();
 	if (userId.equals("")) {
 	    response.sendRedirect("index.jsp?message=Please log in");
 	    return;
 	}
-	if(!(usersession.isSuper()||usersession.isProfessor()||roleMask.get("guestAccountCreation") == 0)) {
+	if(!(usersession.isSuper()||usersession.getUserLevel().equals("employee")||roleMask.get("guestAccountCreation") == 0)) {
 	    response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
+	    return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
 	    return;
-	}
+	}//End page validation
+
 	Email sendToGuest = new Email();
     String to = session.getAttribute("email").toString();
     String subject = "SenecaBBB Guest Account Activation"; 

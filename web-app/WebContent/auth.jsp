@@ -18,7 +18,8 @@
 	ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 	String userID = request.getParameter("SenecaLDAPBBBLogin");
 	String password = request.getParameter("SenecaLDAPBBBLoginPass");
-	HashMap<String, Integer> mask = new HashMap<String, Integer>();
+	HashMap<String, Integer> userSettingMask = new HashMap<String, Integer>();
+	HashMap<String, Integer> userRoleMask = new HashMap<String, Integer>();
 	if (userID != null && password != null) {
 		// User exists in LDAP
 		if (ldap.search(request.getParameter("SenecaLDAPBBBLogin"), request.getParameter("SenecaLDAPBBBLoginPass"))) {
@@ -33,7 +34,7 @@
 					usersession.setUserLevel("employee");
 					ur_id=1;
 				} else {
-					usersession.setUserLevel("Guest");
+					usersession.setUserLevel("guest");
 					ur_id=3;
 				}
 				usersession.setUserId(ldap.getUserID());
@@ -43,25 +44,38 @@
 				user.getUserInfo(result, userID);
 				// User doesn't exist in our db
 				if (result.isEmpty()){
-					user.createUser(userID, "", true, ur_id);
-					usersession.setNick(userID);
-					user.getDefaultUserSetting(mask);
-					usersession.setUserSettingsMask(mask);
-					mask.clear();
-					user.getDefaultMeetingSetting(mask);
-					usersession.setUserMeetingSettingsMask(mask);
+					user.createUser(userID,ldap.getGivenName(),"", true, ur_id);
+					usersession.setNick(ldap.getGivenName());
+					user.getDefaultUserSetting(userSettingMask);
+					user.getPredefinedUserRoleSetting(userRoleMask,usersession.getUserLevel());
+					usersession.setRoleMask(userRoleMask);
+					usersession.setUserSettingsMask(userSettingMask);
+					userSettingMask.clear();
+					user.getDefaultMeetingSetting(userSettingMask);
+					usersession.setUserMeetingSettingsMask(userSettingMask);
 				}
-				// User exists in our db
+				// User exists in our db but first time login
+				else if(result.get(0).get(5)==null){
+					usersession.setNick(ldap.getGivenName());
+                    user.getDefaultUserSetting(userSettingMask);
+                    user.getPredefinedUserRoleSetting(userRoleMask,usersession.getUserLevel());
+                    usersession.setRoleMask(userRoleMask);
+                    usersession.setUserSettingsMask(userSettingMask);
+                    userSettingMask.clear();
+                    user.getDefaultMeetingSetting(userSettingMask);
+                    usersession.setUserMeetingSettingsMask(userSettingMask);	
+				}
+				//User exists in db and not the first login
 				else {
-					user.getUserRoleSetting(mask, ur_id);
-					usersession.setRoleMask(mask);
+					user.getUserRoleSetting(userRoleMask, ur_id);
+					usersession.setRoleMask(userRoleMask);
 					usersession.setNick(result.get(0).get(1));
 					usersession.setSuper(result.get(0).get(7).equals("1"));
-					user.getUserSetting(mask, userID);
-					usersession.setUserSettingsMask(mask);
-					mask.clear();
-					user.getUserMeetingSetting(mask, userID);
-					usersession.setUserMeetingSettingsMask(mask);
+					user.getUserSetting(userSettingMask, userID);
+					usersession.setUserSettingsMask(userSettingMask);
+					userSettingMask.clear();
+					user.getUserMeetingSetting(userSettingMask, userID);
+					usersession.setUserMeetingSettingsMask(userSettingMask);
 					user.isProfessor(prof, userID);
 					user.isDepartmentAdmin(depAdmin, userID);
 					usersession.setProfessor(prof.get_value());
@@ -71,14 +85,14 @@
 				return;
 			}
 		}
-		// User is registered in database.
+		// User is registered in database but is non_ldap user.
 		else if (hash.validatePassword(password.toCharArray(), userID)) {
 			/* User is authenticated */
 			if (user.getUserInfo(result, userID)) {
 				ArrayList<String> userInfo = result.get(0);
 				int ur_id = Integer.parseInt(userInfo.get(8));
-				user.getUserSetting(mask, userID);
-				usersession.setUserSettingsMask(mask);
+				user.getUserSetting(userSettingMask, userID);
+				usersession.setUserSettingsMask(userSettingMask);
 				usersession.setUserId(userID);
 				usersession.setGivenName(userInfo.get(11) + " " + userInfo.get(12));
 				usersession.setSuper(userInfo.get(7).equals("1"));
@@ -88,12 +102,12 @@
 				user.isDepartmentAdmin(depAdmin, userID);
 				usersession.setProfessor(prof.get_value());
 				usersession.setDepartmentAdmin(depAdmin.get_value());
-				mask.clear();
-				user.getUserMeetingSetting(mask, userID);
-				usersession.setUserMeetingSettingsMask(mask);
-				mask.clear();
-				user.getUserRoleSetting(mask, ur_id);
-				usersession.setRoleMask(mask);
+				userSettingMask.clear();
+				user.getUserMeetingSetting(userSettingMask, userID);
+				usersession.setUserMeetingSettingsMask(userSettingMask);
+				userSettingMask.clear();
+				user.getUserRoleSetting(userRoleMask, ur_id);
+				usersession.setRoleMask(userRoleMask);
 				if (prof.get_value()) {
 					usersession.setUserLevel("professor");
 				}

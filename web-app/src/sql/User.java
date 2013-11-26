@@ -201,7 +201,7 @@ public class User extends Sql {
                 + "WHERE bbb_user.bu_id = '" + bu_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
-
+    
     /**
      * (0)d_code, (1)d_name
      * @param result
@@ -907,9 +907,9 @@ public class User extends Sql {
      * @param ur_id
      * @return
      */
-    public boolean createUser(String bu_id, String bu_comment, boolean bu_isldap, int ur_id) {
+    public boolean createUser(String bu_id, String nick, String bu_comment, boolean bu_isldap, int ur_id) {
         _sql = "INSERT INTO bbb_user " 
-                + "VALUES ('" + bu_id + "', '" + bu_id + "', 0, 1, '"
+                + "VALUES ('" + bu_id + "', '" + nick + "', 0, 1, '"
                 + bu_comment + "', SYSDATE(), " + bu_isldap + ", 0, " + ur_id + ", "
                 + "(SELECT key_value FROM bbb_admin WHERE key_name='default_user'), "
                 + "(SELECT key_value FROM bbb_admin WHERE key_name='default_meeting'))";
@@ -928,7 +928,7 @@ public class User extends Sql {
     public boolean createEmployeeUser(String bu_id, String bu_comment, boolean bu_isldap) {
         _sql = "INSERT INTO bbb_user " 
                 + "VALUES ('" + bu_id + "', '" + bu_id + "', 0, 1, '"
-                + bu_comment + "', SYSDATE(), " + bu_isldap + ", 0, "
+                + bu_comment + "', null, " + bu_isldap + ", 0, "
                 + "(SELECT ur_id FROM user_role WHERE pr_name = 'employee'), "
                 + "(SELECT key_value FROM bbb_admin WHERE key_name='default_user'), "
                 + "(SELECT key_value FROM bbb_admin WHERE key_name='default_meeting'))";
@@ -947,7 +947,7 @@ public class User extends Sql {
     public boolean createStudentUser(String bu_id, String bu_comment, boolean bu_isldap) {
         _sql = "INSERT INTO bbb_user " 
                 + "VALUES ('" + bu_id + "', '" + bu_id + "', 0, 1, '"
-                + bu_comment + "', SYSDATE(), " + bu_isldap + ", 0, "
+                + bu_comment + "', null, " + bu_isldap + ", 0, "
                 + "(SELECT ur_id FROM user_role WHERE pr_name = 'student'), "
                 + "(SELECT key_value FROM bbb_admin WHERE key_name='default_user'), "
                 + "(SELECT key_value FROM bbb_admin WHERE key_name='default_meeting'))";

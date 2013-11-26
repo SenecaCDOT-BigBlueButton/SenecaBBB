@@ -28,8 +28,9 @@
 	    response.sendRedirect("index.jsp?message=Please log in");
 	    return;
 	}
-	if(!(usersession.isSuper()||usersession.isProfessor()||roleMask.get("guestAccountCreation") == 0)) {
+	if(!(usersession.isSuper()||usersession.getUserLevel().equals("employee")||roleMask.get("guestAccountCreation") == 0)) {
 	    response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
+	    return;
 	}
     if (dbaccess.getFlagStatus() == false) {
         return;

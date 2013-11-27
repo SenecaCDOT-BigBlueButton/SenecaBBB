@@ -530,6 +530,17 @@
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
                 <div class="content">
+                    <div class="component">
+                        <div class="buttons" style="margin-bottom:15px;">
+                        <% if (status==1) { %>
+                            <button type="button" name="button" id="addAttendee" class="button" title="Click here to add Attendee" 
+                                onclick="window.location.href='add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Attendee List</button>
+                        <% } else if (status==3) { %>
+                            <button type="button" name="button" id="addStudent" class="button" title="Click here to add Student" 
+                                onclick="window.location.href='add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Student List</button>
+                        <% } %>
+                          </div>
+                    </div>
                     <fieldset>
                         <div id="currentEventDiv" class="tableComponent">
                             <table id="tbAttendee" border="0" cellpadding="0" cellspacing="0">
@@ -558,18 +569,8 @@
                             </table>
                         </div>
                     </fieldset>
-                    <br /><hr /><br />
-                    <div class="component">
-                        <div class="buttons">
-                        <% if (status==1) { %>
-                            <button type="button" name="button" id="addAttendee" class="button" title="Click here to add Attendee" 
-                                onclick="window.location.href='add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Attendee List</button>
-                        <% } else if (status==3) { %>
-                            <button type="button" name="button" id="addStudent" class="button" title="Click here to add Student" 
-                                onclick="window.location.href='add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Student List</button>
-                        <% } %>
-                          </div>
-                       </div>
+                    <br />
+
                 </div>
             </article>
             <% } %>
@@ -580,6 +581,17 @@
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
                 <div class="content">
+                    <div class="component">
+                        <div class="buttons" style="margin-bottom:15px;">
+                        <% if (status==1) { %>
+                            <button type="button" name="button" id="addMGuest" class="button" title="Click here to add Meeting Guest" 
+                                onclick="window.location.href='add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Guest List</button>
+                        <% } else if (status==3) { %>
+                            <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Guest" 
+                                onclick="window.location.href='add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Guest List</button>
+                        <% } %>
+                          </div>
+                    </div>
                     <fieldset>
                         <div id="currentEventDiv" class="tableComponent">
                             <table id="tbGuest" border="0" cellpadding="0" cellspacing="0">
@@ -602,18 +614,7 @@
                             </table>
                         </div>
                     </fieldset>
-                    <br /><hr /><br />
-                    <div class="component">
-                        <div class="buttons">
-                        <% if (status==1) { %>
-                            <button type="button" name="button" id="addMGuest" class="button" title="Click here to add Meeting Guest" 
-                                onclick="window.location.href='add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Guest List</button>
-                        <% } else if (status==3) { %>
-                            <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Guest" 
-                                onclick="window.location.href='add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Guest List</button>
-                        <% } %>
-                          </div>
-                       </div>
+                    <br />
                 </div>
             </article>
             <% } %>
@@ -653,6 +654,17 @@
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
                 <div class="content">
+                    <div class="component">
+                        <div class="buttons" style="margin-bottom:15px;">
+                        <% if (status==1) { %>
+                            <button type="button" name="button" id="addMPresentation" class="button" title="Click here to add Meeting Presentation" 
+                                onclick="window.location.href='add_mpresentation.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Meeting Presentation</button>
+                        <% } else if (status==3) { %>
+                            <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Presentation" 
+                                onclick="window.location.href='add_lpresentation.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Lecture Presentation</button>
+                        <% } %>
+                          </div>
+                    </div>
                     <fieldset>
                         <div id="currentEventDiv" class="tableComponent">
                             <table id="tbPresentation" border="0" cellpadding="0" cellspacing="0">
@@ -671,18 +683,7 @@
                             </table>
                         </div>
                     </fieldset>
-                    <br /><hr /><br />
-                    <div class="component">
-                        <div class="buttons">
-                        <% if (status==1) { %>
-                            <button type="button" name="button" id="addMPresentation" class="button" title="Click here to add Meeting Presentation" 
-                                onclick="window.location.href='add_mpresentation.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Meeting Presentation</button>
-                        <% } else if (status==3) { %>
-                            <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Presentation" 
-                                onclick="window.location.href='add_lpresentation.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Lecture Presentation</button>
-                        <% } %>
-                          </div>
-                       </div>
+                    <br />
                 </div>
             </article>
             <article>

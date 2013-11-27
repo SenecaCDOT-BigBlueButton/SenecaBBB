@@ -131,7 +131,11 @@ $(function(){
                     <h2>BBB Users</h2>
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
-  
+                <div class="content">                
+                    <div class="actionButtons">
+                        <button style="margin-bottom:15px;" type="button" name="button" id="createuser" class="button" title="Click here to create a user account" onclick="window.location.href='invite_guest.jsp'">Create Guest Account</button>
+                    </div>                   
+                </div>
                 <div class="content">
                     <fieldset>
                         <div class="component">
@@ -140,9 +144,10 @@ $(function(){
 									<thead>
 									  <tr>
 									    <th width="100" class="firstColumn" tabindex="16" title="Username">ID<span></span></th>
-									    <th title="Name">Is Banned<span></span></th>
+									    <th width="150">Nick Name<span></span></th>
+									    <th >Is Banned<span></span></th>
 									    <th width="100" title="Last Name">Is Active<span></span></th>
-									    <th width="200" title="Email">Is Ldap<span></span></th>
+									    <th width="100" title="Email">Is Ldap<span></span></th>
 									    <th width="100" title="Created Time">Is Super<span></span></th>
 									    <th width="100" title="View Schedule" class="icons"  align="center">Schedule</th>
 									    <th width="65" title="Edit" class="icons"  align="center">Edit</th>								    
@@ -152,6 +157,7 @@ $(function(){
 									<% for(int i=0;i<allUserInfo.size();i++){ %>							   
 									  <tr>
 									    <td class="row"><%= allUserInfo.get(i).get(0) %></td>
+									    <td><%= allUserInfo.get(i).get(1) %></td>
 									    <td><%= allUserInfo.get(i).get(2) %></td>
 									    <td><%= allUserInfo.get(i).get(3) %></td>
 									    <td><%= allUserInfo.get(i).get(6) %></td>

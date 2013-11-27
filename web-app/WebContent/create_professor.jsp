@@ -118,12 +118,12 @@
                 rules: {
                 	professorid: {
                        required: true,
-                       pattern: /^\s*[a-zA-z]+[ \. a-zA-z]*\s*$/
+                       pattern: /^\s*[a-zA-z]+\.[a-zA-z]+\s*$/
                    }              
                 },
                 messages: {
                 	professorid: { 
-                        pattern:"Please enter a valid professor id",
+                        pattern:"Please enter a valid professor id (format: firstname.lastname)",
                         required:"Professor id is required"
                     }
                 }

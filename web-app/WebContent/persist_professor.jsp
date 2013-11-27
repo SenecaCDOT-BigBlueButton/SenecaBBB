@@ -4,7 +4,8 @@
 <%@page import="helper.MyBoolean"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
-
+<jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
+<%@ include file="search.jsp" %>
 
 <% 
     //Start page validation
@@ -57,8 +58,26 @@
     }
 
     Section section = new Section(dbaccess);
+    boolean searchSuccess = false;
+    MyBoolean myBool = new MyBoolean();
+    if (!user.isUser(myBool, bu_id)) {
+        message = user.getErrMsg("PP01");
+        response.sendRedirect("logout.jsp?message=" + message);
+        return;   
+    }
+    // User already in Database
+    if (myBool.get_value()) {   
+        searchSuccess = true;
+    } else {
+        // Found userId in LDAP
+        if (findUser(dbaccess, ldap, bu_id)) {
+            searchSuccess = true;
+        } else {
+            message = "User Not Found";
+        }
+    }
     if(del == null ){  
-    	if(result.size()==0){// make sure the bu_id is registered in database
+    	if(!searchSuccess){// make sure the bu_id is registered in database
     		 response.sendRedirect("create_professor.jsp?message=Professor ID Not in Database"); 
     	     return;
     	}

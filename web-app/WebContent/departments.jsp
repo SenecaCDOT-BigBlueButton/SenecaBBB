@@ -159,8 +159,14 @@ $(function(){
 			<article>
 				<header>
 					<h2>Department List</h2>
-					<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/></header>
+					<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+			    </header>
 				<div class="content">
+					<fieldset>
+	                    <div class="actionButtons">
+	                        <button style="margin-bottom:15px;" type="button" name="button" id="addDepartment" class="button" title="Click here to add a new department" onclick="window.location.href='create_departments.jsp'">Add department</button>
+	                    </div>
+	                </fieldset>
 					<fieldset>
 						<div id="tableAddAttendee" class="tableComponent">
 							<table id="departmentList" border="0" cellpadding="0" cellspacing="0">
@@ -197,16 +203,6 @@ $(function(){
 						</div>
 					</fieldset>
 				</div>
-			</article>
-			<article>
-				<h4></h4>
-				<fieldset>
-				<% if (usersession.isSuper()) { %>
-					<div class="actionButtons">
-						<button type="button" name="button" id="addDepartment" class="button" title="Click here to add a new department" onclick="window.location.href='create_departments.jsp'">Add department</button>
-					</div>
-				<% } %>
-				</fieldset>
 			</article>
 		</form>
 	</section>

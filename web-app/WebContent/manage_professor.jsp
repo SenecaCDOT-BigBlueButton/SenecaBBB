@@ -17,11 +17,8 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
-<link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript" src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
@@ -29,7 +26,6 @@
 <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-<script type="text/javascript" src="js/componentController.js"></script>
 <script type="text/javascript">
 //Table
 $(screen).ready(function() {
@@ -80,8 +76,7 @@ $(function(){
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();    
-    section.getProfessor(allProfessors);
-    
+    section.getProfessor(allProfessors);    
 %>
 
 
@@ -105,15 +100,18 @@ $(function(){
                     <h2>Professors</h2>
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
-                <div class="content">                                 
+                <div class="content">                             
                 <fieldset>
+	                <div class="actionButtons" style="margin-bottom:15px">
+	                    <button type="button" name="button" id="addProfessor" class="button" title="Click here to add a professor" onclick="window.location.href='create_professor.jsp'">Add Professor</button>
+	                </div>  
                 <% if (usersession.isSuper() || usersession.isDepartmentAdmin()) { %>
                   <div class="tableComponent">
                       <table id="professorList" border="0" cellpadding="0" cellspacing="0">
                         <thead>
                           <tr>
                             <th width="100" class="firstColumn" tabindex="16" title="courseid">Professor ID<span></span></th>
-                            <th  width="200" title="coursename">Course ID<span></span></th>
+                            <th  width="200" title="coursename">Subject ID<span></span></th>
                             <th  width="200" title="sectionID">Section ID<span></span></th>
                             <th  width="200" title="semesterID">Semester ID<span></span></th>                          
                             <th  width="65" title="Remove" class="icons" align="center">Remove</th>
@@ -135,10 +133,6 @@ $(function(){
                 </fieldset>
                 </div>
             </article>
-                     <div class="actionButtons" style="margin-top:10px">
-                        <button type="button" name="button" id="addProfessor" class="button" title="Click here to add a professor" onclick="window.location.href='create_professor.jsp'">Add Professor</button>
-                    </div>
-
         </form>
     </section>
     <jsp:include page="footer.jsp"/>

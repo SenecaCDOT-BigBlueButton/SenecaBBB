@@ -99,13 +99,14 @@
         <form>
             <article>
                 <header>
-                    <h2>Course and Professor</h2>
+                    <h2>Subject and Professor</h2>
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
                 <div class="content">                
                     <div class="actionButtons">
-                        <button type="button" name="button" id="viewCourse" class="button" title="Click here to view all courses" onclick="window.location.href='manage_course.jsp'">Manage Courses</button>
-                        <button type="button" name="button" id="viewProfessor" class="button" title="Click here to view all Professors" onclick="window.location.href='manage_professor.jsp'">Manage Professors</button>                      
+                        <button type="button" name="button" id="viewCourse" class="button" title="Click here to view all courses" onclick="window.location.href='manage_course.jsp'">Manage Subjects</button>
+                        <button type="button" name="button" id="viewProfessor" class="button" title="Click here to view all Professors" onclick="window.location.href='manage_professor.jsp'">Manage Professors</button>    
+                        <button type="button" name="button" id="addSection" class="button" title="Click here to add a new section" onclick="window.location.href='create_section.jsp'">Add Section</button>                  
                     </div>                   
                 </div>
             </article>
@@ -120,11 +121,11 @@
 			              <table id="subjectsList" border="0" cellpadding="0" cellspacing="0">
 			                <thead>
 			                  <tr>
-			                    <th width="100" class="firstColumn" tabindex="16" title="Username">Course ID<span></span></th>
+			                    <th width="100" class="firstColumn" tabindex="16" title="Username">Subject ID<span></span></th>
 			                    <th  title="Name">Section<span></span></th>
 			                    <th  width="100" title="E-mail">Semester<span></span></th>
 			                    <th  width="120" title="User type">Department<span></span></th>
-			                    <th  width="250" title="Department">Course Name<span></span></th>
+			                    <th  width="250" title="Department">Subject Name<span></span></th>
 			                    <th  width="65" title="Remove" class="icons" align="center">Remove</th>
 			                  </tr>
 			                </thead>
@@ -145,17 +146,6 @@
 					</fieldset>
 				</div>			
 			</article>
-			<article>
-                <header>
-                    <h2></h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
-                </header>
-                <div class="content">                
-                    <div class="actionButtons">   
-                        <button type="button" name="button" id="addSection" class="button" title="Click here to add a new section" onclick="window.location.href='create_section.jsp'">Add Section</button>
-                    </div>                 
-                </div>
-            </article>
         </form>
 	</section>
 	<jsp:include page="footer.jsp"/>

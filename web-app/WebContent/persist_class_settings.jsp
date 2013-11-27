@@ -50,6 +50,7 @@
             if (myBool.get_value()) {
                 message = "User already added";
                 response.sendRedirect("class_settings.jsp?message=" + message+ "&class=" + selectedclass);
+                return;
             } else {
                 if (!user.isUser(myBool, bu_id)) {
                     message = user.getErrMsg("AS04");
@@ -66,6 +67,7 @@
                     } else {
                         message = "User Not Found";
                         response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + selectedclass);
+                        return;
                     }
                 }
             }
@@ -82,6 +84,7 @@ if (searchSucess) {
     } else {
         message = bu_id + " added to student list";
         response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + selectedclass);
+        return;
     }
 } else {
     message = "User Not Found";

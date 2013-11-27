@@ -11,7 +11,7 @@
 	<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Seneca | Courses</title>
+	<title>Seneca | Subjects</title>
 	<link rel="icon" href="http://www.cssreset.com/favicon.png">
 	<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
@@ -89,18 +89,23 @@
 	    <section>
 	        <header> 
 	            <!-- BREADCRUMB -->
-	            <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="subjects.jsp" tabindex="14">subjects</a> » <a href="manage_course.jsp" tabindex="14">manage course</a></p>
+	            <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="subjects.jsp" tabindex="14">subjects</a> » <a href="manage_course.jsp" tabindex="14">manage subject</a></p>
 	            <!-- PAGE NAME -->
-	            <h1>Courses List</h1>
+	            <h1>Subjects List</h1>
 	            <!-- WARNING MESSAGES -->
 	            <div class="warningMessage"><%=message %></div>
 	        </header>
 	        <form>
 	           <article>
 	                <header>
-	                    <h2>Courses</h2>
+	                    <h2>Subjects</h2>
 	                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
 	                </header>
+	                <div class="content"> 
+	                <div class="actionButtons" style="margin-bottom:10px;">
+                    <button type="button" name="button" id="addCourse" class="button" title="Click here to add a new subject" onclick="window.location.href='create_course.jsp'">Add Subject</button>
+                    </div> 
+                    </div> 
 	                <div class="content">                                 
 		                <fieldset>
 		                  <% if (usersession.isSuper() || usersession.isDepartmentAdmin()) { %>
@@ -108,8 +113,8 @@
 								<table id="courseList" border="0" cellpadding="0" cellspacing="0">
 			                       <thead>
 			                          <tr>
-										<th width="100" class="firstColumn" tabindex="16" title="courseid">Course ID<span></span></th>
-										<th  width="200" title="coursename">Course Name<span></span></th>
+										<th width="100" class="firstColumn" tabindex="16" title="courseid">Subject ID<span></span></th>
+										<th  width="200" title="coursename">Subject Name<span></span></th>
 										<th  width="65" title="Add" class="icons" align="center">Edit</th>
 										<th  width="65" title="Remove" class="icons" align="center">Remove</th>
 			                          </tr>
@@ -128,9 +133,6 @@
 		                </fieldset>
 	                </div>
 	            </article>
-                <div class="actionButtons" style="margin-top:10px;">
-                    <button type="button" name="button" id="addCourse" class="button" title="Click here to add a new subject" onclick="window.location.href='create_course.jsp'">Add Course</button>
-                </div>	
 	        </form>
 	    </section>
 	    <jsp:include page="footer.jsp"/>

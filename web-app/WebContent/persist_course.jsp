@@ -48,20 +48,20 @@
     if(del == null ){
 	    if(courseList.size()==0){
 	        section.createCourse(c_id, c_name);      
-	        response.sendRedirect("manage_course.jsp?message=Course created");
+	        response.sendRedirect("manage_course.jsp?message=Subject created");
 	        return;
 	    }else{
 	    	section.setCourseName(c_id,c_name);
-	    	response.sendRedirect("manage_course.jsp?message=Course Modified");
+	    	response.sendRedirect("manage_course.jsp?message=Subject Modified");
 	    	return;
 	    }   
     }else{
     	if(courseInSection.size()>0){
-    		response.sendRedirect("manage_course.jsp?message=Course In Use, Could not be deleted");
+    		response.sendRedirect("manage_course.jsp?message=Subject In Use, Could not be deleted");
     		return;
     	}else{
     		section.removeCourse(c_id);
-    		response.sendRedirect("manage_course.jsp?message=Course deleted Successfully");
+    		response.sendRedirect("manage_course.jsp?message=Subject deleted Successfully");
     	}
     }
 %>

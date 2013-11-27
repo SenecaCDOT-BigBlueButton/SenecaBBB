@@ -296,7 +296,7 @@ section form article header h2 {
 	font-style: normal;
 	font-weight: 300;
 	color: #838383;
-	text-align: right;
+	text-align: left;
 	letter-spacing: 0.05em;
 	margin: 0px;
 	margin-top: 20px;
@@ -338,7 +338,7 @@ section form article header img {
 	margin: 0px;
 	padding: 0px;
 	padding-top: 5px;
-	float: right;
+	float: left;
 	display: block;
 }
 section form article header .expandContent {

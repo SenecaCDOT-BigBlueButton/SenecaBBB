@@ -56,7 +56,7 @@ ul {
 /*[ HEADER ]*/
 header#header {
 	max-width: 1280px;
-	height: 140px;
+	height: 70px;
 	background-color: #f9f9f9;
 	border-color: #454545;
 	border-top-style: solid;
@@ -64,7 +64,7 @@ header#header {
 }
 header#header img {
 	float: left;
-	margin-top: 40px;
+	margin-top: 10px;
 	margin-left: 40px;
 	width: 232.5px;
 	height: 50px;
@@ -678,7 +678,7 @@ section form article fieldset div.component#weekCheckbox .weekday.selectedWeekda
 /* FOOTER */
 footer {
 	display: table-row;
-	height: 135px;
+	height: 70px;
 	background-color: #f9f9f9;
 	color: #ACABAB;
 	font-family: "ITCAvantGardeStd BkCn";
@@ -721,8 +721,8 @@ footer div#copyright {
 	font-size: 13px;
 	text-align: center;
 	color: #838383;
-	padding-top: 50px;
-	padding-bottom: 15px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 	border-bottom: 20px solid #454545;
 	cursor: default;
 }

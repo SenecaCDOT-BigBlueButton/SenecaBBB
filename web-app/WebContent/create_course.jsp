@@ -41,11 +41,11 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<% if(c_id.equals("")) {%>
-	   <title>Create Course</title>
+	   <title>Create Subject</title>
 	<% } else if (toDel=="1"){%>
-	   <title>Delete Course</title><%}
+	   <title>Delete Subject</title><%}
 	else { %>
-	   <title>Edit Course</title><%} %>
+	   <title>Edit Subject</title><%} %>
 	<link rel="icon" href="http://www.cssreset.com/favicon.png">
 	<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
@@ -62,13 +62,13 @@
     <section>
         <header> 
             <!-- BREADCRUMB -->
-            <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="subjects.jsp" tabindex="14">subjects</a> »<a href="create_course.jsp" tabindex="15">create course</a></p>
+            <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="subjects.jsp" tabindex="14">subjects</a> »<a href="create_course.jsp" tabindex="15">create subject</a></p>
             <!-- PAGE NAME -->
             <% if(c_id.equals("")) {%>
-				<h1>Create Course</h1><% }
+				<h1>Create Subject</h1><% }
 		       else if (toEdit.equals("1")){%>
-				<h1>Edit Course</h1><%}
-			   else { %><h1>Delete Course</h1><%} %>
+				<h1>Edit Subject</h1><%}
+			   else { %><h1>Delete Subject</h1><%} %>
             
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%= message %></div>
@@ -76,19 +76,19 @@
         <form name="createCourse" id="createCourse" method="post" action="persist_course.jsp">
             <article>
                 <header>
-                    <h2>Course Form</h2>
+                    <h2>Subject Form</h2>
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
                 <div class="content">
                     <fieldset>
                         <div class="component">
-                            <label for="CourseCode" class="label">Course Code:</label>
+                            <label for="CourseCode" class="label">Subject Code:</label>
                             <input type="text" name="CourseCode" id="CourseCode" class="input" tabindex="16"  value="<%= c_id %>" 
                            <% if (toEdit.equals("1") ||(toDel.equals("1"))){%> readonly="<%= true %>" <%} %>title="Please Enter Course code" >
                           
                         </div>
                         <div class="component">
-                            <label for="CourseName" class="label">Course Name:</label>
+                            <label for="CourseName" class="label">Subject Name:</label>
                             <input type="text" name="CourseName" id="CourseName" class="input" tabindex="17"  value="<%= c_name %>" 
                             <% if (toDel.equals("1")){%> readonly="<%= true %>" <%} %> title="Please Enter Course Name" >
                         </div>

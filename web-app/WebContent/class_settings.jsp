@@ -162,7 +162,14 @@ if (removeStudentId != null) {
         $(function(){
             $('select').selectmenu();
         });
-            
+            /*Alert user to choose a class before adding students from file or search student to add*/
+        function checkClass(){
+        	var classToAdd =$("#classSel").val();
+        	if(classToAdd==null){
+        		alert("Please choose a class to add student!");
+        		return false;
+        	}
+        }  
     </script>
 </head>
 
@@ -178,10 +185,9 @@ if (removeStudentId != null) {
 			<h1 style="margin-bottom:20px">Class Settings</h1>
 			<!-- WARNING MESSAGES -->
 			<div class="warningMessage"><%=message %></div>
-			<div class="warningMessage"><%=errMessage %></div>
 		</header>
 		<% if (listofclasses.size() > 0) { %>
-		<form action="uploadfile.jsp" method="post" enctype="multipart/form-data">
+		<form action="uploadfile.jsp" method="post" enctype="multipart/form-data" onsubmit="return checkClass()">
 		<article>
 			<div class="content">
 				<fieldset>
@@ -194,8 +200,7 @@ if (removeStudentId != null) {
 								for (int j=0; j < listofclasses.size(); ++j) {								
 									String fullclass = listofclasses.get(j).get(1) + "-" + listofclasses.get(j).get(2)+ "-" + listofclasses.get(j).get(3) + "-" + listofclasses.get(j).get(0);
 									out.println("<option role='option' " + (fullclass.equals(selectedclass)?"selected":"") +">" + fullclass + "</option>");
-								}
-							   
+								}							   
 							%>
 						</select>
 					</div>
@@ -218,7 +223,7 @@ if (removeStudentId != null) {
 			</div>
 			</article>
 		</form>
-        <form name="addStudent" method="get" action="persist_class_settings.jsp" >
+        <form name="addStudent" method="get" action="persist_class_settings.jsp" onsubmit="return checkClass()">
             <article>
                 <header>
                   <h2>Add Student</h2>

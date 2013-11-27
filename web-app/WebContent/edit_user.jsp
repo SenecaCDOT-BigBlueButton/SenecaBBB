@@ -18,6 +18,7 @@
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
+<script type="text/javascript" src="js/checkboxController.js"></script>
 
 <%
     //Start page validation
@@ -94,6 +95,25 @@
     }
         
 %>
+<script type="text/javascript">
+	$(document).ready(function() {
+		<%if (bbbUserInfo.get(0).get(2).equals("0")) {%>
+		    $(".checkbox .box:eq(0)").next(".checkmark").toggle();
+		    $(".checkbox .box:eq(0)").attr("aria-checked", "false");
+		    $(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
+		<%}%>
+		<%if (bbbUserInfo.get(0).get(3).equals("0")) {%>
+		    $(".checkbox .box:eq(1)").next(".checkmark").toggle();
+		    $(".checkbox .box:eq(1)").attr("aria-checked", "false");
+		    $(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
+		<%}%>
+		<%if (bbbUserInfo.get(0).get(7).equals("0")) {%>
+		    $(".checkbox .box:eq(2)").next(".checkmark").toggle();
+		    $(".checkbox .box:eq(2)").attr("aria-checked", "false");
+		    $(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
+		<%}%>
+	});
+</script>
 </head>
 <body>
 <div id="page">
@@ -116,40 +136,50 @@
                 </header>
                 <div class="content">            
                     <fieldset>
-	                    <div class="component">
-		                    <label for="bbbUserId" class="label">User ID:</label>
-		                    <input name="bbbUserId" id="bbbUserId" class="input" tabindex="16" title="User ID" type="text" value="<%= bu_id %>"  readonly>
-	                    </div>
-	                    <div class="component">
-                            <label for="bbbUserIsLdap" class="label">Is Ldap:</label>
-                            <input name="bbbUserIsLdap" id="bbbUserIsLdap" class="input" tabindex="22" title="Is Ldap" type="text" value="<%= bbbUserInfo.get(0).get(6) %>"  readonly>
-                        </div>
-	                    <div class="component">
-                            <label for="bbbUserIsBanned" class="label">Is Banned:</label>
-                            <input name="bbbUserIsBanned" id="bbbUserIsBanned" class="input" tabindex="22" title="Is Banned" type="text" value="<%= bbbUserInfo.get(0).get(2) %>" required autofocus>
+                        <div class="component">
+                            <label for="bbbUserId" class="label">User ID:</label>
+                            <input name="bbbUserId" id="bbbUserId" class="input" tabindex="16" title="User ID" type="text" value="<%= bu_id %>"  readonly>
                         </div>
                         <div class="component">
-                            <label for="bbbUserIsActive" class="label">Is Active:</label>
-                            <input name="bbbUserIsActive" id="bbbUserIsActive" class="input" tabindex="23" title="Is Active" type="text" value="<%= bbbUserInfo.get(0).get(3) %>" required autofocus>
-                        </div>  
+                            <label for="bbbUserNickname" class="label">Nick Name:</label>
+                            <input name="bbbUserNickname" id="bbbUserNickname" class="input" tabindex="16" title="Nick Name" type="text" value="<%= bbbUserInfo.get(0).get(1) %>" >
+                        </div>
+                        <%  if (isNonLdap.get_value()){ %> 
                         <div class="component">
-                            <label for="bbbUserIsSuper" class="label">Is Super:</label>
-                            <input name="bbbUserIsSuper" id="bbbUserIsSuper" class="input" tabindex="23" title="Is Active" type="text" value="<%= bbbUserInfo.get(0).get(7) %>" required autofocus>
-                        </div>  
-	                        <%  if (isNonLdap.get_value()){ %> 
-			                    <div class="component">
-		                            <label for="bbbUserName" class="label">First Name:</label>
-		                            <input name="bbbUserName" id="bbbUserName" class="input" tabindex="17" title="User Name" type="text" value="<%= bbbUserInfo.get(0).get(11) %>" required autofocus>
-		                        </div>
-		                        <div class="component">
-		                            <label for="bbbUserLastName" class="label">Last Name:</label>
-		                            <input name="bbbUserLastName" id="bbbUserLastName" class="input" tabindex="18" title="Last Name" type="text" value="<%= bbbUserInfo.get(0).get(12) %>" required autofocus>
-		                        </div>                       
-		                        <div class="component">
-		                            <label for="bbbUserEmail" class="label">User Email:</label>
-		                            <input name="bbbUserEmail" id="bbbUserEmail" class="input" tabindex="19" title="User Email" type="text" value="<%= bbbUserInfo.get(0).get(13) %>" required autofocus>
-		                        </div>
-	                         <%} %>                 
+                            <label for="bbbUserName" class="label">First Name:</label>
+                            <input name="bbbUserName" id="bbbUserName" class="input" tabindex="17" title="User Name" type="text" value="<%= bbbUserInfo.get(0).get(11) %>" required autofocus>
+                        </div>
+                        <div class="component">
+                            <label for="bbbUserLastName" class="label">Last Name:</label>
+                            <input name="bbbUserLastName" id="bbbUserLastName" class="input" tabindex="18" title="Last Name" type="text" value="<%= bbbUserInfo.get(0).get(12) %>" required autofocus>
+                        </div>                       
+                        <div class="component">
+                            <label for="bbbUserEmail" class="label">User Email:</label>
+                            <input name="bbbUserEmail" id="bbbUserEmail" class="input" tabindex="19" title="User Email" type="text" value="<%= bbbUserInfo.get(0).get(13) %>" required autofocus>
+                        </div>
+                          <%} %>    
+
+                       <div class="component">
+                            <div class="checkbox" title="bbbUser Is Banned"> <span class="box" role="checkbox"  aria-checked="true" tabindex="16" aria-labelledby="userinfor1"></span>
+                                <label class="checkmark"></label>
+                                <label class="text" id="bbbUserIsBanned">Is User Banned</label>
+                                <input type="checkbox" name="bbbUserIsBanned" id="bbbUserIsBanned" checked="checked" >
+                            </div>
+                        </div>
+                       <div class="component">
+                            <div class="checkbox" title="bbbUser Is Active"> <span class="box" role="checkbox"  aria-checked="true" tabindex="16" aria-labelledby="userinfor2"></span>
+                                <label class="checkmark"></label>
+                                <label class="text" id="bbbUserIsActive">Is User Active</label>
+                                <input type="checkbox" name="bbbUserIsActive" id="bbbUserIsActive" checked="checked" >
+                            </div>
+                        </div>
+                       <div class="component">
+                            <div class="checkbox" title="bbbUser Is Super"> <span class="box" role="checkbox"  aria-checked="true" tabindex="16" aria-labelledby="userinfor3"></span>
+                                <label class="checkmark"></label>
+                                <label class="text" id="bbbUserIsSuper">Is Super Admin</label>
+                                <input type="checkbox" name="bbbUserIsSuper" id="bbbUserIsSuper" checked="checked" >
+                            </div>
+                        </div>                                    
                         <div class="component">
                             <div class="buttons">
                                <input type="submit" name="updateUser" id="updateUser" class="button" value="update" title="Click here to update" >

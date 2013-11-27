@@ -29,18 +29,18 @@
 
     Boolean IsBanned = false;
     Boolean IsActive = false;
-    Boolean IsLdap = false;
     Boolean IsSuper = false;
-    if(request.getParameter("bbbUserIsBanned") !=null && request.getParameter("bbbUserIsBanned").equals("1")){
+    String bbbUserNickname = request.getParameter("bbbUserNickname");
+    String bbbUserName = request.getParameter("bbbUserName");
+    String bbbUserLastName = request.getParameter("bbbUserLastName");
+    String bbbUserEmail = request.getParameter("bbbUserEmail");
+    if(request.getParameter("bbbUserIsBanned") !=null && request.getParameter("bbbUserIsBanned").equals("on")){
         IsBanned = true;        
     }  
-    if(request.getParameter("bbbUserIsLdap")!=null && request.getParameter("bbbUserIsLdap").equals("1")){
-    	IsLdap = true;
-    }
-    if(request.getParameter("bbbUserIsSuper")!=null && request.getParameter("bbbUserIsSuper").equals("1")){
+    if(request.getParameter("bbbUserIsSuper")!=null && request.getParameter("bbbUserIsSuper").equals("on")){
     	IsSuper = true;
     }
-    if(request.getParameter("bbbUserIsActive")!=null && request.getParameter("bbbUserIsActive").equals("1")){
+    if(request.getParameter("bbbUserIsActive")!=null && request.getParameter("bbbUserIsActive").equals("on")){
     	IsActive = true;
     }
     String bu_id = request.getParameter("bbbUserId");
@@ -76,7 +76,7 @@
     ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 
     Boolean mybool = false;
-    if(searchSucess && !IsLdap){
+    if(searchSucess){
 	    mybool=user.setActive(bu_id, IsActive);
 	    if(mybool){
 	        mybool=user.setBannedFromSystem(bu_id, IsBanned);   
@@ -84,37 +84,25 @@
 	    if(mybool){
 	        mybool=user.setSuperAdmin(bu_id, IsSuper);   
 	    }
-	    if(mybool){
-		    mybool = user.setName(bu_id, request.getParameter("bbbUserName"));
+	    if(mybool && bbbUserNickname!=null){
+	        mybool = user.setNickName(bu_id, bbbUserNickname);
 	    }
-		if(mybool){
-			mybool=user.setLastName(bu_id, request.getParameter("bbbUserLastName"));
+	    if(mybool && bbbUserName!=null){
+		    mybool = user.setName(bu_id, bbbUserName);
+	    }
+		if(mybool && bbbUserLastName!=null){
+			mybool=user.setLastName(bu_id, bbbUserLastName);
+		}
+		if(mybool && bbbUserEmail!=null){
+		    mybool=user.setEmail(bu_id, bbbUserEmail);
 		}
 		if(mybool){
-		    mybool=user.setEmail(bu_id, request.getParameter("bbbUserEmail"));
-		}
-		if(mybool){
-		     response.sendRedirect("manage_users.jsp?message=Updated A Non_Ldap_User Successfully!!!");
+		     response.sendRedirect("manage_users.jsp?message=Updated User "+ bu_id + " Successfully!!!");
 		     return;
 		}else{
-			 response.sendRedirect("manage_users.jsp?message=Fail to Updated A Non_Ldap_User !!!");
+			 response.sendRedirect("manage_users.jsp?message=Fail to Update User "+ bu_id + " !!!");
 			 return;	
 		}
-	}else if(searchSucess && IsLdap){
-	    mybool=user.setActive(bu_id, IsActive);
-        if(mybool){
-            mybool=user.setBannedFromSystem(bu_id, IsBanned);   
-        }
-        if(mybool){
-            mybool=user.setSuperAdmin(bu_id, IsSuper);   
-        }
-        if(mybool){
-            response.sendRedirect("manage_users.jsp?message=Updated A Ldap_User Successfully!!!");
-            return;
-       }else{
-            response.sendRedirect("manage_users.jsp?message=Fail to Updated A Ldap_User !!!");
-            return;    
-       }
 	}
     else{
 		response.sendRedirect("manage_users.jsp?message=Invalid user information!");

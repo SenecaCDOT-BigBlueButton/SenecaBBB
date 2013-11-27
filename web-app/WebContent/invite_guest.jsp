@@ -50,22 +50,22 @@
 	<section>
 		<header>
 	        <p><a href="calendar.jsp" tabindex="13">home</a>  » <a href="invite_guest.jsp" tabindex="14">create guest account</a></p>
-	        <h1>Invite Guest</h1>
+	        <h1>Create Guest Account</h1>
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%= message %></div>
 	    </header>
 	    <form name="guestaccuntinfo" id="guestaccuntinfo"  method="get" action="generate_guest.jsp">
 			<article>
 				<header>
-				    <h2>Invite Guest</h2>
+				    <h2>Guest Information</h2>
                 </header>
 				<fieldset>
 				    <div class="component">
-				        <label for="firstName" class="label">Guest first name:</label>
+				        <label for="firstName" class="label"> first name:</label>
 				        <input type="text" name="firstName" id="firstName" class="input" tabindex="15" title="First Name" <% if(firstName != null) out.print("value="+firstName); %>>
 				    </div>
 				    <div class="component">
-				        <label for="lastName" class="label">Guest last name:</label>
+				        <label for="lastName" class="label"> last name:</label>
 				        <input type="text" name="lastName" id="lastName" class="input" tabindex="16" title="Last Name" <% if(lastName != null) out.print("value="+lastName); %>>
 				    </div>
 				    <div class="component">
@@ -78,7 +78,7 @@
 		        <fieldset>
 		            <div class="buttons">
 		                <button type="submit" name="submit" id="save" class="button" title="Click here to create account">Create</button>
-		                <button type="button" name="button" id="cancel"  class="button" title="Click here to cancel" onclick="window.location.href='calendar.jsp'">Cancel</button>
+		                <button type="button" name="button" id="cancel"  class="button" title="Click here to cancel" onclick="window.location.href='<% if(usersession.isSuper()) out.print("manage_users.jsp"); else out.print("calendar.jsp");%>'">Cancel</button>
 		            </div>
 		        </fieldset>
 	        </article>

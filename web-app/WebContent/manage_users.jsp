@@ -2,10 +2,11 @@
 <%@page import="sql.User"%>
 <%@page import="java.util.*"%>
 <%@page import="java.lang.Integer"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
+<jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <!doctype html>
 <html lang="en">
 <head>
@@ -27,7 +28,7 @@
 <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-
+<%@ include file="search.jsp" %>
 <script type="text/javascript">
 function searchUser(){
     var xmlhttp;
@@ -55,18 +56,6 @@ function searchUser(){
 
 //Table
 $(screen).ready(function() {
-    /* ATTENDEES LIST 
-    $('#addAttendee').dataTable({
-        "bPaginate": false,
-        "bLengthChange": false,
-        "bFilter": false,
-        "bSort": true,
-        "bInfo": false,
-        "bAutoWidth": false});
-    $('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});    
-    $.fn.dataTableExt.sErrMode = 'throw';
-    $('.dataTables_filter input').attr("placeholder", "Filter entries");
-    */  
     /* USERS LIST */    
     $('#usersList').dataTable({"sPaginationType": "full_numbers"});
     $('#usersList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
@@ -110,6 +99,34 @@ $(function(){
     roleMask = usersession.getRoleMask();    
     ArrayList<ArrayList<String>>  allUserInfo= new ArrayList<ArrayList<String> >();
     user.getUserInfo(allUserInfo);
+    
+    // Start User Search
+    String bu_id = request.getParameter("searchBox");
+    MyBoolean myBool = new MyBoolean();
+    if (bu_id!=null) {
+        bu_id = Validation.prepare(bu_id);
+        if (!(Validation.checkBuId(bu_id))) {
+            message = Validation.getErrMsg();
+        }
+        else {
+        	user.isUser(myBool, bu_id);
+            if (myBool.get_value()) {
+                message = "User "+ bu_id +" already in database";
+                response.sendRedirect("manage_users.jsp?message=" + message);
+                return;   
+            }else {
+                // Found userId in LDAP
+                if (findUser(dbaccess, ldap, bu_id)) {
+                	response.sendRedirect("manage_users.jsp?message=User "+ bu_id +" added in database successfully!");
+                	return;
+                } else {
+                    message = "User Not Found";
+                }
+            }
+        }
+    }
+    // End User Search
+
 %>
 </head>
 <body>
@@ -125,17 +142,28 @@ $(function(){
             <!-- WARNING MESSAGES -->
             <div class="warningMessage" style="color:red;"><%=message %></div>
         </header>
+
         <form>
+             <article>
+                <header>
+                  <h2>Add Internal User</h2>
+                  <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
+                </header>
+                <div class="content">
+                    <fieldset>
+                        <div class="component">
+                            <label for="searchBoxAddUser" class="label">Add User:</label>
+                              <input type="text" name="searchBox" id="searchBox" class="searchBox" tabindex="37" title="Search user">
+                              <button type="submit" name="search" class="search" tabindex="38" title="Search user"></button><div id="responseDiv"></div>
+                        </div>
+                    </fieldset>
+                </div>
+            </article>
             <article>
                 <header>
-                    <h2>BBB Users</h2>
+                    <h2>All Users Information</h2>
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
-                <div class="content">                
-                    <div class="actionButtons">
-                        <button style="margin-bottom:15px;" type="button" name="button" id="createuser" class="button" title="Click here to create a user account" onclick="window.location.href='invite_guest.jsp'">Create Guest Account</button>
-                    </div>                   
-                </div>
                 <div class="content">
                     <fieldset>
                         <div class="component">

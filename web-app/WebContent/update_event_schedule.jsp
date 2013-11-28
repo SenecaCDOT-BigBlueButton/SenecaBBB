@@ -133,7 +133,7 @@ public static String getMonthNumber(String month) {
             spec = "2;1;".concat(numberOfOccurrences).concat(";").concat(repeatEvery);
         }
         else{
-            spec = "2;2;".concat(repeatEndDate).concat(repeatEvery);
+            spec = "2;2;".concat(repeatEndDate).concat(";").concat(repeatEvery);
         }
     }
     else if(recurrence.equals("Weekly")){

@@ -263,6 +263,10 @@ $(screen).ready(function() {
 					$("#occurrencesNumber").css("display", "block");
 					$("#occurrences").val("1");
 					$("#occurrenceEnds").css("display", "none");
+					if($("#dropdownEnds").find("option").length == 3){
+						$("#dropdownEnds").empty();
+						$("#dropdownEnds").append("<option  role='option'>After # of occurrence(s)</option><option role='option'>On specified date</option>");
+					}
 					$("#dropdownEnds").val("After # of occurrence(s)");
 					$("#dropdownEnds").selectmenu({'refresh': true});
 					break;
@@ -357,6 +361,10 @@ $(screen).ready(function() {
 					$("#weekCheckbox").css("display", "none");
 					$("#dayoftheWeek").css("display", "none");
 					$("#selectEnds").css("display", "block");
+					if($("#ends").find("option").length == 3){
+						$("#ends").empty();
+						$("#ends").append("<option  role='option'>After # of occurrence(s)</option><option role='option'>On specified date</option>");
+					}
 					$("#occurrencesNumber").css("display", "block");
 					$("#occurrences").val("1");
 					$("#occurrenceEnds").css("display", "none");
@@ -673,6 +681,12 @@ $(screen).ready(function() {
 					$("#dropdownDayEnds").selectmenu({'refresh': true});
 					$("#dropdownYearEnds").val($("#dropdownYearStarts").val());
 					$("#dropdownYearEnds").selectmenu({'refresh': true});
+					break;
+				case "After # of week(s)"://After # of week(s)
+					$("#occurrencesNumber").css("display", "block");
+					$("#occurrencesNumber").text();
+					$("#occurrenceEnds").css("display", "none");
+					$("#occurrences").val("1");
 					break;
 			}
 		});

@@ -15,6 +15,7 @@
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.timepicker.css">
+	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
@@ -24,6 +25,7 @@
 	<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.timepicker.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
+	<script type="text/javascript" src="js/ui/jquery.ui.datepicker.js"></script>
 	<script type="text/javascript" src="js/componentController.js"></script>
 	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
@@ -166,6 +168,41 @@
         $("#Recurrence").selectmenu({'refresh': true});
         $("#courseCode").selectmenu({'refresh': true});
         $('#startTime').timepicker({ 'scrollDefaultNow': true });
+      //Date picker
+        $(function(){
+            var month = new Array(12);
+            month[0]="January";
+            month[1]="February";
+            month[2]="March";
+            month[3]="April";
+            month[4]="May";
+            month[5]="June";
+            month[6]="July";
+            month[7]="August";
+            month[8]="September";
+            month[9]="October";
+            month[10]="November";
+            month[11]="December";
+            
+            var datePickerStarts = {
+                showOn: "button",
+                buttonText:"",
+                minDate: 0,
+                maxDate: "+1Y",
+                onSelect:function(dateText){
+                    var startDate = new Date(dateText);
+                    $("#dropdownDayStarts").val(startDate.getUTCDate());
+                    $("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
+                    $("#dropdownYearStarts").val(startDate.getUTCFullYear());
+                    $("#dropdownDayStarts").selectmenu({'refresh': true});
+                    $("#dropdownMonthStarts").selectmenu({'refresh': true});
+                    $("#dropdownYearStarts").selectmenu({'refresh': true});
+                }
+            };
+            $("#datePickerStarts").datepicker(datePickerStarts);
+
+        });
+
     });
 
 </script>

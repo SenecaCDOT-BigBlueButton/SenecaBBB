@@ -126,29 +126,7 @@
         $("#courseCode").selectmenu({'refresh': true});
         $('#startTime').timepicker({ 'scrollDefaultNow': true });
 	});
-/*
-	//Table
-	$(screen).ready(function() {
-		// ATTENDEES LIST 
-		$('#addAttendee').dataTable({
-			"bPaginate": false,
-	        "bLengthChange": false,
-	        "bFilter": false,
-	        "bSort": true,
-	        "bInfo": false,
-	        "bAutoWidth": false});
-		$('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-		$.fn.dataTableExt.sErrMode = 'throw';
-		$('.dataTables_filter input').attr("placeholder", "Filter entries");
-			
-		// ATTENDEES LIST 	
-		$('#attendeesList').dataTable({"sPaginationType": "full_numbers"});
-		$('#attendeesList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-		$.fn.dataTableExt.sErrMode = 'throw';
-		$('.dataTables_filter input').attr("placeholder", "Filter entries");
-		
-	});
-*/
+
 	//Date picker
 	$(function(){
 		var month = new Array(12);
@@ -175,7 +153,9 @@
 				$("#dropdownDayStarts").val(startDate.getUTCDate());
 				$("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
 				$("#dropdownYearStarts").val(startDate.getUTCFullYear());
-
+				$("#dropdownDayStarts").selectmenu({'refresh': true});
+				$("#dropdownMonthStarts").selectmenu({'refresh': true});
+				$("#dropdownYearStarts").selectmenu({'refresh': true});
 			}
 		};
 		var datePickerEnds = {
@@ -188,7 +168,9 @@
 				$("#dropdownDayEnds").val(endDate.getUTCDate());
 				$("#dropdownMonthEnds").val(month[endDate.getUTCMonth()]);
 				$("#dropdownYearEnds").val(endDate.getUTCFullYear());
-
+				$("#dropdownDayEnds").selectmenu({'refresh': true});
+				$("#dropdownMonthEnds").selectmenu({'refresh': true});
+				$("#dropdownYearEnds").selectmenu({'refresh': true});
 			}
 		};
 		$("#datePickerStarts").datepicker(datePickerStarts);
@@ -501,230 +483,12 @@
           </fieldset>
         </div>
       </article>
-      <!-- 
-      <article>
-        <header>
-          <h2>Add attendee</h2>
-          <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/></header>
-        <div class="content">
-          <fieldset>
-            <div class="component">
-              <label for="searchBoxAddAttendee" class="label">Search User:</label>
-              <button type="button" name="search" class="search" tabindex="38" title="Search user" onclick="searchUser()"></button><div id="responseDiv"></div>
-              <input type="text" name="searchBox" id="searchBoxAddAttendee" class="searchBox" tabindex="37" title="Search user">
-            </div>
-            <div id="tableAddAttendee" class="tableComponent">
-              <h4></h4>
-              <table id="addAttendee" border="0" cellpadding="0" cellspacing="0">
-                <thead>
-                  <tr>
-                    <th width="100" class="firstColumn" tabindex="16" title="Username">Username<span></span></th>
-                    <th title="Name">Name<span></span></th>
-                    <th width="230" title="E-mail">E-mail<span></span></th>
-                    <th width="85" title="User type">User type<span></span></th>
-                    <th width="65" title="Department">Dept.<span></span></th>
-                    <th width="65" title="Add" class="icons" align="center">Add</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="row">ystallonne</td>
-                    <td>Ystallonne Alves</td>
-                    <td>ystallonne@seneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="add"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Add user to attendees list" alt="Add"/></a></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </fieldset>
-        </div>
-      </article>
-      <article>
-        <header>
-          <h2>Attendees List</h2>
-          <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="listbox"/></header>
-        <div class="content">
-          <fieldset>
-            <div class="tableComponent">
-              <table id="attendeesList" border="0" cellpadding="0" cellspacing="0">
-                <thead>
-                  <tr>
-                    <th width="100" class="firstColumn" tabindex="16" title="Username">Username<span></span></th>
-                    <th title="Name">Name<span></span></th>
-                    <th width="230" title="E-mail">E-mail<span></span></th>
-                    <th width="85" title="User type">User type<span></span></th>
-                    <th width="65" title="Department">Dept.<span></span></th>
-                    <th width="65" title="Remove" class="icons" align="center">Remove</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="row">ystallonne</td>
-                    <td>Ystallonne Alves</td>
-                    <td>ystallonne@seneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row" title="aberdeenshire">aberdenshire</td>
-                    <td>Aberdeenshire City</td>
-                    <td>aberdeenshire@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">angus</td>
-                    <td>Angus City</td>
-                    <td>angus@seneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">argyll</td>
-                    <td>Argyll &amp; Bute</td>
-                    <td>argyll@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">edinburgh</td>
-                    <td>City of Edinburgh</td>
-                    <td>edinburgh@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">clackmannanshire</td>
-                    <td>Clackmannanshire</td>
-                    <td>clackmannanshire@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">Dumfries &amp; Galloway</td>
-                    <td>Dumfries &amp; Galloway</td>
-                    <td>dumfries@myseneca.ca</td>
-                    <td>Professor</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">dundee</td>
-                    <td>Dundee City</td>
-                    <td>dundee@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">east.ayrshire</td>
-                    <td>East Ayrshire</td>
-                    <td>east.ayrshire@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">Dunbartonshire </td>
-                    <td>6,560</td>
-                    <td>@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">East Lothian </td>
-                    <td>2,985</td>
-                    <td>@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">East Renfrewshire </td>
-                    <td>5,460</td>
-                    <td>@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">Eilean Siar </td>
-                    <td>1,295</td>
-                    <td>@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">Falkirk </td>
-                    <td>4,740</td>
-                    <td>@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">Fife </td>
-                    <td>14,650</td>
-                    <td>fife@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">Glasgow City </td>
-                    <td>25,155</td>
-                    <td>glashgow@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">Highland </td>
-                    <td>8,110</td>
-                    <td>highland@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">Inverclyde</td>
-                    <td>3,645</td>
-                    <td>inverclyde@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                  <tr>
-                    <td class="row">Midlothian </td>
-                    <td>2,620</td>
-                    <td>midlothian@myseneca.ca</td>
-                    <td>Student</td>
-                    <td>ITC</td>
-                    <td class="icons" align="center"><a href="#" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user from attendees list" alt="Add"/></a></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </fieldset>
-        </div>
-      </article>
-      -->
       <article>
         <h4></h4>
         <fieldset>
           <div class="buttons">
             <button type="submit" name="submit" id="save" class="button" title="Click here to save inserted data">Save</button>
-            <button type="button" name="button" id="cancel"  class="button" title="Click here to cancel">Cancel</button>
+            <button type="button" name="button" id="cancel"  class="button" title="Click here to cancel" onclick="window.location.href='calendar.jsp'">Cancel</button>
           </div>
         </fieldset>
       </article>

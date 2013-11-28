@@ -19,7 +19,7 @@
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <script type="text/javascript" src="js/componentController.js"></script>
-<%  edit_password
+<%  
 	//Start page validation
 	String userId = usersession.getUserId();
 	if (userId.equals("")) {

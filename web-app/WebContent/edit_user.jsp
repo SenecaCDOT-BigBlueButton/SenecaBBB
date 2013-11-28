@@ -142,7 +142,7 @@
                         </div>
                         <div class="component">
                             <label for="bbbUserNickname" class="label">Nick Name:</label>
-                            <input name="bbbUserNickname" id="bbbUserNickname" class="input" tabindex="16" title="Nick Name" type="text" value="<%= bbbUserInfo.get(0).get(1) %>" >
+                            <input name="bbbUserNickname" id="bbbUserNickname" class="input" tabindex="16" title="Nick Name" type="text" value="<%= bbbUserInfo.get(0).get(1) %>" required autofocus>
                         </div>
                         <%  if (isNonLdap.get_value()){ %> 
                         <div class="component">
@@ -160,21 +160,21 @@
                           <%} %>    
 
                        <div class="component">
-                            <div class="checkbox" title="bbbUser Is Banned"> <span class="box" role="checkbox"  aria-checked="true" tabindex="16" aria-labelledby="userinfor1"></span>
+                            <div class="checkbox" title="bbbUser Is Banned"> <span class="box" role="checkbox"  aria-checked="true"  aria-labelledby="userinfor1"></span>
                                 <label class="checkmark"></label>
                                 <label class="text" id="bbbUserIsBanned">Is User Banned</label>
                                 <input type="checkbox" name="bbbUserIsBanned" id="bbbUserIsBanned" checked="checked" >
                             </div>
                         </div>
                        <div class="component">
-                            <div class="checkbox" title="bbbUser Is Active"> <span class="box" role="checkbox"  aria-checked="true" tabindex="16" aria-labelledby="userinfor2"></span>
+                            <div class="checkbox" title="bbbUser Is Active"> <span class="box" role="checkbox"  aria-checked="true" aria-labelledby="userinfor2"></span>
                                 <label class="checkmark"></label>
                                 <label class="text" id="bbbUserIsActive">Is User Active</label>
                                 <input type="checkbox" name="bbbUserIsActive" id="bbbUserIsActive" checked="checked" >
                             </div>
                         </div>
                        <div class="component">
-                            <div class="checkbox" title="bbbUser Is Super"> <span class="box" role="checkbox"  aria-checked="true" tabindex="16" aria-labelledby="userinfor3"></span>
+                            <div class="checkbox" title="bbbUser Is Super"> <span class="box" role="checkbox"  aria-checked="true"  aria-labelledby="userinfor3"></span>
                                 <label class="checkmark"></label>
                                 <label class="text" id="bbbUserIsSuper">Is Super Admin</label>
                                 <input type="checkbox" name="bbbUserIsSuper" id="bbbUserIsSuper" checked="checked" >
@@ -182,10 +182,10 @@
                         </div>                                    
                         <div class="component">
                             <div class="buttons">
-                               <input type="submit" name="updateUser" id="updateUser" class="button" value="update" title="Click here to update" >
-                               <input type="reset" name="resetUser" id="resetUser" class="button" title="Click here to reset">                            
+                               <input type="submit" name="updateUser" id="updateUser" class="button" value="update" title="Click here to update" tabindex="20" >
+                               <input type="reset" name="resetUser" id="resetUser" class="button" title="Click here to reset" tabindex="21" >                            
                                <input type="button" name="button" id="cancelEdit"  value="cancel" class="button" title="Click here to cancel" 
-                                onclick="window.location.href='manage_users.jsp'">
+                                onclick="window.location.href='manage_users.jsp'" tabindex="22" >
                             </div>
                         </div>
                     </fieldset>
@@ -199,25 +199,17 @@
             $('#userInfor').validate({
                 validateOnBlur : true,
                 rules: {
-                	bbbUserIsBanned: {
+                	bbbUserNickname: {
+                        required: true,
+                        pattern: /^\s*[a-zA-Z]+[\.\-a-zA-Z0-9 ]*\s*$/
+                    },                  
+                	bbbUserName: {
                        required: true,
-                       pattern: /^\s*[01]\s*$/
-                   },
-                   bbbUserIsActive: {
-                       required: true,
-                       pattern: /^\s*[01]\s*$/
-                   },
-                   bbbUserIsSuper: {
-                       required: true,
-                       pattern: /^\s*[01]\s*$/
-                   },
-                   bbbUserName: {
-                       required: true,
-                       pattern: /^\s*[a-zA-Z]+[\.\-a-zA-Z]*\s*$/
+                       pattern: /^\s*[a-zA-Z]+[\.\-a-zA-Z0-9 ]*\s*$/
                    },
                    bbbUserLastName: {
                        required: true,
-                       pattern: /^\s*[a-zA-Z]+[\.\-a-zA-Z]*\s*$/
+                       pattern: /^\s*[a-zA-Z]+[\.\-a-zA-Z0-9 ]*\s*$/
                    },
                    bbbUserEmail: {
                        required: true,
@@ -225,19 +217,11 @@
                    }
                 },
                 messages: {
-                	bbbUserIsBanned: { 
-                        pattern:"Only 0 or 1 is valid",
-                        required:"this field is required"
-                    },
-                    bbbUserIsActive:{
-                        required: "this field is require",
-                        pattern: "Only 0 or 1 is valide"
-                    },
-                    bbbUserIsSuper:{
+                	bbbUserNickname:{
                         required: "this field is required",
-                        pattern: "Only 0 or 1 is valid"
-                    },
-                    bbbUserName:{
+                        pattern: "Invalid nick name"
+                    },                 
+                	bbbUserName:{
                         required: "this field is required",
                         pattern: "Invalid name"
                     },

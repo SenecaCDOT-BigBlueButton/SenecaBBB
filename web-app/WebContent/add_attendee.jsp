@@ -72,11 +72,12 @@
         return;
     }
     // End page validation
-    
+
     // Start User Search
     int i = 0;
     boolean searchSucess = false;
-    String bu_id = request.getParameter("searchBox");
+    String bu_id = request.getParameter("addBox");
+    String nonldap = request.getParameter("searchBox");
     if (bu_id!=null) {
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
@@ -104,13 +105,15 @@
                     if (findUser(dbaccess, ldap, bu_id)) {
                         searchSucess = true;
                     } else {
-                        message = "User Not Found";
+                        message = "Could not add User";
                     }
                 }
             }
         }
     }
     // End User Search
+    
+    ArrayList<ArrayList<String>> searchResult = new ArrayList<ArrayList<String>>();
     
     if (searchSucess) {
         if (!meeting.createMeetingAttendee(bu_id, ms_id, false)) {
@@ -120,6 +123,28 @@
         } else {
             message = bu_id + " added to meeting attendee list";
         }
+    } else if (nonldap != null) {
+        nonldap = Validation.prepare(nonldap);
+        if (!(Validation.checkBuId(nonldap))) {
+            message = Validation.getErrMsg();
+        } else {
+            String[] searchTerms = nonldap.split("[ .]");
+            String term1 = "";
+            String term2 = "";
+            if (searchTerms.length == 1) {
+                term1 = searchTerms[0];
+                term2 = searchTerms[0];
+            } else if (searchTerms.length >= 2) {
+                term1 = searchTerms[0];
+                term2 = searchTerms[1];
+            }
+            if (!user.getNonLdapSearch(searchResult, term1, term2)) {
+                message = user.getErrMsg("AA10");
+                response.sendRedirect("logout.jsp?message=" + message);
+                return;   
+            }
+            message = searchResult.size() + " Result(s) Found";
+        }  
     } else {
         String mod = request.getParameter("mod");
         String remove = request.getParameter("remove");
@@ -172,18 +197,11 @@
 /* TABLE */
 $(screen).ready(function() {
     /* CURRENT EVENT */
-    /*
-    $('#addAttendee').dataTable({
-            "bPaginate": false,
-            "bLengthChange": false,
-            "bFilter": false,
-            "bSort": false,
-            "bInfo": false,
-            "bAutoWidth": false});
-    $('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    */
     $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
     $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+    $('#tbSearch').dataTable({"sPaginationType": "full_numbers"});
+    $('#tbSearch').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+    $.fn.dataTableExt.sErrMode = 'throw';
     $.fn.dataTableExt.sErrMode = 'throw';
     $('.dataTables_filter input').attr("placeholder", "Filter entries");
     $(".remove").click(function(){
@@ -213,10 +231,10 @@ $(function(){
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%=message %></div>
         </header>
-        <form name="addAttendee" method="get" action="add_attendee.jsp">
+        <form name="addAttendee" id="addAttendee" method="get" action="add_attendee.jsp">
             <article>
                 <header>
-                  <h2>Add attendee</h2>
+                  <h2>Add User To Attendee List</h2>
                   <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
                 </header>
                 <div class="content">
@@ -224,13 +242,65 @@ $(function(){
                         <div class="component">
                             <input type="hidden" name="ms_id" id="ms_id" value="<%= ms_id %>">
                             <input type="hidden" name="m_id" id="m_id" value="<%= m_id %>">  
-                            <label for="searchBoxAddAttendee" class="label">Search User:</label>
-                              <input type="text" name="searchBox" id="searchBox" class="searchBox" tabindex="37" title="Search user">
+                            <label for="addBox" class="label">Add User:</label>
+                              <input type="text" name="addBox" id="addBox" class="searchBox" tabindex="37" title="Add user">
                               <button type="submit" name="search" class="search" tabindex="38" title="Search user"></button><div id="responseDiv"></div>
                         </div>
                     </fieldset>
                 </div>
             </article>
+            <article>
+                <header id="expanSearch">
+                    <h2>Search For Guest User</h2>
+                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                </header>
+                 <div class="content">
+                    <fieldset>
+                        <div class="component">
+                            <label for="searchBox" class="label">Search User:</label>
+                              <input type="text" name="searchBox" id="searchBox" class="searchBox" tabindex="37" title="Add user">
+                              <button type="submit" name="addAttendee" id="addAttendee" class="search" tabindex="38" title="Search user"></button><div id="responseDiv"></div>
+                        </div>
+                    </fieldset>
+                </div>
+            </article>
+            <%  if (searchResult.size() > 0) { %>
+            <article>
+                <header id="expanSearch">
+                    <h2>Search Results</h2>
+                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                </header>
+                <div class="content">
+                    <fieldset>
+                        <div id="currentEventDiv" class="tableComponent">
+                            <table id="tbSearch" border="0" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="firstColumn" tabindex="16">Id<span></span></th>
+                                        <th>First Name<span></span></th>
+                                        <th>Last Name<span></span></th>
+                                        <th width="65" title="Add" class="icons" align="center">Add</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <% for (i=0; i<searchResult.size(); i++) { %>
+                                    <tr>
+                                        <td class="row"><%= searchResult.get(i).get(0) %></td>
+                                        <td><%= searchResult.get(i).get(1) %></td>
+                                        <td><%= searchResult.get(i).get(2) %></td>
+                                        <td class="icons" align="center">
+                                            <a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&addBox=<%= searchResult.get(i).get(0) %>" class="add">
+                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="Add user" alt="Add"/>
+                                        </a></td>
+                                    </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div> 
+                    </fieldset>
+                </div>
+            </article>
+            <% } %>
             <article>
                 <header id="expandAttendee">
                     <h2>Meeting Attendee List</h2>
@@ -282,6 +352,26 @@ $(function(){
             </article>
         </form>
     </section>
+    <script>    
+   // form validation, edit the regular expression pattern and error messages to meet your needs
+       $(document).ready(function(){
+    	   $('#addAttendee').validate({
+    	        validateOnBlur : true,
+    	        rules: {
+    	            searchBox: {
+    	               //required: true,
+    	               pattern: /^\s*[a-zA-z0-9]+[ \.]?[a-zA-z]*\s*$/
+    	           }              
+    	        },
+    	        messages: {
+    	            searchBox: { 
+    	                pattern:"Search by first or lastname <br />You can also enter 'firstname lastname' or 'firstname.lastname'"
+    	                //required:
+    	            }
+    	        }
+    	    });
+        });
+    </script>
     <jsp:include page="footer.jsp"/>
 </div>
 </body>

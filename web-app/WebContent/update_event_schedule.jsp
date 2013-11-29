@@ -71,11 +71,14 @@ public static String getMonthNumber(String month) {
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-    
-    String startMonthNumber=null;
-    startMonthNumber = getMonthNumber(request.getParameter("dropdownMonthStarts"));
-    String endMonthNumber=null;
-    endMonthNumber = getMonthNumber(request.getParameter("monthEnds"));
+    String startMonthNumber = request.getParameter("dropdownMonthStarts");
+    String endMonthNumber = request.getParameter("dropdownMonthEnds");
+    if(startMonthNumber!=null){
+    	startMonthNumber=getMonthNumber(startMonthNumber);
+    }
+    if(endMonthNumber!=null){
+    	endMonthNumber=getMonthNumber(endMonthNumber);
+    }
     String eventId = request.getParameter("eventScheduleId");
     String e_Id = request.getParameter("eventId");
     String eventDescription = request.getParameter("eventDescription");
@@ -113,7 +116,7 @@ public static String getMonthNumber(String month) {
     String repeatEvery = request.getParameter("repeatsInterval"); // daily or weekly is chosen, repeat interval
     String endType = request.getParameter("ends"); // on specified date or after number of occurrences
     String numberOfOccurrences = request.getParameter("numberOfOccurrences"); // if after number of occurrences is chosen, times of repeating
-    String repeatEndDate = request.getParameter("yearEnds").concat("-").concat(endMonthNumber).concat("-").concat(request.getParameter("dayEnds")); // if on specified date is chosen, specified end date
+    String repeatEndDate = request.getParameter("dropdownYearEnds").concat("-").concat(endMonthNumber).concat("-").concat(request.getParameter("dropdownDayEnds")); // if on specified date is chosen, specified end date
     
     // weekly recurrence, weekday selected  
     String weekString = request.getParameter("weekString");
@@ -158,8 +161,10 @@ public static String getMonthNumber(String month) {
        if( meeting.updateMeetingSchedule(eventId, inidatetime, spec, eventDescription)){
            if(meeting.updateMeetingDuration(3, eventId, "1", duration)){
                response.sendRedirect("calendar.jsp?message=meeting updated successfully"); 
+               return;
            }else{
-               response.sendRedirect("calendar.jsp?message=update failure");  
+               response.sendRedirect("calendar.jsp?message=update fail"); 
+               return;
            }
        }
        
@@ -167,9 +172,10 @@ public static String getMonthNumber(String month) {
     else{ //update a lecture schedule
         if(lecture.updateLectureSchedule(eventId, inidatetime, spec, eventDescription)){
             if(lecture.updateLectureDuration(3, eventId, "1", duration)){
-                response.sendRedirect("calendar.jsp?message=meeting updated successfully"); 
+                response.sendRedirect("calendar.jsp?message=lecture updated successfully"); 
+                return;
             }else{
-                response.sendRedirect("calendar.jsp?message=update failure");  
+                response.sendRedirect("calendar.jsp?message=update fail");  
             } 
         }
     }

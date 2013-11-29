@@ -101,11 +101,10 @@ $(screen).ready(function() {
 			$("#dropdownYearStarts").val(data.getUTCFullYear());
 			$("#dropdownYearEnds").val(data.getUTCFullYear());
 		}
-
 		populateDate();
 
 		//Change days field according to the current month
-		function populateMonthStarts(month){
+		 populateMonthStarts= function(month){
 			switch (month){
 				case "January":
 				case "March":
@@ -155,10 +154,10 @@ $(screen).ready(function() {
 					$("#dropdownDayStarts").selectmenu({'refresh': true});
 					break;
 			}
-		}
+		};
 		
 		//Change days field according to the current month
-		function populateMonthEnds(month){
+		 populateMonthEnds= function(month){
 			switch (month){
 				case "January":
 				case "March":
@@ -209,11 +208,15 @@ $(screen).ready(function() {
 					$("#dropdownDayEnds").selectmenu({'refresh': true});
 					break;
 			}
-		}
+		};
 
 		//Change days field according to the current month
 		$("#dropdownMonthStarts").change(function(){
-			populateMonthStarts($("#dropdownMonthStarts").val());
+			populateMonthStarts($("#dropdownMonthStarts").val());			
+			$("#dropdownMonthEnds").val($("#dropdownMonthStarts").val());
+			populateMonthEnds($("#dropdownMonthStarts").val());
+			$("#dropdownDayEnds").selectmenu({'refresh': true});
+			$("#dropdownMonthEnds").selectmenu({'refresh': true});
 		});
 		
 		$("#dropdownEventType").change(function(e){
@@ -240,6 +243,9 @@ $(screen).ready(function() {
 		//Change days field according to the current year
 		$("#dropdownYearStarts").change(function(){
 			populateMonthStarts($("#dropdownMonthStarts").val());
+			populateMonthEnds($("#dropdownMonthStarts").val());
+			$("#dropdownYearEnds").val($("#dropdownYearStarts").val());
+			$("#dropdownYearEnds").selectmenu({'refresh': true});
 		});
 
 		//Change days field according to the current year
@@ -703,14 +709,21 @@ $(screen).ready(function() {
 				case "On specified date"://On specified date
 					$("#occurrencesNumber").css("display", "none");
 					$("#occurrenceEnds").css("display", "block");
-				//	$("#dropdownMonthEnds").val($("#dropdownMonthStarts").val());
-					$("#monthEnds").selectmenu({'refresh': true});
-				//	$("#dropdownDayEnds").val($("#dropdownDayStarts").val());
-					$("#dayEnds").selectmenu({'refresh': true});
-				//	$("#dropdownYearEnds").val($("#dropdownYearStarts").val());
-					$("#yearEnds").selectmenu({'refresh': true});
+					$("#dropdownMonthEnds").val($("#dropdownMonthStarts").val());
+					$("#dropdownMonthEnds").selectmenu({'refresh': true});
+					$("#dropdownDayEnds").val($("#dropdownDayStarts").val());
+					$("#dropdownDayEnds").selectmenu({'refresh': true});
+					$("#dropdownYearEnds").val($("#dropdownYearStarts").val());
+					$("#dropdownYearEnds").selectmenu({'refresh': true});
 					break;
-			}
+				case "After # of week(s)"://After # of week(s)
+					$("#occurrencesNumber").css("display", "block");
+					$("#occurrencesNumber").text();
+					$("#occurrenceEnds").css("display", "none");
+					$("#occurrences").val("1");
+					break;
+			}				
+
 		});
 
 		// ends for edit event schedule

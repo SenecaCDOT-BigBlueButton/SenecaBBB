@@ -126,57 +126,6 @@
         $("#courseCode").selectmenu({'refresh': true});
         $('#startTime').timepicker({ 'scrollDefaultNow': true });
 	});
-
-	//Date picker
-	$(function(){
-		var month = new Array(12);
-		month[0]="January";
-		month[1]="February";
-		month[2]="March";
-		month[3]="April";
-		month[4]="May";
-		month[5]="June";
-		month[6]="July";
-		month[7]="August";
-		month[8]="September";
-		month[9]="October";
-		month[10]="November";
-		month[11]="December";
-		
-		var datePickerStarts = {
-			showOn: "button",
-			buttonText:"",
-			minDate: 0,
-			maxDate: "+1Y",
-			onSelect:function(dateText){
-				var startDate = new Date(dateText);
-				$("#dropdownDayStarts").val(startDate.getUTCDate());
-				$("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
-				$("#dropdownYearStarts").val(startDate.getUTCFullYear());
-				$("#dropdownDayStarts").selectmenu({'refresh': true});
-				$("#dropdownMonthStarts").selectmenu({'refresh': true});
-				$("#dropdownYearStarts").selectmenu({'refresh': true});
-			}
-		};
-		var datePickerEnds = {
-			showOn: "button",
-			buttonText:"",
-			minDate: 0,
-			maxDate: "+1Y",
-			onSelect:function(dateText){
-				var endDate = new Date(dateText);
-				$("#dropdownDayEnds").val(endDate.getUTCDate());
-				$("#dropdownMonthEnds").val(month[endDate.getUTCMonth()]);
-				$("#dropdownYearEnds").val(endDate.getUTCFullYear());
-				$("#dropdownDayEnds").selectmenu({'refresh': true});
-				$("#dropdownMonthEnds").selectmenu({'refresh': true});
-				$("#dropdownYearEnds").selectmenu({'refresh': true});
-			}
-		};
-		$("#datePickerStarts").datepicker(datePickerStarts);
-		$("#datePickerEnds").datepicker(datePickerEnds);
-	});
-
 	
 </script>
 <script type="text/javascript">
@@ -496,6 +445,7 @@
    </section>
    <script>    
    // form validation, edit the regular expression pattern and error messages to meet your needs
+   
 	   $(document).ready(function(){
 		    $('#eventForm').validate({
 		    	validateOnBlur : true,
@@ -538,6 +488,61 @@
 		        	repeatsEvery:"Please enter a valid Number",
 		        	occurrences:"Please enter a valid Number"
 		        }
+		    });
+		    //Date picker
+		    
+		    $(function(){
+		        var month = new Array(12);
+		        month[0]="January";
+		        month[1]="February";
+		        month[2]="March";
+		        month[3]="April";
+		        month[4]="May";
+		        month[5]="June";
+		        month[6]="July";
+		        month[7]="August";
+		        month[8]="September";
+		        month[9]="October";
+		        month[10]="November";
+		        month[11]="December";
+		        
+		        var datePickerStarts = {
+		            showOn: "button",
+		            buttonText:"",
+		            minDate: 0,
+		            maxDate: "+1Y",
+		            onSelect:function(dateText){
+		                var startDate = new Date(dateText);
+		                $("#dropdownDayStarts").val(startDate.getUTCDate());
+		                $("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
+		                $("#dropdownYearStarts").val(startDate.getUTCFullYear());
+		                populateMonthStarts($("#dropdownMonthStarts").val());
+		                populateMonthEnds($("#dropdownMonthStarts").val());
+		                $("#dropdownDayStarts").selectmenu({'refresh': true});
+		                $("#dropdownMonthStarts").selectmenu({'refresh': true});
+		                $("#dropdownYearStarts").selectmenu({'refresh': true});
+		               
+		            }
+		        };
+		        var datePickerEnds = {
+		            showOn: "button",
+		            buttonText:"",
+		            minDate: 0,
+		            maxDate: "+1Y",
+		            onSelect:function(dateText){
+		                var endDate = new Date(dateText);
+		                $("#dropdownDayEnds").val(endDate.getUTCDate());
+		                $("#dropdownMonthEnds").val(month[endDate.getUTCMonth()]);
+		                $("#dropdownYearEnds").val(endDate.getUTCFullYear());
+		                populateMonthEnds($("#dropdownMonthEnds").val());
+		                $("#dropdownDayEnds").selectmenu({'refresh': true});
+		                $("#dropdownMonthEnds").selectmenu({'refresh': true});
+		                $("#dropdownYearEnds").selectmenu({'refresh': true});
+		               
+		            }
+		        };
+		        $("#datePickerStarts").datepicker(datePickerStarts);
+		        $("#datePickerEnds").datepicker(datePickerEnds);
 		    });
 		});
   </script>

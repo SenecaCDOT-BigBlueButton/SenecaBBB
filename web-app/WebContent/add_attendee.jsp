@@ -35,13 +35,17 @@
         return;
     }
     String message = request.getParameter("message");
+    String errMessage = request.getParameter("errMessage");
     if (message == null || message == "null") {
         message="";
+    }
+    if (errMessage == null) {
+    	errMessage="";
     }
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
     if (m_id==null || ms_id==null) {
-        response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
+        response.sendRedirect("calendar.jsp?errMessage=Please do not mess with the URL");
         return;
     }
     m_id = Validation.prepare(m_id);
@@ -171,17 +175,7 @@
 <script type="text/javascript">
 /* TABLE */
 $(screen).ready(function() {
-    /* CURRENT EVENT */
-    /*
-    $('#addAttendee').dataTable({
-            "bPaginate": false,
-            "bLengthChange": false,
-            "bFilter": false,
-            "bSort": false,
-            "bInfo": false,
-            "bAutoWidth": false});
-    $('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    */
+
     $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
     $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $.fn.dataTableExt.sErrMode = 'throw';
@@ -212,6 +206,7 @@ $(function(){
             <br />
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%=message %></div>
+            <div class="errorMessage"><%=errMessage %></div>
         </header>
         <form name="addAttendee" method="get" action="add_attendee.jsp">
             <article>

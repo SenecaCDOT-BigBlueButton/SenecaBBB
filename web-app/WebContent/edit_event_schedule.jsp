@@ -161,13 +161,11 @@
         $("#dropdownDayStarts").selectmenu({'refresh': true});
         $("#dropdownMonthStarts").selectmenu({'refresh': true});
         $("#dropdownYearStarts").selectmenu({'refresh': true});
-        $("#dropdownDayEnds").selectmenu({'refresh': true});
-        $("#dropdownMonthEnds").selectmenu({'refresh': true});
-        $("#dropdownYearEnds").selectmenu({'refresh': true});
         $("#dropdownEventType").selectmenu({'refresh': true});
         $("#Recurrence").selectmenu({'refresh': true});
         $("#courseCode").selectmenu({'refresh': true});
         $('#startTime').timepicker({ 'scrollDefaultNow': true });
+
       //Date picker
         $(function(){
             var month = new Array(12);
@@ -194,13 +192,33 @@
                     $("#dropdownDayStarts").val(startDate.getUTCDate());
                     $("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
                     $("#dropdownYearStarts").val(startDate.getUTCFullYear());
+                    populateMonthStarts($("#dropdownMonthStarts").val());
+                    populateMonthEnds($("#dropdownMonthStarts").val());
                     $("#dropdownDayStarts").selectmenu({'refresh': true});
                     $("#dropdownMonthStarts").selectmenu({'refresh': true});
                     $("#dropdownYearStarts").selectmenu({'refresh': true});
+                   
+                }
+            };
+            var datePickerEnds = {
+                showOn: "button",
+                buttonText:"",
+                minDate: 0,
+                maxDate: "+1Y",
+                onSelect:function(dateText){
+                    var endDate = new Date(dateText);
+                    $("#dropdownDayEnds").val(endDate.getUTCDate());
+                    $("#dropdownMonthEnds").val(month[endDate.getUTCMonth()]);
+                    $("#dropdownYearEnds").val(endDate.getUTCFullYear());
+                    populateMonthEnds($("#dropdownMonthEnds").val());
+                    $("#dropdownDayEnds").selectmenu({'refresh': true});
+                    $("#dropdownMonthEnds").selectmenu({'refresh': true});
+                    $("#dropdownYearEnds").selectmenu({'refresh': true});
+                   
                 }
             };
             $("#datePickerStarts").datepicker(datePickerStarts);
-
+            $("#datePickerEnds").datepicker(datePickerEnds);
         });
 
     });
@@ -517,61 +535,27 @@
               <input type="number" name="numberOfOccurrences" id="numberOfOccurrences" class="input" tabindex="36" title="Occurrences"  placeholder="# of occurrences" min="1" value="<%= occurences%>"/>
             </div>
             <div id="occurrenceEnds" class="component">
-              <label for="dropdownMonthEnds" class="label">Date:</label>
-              <div class="datePicker" title="Choose a date" style="display:none">
+              <label for="dropdownMonthEnds" class="label">End Date:</label>
+              <div class="datePicker" title="Choose a date">
                 <input name="datePickerEnds" id="datePickerEnds" class="datePicker" aria-disabled="true"  aria-hidden="true" aria-readonly="true" readonly>
               </div>
-              <select name="yearEnds" id="yearEnds" title="Year" tabindex="23" role="listbox" style="width: 120px">
-                <option role="option" <% if(endsYear.equals("2013")){out.print("selected=selected");} %>>2013</option>
-                <option role="option" <% if(endsYear.equals("2014")){out.print("selected=selected");} %>>2014</option>
-                <option role="option" <% if(endsYear.equals("2015")){out.print("selected=selected");} %>>2015</option>
+              <select name="dropdownYearEnds" id="dropdownYearEnds" title="Year" tabindex="23" role="listbox" style="width: 100px">
               </select>
-              <select name="dayEnds" id="dayEnds" title="Day" tabindex="22" role="listbox" style="width: 120px">
-                <option role="option" value="1" <% if(endsDay.equals("01")){out.print("selected=selected");} %>>1st</option>
-                <option role="option" value="2" <% if(endsDay.equals("02")){out.print("selected=selected");} %>>2nd</option>
-                <option role="option" value="3" <% if(endsDay.equals("03")){out.print("selected=selected");} %>>3rd</option>
-                <option role="option" value="4" <% if(endsDay.equals("04")){out.print("selected=selected");} %>>4th</option>
-                <option role="option" value="5" <% if(endsDay.equals("05")){out.print("selected=selected");} %>>5th</option>
-                <option role="option" value="6" <% if(endsDay.equals("06")){out.print("selected=selected");} %>>6th</option>
-                <option role="option" value="7" <% if(endsDay.equals("07")){out.print("selected=selected");} %>>7th</option>
-                <option role="option" value="8" <% if(endsDay.equals("08")){out.print("selected=selected");} %>>8th</option>
-                <option role="option" value="9" <% if(endsDay.equals("09")){out.print("selected=selected");} %>>9th</option>
-                <option role="option" value="10" <% if(endsDay.equals("10")){out.print("selected=selected");} %>>10th</option>
-                <option role="option" value="11" <% if(endsDay.equals("11")){out.print("selected=selected");} %>>11th</option>
-                <option role="option" value="12" <% if(endsDay.equals("12")){out.print("selected=selected");} %>>12th</option>
-                <option role="option" value="13" <% if(endsDay.equals("13")){out.print("selected=selected");} %>>13th</option>
-                <option role="option" value="14" <% if(endsDay.equals("14")){out.print("selected=selected");} %>>14th</option>
-                <option role="option" value="15" <% if(endsDay.equals("15")){out.print("selected=selected");} %>>15th</option>
-                <option role="option" value="16" <% if(endsDay.equals("16")){out.print("selected=selected");} %>>16th</option>
-                <option role="option" value="17" <% if(endsDay.equals("17")){out.print("selected=selected");} %>>17th</option>
-                <option role="option" value="18" <% if(endsDay.equals("18")){out.print("selected=selected");} %>>18th</option>
-                <option role="option" value="19" <% if(endsDay.equals("19")){out.print("selected=selected");} %>>19th</option>
-                <option role="option" value="20" <% if(endsDay.equals("20")){out.print("selected=selected");} %>>20th</option>
-                <option role="option" value="21" <% if(endsDay.equals("21")){out.print("selected=selected");} %>>21st</option>
-                <option role="option" value="22" <% if(endsDay.equals("22")){out.print("selected=selected");} %>>22nd</option>
-                <option role="option" value="23" <% if(endsDay.equals("23")){out.print("selected=selected");} %>>23rd</option>
-                <option role="option" value="24" <% if(endsDay.equals("24")){out.print("selected=selected");} %>>24th</option>
-                <option role="option" value="25" <% if(endsDay.equals("25")){out.print("selected=selected");} %>>25th</option>
-                <option role="option" value="26" <% if(endsDay.equals("26")){out.print("selected=selected");} %>>26th</option>
-                <option role="option" value="27" <% if(endsDay.equals("27")){out.print("selected=selected");} %>>27th</option>
-                <option role="option" value="28" <% if(endsDay.equals("28")){out.print("selected=selected");} %>>28th</option>
-                <option role="option" value="29" <% if(endsDay.equals("29")){out.print("selected=selected");} %>>29th</option>
-                <option role="option" value="30" <% if(endsDay.equals("30")){out.print("selected=selected");} %>>30th</option>
-                <option role="option" value="31" <% if(endsDay.equals("31")){out.print("selected=selected");} %>>31st</option>
+              <select name="dropdownDayEnds" id="dropdownDayEnds" title="Day" tabindex="22" role="listbox" style="width: 100px">
               </select>
-              <select name="monthEnds" id="monthEnds" title="Month" tabindex="21" role="listbox" style="width: 153px">
-                <option role="option"   <% if(endsMonth.equals("01")){out.print("selected=selected");} %>>January</option>
-                <option role="option" <% if(endsMonth.equals("02")){out.print("selected=selected");} %>>February</option>
-                <option role="option" <% if(endsMonth.equals("03")){out.print("selected=selected");} %>>March</option>
-                <option role="option" <% if(endsMonth.equals("04")){out.print("selected=selected");} %>>April</option>
-                <option role="option" <% if(endsMonth.equals("05")){out.print("selected=selected");} %>>May</option>
-                <option role="option" <% if(endsMonth.equals("06")){out.print("selected=selected");} %>>June</option>
-                <option role="option" <% if(endsMonth.equals("07")){out.print("selected=selected");} %>>July</option>
-                <option role="option" <% if(endsMonth.equals("08")){out.print("selected=selected");} %>>August</option>
-                <option role="option" <% if(endsMonth.equals("09")){out.print("selected=selected");} %>>September</option>
-                <option role="option" <% if(endsMonth.equals("10")){out.print("selected=selected");} %>>October</option>
-                <option role="option" <% if(endsMonth.equals("11")){out.print("selected=selected");} %>>November</option>
-                <option role="option" <% if(endsMonth.equals("12")){out.print("selected=selected");} %>>December</option>
+              <select name="dropdownMonthEnds" id="dropdownMonthEnds" title="Month" tabindex="21" role="listbox" style="width: 143px">
+                <option role="option">January</option>
+                <option role="option">February</option>
+                <option role="option">March</option>
+                <option role="option">April</option>
+                <option role="option">May</option>
+                <option role="option">June</option>
+                <option role="option">July</option>
+                <option role="option">August</option>
+                <option role="option">September</option>
+                <option role="option">October</option>
+                <option role="option">November</option>
+                <option role="option">December</option>
               </select>
             </div>
             <div class="component" >
@@ -647,6 +631,29 @@
                     numberOfOccurrences:"Please enter a valid Number"
                 }
             });
+            //populate event end date 
+            var month = new Array(12);
+            month[0]="January";
+            month[1]="February";
+            month[2]="March";
+            month[3]="April";
+            month[4]="May";
+            month[5]="June";
+            month[6]="July";
+            month[7]="August";
+            month[8]="September";
+            month[9]="October";
+            month[10]="November";
+            month[11]="December";
+            <% if(!endsYear.equals("") && !endsMonth.equals("") && !endsDay.equals("") ){%>
+                var endDate = new Date(<%= Integer.parseInt(endsYear) %>,<%= Integer.parseInt(endsMonth)-1 %>,<%= Integer.parseInt(endsDay) %>);
+	            $("#dropdownDayEnds").val(endDate.getUTCDate());
+	            $("#dropdownMonthEnds").val(month[endDate.getUTCMonth()]);
+	            $("#dropdownYearEnds").val(endDate.getUTCFullYear());
+	            $("#dropdownDayEnds").selectmenu({'refresh': true});
+	            $("#dropdownMonthEnds").selectmenu({'refresh': true});
+	            $("#dropdownYearEnds").selectmenu({'refresh': true});
+            <%}%>
         });
   </script>
   <jsp:include page="footer.jsp"/>

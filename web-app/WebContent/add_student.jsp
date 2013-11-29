@@ -35,9 +35,14 @@
         return;
     }
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
     }
+    if (successMessage == null) {
+        successMessage="";
+    }
+
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
     if (l_id==null || ls_id==null) {
@@ -128,7 +133,7 @@
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         } else {
-            message = bu_id + " added to student list";
+        	successMessage = bu_id + " added to student list";
         }
     } else if (nonldap != null) {
         nonldap = Validation.prepare(nonldap);
@@ -150,7 +155,7 @@
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
-            message = searchResult.size() + " Result(s) Found";
+            successMessage = searchResult.size() + " Result(s) Found";
         }  
     } else {
         String mod = request.getParameter("mod");
@@ -192,7 +197,7 @@
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 } else {
-                    message = remove + " was removed from student list";
+                	successMessage = remove + " was removed from student list";
                 }      
             }  
         }
@@ -240,8 +245,9 @@ $(function(){
             <!-- PAGE NAME -->
             <h1>Add Student</h1>
             <br />
-            <!-- WARNING MESSAGES -->
-            <div class="warningMessage"><%=message %></div>
+	        <!-- MESSAGES -->
+	        <div class="warningMessage"><%=message %></div>
+	        <div class="successMessage"><%=successMessage %></div> </header>
         </header>
         <form name="addMGuest" method="get" action="add_student.jsp">
             <article>

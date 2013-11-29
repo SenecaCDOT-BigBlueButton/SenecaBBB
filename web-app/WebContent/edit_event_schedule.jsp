@@ -31,7 +31,14 @@
 	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
 
 <%    
-    String message = request.getParameter("message");
+	String message = request.getParameter("message");
+	String successMessage = request.getParameter("successMessage");
+	if (message == null || message == "null") {
+	    message="";
+	}
+	if (successMessage == null) {
+	    successMessage="";
+	}
 	String ms_id = request.getParameter("ms_id");
 	String ls_id = request.getParameter("ls_id");
 	String m_id = request.getParameter("m_id");
@@ -82,9 +89,7 @@
         isLecture=true;
     }
     
-    if (message == null || message == "null") {
-        message="";
-    }
+
     //End page validation
     
 	ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>(); 
@@ -289,8 +294,9 @@
         <p><a href="calendar.jsp" tabindex="13">home</a> » edit event schedule</p>
         <h1>Edit Event Schedule</h1>
          <a href="help_editEventSchedule.jsp" target="_blank">help</a> 
-        <!-- WARNING MESSAGES -->
+        <!-- MESSAGES -->
         <div class="warningMessage"><%=message %></div>
+        <div class="successMessage"><%=successMessage %></div> 
       </header>
        <form method="get" action="update_event_schedule.jsp" id="eventForm">
       <article>

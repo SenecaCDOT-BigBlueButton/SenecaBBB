@@ -36,8 +36,12 @@
         return;
     }
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message = "";
+        message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
     }
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
@@ -149,8 +153,8 @@
     }
     
     if (edited && !editError) {
-        message = "Event Details Updated";
-        response.sendRedirect("view_event.jsp?ls_id=" + ls_id + "&l_id=" + l_id + "&message=" + message);
+    	successMessage = "Event Details Updated";
+        response.sendRedirect("view_event.jsp?ls_id=" + ls_id + "&l_id=" + l_id + "&successMessage=" + successMessage);
         return;  
     }
     
@@ -240,8 +244,9 @@ $(function(){
             <!-- PAGE NAME -->
             <h1>Lecture Event</h1>
             <br />
-            <!-- WARNING MESSAGES -->
+            <!-- MESSAGES -->
             <div class="warningMessage"><%=message %></div>
+            <div class="successMessage"><%=successMessage %></div> 
         </header>
         <form name="EditLecture" method="get" action="edit_lecture.jsp">
             <article>

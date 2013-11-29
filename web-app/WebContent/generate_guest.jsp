@@ -18,7 +18,14 @@
 <%
 	//Start page validation
 	String userId = usersession.getUserId();
-	String message;
+	String message = request.getParameter("message");
+	String successMessage = request.getParameter("successMessage");
+	if (message == null || message == "null") {
+	    message="";
+	}
+	if (successMessage == null) {
+	    successMessage="";
+	}
 	HashMap<String, Integer> roleMask = usersession.getRoleMask();
 	if (userId.equals("")) {
 	    response.sendRedirect("index.jsp?message=Please log in");
@@ -32,7 +39,6 @@
 	    return;
 	}//End page validation
 
-	message = "";
 	HashMap<String, Integer> map = new HashMap<String, Integer>();
 	User user = new User(dbaccess);		
 	String firstName = request.getParameter("firstName");

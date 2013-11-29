@@ -35,8 +35,12 @@
         return;
     }
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
     }
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
@@ -94,7 +98,7 @@
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 } else {
-                    message = lp_title + " added to presentation list";
+                	successMessage = lp_title + " added to presentation list";
                 }
             }
         }
@@ -111,7 +115,7 @@
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             } else {
-                message = remove + " was removed from presentation list";
+            	successMessage = remove + " was removed from presentation list";
             }
         }
     }
@@ -128,17 +132,6 @@
 <script type="text/javascript">
 /* TABLE */
 $(screen).ready(function() {
-    /* CURRENT EVENT */
-    /*
-    $('#addLPresentation').dataTable({
-            "bPaginate": false,
-            "bLengthChange": false,
-            "bFilter": false,
-            "bSort": false,
-            "bInfo": false,
-            "bAutoWidth": false});
-    $('#addLPresentation').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    */
     $('#tbPresentation').dataTable({"sPaginationType": "full_numbers"});
     $('#tbPresentation').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $.fn.dataTableExt.sErrMode = 'throw';
@@ -167,9 +160,9 @@ $(function(){
             <!-- PAGE NAME -->
             <h1>Add Lecture Presentation</h1>
             <br />
-            <!-- WARNING MESSAGES -->
+            <!-- MESSAGES -->
             <div class="warningMessage"><%=message %></div>
-        </header>
+            <div class="successMessage"><%=successMessage %></div> </header>
         <form name="addLPresentation" method="get" action="add_lpresentation.jsp">
             <article>
                 <header>

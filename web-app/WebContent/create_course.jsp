@@ -19,10 +19,14 @@
     }//End page validation
     
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
     }
-    
+    if (successMessage == null) {
+        successMessage="";
+    }
+
     User user = new User(dbaccess);
     String c_id = request.getParameter("c_id");
     String c_name = request.getParameter("c_name");
@@ -70,8 +74,9 @@
 				<h1>Edit Subject</h1><%}
 			   else { %><h1>Delete Subject</h1><%} %>
             
-            <!-- WARNING MESSAGES -->
-            <div class="warningMessage"><%= message %></div>
+	        <!-- MESSAGES -->
+	        <div class="warningMessage"><%=message %></div>
+	        <div class="successMessage"><%=successMessage %></div> </header>
         </header>
         <form name="createCourse" id="createCourse" method="post" action="persist_course.jsp">
             <article>

@@ -37,10 +37,14 @@
     }//End page validation
     
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
     }
-    
+    if (successMessage == null) {
+        successMessage="";
+    }
+  
     User user = new User(dbaccess);
     Section section = new Section(dbaccess);
     Department department = new Department(dbaccess);
@@ -61,8 +65,10 @@
             <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="subjects.jsp" tabindex="14">subjects</a> »<a href="edit_subject.jsp" tabindex="15">create section</a></p>
             <!-- PAGE NAME -->
             <h1>Create Section</h1>
-            <!-- WARNING MESSAGES -->
-            <div class="warningMessage"><%= message %></div>
+
+            <!-- MESSAGES -->
+            <div class="warningMessage"><%=message %></div>
+            <div class="successMessage"><%=successMessage %></div> 
         </header>
         <form name="createSection" id="createSection" method="post" action="persist_section.jsp">
             <article>

@@ -9,9 +9,14 @@
 <%@ page language="java" import="java.sql.*" errorPage=""%>
 <%
 	String message = request.getParameter("message");
-	if (message == null) {
-		message="";
+	String successMessage = request.getParameter("successMessage");
+	if (message == null || message == "null") {
+	    message="";
 	}
+	if (successMessage == null) {
+	    successMessage="";
+	}
+
 	session.invalidate();
-	response.sendRedirect("index.jsp?message=" + message);
+	response.sendRedirect("index.jsp?message=" + message + "&successMessage=" + successMessage);
 %>

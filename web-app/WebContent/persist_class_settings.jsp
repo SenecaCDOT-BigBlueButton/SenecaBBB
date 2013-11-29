@@ -23,6 +23,7 @@
     } //End page validation
     
     String message = request.getParameter("message");
+    String successMessage;
     String selectedclass = request.getParameter("classSectionInfo");
     String bu_id = request.getParameter("searchBox");
     if (message == null || message == "null") {
@@ -82,8 +83,8 @@ if (searchSucess) {
         response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + selectedclass);
         return;   
     } else {
-        message = bu_id + " added to student list";
-        response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + selectedclass);
+    	successMessage = bu_id + " added to student list";
+        response.sendRedirect("class_settings.jsp?successMessage=" + message + "&class=" + selectedclass);
         return;
     }
 } else {

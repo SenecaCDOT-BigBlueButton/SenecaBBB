@@ -18,6 +18,7 @@
 	ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 	String userID = request.getParameter("SenecaLDAPBBBLogin");
 	String password = request.getParameter("SenecaLDAPBBBLoginPass");
+	String message;
 	HashMap<String, Integer> userSettingMask = new HashMap<String, Integer>();
 	HashMap<String, Integer> userRoleMask = new HashMap<String, Integer>();
 	if (userID != null && password != null) {
@@ -84,7 +85,7 @@
 					usersession.setDepartmentAdmin(depAdmin.get_value());
 					user.setLastLogin(userID);
 				}
-				response.sendRedirect("calendar.jsp?message=Welcome to bbbman!");
+				response.sendRedirect("calendar.jsp?successMessage=Welcome!");
 				return;
 			}
 		}
@@ -119,22 +120,22 @@
 					usersession.setUserLevel(userInfo.get(15));
 				}
 				usersession.setLDAP(false);
-				response.sendRedirect("calendar.jsp?message=User login successfully");
+				response.sendRedirect("calendar.jsp?successMessage=User login successfully");
 				return;
 			} 
 			else {
-				String message = "Invalid username and/or password.";
+				message = "Invalid username and/or password.";
 				response.sendRedirect("index.jsp?message=" + message);
 				return;
 			}
 		// User doesn't exist in database or LDAP
 		} else {
-				String message = "Invalid username and/or password.";
+				message = "Invalid username and/or password.";
 				response.sendRedirect("index.jsp?message=" + message);
 				return;
 		}
 	} else {
-			String message = "Invalid username and/or password.**";
+			message = "Invalid username and/or password.**";
 			response.sendRedirect("index.jsp?message=" + message);
 	}
 %>

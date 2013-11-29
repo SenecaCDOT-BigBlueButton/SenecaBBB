@@ -39,11 +39,15 @@
 	}
 	//End page validation
 	
-	String message = request.getParameter("message");
-	if (message == null || message == "null") {
-		message="";
-	}
-	
+    String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
+        message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
+    }
+
 	User user = new User(dbaccess);
 	Department dept = new Department(dbaccess);
 	MyBoolean myBool = new MyBoolean();
@@ -63,7 +67,7 @@
 	        if (!dept.createDepartment(deptCode, deptName)) {
 	            message = "Could not create new department " + deptCode + dept.getErrMsg("D01");
 	        } else {
-	            message = "Department " + deptCode + " created"; 
+	        	successMessage = "Department " + deptCode + " created"; 
 	        }
 	    } else {
 	        message = Validation.getErrMsg();
@@ -86,7 +90,7 @@
 	    		    message = "Could not remove department " + deptRemove + dept.getErrMsg("D03");
             		dept.resetErrorFlag();
         		} else {
-            		message = "Department " + deptRemove + " was removed";
+        			successMessage = "Department " + deptRemove + " was removed";
         		}
 	    	}
 	    } else {
@@ -103,7 +107,7 @@
 	        if (!dept.setMultiDepartment(oldDeptCode, modDeptCode, modDeptName)) {
 	            message = "Could not modify department " + oldDeptCode + dept.getErrMsg("D04");
 	        } else {
-	            message = "Department " + oldDeptCode + " was modified"; 
+	        	successMessage = "Department " + oldDeptCode + " was modified"; 
 	        }
 	    } else {
 	        message = Validation.getErrMsg();
@@ -153,7 +157,9 @@ $(function(){
 		<header>
 			<p><a href="calendar.jsp" tabindex="13">home</a> » <a href="departments.jsp" tabindex="14">departments</a></p>
 			<h1>Departments</h1>
-			<div class="warningMessage"><%=message %></div>
+	        <!-- MESSAGES -->
+	        <div class="warningMessage"><%=message %></div>
+	        <div class="successMessage"><%=successMessage %></div> 	       
 		</header>
 		<form action="persist_user_settings.jsp" method="get">
 			<article>

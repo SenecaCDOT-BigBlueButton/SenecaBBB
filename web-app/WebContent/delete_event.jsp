@@ -33,8 +33,12 @@
         return;
     }
     String message = request.getParameter("message");
-    if (message == null) {
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
         message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
     }
     User user = new User(dbaccess);
     Meeting meeting = new Meeting(dbaccess);
@@ -109,7 +113,7 @@
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             } else {
-                response.sendRedirect("calendar.jsp?message=schedule removed");
+                response.sendRedirect("calendar.jsp?successMessage=schedule removed");
                 return;
             }
         } else {
@@ -118,7 +122,7 @@
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             } else {
-                response.sendRedirect("calendar.jsp?message=schedule removed");
+                response.sendRedirect("calendar.jsp?successMessage=schedule removed");
                 return;
             }
         }
@@ -168,9 +172,10 @@ $(document).ready(function() {
             <!-- PAGE NAME -->
             <h1>Delete Event Schedule</h1>
             <br />
-            <!-- WARNING MESSAGES -->
-            <div class="warningMessage"><%=message %></div>
-        </header>
+	        <!-- MESSAGES -->
+	        <div class="warningMessage"><%=message %></div>
+	        <div class="successMessage"><%=successMessage %></div> 
+	    </header>
         <form action="delete_event.jsp" method="get">
             <article>
                 <header>

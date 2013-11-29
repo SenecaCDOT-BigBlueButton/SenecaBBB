@@ -149,7 +149,7 @@ public static String getMonthNumber(String month) {
     }	
 	if(eventType.equals("Meeting")){   //create a meeting event		
 	   if(meeting.createMeetingSchedule(title, inidatetime, spec, duration, description, userId)){
-		   response.sendRedirect("calendar.jsp?message=Meeting schedule created"); 
+		   response.sendRedirect("calendar.jsp?successMessage=Meeting schedule created"); 
 		   return;
 	   }else{
 		   response.sendRedirect("calendar.jsp?message=Fail to create meeting schedule");
@@ -158,7 +158,7 @@ public static String getMonthNumber(String month) {
     }
     else{ //creating a lecture event
         if(lecture.createLectureSchedule(c_id, sc_id, sc_semesterid, inidatetime, spec, duration, description)){
-            response.sendRedirect("calendar.jsp?message=Lecture schedule created"); 
+            response.sendRedirect("calendar.jsp?successMessage=Lecture schedule created"); 
             return;
         }else{
         	response.sendRedirect("calendar.jsp?message=Fail to create lecture schedule");

@@ -36,8 +36,12 @@
         return;
     }
     String message = request.getParameter("message");
-    if (message == null) {
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
         message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
     }
     User user = new User(dbaccess);
     Meeting meeting = new Meeting(dbaccess);
@@ -197,6 +201,7 @@ $(document).ready(function() {
             <br />
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%=message %></div>
+            <div class="successMessage"><%=successMessage %></div>
         </header>
         <form action="persist_user_settings.jsp" method="get">
             <article>

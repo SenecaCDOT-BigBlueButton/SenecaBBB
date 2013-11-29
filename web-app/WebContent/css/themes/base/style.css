@@ -19,6 +19,12 @@ html, body {
 	font-weight:bold;
 }
 
+.successMessage{
+	color:green;
+    font-size:16px;
+    font-weight:bold;
+}
+
 option:hover {
 	background-color: #0F6;
 }

@@ -62,10 +62,13 @@ $(function(){
 
 
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
     }
-    
+    if (successMessage == null) {
+        successMessage="";
+    }    
     User user = new User(dbaccess);
     Section section = new Section(dbaccess);
     ArrayList<ArrayList<String>> allProfessors = new ArrayList<ArrayList<String>>();
@@ -93,6 +96,7 @@ $(function(){
             <h1>Professors List</h1>
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%=message %></div>
+            <div class="successMessage"><%=successMessage %></div> 
         </header>
         <form>
            <article>

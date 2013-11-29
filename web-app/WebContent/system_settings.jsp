@@ -30,7 +30,7 @@
     //Start page validation
     String userId = usersession.getUserId();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
+        response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!usersession.isSuper()) {
@@ -38,16 +38,20 @@
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
-        response.sendRedirect("index.jsp?error=Database connection error");
+        response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
 
 
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
     }
-    
+    if (successMessage == null) {
+        successMessage="";
+    }
+   
     User user = new User(dbaccess);
     Admin admin = new Admin(dbaccess);
     ArrayList<ArrayList<String>> timeout = new ArrayList<ArrayList<String>>();
@@ -94,6 +98,7 @@
             <h1>System Settings</h1>
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%=message %></div>
+            <div class="successMessage"><%=successMessage %></div> 
         </header>
         <form method="get" action="persist_predefinedrole_setting.jsp" name="predefinedRoleForm" id="predefinedRoleForm">
             <article>

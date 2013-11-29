@@ -33,8 +33,12 @@
         return;
     }
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message = "";
+        message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
     }
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
@@ -142,8 +146,8 @@
     }
     
     if (edited && !editError) {
-        message = "EventDetailsUpdated";
-        response.sendRedirect("view_event.jsp?ms_id=" + ms_id + "&m_id=" + m_id + "&message=" + message);
+    	successMessage = "Event Details Updated";
+        response.sendRedirect("view_event.jsp?ms_id=" + ms_id + "&m_id=" + m_id + "&successMessage=" + successMessage);
         return;  
     }
     
@@ -234,8 +238,9 @@ $(function(){
             <!-- PAGE NAME -->
             <h1>Meeting Event</h1>
             <br />
-            <!-- WARNING MESSAGES -->
+            <!-- MESSAGES -->
             <div class="warningMessage"><%=message %></div>
+            <div class="successMessage"><%=successMessage %></div> 
         </header>
         <form name="EditMeeting" method="get" action="edit_meeting.jsp">
             <article>

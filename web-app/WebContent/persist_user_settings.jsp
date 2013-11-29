@@ -15,11 +15,11 @@
 	//Start page validation
 	String userId = usersession.getUserId();
 	if (userId.equals("")) {
-	    response.sendRedirect("index.jsp?error=Please log in");
+	    response.sendRedirect("index.jsp?message=Please log in");
 	    return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
-	    response.sendRedirect("index.jsp?error=Database connection error");
+	    response.sendRedirect("index.jsp?message=Database connection error");
 	    return;
 	} //End page validation
 
@@ -50,8 +50,10 @@
 	else
 		map.put(Settings.bu_setting[0], 1);
 	
-	if (!user.setUserSetting(map, usersession.getUserId()))
+	if (!user.setUserSetting(map, usersession.getUserId())){
 		response.sendRedirect("settings.jsp?message=Failed to save user settings");
+		return;
+	}
 	else
 		usersession.setUserSettingsMask(map);
 	
@@ -85,10 +87,12 @@
 	//Layout
 	map.put(Settings.meeting_setting[4], 0);
 	
-	if (!user.setUserMeetingSetting(map, usersession.getUserId()))
+	if (!user.setUserMeetingSetting(map, usersession.getUserId())){
 		response.sendRedirect("settings.jsp?message=Failed to save meeting settings");
+	    return;
+	}
 	else
 		usersession.setUserMeetingSettingsMask(map);
 	
-	response.sendRedirect("settings.jsp?message=Saved settings successfully");
+	response.sendRedirect("settings.jsp?successMessage=Saved settings successfully");
 %>

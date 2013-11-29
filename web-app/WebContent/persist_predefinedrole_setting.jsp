@@ -66,7 +66,7 @@
         return;
     }
     
-    response.sendRedirect("system_settings.jsp?message=Predefined RoleMask Setting Saved Successfully!");
+    response.sendRedirect("system_settings.jsp?successMessage=Predefined RoleMask Setting Saved Successfully!");
 
 %>
 

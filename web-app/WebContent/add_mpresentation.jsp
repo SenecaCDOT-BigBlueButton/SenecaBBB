@@ -35,9 +35,14 @@
         return;
     }
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
     }
+    if (successMessage == null) {
+        successMessage="";
+    }
+
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
     if (m_id==null || ms_id==null) {
@@ -94,7 +99,7 @@
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 } else {
-                    message = mp_title + " added to presentation list";
+                	successMessage = mp_title + " added to presentation list";
                 }
             }
         }
@@ -111,7 +116,7 @@
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             } else {
-                message = remove + " was removed from presentation list";
+            	successMessage = remove + " was removed from presentation list";
             }
         }
     }
@@ -128,17 +133,7 @@
 <script type="text/javascript">
 /* TABLE */
 $(screen).ready(function() {
-    /* CURRENT EVENT */
-    /*
-    $('#addMPresentation').dataTable({
-            "bPaginate": false,
-            "bLengthChange": false,
-            "bFilter": false,
-            "bSort": false,
-            "bInfo": false,
-            "bAutoWidth": false});
-    $('#addMPresentation').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    */
+
     $('#tbPresentation').dataTable({"sPaginationType": "full_numbers"});
     $('#tbPresentation').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
     $.fn.dataTableExt.sErrMode = 'throw';
@@ -167,8 +162,9 @@ $(function(){
             <!-- PAGE NAME -->
             <h1>Add Meeting Presentation</h1>
             <br />
-            <!-- WARNING MESSAGES -->
-            <div class="warningMessage"><%=message %></div>
+	        <!-- MESSAGES -->
+	        <div class="warningMessage"><%=message %></div>
+	        <div class="successMessage"><%=successMessage %></div> </header>
         </header>
         <form name="addMPresentation" method="get" action="add_mpresentation.jsp">
             <article>

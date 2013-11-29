@@ -83,11 +83,11 @@
     	}
     	else{
 	        section.createProfessor(bu_id, c_id, sc_id,sc_semesterid);      
-	        response.sendRedirect("manage_professor.jsp?message=Professor created"); 
+	        response.sendRedirect("manage_professor.jsp?successMessage=Professor created"); 
 	        return;
 	    }    
     }else{
         section.removeProfessor(bu_id, c_id, sc_id,sc_semesterid);      
-        response.sendRedirect("manage_professor.jsp?message=Professor Removed");  
+        response.sendRedirect("manage_professor.jsp?successMessage=Professor Removed");  
     }
 %>

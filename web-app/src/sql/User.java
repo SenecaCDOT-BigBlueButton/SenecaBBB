@@ -303,6 +303,21 @@ public class User extends Sql {
     }
 
     /**
+     * (0)bu_id (1)nu_name (2)nu_lastname
+     * @param result
+     * @param nu_name
+     * @param nu_lastname
+     * @return
+     */
+    public boolean getNonLdapSearch(ArrayList<ArrayList<String>> result, String nu_name, String nu_lastname) {
+        _sql = "SELECT bu_id, nu_name, nu_lastname "
+                + "FROM non_ldap_user "
+                + "WHERE nu_name LIKE '" + nu_name + "%' "
+                + "OR nu_lastname LIKE '" + nu_lastname + "%'";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
      * get setting methods 
      */
     

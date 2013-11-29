@@ -48,35 +48,22 @@
 
     Admin admin = new Admin(dbaccess);
     //TODO: If you want to modify default meeting,user,and class setting, create your method in Admin.java 
-/*
-    if(key_name.equals("default_meeting")){
-        admin.setDefaultMeeting(key_value);
-        response.sendRedirect("system_settings.jsp?message=System Default Meeting Setting Saved Successfully!");
-    }
-    if(key_name.equals("default_user")){
-          admin.setDefaultUser(key_value);
-          response.sendRedirect("system_settings.jsp?message=System Default User Setting Saved Successfully!");
-      }
-    if(key_name.equals("default_class")){
-          admin.setDefaultClass(key_value);
-          response.sendRedirect("system_settings.jsp?message=System Default Class Setting Saved Successfully!");
-      }
-*/
+
     if(key_name.equals("timeout")){
         admin.setTimeout(key_value);
-        response.sendRedirect("system_settings.jsp?message=System Timeout Setting Saved Successfully!");
+        response.sendRedirect("system_settings.jsp?successMessage=System Timeout Setting Saved Successfully!");
         return;
     }
     
     if(key_name.equals("welcome_msg")){
         admin.setWelcomeMsg(key_value);
-        response.sendRedirect("system_settings.jsp?message=System Welcome message Setting Saved Successfully!");
+        response.sendRedirect("system_settings.jsp?successMessage=System Welcome message Setting Saved Successfully!");
         return;
     }
     
     if(key_name.equals("recording_msg")){
         admin.setRecordingMsg(key_value);
-        response.sendRedirect("system_settings.jsp?message=System Recording Message Setting Saved Successfully!");
+        response.sendRedirect("system_settings.jsp?successMessage=System Recording Message Setting Saved Successfully!");
         return;
     }
 

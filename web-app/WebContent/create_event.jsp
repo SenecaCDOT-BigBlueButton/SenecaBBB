@@ -47,11 +47,15 @@
 		return;
 	} //End page validation
 	
-	String message = request.getParameter("message");
-	if (message == null || message == "null") {
-		message="";
-	}
-	
+    String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
+        message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
+    }
+
 	User user = new User(dbaccess);
     Section section = new Section(dbaccess);
     Meeting meeting = new Meeting(dbaccess);
@@ -186,13 +190,14 @@
   <jsp:include page="menu.jsp"/>
     <section>
       <header>
-        <p><a href="calendar.jsp" tabindex="13">home</a> » create event</p>
-        <h1>Create Event</h1>
-        <a href="help_createEvent.jsp" target="_blank">help</a> 
-        <!-- WARNING MESSAGES -->
-            <div class="warningMessage"><%=message %></div>
-      </header>
-       <form method="get" action="persist_event.jsp" id="eventForm">
+          <p><a href="calendar.jsp" tabindex="13">home</a> » create event</p>
+          <h1>Create Event</h1>
+          <a href="help_createEvent.jsp" target="_blank">help</a> 
+	      <!-- MESSAGES -->
+	      <div class="warningMessage"><%=message %></div>
+	      <div class="successMessage"><%=successMessage %></div> 
+	  </header>
+      <form method="get" action="persist_event.jsp" id="eventForm">
       <article>
         <header>
           <h2>Event Details</h2>

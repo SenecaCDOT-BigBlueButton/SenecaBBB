@@ -15,19 +15,9 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
-<link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript" src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
-<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-<script type="text/javascript" src="js/componentController.js"></script>
+
 <%
     //Start page validation
     String userId = usersession.getUserId();
@@ -36,30 +26,16 @@
         return;
     }
     String message = request.getParameter("message");
-    if (message == null) {
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
         message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
     }
     //End page validation
 %>
-<script type="text/javascript">
-/* TABLE */
-$(screen).ready(function() {
-    /* CURRENT EVENT */
-    //$('#currentEvent').dataTable({"sPaginationType": "full_numbers"});
-    //$('#currentEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    //$('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
-    //$('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-    //$.fn.dataTableExt.sErrMode = 'throw';
-    $('.dataTables_filter input').attr("placeholder", "Filter entries");
-});
-/* SELECT BOX */
-$(function(){
-    $('select').selectmenu();
-});
-$(document).ready(function() {
-    //Hide some tables on load
-});
-</script>
+
 </head>
 <body>
 <div id="page">
@@ -72,6 +48,7 @@ $(document).ready(function() {
             <br />
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%=message %></div>
+            <div class="successMessage"><%=successMessage %></div> 
         </header>
         <form action="persist_user_settings.jsp" method="post">
         <article>

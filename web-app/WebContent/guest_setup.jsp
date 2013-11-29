@@ -30,24 +30,27 @@
 <script type="text/javascript" src="js/componentController.js"></script>
 <% 
 	String message = request.getParameter("message");
-	if (message == null) {
-		message="";
+	String successMessage = request.getParameter("successMessage");
+	if (message == null || message == "null") {
+	    message="";
 	}
-	
+	if (successMessage == null) {
+	    successMessage="";
+	}
+
 	String key = request.getParameter("key");
 	String bu_id = request.getParameter("user");
 	if (key == null || bu_id == null) {
-		response.sendRedirect("index.jsp?error=Invalid username or key");
+		response.sendRedirect("index.jsp?message=Invalid username or key");
 		return;
 	}
-	
-	String successText="";
+
 	String success = request.getParameter("success");
 	if (success == null) {
 		success="";
 	}
 	else
-		successText = "Log in with username " + bu_id;
+		successMessage = "Log in with username " + bu_id;
 	boolean badParams = false;
 	User user = new User(dbaccess);
 	ArrayList<ArrayList<String>> keyArray = new ArrayList<ArrayList<String>>();
@@ -101,7 +104,10 @@
 	<jsp:include page="header_plain.jsp"/>
 	<section>
 	 <header>
-      <h1>Guest Setup</h1><%=message%> <%if(success.equals("true")) out.write(successText); %>
+      <h1>Guest Setup</h1>
+          <!-- WARNING MESSAGES -->
+          <div class="warningMessage"><%=message %></div>
+          <div class="successMessage"><%=successMessage %></div>        
     </header>
     <form action="persist_password.jsp?page=guest" method="get" onSubmit="return validate()" <%if (badParams)out.write("hidden=\"hidden\""); %>>
 		<article>

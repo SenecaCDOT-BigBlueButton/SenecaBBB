@@ -31,10 +31,14 @@
 		return;
 	} //End page validation
 	
-	String message = request.getParameter("message");
-	if (message == null) {
-		message="";
-	}
+    String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
+        message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
+    }
 %>
 </head>
 <body>
@@ -46,6 +50,7 @@
 			<p><a href="calendar.jsp" tabindex="13">home</a> » <a href="settings.jsp" tabindex="14">settings</a> » <a href="edit_password.jsp" tabindex="15">change password</a></p>
 			<h1>Change Password</h1>
 			<div class="warningMessage"><%=message %></div>
+			<div class="successMessage"><%=successMessage %></div> 
 		</header>
 		<form action="persist_password.jsp?page=edit_password" method="get">
 			<article>

@@ -62,10 +62,14 @@
 
 
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
     }
-    
+    if (successMessage == null) {
+        successMessage="";
+    }
+ 
     User user = new User(dbaccess);
     Section section = new Section(dbaccess);
     ArrayList<ArrayList<String>> allCourse = new ArrayList<ArrayList<String>>();
@@ -93,6 +97,7 @@
 	            <h1>Subjects List</h1>
 	            <!-- WARNING MESSAGES -->
 	            <div class="warningMessage"><%=message %></div>
+	            <div class="successMessage"><%=successMessage %></div> 
 	        </header>
 	        <form>
 	           <article>

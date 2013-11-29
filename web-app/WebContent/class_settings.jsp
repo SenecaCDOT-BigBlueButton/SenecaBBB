@@ -34,11 +34,11 @@
     Boolean isProfessor = usersession.isProfessor();
     Boolean isSuper = usersession.isSuper();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
+        response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
-        response.sendRedirect("index.jsp?error=Database connection error");
+        response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } 
     if (!isSuper && !isProfessor) {
@@ -47,21 +47,22 @@
     }
 
     //End page validation
+    String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
+        message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
+    }
+
     String c_id = "";
     String sc_id = "";
     String sc_semesterid = "";
     String professorid = "";
-    String message = request.getParameter("message");
-    String errMessage = request.getParameter("errMessage");
     String removeStudentId = request.getParameter("removeStudent");
     String selectedclass;
 
-    if (message == null || message == "null") {
-        message="";
-    }
-    if (errMessage == null || errMessage == "null") {
-    	errMessage="";
-    }
     Section section = new Section(dbaccess);
     User user = new User(dbaccess);
     Lecture lecture = new Lecture(dbaccess);
@@ -124,8 +125,8 @@ if (removeStudentId != null) {
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         } else {
-            message = removeStudentId + " was removed from student list";
-            response.sendRedirect("class_settings.jsp?class="+ selectedclass + "&message=" + message);
+        	successMessage = removeStudentId + " was removed from student list";
+            response.sendRedirect("class_settings.jsp?class="+ selectedclass + "&successMessage=" + successMessage);
         }      
     }  
 }
@@ -182,9 +183,10 @@ if (removeStudentId != null) {
 			<p><a href="calendar.jsp" tabindex="13">home</a> » <a href="class_settings.jsp" tabindex="14">class settings</a></p>
 			<!-- PAGE NAME -->
 			<h1 style="margin-bottom:20px">Class Settings</h1>
-			<!-- WARNING MESSAGES -->
-			<div class="warningMessage"><%=message %></div>
-		</header>
+	        <!-- MESSAGES -->
+	        <div class="warningMessage"><%=message %></div>
+	        <div class="successMessage"><%=successMessage %></div> 
+        </header>
 		<% if (listofclasses.size() > 0) { %>
 		<form action="uploadfile.jsp" method="post" enctype="multipart/form-data" onsubmit="return checkClass()">
 		<article>

@@ -57,7 +57,7 @@
     		return;
     	}else{
 		    section.createSection(c_id, sc_id, sc_semesterid, d_code);
-		    response.sendRedirect("subjects.jsp?message=section created");
+		    response.sendRedirect("subjects.jsp?successMessage=section created");
 		    return;
 	    }
     }else{
@@ -66,7 +66,7 @@
     		return;
     	}else{
 	        section.removeSection(c_id, sc_id, sc_semesterid);
-	        response.sendRedirect("subjects.jsp?message=section removed successfully");    	
+	        response.sendRedirect("subjects.jsp?successMessage=section removed successfully");    	
         }
     }
             

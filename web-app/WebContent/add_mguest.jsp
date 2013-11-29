@@ -35,9 +35,14 @@
         return;
     }
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
     }
+    if (successMessage == null) {
+        successMessage="";
+    }
+
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
     if (m_id==null || ms_id==null) {
@@ -121,7 +126,7 @@
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         } else {
-            message = bu_id + " added to meeting guest list";
+        	successMessage = bu_id + " added to meeting guest list";
         }
     } else if (nonldap != null) {
         nonldap = Validation.prepare(nonldap);
@@ -143,7 +148,7 @@
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
-            message = searchResult.size() + " Result(s) Found";
+            successMessage = searchResult.size() + " Result(s) Found";
         }  
     } else {
         String mod = request.getParameter("mod");
@@ -175,7 +180,7 @@
                             response.sendRedirect("logout.jsp?message=" + message);
                             return;   
                         } else {
-                            message = remove + " was removed from guest list";
+                        	successMessage = remove + " was removed from guest list";
                         }                           
                     } else {
                         message = "User to be removed not in guest list";   
@@ -227,9 +232,10 @@ $(function(){
             <!-- PAGE NAME -->
             <h1>Add Meeting Guest</h1>
             <br />
-            <!-- WARNING MESSAGES -->
-            <div class="warningMessage"><%=message %></div>
-        </header>
+	        <!-- MESSAGES -->
+	        <div class="warningMessage"><%=message %></div>
+	        <div class="successMessage"><%=successMessage %></div> </header>
+       </header>
         <form name="addMGuest" method="get" action="add_mguest.jsp">
             <article>
                 <header>

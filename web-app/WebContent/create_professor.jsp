@@ -20,10 +20,14 @@
     }//End page validation
     
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
     }
-    
+    if (successMessage == null) {
+        successMessage="";
+    }
+
     User user = new User(dbaccess);
     String c_id = request.getParameter("c_id");
     String sc_id = request.getParameter("sc_id");
@@ -75,9 +79,10 @@
             <p><a href="calendar.jsp" tabindex="13">home</a>» <a href="subjects.jsp" tabindex="14">subjects</a> » <a href="manage_professor.jsp" tabindex="14">manage professor</a> »<a href="create_professor.jsp" tabindex="15">create Professor</a></p>
             <!-- PAGE NAME -->           
             <h1>Create Professor</h1>            
-            <!-- WARNING MESSAGES -->
-            <div class="warningMessage"><%= message %></div>
-        </header>
+            <!-- MESSAGES -->
+            <div class="warningMessage"><%=message %></div>
+            <div class="successMessage"><%=successMessage %></div> 
+       </header>
         <form name="createProfessor" id="createProfessor" method="post" action="persist_professor.jsp">
 	        <article>
 	            <header>

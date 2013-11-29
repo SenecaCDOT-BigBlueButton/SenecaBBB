@@ -35,8 +35,12 @@
         return;
     }
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
     }
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
@@ -121,7 +125,7 @@
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         } else {
-            message = bu_id + " added to lecture guest list";
+        	successMessage = bu_id + " added to lecture guest list";
         }
     } else if (nonldap != null) {
         nonldap = Validation.prepare(nonldap);
@@ -143,7 +147,7 @@
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
-            message = searchResult.size() + " Result(s) Found";
+            successMessage = searchResult.size() + " Result(s) Found";
         }  
     } else {
         String mod = request.getParameter("mod");
@@ -169,7 +173,7 @@
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 } else {
-                    message = remove + " was removed from guest list";
+                	successMessage = remove + " was removed from guest list";
                 }       
             }  
         }
@@ -217,8 +221,9 @@ $(function(){
             <!-- PAGE NAME -->
             <h1>Add Lecture Guest</h1>
             <br />
-            <!-- WARNING MESSAGES -->
+            <!-- MESSAGES -->
             <div class="warningMessage"><%=message %></div>
+            <div class="successMessage"><%=successMessage %></div>
         </header>
         <form name="addMGuest" method="get" action="add_lguest.jsp">
             <article>

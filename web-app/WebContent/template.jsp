@@ -21,11 +21,11 @@
 	//Start page validation
 	String userId = usersession.getUserId();
 	if (userId.equals("")) {
-		response.sendRedirect("index.jsp?error=Please log in");
+		response.sendRedirect("index.jsp?message=Please log in");
 		return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
-		response.sendRedirect("index.jsp?error=Database connection error");
+		response.sendRedirect("index.jsp?message=Database connection error");
 		return;
 	} //End page validation
 	

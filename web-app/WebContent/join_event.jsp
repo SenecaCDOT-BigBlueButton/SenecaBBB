@@ -63,6 +63,7 @@
      eventTitle="Lecture-".concat(eventId).concat("-").concat(eventScheduleId);
  }else{
 	 response.sendRedirect("calendar.jsp?message=Create or Join event fail");
+	 return;
  }
 
  String logOutUrl="";

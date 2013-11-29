@@ -97,7 +97,7 @@
 		    mybool=user.setEmail(bu_id, bbbUserEmail);
 		}
 		if(mybool){
-		     response.sendRedirect("manage_users.jsp?message=Updated User "+ bu_id + " Successfully!!!");
+		     response.sendRedirect("manage_users.jsp?successMessage=Updated User "+ bu_id + " Successfully!!!");
 		     return;
 		}else{
 			 response.sendRedirect("manage_users.jsp?message=Fail to Update User "+ bu_id + " !!!");

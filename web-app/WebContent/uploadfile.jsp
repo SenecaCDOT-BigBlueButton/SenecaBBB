@@ -20,11 +20,11 @@
     Boolean isSuper = usersession.isSuper();
     Boolean isProfessor = usersession.isProfessor();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
+        response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
-        response.sendRedirect("index.jsp?error=Database connection error");
+        response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } 
     if (!isSuper && !isProfessor) {
@@ -48,7 +48,7 @@
     String classSection=null;
     String bu_id=null;
     String message="";
-    String errMessage="";
+    String successMessage="";
     int userNameColumn=1;
     int userNameColumnISO=1;
     int userNameColumnUTF8=1;
@@ -162,8 +162,8 @@
 	                filecontentUTF16 = filecontentUTF16.replace('\n', ',');
                 }
                 else{
-                    errMessage = "Sorry,we only support CSV with comma separated or XLS with tab separated file format!";
-                    response.sendRedirect("class_settings.jsp?errMessage=" + errMessage + "&class=" + classSection);
+                    message = "Sorry,we only support CSV with comma separated or XLS with tab separated file format!";
+                    response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + classSection);
                     return;
                 }
                 
@@ -282,8 +282,8 @@
         }
     }
     if(!usernameFound){
-        errMessage = "Sorry,can't find student 'Username' column in your file";
-        response.sendRedirect("class_settings.jsp?errMessage=" + errMessage + "&class=" + classSection);
+        message = "Sorry,can't find student 'Username' column in your file";
+        response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + classSection);
         return;
     }
     //get student username to add 
@@ -332,7 +332,7 @@
                 }
                 // User already added
                 if (myBool.get_value()) {
-                    errMessage += bu_id+ "  already added in the class </br>";
+                    message += bu_id+ "  already added in the class </br>";
                 } else {
                     if (!user.isUser(myBool, bu_id)) {
                         message += user.getErrMsg("AS04");
@@ -347,7 +347,7 @@
                         if (findUser(dbaccess, ldap, bu_id)) {
                             searchSucess = true;
                         } else {
-                            errMessage += bu_id + " Not Found </br>";
+                            message += bu_id + " Not Found </br>";
                         }
                     }
                 }
@@ -363,9 +363,9 @@
                 return;  
             } else {
                 counter += 1;
-                message = "Total of: "+ counter +  " students added to the class </br>";
+                successMessage = "Total of: "+ counter +  " students added to the class </br>";
             }
         }
    }
-   response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + classSection + "&errMessage=" + errMessage);   
+   response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + classSection + "&successMessage=" + successMessage);   
 %>

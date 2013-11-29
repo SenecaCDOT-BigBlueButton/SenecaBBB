@@ -3,9 +3,13 @@
 <jsp:useBean id="ldap" scope="session" class="ldap.LDAPAuthenticate" />
 <%
 	String message = request.getParameter("message");
-	if (message == null) {
-		message = "";
-	} 
+	String successMessage = request.getParameter("successMessage");
+	if (message == null || message == "null") {
+	    message="";
+	}
+	if (successMessage == null) {
+		successMessage="";
+	}
 	String guestMessage = "";
 	String bu_id = "";
 	String guestCreated = request.getParameter("guestCreated");
@@ -17,7 +21,7 @@
 			bu_id = "";
 		} 
 		else 
-			message = "Log in with username " + bu_id + "and the password you just set";
+			successMessage = "Log in with username " + bu_id + "and the password you just set";
 	}	
 	if (usersession.getUserId() != "")
 		response.sendRedirect("calendar.jsp");
@@ -57,7 +61,9 @@
   <jsp:include page="header_plain.jsp"/>
   <section id="login">
   	<header>
-		<div class="warningMessage"><%=message %></div>
+            <!-- MESSAGES -->
+            <div class="warningMessage"><%=message %></div>
+            <div class="successMessage"><%=successMessage %></div>
 		<br /><br />
 	</header>
     <form id="login" name="formLogin" action="auth.jsp" onSubmit="return validate();" method="post">

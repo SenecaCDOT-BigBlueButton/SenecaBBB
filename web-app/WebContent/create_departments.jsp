@@ -31,11 +31,14 @@
 	    return;
 	}//End page validation
 	
-	String message = request.getParameter("message");
-	if (message == null || message == "null") {
-		message="";
-	}
-	
+    String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
+        message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
+    }
 	User user = new User(dbaccess);
 	
 %>
@@ -50,9 +53,10 @@
 			<p><a href="calendar.jsp" tabindex="13">home</a> » <a href="departments.jsp" tabindex="14">departments</a> »<a href="create_departments.jsp" tabindex="15">create department</a></p>
 			<!-- PAGE NAME -->
 			<h1>Create Department</h1>
-			<!-- WARNING MESSAGES -->
-			<div class="warningMessage"></div>
-		</header>
+	        <!-- MESSAGES -->
+	        <div class="warningMessage"><%=message %></div>
+	        <div class="successMessage"><%=successMessage %></div> </header>
+        </header>
 		<form name="createDept" id="createDept" method="post" action="departments.jsp">
 			<article>
 				<header>
@@ -63,11 +67,11 @@
 					<fieldset>
 				        <div class="component">
 				            <label for="DeptCode" class="label">Department Code:</label>
-				            <input type="text" name="DeptCode" id="DeptCode" class="input" tabindex="2" title="Please Enter Department code">
+				            <input type="text" name="DeptCode" id="DeptCode" class="input" tabindex="16" title="Please Enter Department code" autofocus >
 				        </div>
 				        <div class="component">
 				            <label for="DeptName" class="label">Department Name:</label>
-				            <input type="text" name="DeptName" id="DeptName" class="input" tabindex="3" title="Please Enter Department Name" >
+				            <input type="text" name="DeptName" id="DeptName" class="input" tabindex="17" title="Please Enter Department Name" autofocus >
 				        </div>
 				        <div class="component">
 					        <div class="buttons">

@@ -26,6 +26,9 @@
 	<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
+	
 <%@ include file="search.jsp" %>
 <%
     //Start page validation
@@ -35,17 +38,17 @@
         return;
     }
     String message = request.getParameter("message");
-    String errMessage = request.getParameter("errMessage");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
     }
-    if (errMessage == null) {
-    	errMessage="";
+    if (successMessage == null) {
+    	successMessage="";
     }
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
     if (m_id==null || ms_id==null) {
-        response.sendRedirect("calendar.jsp?errMessage=Please do not mess with the URL");
+        response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
     }
     m_id = Validation.prepare(m_id);
@@ -125,7 +128,7 @@
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         } else {
-            message = bu_id + " added to meeting attendee list";
+        	successMessage = bu_id + " added to meeting attendee list successfully";
         }
     } else if (nonldap != null) {
         nonldap = Validation.prepare(nonldap);
@@ -147,7 +150,7 @@
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
-            message = searchResult.size() + " Result(s) Found";
+            successMessage = searchResult.size() + " Result(s) Found";
         }  
     } else {
         String mod = request.getParameter("mod");
@@ -179,10 +182,10 @@
                             response.sendRedirect("logout.jsp?message=" + message);
                             return;   
                         } else {
-                            message = remove + " was removed from attendee list";
+                        	successMessage = remove + " was removed from attendee list";
                         }                         
                     } else {
-                        message = "User to be removed not in attendee list";   
+                    	successMessage = "User to be removed not in attendee list";   
                     }
                 }              
             }  
@@ -231,9 +234,9 @@ $(function(){
             <!-- PAGE NAME -->
             <h1>Add Meeting Attendee</h1>
             <br />
-            <!-- WARNING MESSAGES -->
+            <!-- MESSAGES -->
             <div class="warningMessage"><%=message %></div>
-            <div class="errorMessage"><%=errMessage %></div>
+            <div class="successMessage"><%=successMessage %></div>
         </header>
         <form name="addAttendee" id="addAttendee" method="get" action="add_attendee.jsp">
             <article>
@@ -363,14 +366,12 @@ $(function(){
     	        validateOnBlur : true,
     	        rules: {
     	            searchBox: {
-    	               //required: true,
     	               pattern: /^\s*[a-zA-z0-9]+[ \.]?[a-zA-z]*\s*$/
     	           }              
     	        },
     	        messages: {
     	            searchBox: { 
     	                pattern:"Search by first or lastname <br />You can also enter 'firstname lastname' or 'firstname.lastname'"
-    	                //required:
     	            }
     	        }
     	    });

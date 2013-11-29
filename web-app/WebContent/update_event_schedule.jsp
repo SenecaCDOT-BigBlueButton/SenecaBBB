@@ -48,19 +48,22 @@ public static String getMonthNumber(String month) {
     isProfessor=usersession.isProfessor();
     isSuper =usersession.isSuper();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
+        response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
-        response.sendRedirect("index.jsp?error=Database connection error");
+        response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
     
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
     }
-    
+    if (successMessage == null) {
+        successMessage="";
+    }   
     User user = new User(dbaccess);
     Meeting meeting = new Meeting(dbaccess);
     Lecture lecture = new Lecture(dbaccess);
@@ -160,7 +163,7 @@ public static String getMonthNumber(String month) {
     if(eventType.equals("Meeting")){   //update a meeting schedule      
        if( meeting.updateMeetingSchedule(eventId, inidatetime, spec, eventDescription)){
            if(meeting.updateMeetingDuration(3, eventId, "1", duration)){
-               response.sendRedirect("calendar.jsp?message=meeting updated successfully"); 
+               response.sendRedirect("calendar.jsp?successMessage=meeting updated successfully"); 
                return;
            }else{
                response.sendRedirect("calendar.jsp?message=update fail"); 
@@ -172,7 +175,7 @@ public static String getMonthNumber(String month) {
     else{ //update a lecture schedule
         if(lecture.updateLectureSchedule(eventId, inidatetime, spec, eventDescription)){
             if(lecture.updateLectureDuration(3, eventId, "1", duration)){
-                response.sendRedirect("calendar.jsp?message=lecture updated successfully"); 
+                response.sendRedirect("calendar.jsp?successMessage=lecture updated successfully"); 
                 return;
             }else{
                 response.sendRedirect("calendar.jsp?message=update fail");  

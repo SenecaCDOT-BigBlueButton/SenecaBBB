@@ -31,7 +31,7 @@
 				String newHash = PasswordHash.createHash(newPassword.toCharArray(), newSalt.getBytes());
 				user.setSalt(usersession.getUserId(), newSalt);
 				user.setHash(usersession.getUserId(), newHash);
-				response.sendRedirect("edit_password.jsp?message=Password successfully changed.");
+				response.sendRedirect("edit_password.jsp?successMessage=Password successfully changed.");
 				return;
 			}
 			else {

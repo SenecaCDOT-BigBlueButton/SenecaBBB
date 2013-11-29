@@ -19,10 +19,14 @@
     }//End page validation
     
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
     }
-    
+    if (successMessage == null) {
+        successMessage="";
+    }
+
     User user = new User(dbaccess);
     String key_name = request.getParameter("key_name");
     String key_value = request.getParameter("key_value");
@@ -52,9 +56,10 @@
             <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="system_settings.jsp" tabindex="14">system settings</a> »<a href="edit_bbb_admin.jsp" tabindex="15">edit system admin</a></p>
             <!-- PAGE NAME -->
             <h1>Edit System Admin</h1>            
-            <!-- WARNING MESSAGES -->
-            <div class="warningMessage"><%= message %></div>
-        </header>
+	        <!-- MESSAGES -->
+	        <div class="warningMessage"><%=message %></div>
+	        <div class="successMessage"><%=successMessage %></div>       
+	        </header>
         <form name="createCourse" id="createCourse" method="post" action="persist_bbbadmin_setting.jsp">
             <article>
                 <header>

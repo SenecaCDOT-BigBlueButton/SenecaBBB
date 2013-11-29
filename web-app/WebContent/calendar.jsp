@@ -24,11 +24,15 @@
 	<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
 	<script type="text/javascript" src="js/checkboxController.js"></script>
 	<%
-	String message = request.getParameter("message");
-	if (message == null || message == "null") {
-		message="";
-	}
-	
+    String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
+        message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
+    }
+
 	boolean check1 = true, check2 = true, check3 = true, check4 = true;
 	if (request.getParameter("filtering") != null) {
 		check1 = request.getParameter("filterOption1box") != null;
@@ -112,8 +116,10 @@
 			<header>
 				<p><a href="calendar.jsp" tabindex="13">home</a> » </p>
 				<h1>Calendar</h1>
-				<div class="warningMessage"><%=message %></div>
-			</header>
+		        <!-- MESSAGES -->
+		        <div class="warningMessage"><%=message %></div>
+		        <div class="successMessage"><%=successMessage %></div> </header>
+		    </header>
 				<form>
 					<article>
 						<header id="filterOptions">

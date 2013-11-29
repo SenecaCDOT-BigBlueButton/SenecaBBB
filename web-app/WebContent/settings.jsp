@@ -28,18 +28,22 @@
 	//Start page validation
 	String userId = usersession.getUserId();
 	if (userId.equals("")) {
-		response.sendRedirect("index.jsp?error=Please log in");
+		response.sendRedirect("index.jsp?message=Please log in");
 		return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
-		response.sendRedirect("index.jsp?error=Database connection error");
+		response.sendRedirect("index.jsp?message=Database connection error");
 		return;
 	} //End page validation
 	
-	String message = request.getParameter("message");
-	if (message == null || message == "null") {
-		message="";
-	}
+    String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
+        message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
+    }
 	
 	User user = new User(dbaccess);
 	MyBoolean prof = new MyBoolean();
@@ -97,6 +101,7 @@ $(document).ready(function() {
 			<p><a href="calendar.jsp" tabindex="13">home</a> » <a href="settings.jsp" tabindex="14">settings</a></p>
 			<h1>Settings</h1>
 			<div class="warningMessage"><%=message %></div>
+			<div class="successMessage"><%=successMessage %></div> 
 		</header>
 		<form action="persist_user_settings.jsp" method="get">
 			<article>

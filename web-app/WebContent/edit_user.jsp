@@ -24,7 +24,7 @@
     //Start page validation
     String userId = usersession.getUserId();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
+        response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!usersession.isSuper()) {
@@ -32,13 +32,17 @@
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
-        response.sendRedirect("index.jsp?error=Database connection error");
+        response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
     
     String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
         message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
     }
     
     User user = new User(dbaccess);
@@ -127,6 +131,7 @@
             <h1>Edit User Information</h1>
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%=message %></div>
+            <div class="successMessage"><%=successMessage %></div> 
         </header>
         <form name="userInfor" id="userInfor" action="persist_user_info.jsp" method="get">
             <article>

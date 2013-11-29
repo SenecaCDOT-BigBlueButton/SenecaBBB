@@ -43,7 +43,15 @@
     User user = new User(dbaccess);
     Department dept = new Department(dbaccess);
     MyBoolean myBool = new MyBoolean();
-    String message;
+    String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
+        message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
+    }
+
     String adminStatus = "";
     String d_code = request.getParameter("DeptCode");
     if (d_code==null) {
@@ -76,13 +84,7 @@
         }    
     }    
     //End page validation
-    
-    message = request.getParameter("message");
-    
-    if (message == null || message == "null") {
-        message = "";
-    }
-    
+
     // Start User Search
     boolean searchSucess = false;
     String bu_id = request.getParameter("searchBox");
@@ -127,7 +129,7 @@
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         } else {
-            message = bu_id + " added to department user list";
+        	successMessage = bu_id + " added to department user list";
         }
     } else {
         String mod = request.getParameter("mod");
@@ -214,9 +216,10 @@
                 </p>
                 <!-- PAGE NAME -->
                 <h1>Department Users</h1>
-                <!-- WARNING MESSAGES -->
-                <div class="warningMessage"><%=message%></div>
-            </header>
+		        <!-- MESSAGES -->
+		        <div class="warningMessage"><%=message %></div>
+		        <div class="successMessage"><%=successMessage %></div> 
+		    </header>
             <form name="DeptUser" method="get" action="department_users.jsp">
                 <article>
                     <header>

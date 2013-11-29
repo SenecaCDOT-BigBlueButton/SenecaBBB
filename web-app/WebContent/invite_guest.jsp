@@ -22,7 +22,6 @@
 <%
 	//Start page validation
 	String userId = usersession.getUserId();
-    String message;
     HashMap<String, Integer> roleMask = usersession.getRoleMask();
 	if (userId.equals("")) {
 	    response.sendRedirect("index.jsp?message=Please log in");
@@ -36,10 +35,15 @@
         return;
     }//End page validation
     
-	message = request.getParameter("message");
-	if (message == null || message == "null") {
-	    message="";
-	}
+    String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
+        message="";
+    }
+    if (successMessage == null) {
+        successMessage="";
+    }
+
     String firstName = request.getParameter("firstName");
     String lastName = request.getParameter("lastName");
     String email = request.getParameter("email");
@@ -53,6 +57,7 @@
 	        <h1>Create Guest Account</h1>
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%= message %></div>
+            <div class="successMessage"><%=successMessage %></div> 
 	    </header>
 	    <form name="guestaccuntinfo" id="guestaccuntinfo"  method="get" action="generate_guest.jsp">
 			<article>

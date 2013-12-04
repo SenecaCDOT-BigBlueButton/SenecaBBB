@@ -13,7 +13,7 @@
 <%
 	HashMap<String, Integer> map = new HashMap<String, Integer>();
 	User user = new User(dbaccess);
-	String pageIncoming = request.getParameter("page");
+	String pageIncoming = request.getParameter("frompage");
 	if (pageIncoming == null)
 		pageIncoming = "";
 	String newPassword = request.getParameter("newPassword");
@@ -21,7 +21,7 @@
 	String currentPassword = request.getParameter("currentPassword");
 	
 	if (pageIncoming.equals("edit_password")){
-		if (!(currentPassword == "" || newPassword == "" || confirmPassword == "")) {
+		if (!(currentPassword == null || newPassword == null || confirmPassword == null)) {
 			if (!newPassword.equals(confirmPassword)){
 				response.sendRedirect("edit_password.jsp?message=Please enter the new password twice.");
 				return;
@@ -31,11 +31,11 @@
 				String newHash = PasswordHash.createHash(newPassword.toCharArray(), newSalt.getBytes());
 				user.setSalt(usersession.getUserId(), newSalt);
 				user.setHash(usersession.getUserId(), newHash);
-				response.sendRedirect("edit_password.jsp?successMessage=Password successfully changed.");
+				response.sendRedirect("settings.jsp?successMessage=Password successfully changed.");
 				return;
 			}
 			else {
-				response.sendRedirect("edit_password.jsp?message=Invalid password entered.");
+				response.sendRedirect("edit_password.jsp?message=Invalid current password entered.");
 				return;
 			}
 		}
@@ -50,7 +50,7 @@
 		ArrayList<ArrayList<String>> storedKeyArray = new ArrayList<ArrayList<String>>();
 		user.getSalt(storedKeyArray, bu_id);
 		ArrayList<String> storedKey = storedKeyArray.get(0);
-		if (!(currentPassword == "" || newPassword == "" || confirmPassword == "")) {
+		if (!(newPassword == null || confirmPassword == null)) {
 			if (!newPassword.equals(confirmPassword)){
 				response.sendRedirect("guest_setup.jsp?key="+key+"&bu_id="+bu_id+"&message=Please enter the new password twice.");
 				return;
@@ -60,7 +60,7 @@
 				String newHash = PasswordHash.createHash(newPassword.toCharArray(), newSalt.getBytes());
 				user.setSalt(bu_id, newSalt);
 				user.setHash(bu_id, newHash);
-				response.sendRedirect("index.jsp?bu_id="+bu_id+"&error=Password successfully set.&guestCreated=true");
+				response.sendRedirect("index.jsp?bu_id="+bu_id+"&successMessage=Password successfully set.&guestCreated=true");
 				return;
 			}
 			else {
@@ -74,5 +74,5 @@
 		}
 	}
 	else
-		response.sendRedirect("index.jsp?error=Invalid page");
+		response.sendRedirect("index.jsp?message=Invalid page");
 %>

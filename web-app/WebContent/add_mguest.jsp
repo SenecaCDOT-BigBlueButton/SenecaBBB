@@ -30,8 +30,10 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?message=Please log in");
+        elog.writeLog("[add_mguest:] " + "unauthenticated user tried to access this page /n");
+    	response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     String message = request.getParameter("message");
@@ -46,13 +48,15 @@
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
     if (m_id==null || ms_id==null) {
-        response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
+    	elog.writeLog("[add_mguest:] " + "null m_id or ms_id /n");
+    	response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
     }
     m_id = Validation.prepare(m_id);
     ms_id = Validation.prepare(ms_id);
     if (!(Validation.checkMId(m_id) && Validation.checkMsId(ms_id))) {
-        response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
+    	elog.writeLog("[add_mguest:] " + Validation.getErrMsg()+" /n");
+    	response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
         return;
     }
     User user = new User(dbaccess);
@@ -60,20 +64,24 @@
     MyBoolean myBool = new MyBoolean();    
     if (!meeting.isMeeting(myBool, ms_id, m_id)) {
         message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AMG01");
+        elog.writeLog("[add_mguest:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
     if (!myBool.get_value()) {
-        response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
+    	elog.writeLog("[add_mguest:] " + "permission denied"+" /n");
+    	response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     if (!user.isMeetingCreator(myBool, ms_id, userId)) {
         message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AMG02");
+        elog.writeLog("[add_mguest:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
     if (!myBool.get_value()) {
-        response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
+    	elog.writeLog("[add_mguest:] " + "permission denied"+" /n");
+    	response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     // End page validation
@@ -90,6 +98,7 @@
         } else {
             if (!user.isMeetingGuest(myBool, ms_id, m_id, bu_id)) {
                 message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AMG03");
+                elog.writeLog("[add_mguest:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -99,6 +108,7 @@
             } else {
                 if (!user.isUser(myBool, bu_id)) {
                     message = user.getErrMsg("AMG04");
+                    elog.writeLog("[add_mguest:] " + message +" /n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 }
@@ -123,6 +133,7 @@
     if (searchSucess) {
         if (!meeting.createMeetingGuest(bu_id, ms_id, m_id, false)) {
             message = meeting.getErrMsg("AMG05");
+            elog.writeLog("[add_mguest:] " + message +" /n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         } else {
@@ -145,6 +156,7 @@
             }
             if (!user.getNonLdapSearch(searchResult, term1, term2)) {
                 message = user.getErrMsg("AMG10");
+                elog.writeLog("[add_mguest:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -160,6 +172,7 @@
             } else {
                 if (!meeting.setMeetingGuestIsMod(mod, ms_id, m_id)) {
                     message = meeting.getErrMsg("AMG06");
+                    elog.writeLog("[add_mguest:] " + message +" /n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 }
@@ -171,12 +184,14 @@
             } else {
                 if (!user.isMeetingGuest(myBool, ms_id, m_id, remove)) {
                     message = user.getErrMsg("AMG07");
+                    elog.writeLog("[add_mguest:] " + message +" /n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 } else {
                     if (myBool.get_value()) { 
                         if (!meeting.removeMeetingGuest(remove, ms_id, m_id)) {
                             message = meeting.getErrMsg("AMG08");
+                            elog.writeLog("[add_mguest:] " + message +" /n");
                             response.sendRedirect("logout.jsp?message=" + message);
                             return;   
                         } else {
@@ -193,6 +208,7 @@
     ArrayList<ArrayList<String>> eventGuest = new ArrayList<ArrayList<String>>();
     if (!meeting.getMeetingGuest(eventGuest, ms_id, m_id)) {
         message = meeting.getErrMsg("AMG08");
+        elog.writeLog("[add_mguest:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }                                

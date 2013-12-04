@@ -11,7 +11,7 @@
 	<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Add Lecture Guest</title>
+	<title>Add Lecture Presentation</title>
 	<link rel="icon" href="http://www.cssreset.com/favicon.png">
 	<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
@@ -30,8 +30,10 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?message=Please log in");
+    	elog.writeLog("[add_lpresentation:] " + "unauthenticated user tried to access this page /n");
+    	response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     String message = request.getParameter("message");
@@ -45,12 +47,14 @@
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
     if (l_id==null || ls_id==null) {
-        response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
+    	elog.writeLog("[add_lpresentation:] " + "null l_id or ls_id /n");
+    	response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
     }
     l_id = Validation.prepare(l_id);
     ls_id = Validation.prepare(ls_id);
     if (!(Validation.checkLId(l_id) && Validation.checkLsId(ls_id))) {
+    	elog.writeLog("[add_lpresentation:] " + Validation.getErrMsg() +" /n");
         response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
         return;
     }
@@ -59,20 +63,24 @@
     MyBoolean myBool = new MyBoolean();    
     if (!lecture.isLecture(myBool, ls_id, l_id)) {
         message = "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + lecture.getErrMsg("ALP01");
+        elog.writeLog("[add_lpresentation:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
     if (!myBool.get_value()) {
-        response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
+    	elog.writeLog("[add_lpresentation:] " + "permission denied" +" /n");
+    	response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     if (!user.isTeaching(myBool, ls_id, userId)) {
         message = "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("ALP02");
+        elog.writeLog("[add_lpresentation:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
     if (!myBool.get_value()) {
-        response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
+    	elog.writeLog("[add_lpresentation:] " + "permission denied" +" /n");
+    	response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     // End page validation
@@ -86,6 +94,7 @@
         } else {
             if (!lecture.isLPresentation(myBool, lp_title, ls_id, l_id)) {
                 message = lecture.getErrMsg("ALP03");
+                elog.writeLog("[add_lpresentation:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -95,6 +104,7 @@
             } else {
                 if (!lecture.createLecturePresentation(lp_title, ls_id, l_id)) {
                     message = lecture.getErrMsg("ALP04");
+                    elog.writeLog("[add_lpresentation:] " + message +" /n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 } else {
@@ -112,6 +122,7 @@
         } else {
             if (!lecture.removeLecturePresentation(remove, ls_id, l_id)) {
                 message = lecture.getErrMsg("ALP05");
+                elog.writeLog("[add_lpresentation:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             } else {
@@ -123,6 +134,7 @@
     ArrayList<ArrayList<String>> eventPresentation = new ArrayList<ArrayList<String>>();
     if (!lecture.getLecturePresentation(eventPresentation, ls_id, l_id)) {
         message = lecture.getErrMsg("ALP05");
+        elog.writeLog("[add_lpresentation:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }         

@@ -24,6 +24,7 @@ import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
+import helper.GetExceptionLog;
 
 public class LDAPAuthenticate {
 
@@ -49,6 +50,7 @@ public class LDAPAuthenticate {
     private HashMap<String, Integer> blacklist;
     private HashMap<String, Integer> whitelist;
     private HashMap<String, HashMap<String, Integer>> accessMap;
+    GetExceptionLog elog = new GetExceptionLog();
     /* the access map will have the format:
      * { position1 = { title1 = level,
      * 				   title2 = level
@@ -165,10 +167,13 @@ public class LDAPAuthenticate {
 
         } catch (ParserConfigurationException e1) {
             e1.printStackTrace();
+            elog.writeLog("[LDAPAuthenticate ParserConfig: ] " + "-" + e1.getMessage() + "/n"+ e1.getStackTrace().toString());                       
         } catch (SAXException e) {
             e.printStackTrace();
+            elog.writeLog("[LDAPAuthenticate SAXException: ] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());                       
         } catch (IOException e) {
             e.printStackTrace();
+            elog.writeLog("[LDAPAuthenticate IOException: ] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString()); 
         }
 
         env = new Hashtable<Object, Object>();
@@ -182,6 +187,7 @@ public class LDAPAuthenticate {
         try {
             ldapContextNone = new InitialDirContext(env);
         } catch (NamingException e) {
+            elog.writeLog("[LDAPAuthenticate IOException] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());            
         }
 
         searchCtrl = new SearchControls();
@@ -285,10 +291,12 @@ public class LDAPAuthenticate {
             } catch (NamingException e) {
                 authenticated = "failed";
                 e.printStackTrace();
+                elog.writeLog("[LDAP Search NamingException] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());                 
             } catch (Exception e) {
                 //e.printStackTrace();
                 authenticated = "error";
                 e.printStackTrace();
+                elog.writeLog("[LDAP Search] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());               
             }
         }
 
@@ -323,8 +331,10 @@ public class LDAPAuthenticate {
                 authenticated = "true";
                 return true;
             } catch (NamingException e) {
+                elog.writeLog("[LDAP Search] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());                
             } catch (Exception e) {
                 System.out.println("User " + user + " not found in LDAP. Checking local database for user.");
+                elog.writeLog("[LDAP Search] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());                               
             }
         }
 

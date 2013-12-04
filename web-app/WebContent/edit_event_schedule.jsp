@@ -32,6 +32,7 @@
 
 <%    
 	String message = request.getParameter("message");
+    GetExceptionLog elog = new GetExceptionLog();
 	String successMessage = request.getParameter("successMessage");
 	if (message == null || message == "null") {
 	    message="";
@@ -58,6 +59,7 @@
     
 	//Start page validation
     if (userId.equals("")) {
+        elog.writeLog("[edit_event_schedule:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?error=Please log in");
         return;
     }
@@ -65,11 +67,13 @@
     if(!(ms_id==null||ms_id.equals(""))){
         if (!meeting.isMeeting(myBool, ms_id, m_id)) {
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AA01");
+            elog.writeLog("[edit_event_schedule:] " + message +" /n");
             response.sendRedirect("canlendar.jsp?message=" + message);
             return;   
         }
         if (!(user.isMeetingCreator(myBool, ms_id, userId)||isSuper)) {
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AA02");
+            elog.writeLog("[edit_event_schedule:] " + message +" /n");
             response.sendRedirect("canlendar.jsp?message=" + message);
             return;   
         }
@@ -78,11 +82,13 @@
     if(!(ls_id==null||ls_id.equals(""))){
         if (!lecture.isLecture(myBool, ls_id, l_id)) {
             message = lecture.getErrMsg("ALG01");
+            elog.writeLog("[edit_event_schedule:] " + message +" /n");
             response.sendRedirect("canlendar.jsp?message=" + message);
             return;   
         }
         if (!(user.isTeaching(myBool, ls_id, userId) || isSuper)) {
             message = user.getErrMsg("ALG02");
+            elog.writeLog("[edit_event_schedule:] " + message +" /n");
             response.sendRedirect("canlendar.jsp?message=" + message);
             return;   
         }
@@ -111,21 +117,29 @@
 	String allProfessorforLecture ="";			
           
     if(isMeeting){
-    	meeting.getMeetingScheduleInfo(result, ms_id);  	
+    	try{
+    	   meeting.getMeetingScheduleInfo(result, ms_id);  	
+    	}catch(Exception e){
+    	   elog.writeLog("[edit_event_schedule:] " + e.getMessage() +"-"+ e.getStackTrace()+" /n");
+    	}
     }
     if(isLecture){
     	//show the professor name,course,section, and semester information to super admin in course information field 
     	//if the user is professor, only show course,section, and semester information
-        lecture.getLectureScheduleInfo(result, ls_id);          
-        lecture.getLectureProfessor(lectureProfessor, result.get(0).get(1), result.get(0).get(2), result.get(0).get(3));
-        for(int j=0;j<lectureProfessor.size();j++){       	
-        	allProfessorforLecture=allProfessorforLecture.concat(lectureProfessor.get(j).get(0)).concat(" ");
-        }
-        if(isSuper){
-            courseInfo = allProfessorforLecture.concat(result.get(0).get(1)).concat(" ").concat(result.get(0).get(2)).concat(" ").concat(result.get(0).get(3));
-        }else{
-        	courseInfo = result.get(0).get(1).concat(" ").concat(result.get(0).get(2)).concat(" ").concat(result.get(0).get(3));
-        }
+    	try{
+	        lecture.getLectureScheduleInfo(result, ls_id);          
+	        lecture.getLectureProfessor(lectureProfessor, result.get(0).get(1), result.get(0).get(2), result.get(0).get(3));
+	        for(int j=0;j<lectureProfessor.size();j++){       	
+	        	allProfessorforLecture=allProfessorforLecture.concat(lectureProfessor.get(j).get(0)).concat(" ");
+	        }
+	        if(isSuper){
+	            courseInfo = allProfessorforLecture.concat(result.get(0).get(1)).concat(" ").concat(result.get(0).get(2)).concat(" ").concat(result.get(0).get(3));
+	        }else{
+	        	courseInfo = result.get(0).get(1).concat(" ").concat(result.get(0).get(2)).concat(" ").concat(result.get(0).get(3));
+	        }
+    	}catch(Exception e){
+    		elog.writeLog("[edit_event_schedule:] " + e.getMessage() +"-"+ e.getStackTrace()+" /n");
+    	}
     }
 
     ArrayList<ArrayList<String>> professor = new ArrayList<ArrayList<String>>();

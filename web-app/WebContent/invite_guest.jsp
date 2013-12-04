@@ -1,4 +1,5 @@
 <%@page import="java.util.*"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <!doctype html>
@@ -22,16 +23,21 @@
 <%
 	//Start page validation
 	String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     HashMap<String, Integer> roleMask = usersession.getRoleMask();
 	if (userId.equals("")) {
+		elog.writeLog("[invite_guest:] " + "unauthenticated user tried to access this page /n");
 	    response.sendRedirect("index.jsp?message=Please log in");
 	    return;
 	}
 	if(!(usersession.isSuper()||usersession.getUserLevel().equals("employee")||roleMask.get("guestAccountCreation") == 0)) {
-	    response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
+	    elog.writeLog("[invite_guest:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");	       
+		response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
 	    return;
 	}
     if (dbaccess.getFlagStatus() == false) {
+        elog.writeLog("[invite_guest:] " + "database connection error /n");
+        response.sendRedirect("index.jsp?message=Database connection error");
         return;
     }//End page validation
     

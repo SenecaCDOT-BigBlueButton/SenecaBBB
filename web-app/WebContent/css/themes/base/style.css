@@ -20,7 +20,7 @@ html, body {
 }
 
 .successMessage{
-	color:green;
+	color:#2FD651;
     font-size:16px;
     font-weight:bold;
 }
@@ -1167,7 +1167,7 @@ div.contactus a:active,div.help a:active{
      color:#0000FF;    
 }
 
-#studentListFile {
+#studentListFile, #presentationFile {
     color: BLACK;
     cursor: pointer;
     font-size: 16px;

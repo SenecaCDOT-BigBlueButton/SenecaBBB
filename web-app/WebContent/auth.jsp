@@ -2,7 +2,7 @@
 <%@page import="hash.PasswordHash"%>
 <%@page import="sql.User"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
@@ -15,6 +15,7 @@
     User user = new User(dbaccess);
 	MyBoolean prof = new MyBoolean();
 	MyBoolean depAdmin = new MyBoolean();
+	GetExceptionLog elog = new GetExceptionLog();
 	ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 	String userID = request.getParameter("SenecaLDAPBBBLogin");
 	String password = request.getParameter("SenecaLDAPBBBLoginPass");
@@ -25,7 +26,9 @@
 		// User exists in LDAP
 		if (ldap.search(request.getParameter("SenecaLDAPBBBLogin"), request.getParameter("SenecaLDAPBBBLoginPass"))) {
 			if (ldap.getAccessLevel() < 0) {
+				elog.writeLog("[auth:] " + "permission denied" +"/n");
 				response.sendRedirect("index.jsp?message=Sorry,you don't have permission to access this system!");
+				return;
 			} else {
 				int ur_id=0;
 				if (ldap.getPosition().equals("Student")) {
@@ -48,12 +51,15 @@
 					user.createUser(userID,ldap.getGivenName(),"", true, ur_id);
 					usersession.setNick(ldap.getGivenName());
 					user.getDefaultUserSetting(userSettingMask);
+					user.setUserSetting(userSettingMask, userID);
 					user.getPredefinedUserRoleSetting(userRoleMask,usersession.getUserLevel());
 					usersession.setRoleMask(userRoleMask);
 					usersession.setUserSettingsMask(userSettingMask);
 					userSettingMask.clear();
 					user.getDefaultMeetingSetting(userSettingMask);
+					user.setUserMeetingSetting(userSettingMask, userID);
 					usersession.setUserMeetingSettingsMask(userSettingMask);
+					user.setLastLogin(userID);
 				}
 				// User exists in our db but first time login
 				else if(result.get(0).get(5)==null){
@@ -61,11 +67,13 @@
 					user.setLastLogin(userID);
 					user.setNickName(userID, ldap.getGivenName());
 					user.getDefaultUserSetting(userSettingMask);
+					user.setUserSetting(userSettingMask, userID);
 					user.getPredefinedUserRoleSetting(userRoleMask,usersession.getUserLevel());
 					usersession.setRoleMask(userRoleMask);
 					usersession.setUserSettingsMask(userSettingMask);
 					userSettingMask.clear();
 					user.getDefaultMeetingSetting(userSettingMask);
+					user.setUserMeetingSetting(userSettingMask, userID);
 					usersession.setUserMeetingSettingsMask(userSettingMask);	
 				}
 				//User exists in db and not the first login
@@ -125,17 +133,20 @@
 			} 
 			else {
 				message = "Invalid username and/or password.";
+				elog.writeLog("[auth:] " + "username: "+ userID + "tried to log in with " + message +"/n");
 				response.sendRedirect("index.jsp?message=" + message);
 				return;
 			}
 		// User doesn't exist in database or LDAP
 		} else {
 				message = "Invalid username and/or password.";
+				elog.writeLog("[auth:] " + "username: "+ userID + "tried to log in with " + message +"/n");
 				response.sendRedirect("index.jsp?message=" + message);
 				return;
 		}
 	} else {
 			message = "Invalid username and/or password.**";
+			elog.writeLog("[auth:] " + "username: "+ userID + "tried to log in with " + message +"/n");
 			response.sendRedirect("index.jsp?message=" + message);
 	}
 %>

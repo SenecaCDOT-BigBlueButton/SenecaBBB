@@ -28,7 +28,9 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
+    	elog.writeLog("[delete_event:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
@@ -54,24 +56,29 @@
         ms_id = Validation.prepare(ms_id);
         validFlag = Validation.checkMId(m_id) && Validation.checkMsId(ms_id);
         if (!validFlag) {
+        	elog.writeLog("[delete_event:] " + Validation.getErrMsg() +"/n");
             response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
             return;
         }
         if (!meeting.isMeeting(myBool, ms_id, m_id)) {
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("DE01");
+            elog.writeLog("[delete_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!myBool.get_value()) {
-            response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
+        	elog.writeLog("[delete_event:] " + "username: " + userId +" permission denied" +"/n");
+            response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
             return;
         }
         if (!user.isMeetingCreator(myBool, ms_id, userId)) {
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("DE02");
+            elog.writeLog("[delete_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!myBool.get_value()) {
+        	elog.writeLog("[delete_event:] " + "username: " + userId +" permission denied" +"/n");
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         }
     } else if (!(l_id==null || ls_id==null)) {
@@ -79,27 +86,33 @@
         ls_id = Validation.prepare(ls_id);
         validFlag = Validation.checkLId(l_id) && Validation.checkLsId(ls_id);
         if (!validFlag) {
+        	elog.writeLog("[delete_event:] " + Validation.getErrMsg() +"/n");
             response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
             return;
         }
         if (!lecture.isLecture(myBool, ls_id, l_id)) {
             message = "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("DE03");
+            elog.writeLog("[delete_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!myBool.get_value()) {
+        	elog.writeLog("[delete_event:] " + "username: " + userId +" permission denied" +"/n");
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
             return;
         }
         if (!user.isTeaching(myBool, ls_id, userId)) {
             message = "Could not verify meeting status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("DE04");
+            elog.writeLog("[delete_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!myBool.get_value()) {
+        	elog.writeLog("[delete_event:] " + "username: " + userId +" permission denied" +"/n");
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         }
     } else {
+    	elog.writeLog("[delete_event:] " + "try to delete event without providing valid m_id,ms_id or l_id, ls_id " +"/n");
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
     }
@@ -110,6 +123,7 @@
         if (ms_id!=null) {
             if (!meeting.removeMeetingSchedule(ms_id)) {
                 message = user.getErrMsg("DE05");
+                elog.writeLog("[delete_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             } else {
@@ -119,6 +133,7 @@
         } else {
             if (!lecture.removeLectureSchedule(ls_id)) {
                 message = user.getErrMsg("DE06");
+                elog.writeLog("[delete_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             } else {
@@ -133,12 +148,14 @@
     if (ms_id!=null) {
         if (!meeting.getMeetingScheduleInfo(eventSResult, ms_id)) {
             message = meeting.getErrMsg("DE05");
+            elog.writeLog("[delete_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
     } else {
         if (!lecture.getLectureScheduleInfo(eventSResult, ls_id)) {
             message = lecture.getErrMsg("DE06");
+            elog.writeLog("[delete_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }

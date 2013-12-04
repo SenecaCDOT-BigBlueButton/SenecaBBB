@@ -43,15 +43,18 @@ public static String getMonthNumber(String month) {
 <% 
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     Boolean isProfessor = false;
     Boolean isSuper = false;
     isProfessor=usersession.isProfessor();
     isSuper =usersession.isSuper();
     if (userId.equals("")) {
+    	elog.writeLog("[update_event_schedule:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
+    	elog.writeLog("[update_event_schedule:] " + "database connection error /n");
         response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation

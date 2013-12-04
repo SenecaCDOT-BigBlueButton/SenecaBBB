@@ -20,11 +20,14 @@
 		if (bu_id == null) {
 			bu_id = "";
 		} 
-		else 
+		else{ 
 			successMessage = "Log in with username " + bu_id + "and the password you just set";
+		}
 	}	
-	if (usersession.getUserId() != "")
+	if (usersession.getUserId() != ""){
 		response.sendRedirect("calendar.jsp");
+		return;
+	}
 %>
 <!doctype html>
 <html lang="en">

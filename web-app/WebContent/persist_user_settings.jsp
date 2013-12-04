@@ -2,9 +2,8 @@
 <%@page import="hash.PasswordHash"%>
 <%@page import="sql.User"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
 <%@page import= "sql.User" %>
-<%@page import= "helper.Settings" %>
+<%@page import= "helper.*" %>
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
@@ -14,11 +13,14 @@
 <%
 	//Start page validation
 	String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
 	if (userId.equals("")) {
+		elog.writeLog("[persist_user_settings:] " + "unauthenticated user tried to access this page /n");
 	    response.sendRedirect("index.jsp?message=Please log in");
 	    return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
+		elog.writeLog("[persist_user_settings:] " + "database connection error /n");
 	    response.sendRedirect("index.jsp?message=Database connection error");
 	    return;
 	} //End page validation

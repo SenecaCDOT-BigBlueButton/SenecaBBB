@@ -28,8 +28,9 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
-    
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
+    	elog.writeLog("[view_events:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
@@ -54,11 +55,13 @@
     ArrayList<ArrayList<String>> lectures = new ArrayList<ArrayList<String>>();
     if (!meeting.getMeetingsForUser(meetings, userId, true, true)) {
         message = meeting.getErrMsg("VEVENTS01");
+        elog.writeLog("[view_events:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
     if (!lecture.getLecturesForUser(lectures, userId, true, true)) {
         message = lecture.getErrMsg("VEVENTS02");
+        elog.writeLog("[view_events:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }

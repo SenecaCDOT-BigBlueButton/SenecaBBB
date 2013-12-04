@@ -23,11 +23,14 @@
 <%
 	//Start page validation
 	String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
 	if (userId.equals("")) {
+		elog.writeLog("[modify_department:] " + "unauthenticated user tried to access this page /n");
 	    response.sendRedirect("index.jsp?message=Please log in");
 	    return;
 	}
 	if(!usersession.isSuper() && !usersession.isDepartmentAdmin()) {
+		elog.writeLog("[modify_department:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");
 	    response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
 	    return;
 	}
@@ -41,6 +44,7 @@
 	String d_code = request.getParameter("mod_d_code");
 	String d_name = request.getParameter("mod_d_name");
 	if (d_code==null || d_name==null) {
+		elog.writeLog("[modify_department:] " + "null department code or department name /n");
 	    response.sendRedirect("departments.jsp?message=Please do not mess with the URL");
 	    return;
 	}
@@ -48,25 +52,30 @@
 	d_name = Validation.prepare(d_name);
 	validFlag = Validation.checkDeptCode(d_code) && Validation.checkDeptName(d_name);
 	if (!validFlag) {
+		elog.writeLog("[modify_department:] " + Validation.getErrMsg() +" /n");
 	    response.sendRedirect("departments.jsp?message=" + Validation.getErrMsg());
 	    return;
 	}
 	if (!dept.isDepartment(myBool, d_code)) {
 	    message = "Could not verify department status: " + d_code + dept.getErrMsg("MD01");
+	    elog.writeLog("[modify_department:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
 	    return;   
 	}
 	if (!myBool.get_value()) {
+		elog.writeLog("[modify_department:] " + "nonexist department code" +" /n");
 	    response.sendRedirect("departments.jsp?message=Department with that code does not exist");
 	    return;
 	}
 	if (!usersession.isSuper()) {
 	    if (!user.isDepartmentAdmin(myBool, usersession.getUserId(), d_code)) {
 	        message = "Could not verify department admin status for: " + usersession.getUserId() + dept.getErrMsg("MD02");
+	        elog.writeLog("[modify_department:] " + message +" /n");
 	        response.sendRedirect("logout.jsp?message=" + message);
 		    return;   
 		}
 	    if (!myBool.get_value()) {
+	        elog.writeLog("[modify_department:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");	        
 		    response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
 		    return;
 		}	

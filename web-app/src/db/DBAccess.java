@@ -55,6 +55,7 @@ public class DBAccess {
         catch (SQLException e) {
             flag = false;
             _errLog += "\nSQLException: failed to close Connection";
+            elog.writeLog("[closeDBconnection:] " + e.getErrorCode() + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());           
         }
         return flag;
     }
@@ -121,7 +122,7 @@ public class DBAccess {
                     _errCode = Integer.toString(e.getErrorCode());
                     _errLog = e.getMessage();
                     _flag = false;
-                    elog.writeLog("[queryDB: ] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());                    
+                    elog.writeLog("[queryDB:] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());                    
                 }
                 finally {
                     _flag = closeConnection() && _flag; 
@@ -156,7 +157,7 @@ public class DBAccess {
                     _errCode = Integer.toString(e.getErrorCode());
                     _errLog = e.getMessage();
                     _flag = false;
-                    elog.writeLog("[updateDB: ] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());                   
+                    elog.writeLog("[updateDB:] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());                   
                 }
                 finally {
                     _flag = closeConnection() && _flag; 

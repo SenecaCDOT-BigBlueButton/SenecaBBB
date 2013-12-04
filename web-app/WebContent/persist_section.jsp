@@ -2,22 +2,26 @@
 <%@page import="sql.User"%>
 <%@page import="sql.Section"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 
 <% 
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
+    	elog.writeLog("[persist_section:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!(usersession.isDepartmentAdmin() || usersession.isSuper())) {
+        elog.writeLog("[persist_section:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");       
         response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
+    	elog.writeLog("[persist_section:] " + "database connection error /n");
         response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
@@ -53,6 +57,7 @@
     section.getLectureSchedule(sectionInSchedule, c_id, sc_id, sc_semesterid);
     if(toDel==null){
     	if(sectionInUse.size()>0){
+    	    elog.writeLog("[persist_section:] " + "username "+ userId +" tried to create a duplicated section"+" /n");           
     		response.sendRedirect("subjects.jsp?message= duplicated section, please create a new one");
     		return;
     	}else{
@@ -62,6 +67,7 @@
 	    }
     }else{
     	if(studentInSection.size()>0 || professorInSection.size()>0 || sectionInSchedule.size()>0){
+    		elog.writeLog("[persist_section:] " + "username "+ userId +" tried to remove a section which is used in other table"+" /n");
     		response.sendRedirect("subjects.jsp?message= section in use,could not be removed");
     		return;
     	}else{

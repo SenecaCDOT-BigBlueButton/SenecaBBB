@@ -1,6 +1,7 @@
 <%@page import="db.DBConnection"%>
 <%@page import="sql.*"%>
 <%@page import="java.util.*"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -34,15 +35,18 @@
 <%
 	//Start page validation
 	String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     Boolean isProfessor = false;
     Boolean isSuper = false;
     isProfessor=usersession.isProfessor();
     isSuper =usersession.isSuper();
 	if (userId.equals("")) {
+		elog.writeLog("[create_event:] " + "unauthenticated user tried to access this page /n");
 		response.sendRedirect("index.jsp?error=Please log in");
 		return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
+		elog.writeLog("[create_event:] " + "Database connection error /n");
 		response.sendRedirect("index.jsp?error=Database connection error");
 		return;
 	} //End page validation

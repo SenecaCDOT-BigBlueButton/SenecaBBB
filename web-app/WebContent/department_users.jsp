@@ -30,11 +30,14 @@
 <%
 	//Start page validation
 	String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
 	if (userId.equals("")) {
+		elog.writeLog("[department_users:] " + "unauthenticated user tried to access this page /n");
 	    response.sendRedirect("index.jsp?message=Please log in");
 	    return;
 	}
 	if(!usersession.isSuper() && !usersession.isDepartmentAdmin()) {
+		elog.writeLog("[department_users:] " + "username: " + userId + "tried to access this page,permission denied"+" /n");
 	    response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
 	    return;
 	}//End page validation
@@ -55,30 +58,36 @@
     String adminStatus = "";
     String d_code = request.getParameter("DeptCode");
     if (d_code==null) {
+    	elog.writeLog("[department_users:] " + " invalid department code "+"/n");
         response.sendRedirect("departments.jsp?message=Please do not mess with the URL");
         return;
     }
     d_code = Validation.prepare(d_code);
     if (!Validation.checkDeptCode(d_code)) {
+    	elog.writeLog("[department_users:] " + Validation.getErrMsg() +"/n");
         response.sendRedirect("departments.jsp?message=" + Validation.getErrMsg());
         return;
     }
     if (!dept.isDepartment(myBool, d_code)) {
         message = "Could not verify department status: "  + d_code + dept.getErrMsg("DU01");
+        elog.writeLog("[department_users:] " + message +"/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
     if (!myBool.get_value()) {
+    	elog.writeLog("[department_users:] " + " invalid department code "+"/n");
         response.sendRedirect("departments.jsp?message=Department with that code does not exist");
         return;
     }
     if (!usersession.isSuper()) {
         if (!user.isDepartmentAdmin(myBool, usersession.getUserId(), d_code)) {
             message = "Could not verify department admin status for: " + usersession.getUserId() + dept.getErrMsg("DU02");
+            elog.writeLog("[department_users:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!myBool.get_value()) {
+            elog.writeLog("[department_users:] " + "username: " + userId + "tried to access this page,permission denied"+" /n");           
             response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
             return;
         }    
@@ -95,6 +104,7 @@
         } else {
             if (!user.isDepartmentUser(myBool, bu_id, d_code)) {
                 message = user.getErrMsg("DU03");
+                elog.writeLog("[department_users:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -104,6 +114,7 @@
             } else {
                 if (!user.isUser(myBool, bu_id)) {
                     message = user.getErrMsg("DU04");
+                    elog.writeLog("[department_users:] " + message +"/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 }
@@ -126,6 +137,7 @@
     if (searchSucess) {
         if (!dept.createDepartmentUser(bu_id, d_code, false)) {
             message = dept.getErrMsg("DU05");
+            elog.writeLog("[department_users:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         } else {
@@ -141,6 +153,7 @@
             } else {
                 if (!dept.setDepartmentAdmin(mod, d_code)) {
                     message = dept.getErrMsg("DU06");
+                    elog.writeLog("[department_users:] " + message +"/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 }
@@ -152,6 +165,7 @@
             } else {
                 if (!user.isDepartmentAdmin(myBool, remove, d_code)) {
                     message = dept.getErrMsg("DU07");
+                    elog.writeLog("[department_users:] " + message +"/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 }
@@ -160,6 +174,7 @@
                 } else {    
                     if (!dept.removeDepartmentUser(remove, d_code)) {
                         message = dept.getErrMsg("DU08");
+                        elog.writeLog("[department_users:] " + message +"/n");
                         response.sendRedirect("logout.jsp?message=" + message);
                         return;   
                     }
@@ -172,6 +187,7 @@
     ArrayList<ArrayList<String>> deptUserList = new ArrayList<ArrayList<String>>();
     if (!dept.getDepartmentUser(deptUserList, d_code)) {
         message = "Could not verify department user list" + dept.getErrMsg("DU03");
+        elog.writeLog("[department_users:] " + message +"/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }

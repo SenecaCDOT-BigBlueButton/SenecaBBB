@@ -1,7 +1,7 @@
 <%@page import="db.DBConnection"%>
 <%@page import="sql.User"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -27,11 +27,14 @@
 <%
 	//Start page validation
 	String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
 	if (userId.equals("")) {
+		elog.writeLog("[settings:] " + "unauthenticated user tried to access this page /n");
 		response.sendRedirect("index.jsp?message=Please log in");
 		return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
+		elog.writeLog("[settings:] " + "database connection error /n");
 		response.sendRedirect("index.jsp?message=Database connection error");
 		return;
 	} //End page validation
@@ -116,6 +119,7 @@ $(document).ready(function() {
 							<input type="text" name="nickname" id="nickname" class="input" tabindex="15" title="Nickname" value=<%= nickName %>>
 						</div>
 						<%}%>
+						<!-- 
 						<div class="component">
 							<div class="checkbox" title="Automatically activate microphone"> <span class="box" role="checkbox" aria-checked="true" tabindex="16" aria-labelledby="setting1"></span>
 								<label class="checkmark"></label>
@@ -130,6 +134,7 @@ $(document).ready(function() {
 								<input type="checkbox" name="setting2box" checked="checked">
 							</div>
 						</div>
+						 -->
 						<%if (!usersession.isLDAP()) { %>
 						<div class="component">
 							<div class="buttons">
@@ -137,6 +142,7 @@ $(document).ready(function() {
 							</div>
 						</div>
 						<%}%>
+						<!--  
 					</fieldset>
 				</div>
 			</article>
@@ -146,6 +152,7 @@ $(document).ready(function() {
 					<img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/></header>
 				<div class="content">
 					<fieldset>
+					
 						<div class="component">
 							<div class="checkbox" title="Allow private chat."> <span class="box" role="checkbox" aria-checked="true" tabindex="18" aria-labelledby="eventSetting1"></span>
 								<label class="checkmark"></label>
@@ -167,22 +174,28 @@ $(document).ready(function() {
 								<input type="checkbox" name="eventSetting3box" checked="checked">
 							</div>
 						</div>
+				    -->
 						<div class="component">
 							<div class="checkbox" title="Allow event recording"> <span class="box" role="checkbox" aria-checked="true" tabindex="21" aria-labelledby="eventSetting4"></span>
 								<label class="checkmark"></label>
-								<label class="text" id="eventSetting4">Allow event recording.</label>
+								<label class="text" id="eventSetting4">Allow event recording</label>
 								<input type="checkbox" name="eventSetting4box" checked="checked">
 							</div>
+							
 						</div>
+				<!--  		
 					</fieldset>
 				</div>
 			</article>
 			<article>
 				<h4></h4>
-				<fieldset>
-					<div class="actionButtons">
+				<fieldset>		
+				 -->  
+				 <div class="component">		
+					<div class="actionButtons" style="margin-left:220px">
 						<button type="submit" name="submit" id="save" class="button" title="Click here to save inserted data">Save</button>
 						<button type="button" name="button" id="cancel" class="button" title="Click here to cancel" onclick="window.location.href='calendar.jsp'">Cancel</button>
+					</div>
 					</div>
 				</fieldset>
 			</article>

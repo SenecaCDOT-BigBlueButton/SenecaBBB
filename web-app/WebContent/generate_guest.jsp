@@ -3,9 +3,8 @@
 <%@page import="sql.User"%>
 <%@page import="java.util.*"%>
 <%@page import="java.text.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <%@page import= "sql.User" %>
-<%@page import= "helper.Settings" %>
 <%@ page import="java.io.*,javax.mail.*"%>
 <%@ page import="javax.mail.internet.*,javax.activation.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*" %>
@@ -18,6 +17,7 @@
 <%
 	//Start page validation
 	String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
 	String message = request.getParameter("message");
 	String successMessage = request.getParameter("successMessage");
 	if (message == null || message == "null") {
@@ -28,14 +28,18 @@
 	}
 	HashMap<String, Integer> roleMask = usersession.getRoleMask();
 	if (userId.equals("")) {
+		elog.writeLog("[generate_guest:] " + "unauthenticated user tried to access this page /n");
 	    response.sendRedirect("index.jsp?message=Please log in");
 	    return;
 	}
 	if(!(usersession.isSuper()||usersession.getUserLevel().equals("employee")||roleMask.get("guestAccountCreation") == 0)) {
-	    response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
+	    elog.writeLog("[generate_guest:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");	       
+		response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
 	    return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
+	    elog.writeLog("[generate_guest:] " + "database connection error /n");
+	    response.sendRedirect("index.jsp?message=Database connection error");
 	    return;
 	}//End page validation
 

@@ -2,6 +2,7 @@
 <%@page import="sql.Meeting"%>
 <%@page import="sql.Lecture"%>
 <%@page import="java.util.ArrayList" %>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -26,6 +27,7 @@
 	<%
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
+    GetExceptionLog elog = new GetExceptionLog();
     if (message == null || message == "null") {
         message="";
     }
@@ -46,6 +48,7 @@
 	dbaccess.resetFlag();
 	if (!meet.getMeetingsForUser(result, usersession.getUserId(), check1, check3)) {
         message = meet.getErrMsg("CAL01");
+        elog.writeLog("[calendar:] " + message +"/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
@@ -55,6 +58,7 @@
 	dbaccess.resetFlag();
 	if (!lect.getLecturesForUser(result, usersession.getUserId(), check2, check4)) {
         message = meet.getErrMsg("CAL02");
+        elog.writeLog("[calendar:] " + message +"/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
@@ -81,7 +85,7 @@
 					},
 					editable: false,
 					allDayDefault: false,
-					events: [<%= eventJSON %>]	                    					
+					events: [<%= eventJSON %>]
 				});
 			});
 		</script>
@@ -96,7 +100,8 @@
                     right: 'month,agendaWeek,agendaDay'
                 },
                 editable: false,
-                allDayDefault: false,
+                allDayDefault: false
+
             });          
         });
     </script>

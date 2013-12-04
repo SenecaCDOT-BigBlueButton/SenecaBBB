@@ -31,10 +31,12 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     String url = null;
     String eventTitle = request.getParameter("eventName"); 
     String storedEventId="";
     if (userId.equals("")) {
+    	elog.writeLog("[view_event:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
@@ -69,20 +71,24 @@
         ms_id = Validation.prepare(ms_id);
         validFlag = Validation.checkMId(m_id) && Validation.checkMsId(ms_id);
         if (!validFlag) {
+        	elog.writeLog("[view_event:] " + Validation.getErrMsg() +"/n");
             response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
             return;
         }
         if (!meeting.isMeeting(myBool, ms_id, m_id)) {
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE00-1");
+            elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!myBool.get_value()) {
+        	elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ms_id: "+ ms_id +", permission denied" +" /n"); 
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
             return;
         }
         if (!user.isMeetingCreator(myBool, ms_id, userId)) {
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE01");
+            elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
@@ -92,6 +98,7 @@
         if (status == 0) {
             if (!user.isMeetingAttendee(myBool, ms_id, userId)) {
                 message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE02");
+                elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -102,6 +109,7 @@
         if (status == 0) {
             if (!user.isMeetingGuest(myBool, ms_id, m_id, userId)) {
                 message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE02-2");
+                elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -110,6 +118,7 @@
             }
         }
         if (status==0) {
+            elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ms_id: "+ ms_id +", permission denied" +" /n");             
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
             return;
         }
@@ -119,20 +128,24 @@
         ls_id = Validation.prepare(ls_id);
         validFlag = Validation.checkLId(l_id) && Validation.checkLsId(ls_id);
         if (!validFlag) {
-         //   response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
+        	elog.writeLog("[view_event:] " + Validation.getErrMsg() +"/n");
+            response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
             return;
         }
         if (!lecture.isLecture(myBool, ls_id, l_id)) {
             message = "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE00-2");
+            elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!myBool.get_value()) {
+            elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ls_id: "+ ls_id +", permission denied" +" /n");                         
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
             return;
         }
         if (!user.isTeaching(myBool, ls_id, userId)) {
             message = "Could not verify meeting status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE03");
+            elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
@@ -142,6 +155,7 @@
         if (status == 0) {
             if (!user.isGuestTeaching(myBool, ls_id, l_id, userId)) {
                 message =  "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE04");
+                elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -152,6 +166,7 @@
         if (status == 0) {
             if (!user.isLectureStudent(myBool, ls_id, userId)) {
                 message =  "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE05");
+                elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -160,6 +175,7 @@
             }
         }
         if (status==0) {
+            elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ls_id: "+ ls_id +", permission denied" +" /n");            
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
             return;
         }
@@ -178,16 +194,19 @@
     if (status == 1 || status == 2 || status == 6) {
         if (!meeting.getMeetingInfo(eventResult, ms_id, m_id)) {
             message = meeting.getErrMsg("VE05");
+            elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!meeting.getMeetingScheduleInfo(eventSResult, ms_id)) {
             message = meeting.getErrMsg("VE06");
+            elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!meeting.getMeetingPresentation(eventPresentation, ms_id, m_id)) {
             message = meeting.getErrMsg("VE07");
+            elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
@@ -195,16 +214,19 @@
             type = "Meeting (C)";
             if (!meeting.getMeetingAttendee(eventAttendee, ms_id)) {
                 message = meeting.getErrMsg("VE08");
+                elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
             if (!meeting.getMeetingGuest(eventGuest, ms_id, m_id)) {
                 message = meeting.getErrMsg("VE09");
+                elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
             if (!meeting.getMeetingAttendance(eventAttendance, ms_id, m_id)) {
                 message = meeting.getErrMsg("VE10");
+                elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -214,16 +236,19 @@
     } else {
         if (!lecture.getLectureInfo(eventResult, ls_id, l_id)) {
             message = lecture.getErrMsg("VE11");
+            elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!lecture.getLectureScheduleInfo(eventSResult, ls_id)) {
             message = lecture.getErrMsg("VE12");
+            elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!lecture.getLecturePresentation(eventPresentation, ls_id, l_id)) {
             message = lecture.getErrMsg("VE13");
+            elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
@@ -231,16 +256,19 @@
             type = (status == 3) ? "Lecture (T)" : "Lecture (G)";
             if (!section.getStudent(eventAttendee, ls_id)) {
                 message = lecture.getErrMsg("VE14");
+                elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
             if (!lecture.getLectureGuest(eventGuest, ls_id, l_id)) {
                 message = lecture.getErrMsg("VE15");
+                elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
             if (!lecture.getLectureAttendance(eventAttendance, ls_id, l_id)) {
                 message = lecture.getErrMsg("VE16");
+                elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -378,7 +406,7 @@
 		                        long timediff = expectStart.getTime() - now.getTime();
 		                        long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(timediff);
 		                        long eventDuration = (long)Integer.valueOf(duration);
-		                        if(diffMinutes<=10 &&diffMinutes>-eventDuration){
+		                        if(diffMinutes<=15 &&diffMinutes>-eventDuration){
 		                        	startEvent = true;
 		                        }
 		                        if(startEvent){
@@ -389,7 +417,13 @@
                                     <% if(isEventCreator.get_value()){ out.print("Create");} else {out.print("Join");} if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
                                 </div>
                             </div>
-                            <% } %>                                                   
+                            <% }else{ %>  
+                            <div class="component">
+                                <div>                                    
+                                    <% if(isEventCreator.get_value()){ out.print("<p style='color:red'>You can create your event 15 mins before the start time and during the schedule time frame only</br>a 'create button' will be shown here!</p>");} else {out.print("<p style='color:red'>You can join the event once the it is created by moderator</br>a 'join button' will be shown here!</p>");}  %>
+                                </div>
+                            </div> 
+                            <%} %>                                               
 	                    </fieldset>
 	                </div>
 	            </article>

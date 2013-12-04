@@ -4,7 +4,7 @@
 <%@page import="sql.User"%>
 <%@page import="java.util.*"%>
 <%@page import="helper.MyBoolean"%>
-<%@page import= "helper.Settings" %>
+<%@page import= "helper.*" %>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <html lang="en">
@@ -30,6 +30,7 @@
 <script type="text/javascript" src="js/componentController.js"></script>
 <% 
 	String message = request.getParameter("message");
+    GetExceptionLog elog = new GetExceptionLog();
 	String successMessage = request.getParameter("successMessage");
 	if (message == null || message == "null") {
 	    message="";
@@ -41,6 +42,7 @@
 	String key = request.getParameter("key");
 	String bu_id = request.getParameter("user");
 	if (key == null || bu_id == null) {
+	    elog.writeLog("[guest_setup:] " + " invalid username or key " +" /n");	       
 		response.sendRedirect("index.jsp?message=Invalid username or key");
 		return;
 	}
@@ -69,6 +71,7 @@
 %>
 
 <script type="text/javascript">
+ /*
 	window.onload = function() {
 	    if(document.readyState == 'complete') {
 	        document.getElementById('newPassword').onkeyup = function() {
@@ -76,7 +79,7 @@
 	        };
 	    }
 	};
-	
+*/
 	function trim(s) {
 		return s.replace(/^\s*/, "").replace(/\s*$/, "");
 	}
@@ -85,16 +88,18 @@
 			alert("Please enter a password");
 			document.getElementById("newPassword").focus();
 			return false;
-		} else if (trim(document.getElementById("confirmPassword").value) == "") {
+		}
+        if (trim(document.getElementById("confirmPassword").value) == "") {
 			alert("Password confirm your new password");
 			document.getElementById("confirmPassword").focus();
 			return false;
 		}
-		else if (document.getElementById("newPassword").value != document.getElementById("confirmPassword").value) {
+		if (document.getElementById("newPassword").value != document.getElementById("confirmPassword").value) {
 			alert ("Passwords don't match");
 			document.getElementById("newPassword").focus();
 			return false;
 		}
+		return true;
 	}
 </script>
 	
@@ -109,7 +114,7 @@
           <div class="warningMessage"><%=message %></div>
           <div class="successMessage"><%=successMessage %></div>        
     </header>
-    <form action="persist_password.jsp?page=guest" method="get" onSubmit="return validate()" <%if (badParams)out.write("hidden=\"hidden\""); %>>
+    <form action="persist_password.jsp" method="get" onSubmit="return validate()" <%if (badParams)out.write("hidden=\"hidden\""); %>>
 		<article>
 		<header>
 		    <h2>Edit Password</h2>
@@ -117,6 +122,7 @@
 		  <fieldset>
 		    <div class="component">
 		      <label for="newPassword" class="label">New password:</label>
+		      <input type="hidden" name="frompage" id="frompage" value="guest">
 		      <input type="password" name="newPassword" id="newPassword" class="input" tabindex="20" title="New password">
 		    </div>
 		    <div class="component">

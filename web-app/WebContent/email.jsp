@@ -9,6 +9,7 @@
 <%
 	//Start page validation
 	String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
 	String message = request.getParameter("message");
 	String successMessage = request.getParameter("successMessage");
 	if (message == null || message == "null") {
@@ -19,14 +20,18 @@
 	}
 	HashMap<String, Integer> roleMask = usersession.getRoleMask();
 	if (userId.equals("")) {
+		elog.writeLog("[email:] " + "unauthenticated user tried to access this page /n");
 	    response.sendRedirect("index.jsp?message=Please log in");
 	    return;
 	}
 	if(!(usersession.isSuper()||usersession.getUserLevel().equals("employee")||roleMask.get("guestAccountCreation") == 0)) {
-	    response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
+	    elog.writeLog("[email:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");       
+		response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
 	    return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
+		elog.writeLog("[email:] " + "database connection error /n");
+		response.sendRedirect("index.jsp?message=Database connection error");
 	    return;
 	}//End page validation
 

@@ -3,7 +3,7 @@
 <%@page import="sql.Meeting"%>
 <%@page import="sql.Lecture"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -47,15 +47,19 @@ $(function(){
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
+    	elog.writeLog("[view_schedule:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!usersession.isSuper()) {
+    	elog.writeLog("[view_schedule:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");
         response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
+    	elog.writeLog("[view_schedule:] " + "database connection error /n");
         response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation

@@ -28,7 +28,9 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
+    	elog.writeLog("[edit_meeting:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
@@ -43,12 +45,14 @@
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
     if (m_id==null || ms_id==null) {
+    	elog.writeLog("[edit_meeting:] " + "null m_id or ms_id /n");
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
     }
     m_id = Validation.prepare(m_id);
     ms_id = Validation.prepare(ms_id);
     if (!(Validation.checkMId(m_id) && Validation.checkMsId(ms_id))) {
+    	elog.writeLog("[edit_meeting:] " + Validation.getErrMsg() +" /n");
         response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
         return;
     }
@@ -57,19 +61,23 @@
     MyBoolean myBool = new MyBoolean();    
     if (!meeting.isMeeting(myBool, ms_id, m_id)) {
         message = meeting.getErrMsg("EM01");
+        elog.writeLog("[edit_meeting:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
     if (!myBool.get_value()) {
+        elog.writeLog("[edit_meeting:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");       
         response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     if (!user.isMeetingCreator(myBool, ms_id, userId)) {
         message = user.getErrMsg("EM02");
+        elog.writeLog("[edit_meeting:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
     if (!myBool.get_value()) {
+        elog.writeLog("[edit_meeting:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");               
         response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
@@ -85,6 +93,7 @@
         } else {
             if (!meeting.updateMeetingTime(1, ms_id, m_id, startTime)) {
                 message += user.getErrMsg("EM03");
+                elog.writeLog("[edit_meeting:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;  
             } else {
@@ -101,6 +110,7 @@
         } else {
             if (!meeting.updateMeetingDuration(1, ms_id, m_id, duration)) {
                 message += user.getErrMsg("EM04");
+                elog.writeLog("[edit_meeting:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;  
             } else {
@@ -117,6 +127,7 @@
         } else {
             if (!meeting.setMeetingDescription(ms_id, m_id, description)) {
                 message += user.getErrMsg("EM05");
+                elog.writeLog("[edit_meeting:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;  
             } else {
@@ -131,12 +142,14 @@
 	    if (cancelEvent!=null && cancelEvent.equals("on")) {
 	        if (!meeting.setMeetingIsCancel(ms_id, m_id, true)) {
 	            message += user.getErrMsg("EM06");
+	            elog.writeLog("[edit_meeting:] " + message +" /n");
 	            response.sendRedirect("logout.jsp?message=" + message);
 	            return;  
 	        }
 	    } else if (cancelEvent==null) {
 	        if (!meeting.setMeetingIsCancel(ms_id, m_id, false)) {
                 message += user.getErrMsg("EM07");
+                elog.writeLog("[edit_meeting:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;  
             } 
@@ -154,6 +167,7 @@
     ArrayList<ArrayList<String>> event = new ArrayList<ArrayList<String>>();
     if (!meeting.getMeetingInfo(event, ms_id, m_id)) {
         message = meeting.getErrMsg("EM08");
+        elog.writeLog("[edit_meeting:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }    
@@ -161,6 +175,7 @@
     ArrayList<ArrayList<String>> eventSchedule = new ArrayList<ArrayList<String>>();
     if (!meeting.getMeetingScheduleInfo(eventSchedule, ms_id)) {
         message = meeting.getErrMsg("EM09");
+        elog.writeLog("[edit_meeting:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }

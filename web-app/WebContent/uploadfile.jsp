@@ -17,17 +17,21 @@
 
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     Boolean isSuper = usersession.isSuper();
     Boolean isProfessor = usersession.isProfessor();
     if (userId.equals("")) {
+    	elog.writeLog("[uploadfile:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
+    	elog.writeLog("[uploadfile:] " + "database connection error /n");
         response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } 
     if (!isSuper && !isProfessor) {
+        elog.writeLog("[uploadfile:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");           
         response.sendRedirect("calendar.jsp?message=You don't have permissions to view that page.");
         return;
     }
@@ -240,7 +244,7 @@
         
     } catch (FileUploadException e) {
         //throw new ServletException("Cannot parse multipart request.", e);
-        System.out.println("Exception");
+        elog.writeLog("[fileupload:] " + e.getMessage() +" /n" + e.getStackTrace() +"/n");        
     }
     
 
@@ -283,6 +287,7 @@
     }
     if(!usernameFound){
         message = "Sorry,can't find student 'Username' column in your file";
+        elog.writeLog("[fileupload:] " + message + " unsupported file format" +"/n");   
         response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + classSection);
         return;
     }
@@ -327,6 +332,7 @@
             } else {
                 if (!user.isLectureStudent(myBool, classSection.split("-")[0], classSection.split("-")[1],classSection.split("-")[2],bu_id)) {
                     message += user.getErrMsg("AS03"); 
+                    elog.writeLog("[fileupload:] " + message  +"/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 }
@@ -336,6 +342,7 @@
                 } else {
                     if (!user.isUser(myBool, bu_id)) {
                         message += user.getErrMsg("AS04");
+                        elog.writeLog("[fileupload:] " + message  +"/n");
                         response.sendRedirect("logout.jsp?message=" + message);
                         return;   
                     }
@@ -359,6 +366,7 @@
             ArrayList<ArrayList<String>> curCourse = new ArrayList<ArrayList<String>>();
             if (!section.createStudent(bu_id, classSection.split("-")[0], classSection.split("-")[1],classSection.split("-")[2], false)) {
                 message = section.getErrMsg("AS06");
+                elog.writeLog("[fileupload:] " + message  +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;  
             } else {

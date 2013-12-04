@@ -2,10 +2,7 @@
 <%@page import="sql.Meeting"%>
 <%@page import="sql.Lecture"%>
 <%@page import="java.util.ArrayList" %>
-<%@page import="java.util.*"%>
 <%@page import="helper.*"%>
-<%@page import="java.text.*"%>
-<%@page import="java.util.concurrent.TimeUnit"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -51,7 +48,7 @@
 	dbaccess.resetFlag();
 	if (!meet.getMeetingsForUser(result, usersession.getUserId(), check1, check3)) {
         message = meet.getErrMsg("CAL01");
-        elog.writeLog("[auth:] " + message +"/n");
+        elog.writeLog("[calendar:] " + message +"/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
@@ -61,7 +58,7 @@
 	dbaccess.resetFlag();
 	if (!lect.getLecturesForUser(result, usersession.getUserId(), check2, check4)) {
         message = meet.getErrMsg("CAL02");
-        elog.writeLog("[auth:] " + message +"/n");
+        elog.writeLog("[calendar:] " + message +"/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }

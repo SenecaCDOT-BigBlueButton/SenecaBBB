@@ -199,7 +199,8 @@ $(function(){
     $('select').selectmenu();
 });
 $(document).ready(function() {
-    //Hide some tables on load
+    $("#help").attr({href:"help_viewEventSchedule.jsp" ,
+                    target:"_blank"});
 });
 </script>
 </head>
@@ -213,7 +214,6 @@ $(document).ready(function() {
             <p><a href="calendar.jsp" tabindex="13">home</a> » <p>
             <!-- PAGE NAME -->
             <h1>View Event Schedule</h1>
-            <a href="help_viewEventSchedule.jsp" target="_blank">help</a> 
             <br />
             <!-- WARNING MESSAGES -->
             <div class="warningMessage"><%=message %></div>

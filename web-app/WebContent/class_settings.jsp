@@ -31,17 +31,21 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     Boolean isProfessor = usersession.isProfessor();
     Boolean isSuper = usersession.isSuper();
     if (userId.equals("")) {
+    	elog.writeLog("[class_settings:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
+    	elog.writeLog("[class_settings:] " + "database connection error /n");
         response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } 
     if (!isSuper && !isProfessor) {
+    	elog.writeLog("[class_settings:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");
         response.sendRedirect("calendar.jsp?message=You don't have permissions to view that page.");
         return;
     }
@@ -91,6 +95,7 @@
 	    }
     }else{
     	message="Wrong section information";
+    	elog.writeLog("[class_settings:] " + message +"/n");
     	response.sendRedirect("class_settings.jsp");
     }
 
@@ -105,6 +110,7 @@ if(isSuper){
 }else if(isProfessor){
 	section.getProfessor(listofclasses, userId);//get classes for current professor
 }else{
+    elog.writeLog("[class_settings:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");
     response.sendRedirect("calendar.jsp?message=You don't have permissions to view that page.");
     return;
 }
@@ -122,6 +128,7 @@ if (removeStudentId != null) {
         ArrayList<ArrayList<String>> tempInfo = new ArrayList<ArrayList<String>>();
         if (!section.removeStudent(removeStudentId,c_id, sc_id, sc_semesterid)) {
             message = lecture.getErrMsg("AS11");
+            elog.writeLog("[class_settings:] " + message +" /n");           
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         } else {

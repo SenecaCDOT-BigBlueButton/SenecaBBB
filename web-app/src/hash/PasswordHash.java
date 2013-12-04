@@ -12,7 +12,7 @@ import javax.crypto.spec.PBEKeySpec;
 
 import sql.User;
 import db.DBAccess;
-
+import helper.GetExceptionLog;
 
 /*
  * PBKDF2 salted password hashing.
@@ -29,6 +29,7 @@ public class PasswordHash {
 	public static final int ITERATION_INDEX = 0;
 	public static final int SALT_INDEX = 1;
 	public static final int PBKDF2_INDEX = 2;
+	GetExceptionLog elog = new GetExceptionLog();
 	
 	private DBAccess dbaccess = new DBAccess();
 
@@ -106,6 +107,8 @@ public class PasswordHash {
 			}
 		} catch (Exception error) {
 			error.printStackTrace();
+            elog.writeLog("[validatePassword: ] " + "-" + error.getMessage() + "/n"+ error.getStackTrace().toString());           
+            
 		}
 		return hash.equals(tempHash);
 	}

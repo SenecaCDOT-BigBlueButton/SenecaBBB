@@ -23,15 +23,19 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
+    	elog.writeLog("[edit_user:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!usersession.isSuper()) {
+        elog.writeLog("[edit_user:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");       
         response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
+    	elog.writeLog("[edit_user:] " + "Database connection error /n");
         response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
@@ -67,12 +71,14 @@
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
             message = Validation.getErrMsg();
+            elog.writeLog("[edit_user:] " + message +" /n");
             response.sendRedirect("calendar.jsp?message=" + message);
             return; 
         } 
         else {
 	        if (!user.isUser(myBool, bu_id)) {
 	            message = user.getErrMsg("AS04");
+	            elog.writeLog("[edit_user:] " + message +" /n");
 	            response.sendRedirect("calendar.jsp?message=" + message);
 	            return;   
 	        }
@@ -82,6 +88,7 @@
 	        } 
 	        else {
 	            message = "Invalid User Id";
+	            elog.writeLog("[edit_user:] " + message +" /n");
 	            response.sendRedirect("calendar.jsp?message=" + message);
 	            return;
 	        }
@@ -94,6 +101,7 @@
     	user.isnonLDAP(isNonLdap, bu_id);
         user.getUserInfo(bbbUserInfo,bu_id);
     }else{
+    	elog.writeLog("[edit_user:] " + "invalid user id" +" /n");
     	response.sendRedirect("calendar.jsp?message=Invalid User Id");
     	return;
     }

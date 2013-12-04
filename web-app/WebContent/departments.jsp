@@ -29,11 +29,14 @@
 	//Start page validation
 	boolean validFlag; 
 	String userId = usersession.getUserId();
+	GetExceptionLog elog = new GetExceptionLog();
 	if (userId.equals("")) {
+		elog.writeLog("[departments:] " + "unauthenticated user tried to access this page /n");
 		response.sendRedirect("index.jsp?message=Please log in");
 		return;
 	}
 	if (!(usersession.isDepartmentAdmin() || usersession.isSuper())) {
+		elog.writeLog("[departments:] " + "username: " + userId + "tried to access this page,permission denied"+" /n");
 	    response.sendRedirect("calendar.jsp");
 	    return;
 	}
@@ -80,6 +83,7 @@
 	    if (validFlag) {
 	        if (!dept.isDepartment(myBool, deptRemove)) {
 	            message = "Could not verify department status: " + deptRemove + dept.getErrMsg("D02");
+	            elog.writeLog("[departments:] " + message +"/n");
 	    	    response.sendRedirect("logout.jsp?message=" + message);
 	    	    return;   
 	    	}
@@ -88,6 +92,7 @@
 	    	} else {
 	    		if (!dept.removeDepartment(deptRemove)) {
 	    		    message = "Could not remove department " + deptRemove + dept.getErrMsg("D03");
+	    		    elog.writeLog("[departments:] " + message +"/n");
             		dept.resetErrorFlag();
         		} else {
         			successMessage = "Department " + deptRemove + " was removed";
@@ -118,6 +123,7 @@
 	if (usersession.isSuper()) {
 	    if (!dept.getDepartment(deptList)) {
 	        message = "Could not get department list" + dept.getErrMsg("D05");
+	        elog.writeLog("[departments:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;
         }
@@ -125,6 +131,7 @@
 	else {
 	    if (!dept.getDepartment(deptList, userId)) {
 	        message = "Could not get department list" + dept.getErrMsg("D06");
+	        elog.writeLog("[departments:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;
         }

@@ -30,8 +30,10 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?message=Please log in");
+    	elog.writeLog("[add_lguest:] " + "unauthenticated user tried to access this page /n");
+    	response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     String message = request.getParameter("message");
@@ -45,13 +47,15 @@
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
     if (l_id==null || ls_id==null) {
-        response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
+    	elog.writeLog("[add_lguest:] " + "null l_id or ls_id /n");
+    	response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
     }
     l_id = Validation.prepare(l_id);
     ls_id = Validation.prepare(ls_id);
     if (!(Validation.checkLId(l_id) && Validation.checkLsId(ls_id))) {
-        response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
+    	elog.writeLog("[add_lguest:] " + Validation.getErrMsg() + "/n");
+    	response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
         return;
     }
     User user = new User(dbaccess);
@@ -59,20 +63,24 @@
     MyBoolean myBool = new MyBoolean();    
     if (!lecture.isLecture(myBool, ls_id, l_id)) {
         message = lecture.getErrMsg("ALG01");
+        elog.writeLog("[add_lguest:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
     if (!myBool.get_value()) {
-        response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
+    	elog.writeLog("[add_lguest:] " + "Permission denied" + "/n");
+    	response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     if (!user.isTeaching(myBool, ls_id, userId)) {
         message = user.getErrMsg("ALG02");
+        elog.writeLog("[add_lguest:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
     if (!myBool.get_value()) {
-        response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
+    	elog.writeLog("[add_lguest:] " + "Permission denied" + "/n");
+    	response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     // End page validation
@@ -89,6 +97,7 @@
         } else {
             if (!user.isGuestTeaching(myBool, ls_id, l_id, bu_id)) {
                 message = user.getErrMsg("ALG03");
+                elog.writeLog("[add_lguest:] " + message + "/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -98,6 +107,7 @@
             } else {
                 if (!user.isUser(myBool, bu_id)) {
                     message = user.getErrMsg("ALG04");
+                    elog.writeLog("[add_lguest:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 }
@@ -122,6 +132,7 @@
     if (searchSucess) {
         if (!lecture.createLectureGuest(bu_id, ls_id, l_id, false)) {
             message = lecture.getErrMsg("ALG05");
+            elog.writeLog("[add_lguest:] " + message + "/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         } else {
@@ -144,6 +155,7 @@
             }
             if (!user.getNonLdapSearch(searchResult, term1, term2)) {
                 message = user.getErrMsg("ALG10");
+                elog.writeLog("[add_lguest:] " + message + "/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -159,6 +171,7 @@
             } else {
                 if (!lecture.setLectureGuestIsMod(mod, ls_id, l_id)) {
                     message = lecture.getErrMsg("ALG06");
+                    elog.writeLog("[add_lguest:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 }
@@ -170,6 +183,7 @@
             } else {
                 if (!lecture.removeLectureGuest(remove, ls_id, l_id)) {
                     message = lecture.getErrMsg("ALG07");
+                    elog.writeLog("[add_lguest:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 } else {
@@ -182,6 +196,7 @@
     ArrayList<ArrayList<String>> eventGuest = new ArrayList<ArrayList<String>>();
     if (!lecture.getLectureGuest(eventGuest, ls_id, l_id)) {
         message = lecture.getErrMsg("ALG08");
+        elog.writeLog("[add_lguest:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }                                

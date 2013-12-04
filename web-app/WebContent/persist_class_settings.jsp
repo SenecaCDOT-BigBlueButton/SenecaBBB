@@ -9,16 +9,20 @@
 <% 
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        response.sendRedirect("index.jsp?error=Please log in");
+    	elog.writeLog("[persist_class_settings:] " + "unauthenticated user tried to access this page /n");
+        response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!usersession.isSuper() && !usersession.isProfessor() ) {
+        elog.writeLog("[persist_class_settings:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");        
         response.sendRedirect("calendar.jsp?message=You don't have permission to access this page");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
-        response.sendRedirect("index.jsp?error=Database connection error");
+    	elog.writeLog("[persist_class_settings:] " + "database connection error /n");
+        response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
     
@@ -44,6 +48,7 @@
         } else {
             if (!user.isLectureStudent(myBool, selectedclass.split("-")[0], selectedclass.split("-")[1],selectedclass.split("-")[2],bu_id)) {
                 message = user.getErrMsg("AS03");
+                elog.writeLog("[persist_class_settings:] " + message +" /n");
                 response.sendRedirect("class_settings.jsp?message=" + message+ "&class=" + selectedclass);
                 return;   
             }
@@ -55,6 +60,7 @@
             } else {
                 if (!user.isUser(myBool, bu_id)) {
                     message = user.getErrMsg("AS04");
+                    elog.writeLog("[persist_class_settings:] " + message +" /n");
                     response.sendRedirect("class_settings.jsp?message=" + message+ "&class=" + selectedclass);
                     return;   
                 }
@@ -80,11 +86,12 @@ if (searchSucess) {
     ArrayList<ArrayList<String>> curCourse = new ArrayList<ArrayList<String>>();
     if (!section.createStudent(bu_id, selectedclass.split("-")[0], selectedclass.split("-")[1],selectedclass.split("-")[2], false)) {
         message = section.getErrMsg("AS06");
+        elog.writeLog("[persist_class_settings:] " + message +" /n");
         response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + selectedclass);
         return;   
     } else {
     	successMessage = bu_id + " added to student list";
-        response.sendRedirect("class_settings.jsp?successMessage=" + message + "&class=" + selectedclass);
+        response.sendRedirect("class_settings.jsp?successMessage=" + successMessage + "&class=" + selectedclass);
         return;
     }
 } else {

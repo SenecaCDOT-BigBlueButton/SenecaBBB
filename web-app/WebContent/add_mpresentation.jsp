@@ -11,7 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Add Meeting Guest</title>
+<title>Add Meeting Presentation</title>
 <link rel="icon" href="http://www.cssreset.com/favicon.png">
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
@@ -30,7 +30,9 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
+    	elog.writeLog("[add_mpresenation:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
@@ -46,12 +48,14 @@
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
     if (m_id==null || ms_id==null) {
+    	elog.writeLog("[add_mpresenation:] " + "null m_id or ms_id /n");
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
     }
     m_id = Validation.prepare(m_id);
     ms_id = Validation.prepare(ms_id);
     if (!(Validation.checkMId(m_id) && Validation.checkMsId(ms_id))) {
+    	elog.writeLog("[add_mpresenation:] " +Validation.getErrMsg()+ "/n");
         response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
         return;
     }
@@ -60,26 +64,31 @@
     MyBoolean myBool = new MyBoolean();    
     if (!meeting.isMeeting(myBool, ms_id, m_id)) {
         message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AMP01");
+        elog.writeLog("[add_mpresenation:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
     if (!myBool.get_value()) {
+    	elog.writeLog("[add_mpresenation:] " + "permission denied" + "/n");
         response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     if (!user.isMeetingCreator(myBool, ms_id, userId)) {
         message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AMP02");
+        elog.writeLog("[add_mpresenation:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }
     if (!myBool.get_value()) {
+    	elog.writeLog("[add_mpresenation:] " + "permission denied" + "/n");
         response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     // End page validation
     
     int i = 0;
-    String mp_title = request.getParameter("searchBox");
+   String mp_title = request.getParameter("searchBox");
+   String mp_filename = request.getParameter("presentationFile");
     if (mp_title!=null) {
         mp_title = Validation.prepare(mp_title);
         if (!(Validation.checkPresentationTitle(mp_title))) {
@@ -87,6 +96,7 @@
         } else {
             if (!meeting.isMPresentation(myBool, mp_title, ms_id, m_id)) {
                 message = meeting.getErrMsg("AMP03");
+                elog.writeLog("[add_mpresenation:] " + message + "/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -96,6 +106,7 @@
             } else {
                 if (!meeting.createMeetingPresentation(mp_title, ms_id, m_id)) {
                     message = meeting.getErrMsg("AMP04");
+                    elog.writeLog("[add_mpresenation:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 } else {
@@ -113,6 +124,7 @@
         } else {
             if (!meeting.removeMeetingPresentation(remove, ms_id, m_id)) {
                 message = meeting.getErrMsg("AMP05");
+                elog.writeLog("[add_mpresenation:] " + message + "/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             } else {
@@ -124,6 +136,7 @@
     ArrayList<ArrayList<String>> eventPresentation = new ArrayList<ArrayList<String>>();
     if (!meeting.getMeetingPresentation(eventPresentation, ms_id, m_id)) {
         message = meeting.getErrMsg("AMP05");
+        elog.writeLog("[add_mpresenation:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;   
     }         
@@ -146,6 +159,28 @@ $(screen).ready(function() {
 $(function(){
     $('select').selectmenu();
 });
+/*
+//specify file formats accepted on client side
+extArray = new Array(".gif", ".jpg", ".png", ".pdf",".doc",".docx",".xls",".xlsx",".ppt",".pptx",".txt",".rtf",".odt",".ods",".odp",".odg",".odc",".odi");
+function LimitAttach(form, file) {
+	allowSubmit = false;
+	if (!file) {
+		alert("Please select a file to upload");
+		return false;
+	}
+	while (file.indexOf("\\") != -1)
+	file = file.slice(file.indexOf("\\") + 1);
+	ext = file.slice(file.indexOf(".")).toLowerCase();
+	for (var i = 0; i < extArray.length; i++) {
+	if (extArray[i] == ext) { allowSubmit = true; break; }
+	}
+	if (allowSubmit) form.submit();
+	else
+	alert("Please only upload files that end in types:  " 
+	+ (extArray.join("  ")) + "\nPlease select a new "
+	+ "file to upload and submit again.");
+}
+*/
 </script>
 </head>
 
@@ -166,7 +201,7 @@ $(function(){
 	        <div class="warningMessage"><%=message %></div>
 	        <div class="successMessage"><%=successMessage %></div> </header>
         </header>
-        <form name="addMPresentation" method="get" action="add_mpresentation.jsp">
+        <form name="addMPresentation" method="get" action="add_mpresentation.jsp" enctype="multipart/form-data">
             <article>
                 <header>
                   <h2>Add Presentation</h2>
@@ -177,7 +212,7 @@ $(function(){
                         <div class="component">
                             <input type="hidden" name="ms_id" id="ms_id" value="<%= ms_id %>">
                             <input type="hidden" name="m_id" id="m_id" value="<%= m_id %>">  
-                            <label for="searchBox" class="label">Add Presentation:</label>
+                            <label for="searchBox" class="label"> Add Presentation:</label>
                             <input type="text" name="searchBox" id="searchBox" class="input" tabindex="37" title="Search user">                                                      
                         </div>                      
                         <div class="component">
@@ -187,6 +222,15 @@ $(function(){
                             </div>
                         </div>
                     </fieldset>
+                    <!--  
+                    <fieldset>
+	                    <div class="component">
+	                            <label for="loadFile" class="label">Load Presentation File:</label>
+	                            <input type="file" name="presentationFile" id="presentationFile" >                       
+	                            <button type="submit" name="submitFile" id="submitFile" class="button" title="Click here to add file"  onclick="LimitAttach(this.form, this.form.presentationFile.value)">Load File</button>
+	                    </div>
+                    </fieldset>
+                    -->
                 </div>
             </article>
             <article>
@@ -201,6 +245,7 @@ $(function(){
                                 <thead>
                                     <tr>
                                         <th class="firstColumn" tabindex="16">Presentation Title<span></span></th>
+                                        <!--  <th  tabindex="17">Presentation File<span></span></th>-->
                                         <th width="65" title="Remove" class="icons" align="center">Remove</th>
                                     </tr>
                                 </thead>
@@ -208,6 +253,7 @@ $(function(){
                                 <% for (i=0; i<eventPresentation.size(); i++) { %>
                                     <tr>
                                         <td class="row"><%= eventPresentation.get(i).get(0) %></td>
+                                        <!--<td ></td>-->
                                         <td class="icons" align="center">
                                             <a href="add_mpresentation.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&remove=<%= eventPresentation.get(i).get(0) %>" class="remove">
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>

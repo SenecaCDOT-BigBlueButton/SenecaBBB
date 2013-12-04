@@ -43,7 +43,7 @@ public class DBConnection {
             _errCode = Integer.toString(e.getErrorCode());
             _errLog = e.getMessage();
             _flag = false;
-            elog.writeLog("[DBConnection: ] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());
+            elog.writeLog("[DBConnection:] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());
         }
         if (_flag) {
             try {
@@ -61,7 +61,7 @@ public class DBConnection {
                 _errCode = Integer.toString(e.getErrorCode());
                 _errLog = e.getMessage();
                 _flag = false;
-                elog.writeLog("[DBConnection: ] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());
+                elog.writeLog("[DBConnection:] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());
             }
         }
     }
@@ -80,7 +80,7 @@ public class DBConnection {
                 conn = null; //To be safe, since I don't know the actual behavior of getConnection
                 _errCode = Integer.toString(e.getErrorCode());
                 _errLog = e.getMessage();
-                elog.writeLog("[DBConnection: ] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());
+                elog.writeLog("[DBConnection:] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());
                 _flag = false;
             }
         }

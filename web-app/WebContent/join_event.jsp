@@ -7,7 +7,9 @@
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <%
  String userId = usersession.getUserId();
+ GetExceptionLog elog = new GetExceptionLog();
  if (userId.equals("")) {
+	elog.writeLog("[join_event:] " + "unauthenticated user tried to access this page /n");
     response.sendRedirect("index.jsp?message=Please log in");
     return;
  }

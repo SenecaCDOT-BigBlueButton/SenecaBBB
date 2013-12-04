@@ -1,4 +1,5 @@
 <%@page import="db.DBConnection"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -19,14 +20,46 @@
 <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <script type="text/javascript" src="js/componentController.js"></script>
+<script type="text/javascript">
+
+    function trim(s) {
+        return s.replace(/^\s*/, "").replace(/\s*$/, "");
+    }
+    function validate() {
+        if (trim(document.getElementById("currentPassword").value) == "") {
+            alert("Please enter your current password");
+            document.getElementById("currentPassword").focus();
+            return false;
+        } 
+        if (trim(document.getElementById("newPassword").value) == "") {
+            alert("Please enter a password");
+            document.getElementById("newPassword").focus();
+            return false;
+        } 
+        if (trim(document.getElementById("confirmPassword").value) == "") {
+            alert("Please confirm your new password");
+            document.getElementById("confirmPassword").focus();
+            return false;
+        }
+        if (document.getElementById("newPassword").value != document.getElementById("confirmPassword").value) {
+            alert ("Passwords don't match");
+            document.getElementById("newPassword").focus();
+            return false;
+        }
+        return true;
+    }
+</script>
 <%  
 	//Start page validation
 	String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
 	if (userId.equals("")) {
+		elog.writeLog("[edit_password:] " + "unauthenticated user tried to access this page /n");
 		response.sendRedirect("index.jsp?error=Please log in");
 		return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
+		elog.writeLog("[edit_password:] " + "database connection error /n");
 		response.sendRedirect("index.jsp?error=Database connection error");
 		return;
 	} //End page validation
@@ -52,7 +85,7 @@
 			<div class="warningMessage"><%=message %></div>
 			<div class="successMessage"><%=successMessage %></div> 
 		</header>
-		<form action="persist_password.jsp?page=edit_password" method="get">
+		<form action="persist_password.jsp" method="get" onSubmit="return validate()">
 			<article>
 				<header>
 					<h2>Edit Password</h2>
@@ -61,6 +94,7 @@
 					<fieldset>
 						<div class="component">
 							<label for="currentPassword" class="label">Current password:</label>
+							<input type="hidden" name="frompage" id="frompage" value="edit_password">
 							<input type="password" name="currentPassword" id="currentPassword" class="input" tabindex="16" title="Current password" required>
 						</div>
 						<div class="component">

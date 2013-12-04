@@ -1,7 +1,7 @@
 <%@page import="db.DBConnection"%>
 <%@page import="sql.User"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -22,11 +22,14 @@
 <%
 	//Start page validation
 	String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
 	if (userId.equals("")) {
+		elog.writeLog("[create_department:] " + "unauthenticated user tried to access this page /n");
 		response.sendRedirect("index.jsp?message=Please log in");
 		return;
 	}
 	if(!usersession.isSuper() && !usersession.isDepartmentAdmin()) {
+	    elog.writeLog("[create_department:] " + "username: " + userId + "tried to access this page,permission denied"+" /n");
 	    response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
 	    return;
 	}//End page validation

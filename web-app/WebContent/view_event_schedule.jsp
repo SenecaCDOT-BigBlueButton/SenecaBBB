@@ -31,7 +31,9 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
+    	elog.writeLog("[view_event_schedule:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
@@ -65,11 +67,13 @@
         ms_id = Validation.prepare(ms_id);
         validFlag = Validation.checkMsId(ms_id);
         if (!validFlag) {
+        	elog.writeLog("[view_event_schedule:] " + Validation.getErrMsg() +" /n");
             response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
             return;
         }
         if (!user.isMeetingCreator(myBool, ms_id, userId)) {
             message = user.getErrMsg("VES01");
+            elog.writeLog("[view_event_schedule:] " + message +" /n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
@@ -79,6 +83,7 @@
         if (status == 0) {
             if (!user.isMeetingAttendee(myBool, ms_id, userId)) {
                 message = user.getErrMsg("VES02");
+                elog.writeLog("[view_event_schedule:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -94,11 +99,13 @@
         ls_id = Validation.prepare(ls_id);
         validFlag = Validation.checkLsId(ls_id);
         if (!validFlag) {
+        	elog.writeLog("[view_event_schedule:] " + Validation.getErrMsg() +" /n");
             response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
             return;
         }
         if (!user.isTeaching(myBool, ls_id, userId)) {
             message = user.getErrMsg("VES03");
+            elog.writeLog("[view_event_schedule:] " + message +" /n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
@@ -108,6 +115,7 @@
         if (status == 0) {
             if (!user.isLectureStudent(myBool, ls_id, userId)) {
                 message = user.getErrMsg("VES04");
+                elog.writeLog("[view_event_schedule:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -116,10 +124,12 @@
             }
         }
         if (status==0) {
+            elog.writeLog("[view_event_schedule:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");                      
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
             return;
         }
     } else {
+    	elog.writeLog("[view_event_schedule:] " + "ls_id or ms_is is null" +" /n");
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
     }
@@ -131,17 +141,20 @@
     if (status == 1 || status == 2) {
         if (!meeting.getMeetingInfo(eventResult, ms_id)) {
             message = meeting.getErrMsg("VES05");
+            elog.writeLog("[view_event_schedule:] " + message +" /n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!meeting.getMeetingScheduleInfo(eventSResult, ms_id)) {
             message = meeting.getErrMsg("VES06");
+            elog.writeLog("[view_event_schedule:] " + message +" /n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (status==1) {
             if (!meeting.getMeetingAttendee(eventAttendee, ms_id)) {
                 message = meeting.getErrMsg("VES07");
+                elog.writeLog("[view_event_schedule:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
@@ -149,17 +162,20 @@
     } else {
         if (!lecture.getLectureInfo(eventResult, ls_id)) {
             message = lecture.getErrMsg("VES08");
+            elog.writeLog("[view_event_schedule:] " + message +" /n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (!lecture.getLectureScheduleInfo(eventSResult, ls_id)) {
             message = lecture.getErrMsg("VES09");
+            elog.writeLog("[view_event_schedule:] " + message +" /n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;   
         }
         if (status==3) {
             if (!section.getStudent(eventAttendee, ls_id)) {
                 message = lecture.getErrMsg("VES10");
+                elog.writeLog("[view_event_schedule:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }

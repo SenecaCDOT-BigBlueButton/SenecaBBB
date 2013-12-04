@@ -1,7 +1,7 @@
 <%@page import="db.DBConnection"%>
 <%@page import="sql.User"%>
 <%@page import="java.util.*"%>
-<%@page import="helper.MyBoolean"%>
+<%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!doctype html>
@@ -10,12 +10,16 @@
 <%
     //Start page validation
     String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
+    	elog.writeLog("[edit_bbb_admin:] " + "unauthenticated user tried to access this page /n");
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if(!(usersession.isSuper())) {
+    	elog.writeLog("[edit_bbb_admin:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");
         response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
+        return;
     }//End page validation
     
     String message = request.getParameter("message");
@@ -112,6 +116,10 @@
                    number_value:{
                        required: true,
                        pattern: /^\s*[0-9]+\s*$/
+                   },
+                   key_value:{
+                       required: true,
+                       pattern: /^\s*[a-zA-z0-9 ]+\s*$/
                    }
                 },
                 messages: {
@@ -122,6 +130,10 @@
                     number_value:{
                         required: "timeout value is required",
                         pattern: "number only"
+                    },
+                    key_value:{
+                        required: "key value is required",
+                        pattern:"number and letter only"
                     }
                 }
             });

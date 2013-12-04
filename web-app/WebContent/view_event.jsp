@@ -365,13 +365,14 @@
 	        $('#expandGuest').click();
 	        $('#expandAttendance').click();
 	        $('#expandPresentation').click();
+	        $("#help").attr({href:"help_viewEvent.jsp" ,
+                             target:"_blank"});
 	    });
     </script>
     <section>
         <header>
             <p><a href="calendar.jsp" tabindex="13">home</a> » </p>
             <h1>Current Event</h1>
-            <a href="help_viewEvent.jsp" target="_blank">help</a> 
             <div class="warningMessage"><%=message %></div>
             <div class="successMessage"><%=successMessage %></div> 
         </header>

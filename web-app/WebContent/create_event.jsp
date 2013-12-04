@@ -196,7 +196,6 @@
       <header>
           <p><a href="calendar.jsp" tabindex="13">home</a> » create event</p>
           <h1>Create Event</h1>
-          <a href="help_createEvent.jsp" target="_blank">help</a> 
 	      <!-- MESSAGES -->
 	      <div class="warningMessage"><%=message %></div>
 	      <div class="successMessage"><%=successMessage %></div> 
@@ -456,6 +455,8 @@
    // form validation, edit the regular expression pattern and error messages to meet your needs
    
 	   $(document).ready(function(){
+		    $("#help").attr({href:"help_createEvent.jsp" ,
+		    	             target:"_blank"});
 		    $('#eventForm').validate({
 		    	validateOnBlur : true,
 		        rules: {

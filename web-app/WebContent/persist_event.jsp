@@ -68,22 +68,30 @@ public static String getMonthNumber(String month) {
 	Meeting meeting = new Meeting(dbaccess);
 	Lecture lecture = new Lecture(dbaccess);
 	MyBoolean prof = new MyBoolean();
+	ArrayList<ArrayList<String>> latestCreatedSchedule = new ArrayList<ArrayList<String>>();
+	ArrayList<ArrayList<String>> latestCreatedMeeting = new ArrayList<ArrayList<String>>();
 	HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
 	HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
 	HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
 	userSettings = usersession.getUserSettingsMask();
 	meetingSettings = usersession.getUserMeetingSettingsMask();
 	roleMask = usersession.getRoleMask();
-	
+    String fromquickmeeting = request.getParameter("fromquickmeeting");
     String startMonthNumber=null;
     String endMonthNumber=null;
-    endMonthNumber = getMonthNumber(request.getParameter("dropdownMonthEnds"));
+    if(fromquickmeeting==null){
+        endMonthNumber = getMonthNumber(request.getParameter("dropdownMonthEnds"));
+    }
     startMonthNumber = getMonthNumber(request.getParameter("dropdownMonthStarts"));        
     String title = request.getParameter("eventTitle");
     String inidatetime = request.getParameter("dropdownYearStarts").concat("-").concat(startMonthNumber).concat("-").concat(request.getParameter("dropdownDayStarts")).concat(" ").concat(request.getParameter("startTime")).concat(".0");
     //Validate inidatetime to ensure that it is later than current time
     if (!(Validation.checkStartDateTime(inidatetime))) {
-        response.sendRedirect("create_event.jsp?message=" + Validation.getErrMsg());
+    	if(fromquickmeeting !=null){
+    		response.sendRedirect("quickMeeting.jsp?message=" + Validation.getErrMsg());
+    	}else{
+            response.sendRedirect("create_event.jsp?message=" + Validation.getErrMsg());
+    	}
         return;
     }
     String duration = request.getParameter("eventDuration");
@@ -109,7 +117,10 @@ public static String getMonthNumber(String month) {
 	String repeatEvery = request.getParameter("repeatsEvery"); // daily or weekly is chosen, repeat interval
 	String endType = request.getParameter("dropdownEnds"); // on specified date or after number of occurrences
 	String numberOfOccurrences = request.getParameter("occurrences"); // if after number of occurrences is chosen, times of repeating
-	String repeatEndDate = request.getParameter("dropdownYearEnds").concat("-").concat(endMonthNumber).concat("-").concat(request.getParameter("dropdownDayEnds")); // if on specified date is chosen, specified end date
+	String repeatEndDate = null;
+	if(fromquickmeeting ==null) {
+		repeatEndDate=request.getParameter("dropdownYearEnds").concat("-").concat(endMonthNumber).concat("-").concat(request.getParameter("dropdownDayEnds")); // if on specified date is chosen, specified end date
+	}
     
 	// weekly recurrence, weekday selected	
 	String weekString = request.getParameter("weekString");
@@ -152,7 +163,13 @@ public static String getMonthNumber(String month) {
     }	
 	if(eventType.equals("Meeting")){   //create a meeting event		
 	   if(meeting.createMeetingSchedule(title, inidatetime, spec, duration, description, userId)){
-		   response.sendRedirect("calendar.jsp?successMessage=Meeting schedule created"); 
+		   if(fromquickmeeting !=null){
+			   meeting.getLatestCreatedSchduleForUser(latestCreatedSchedule, userId);
+			   meeting.getMeetingInfo(latestCreatedMeeting, latestCreatedSchedule.get(0).get(0));
+			   response.sendRedirect("add_attendee.jsp?successMessage= Quick Meeting created, please add attendees to your meeting&m_id="+latestCreatedMeeting.get(0).get(1) + "&ms_id=" + latestCreatedSchedule.get(0).get(0));
+		   }else{
+			   response.sendRedirect("calendar.jsp?successMessage=Meeting schedule created"); 
+		   }		   
 		   return;
 	   }else{
 		   response.sendRedirect("calendar.jsp?message=Fail to create meeting schedule");

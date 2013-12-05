@@ -42,12 +42,12 @@
     isSuper =usersession.isSuper();
 	if (userId.equals("")) {
 		elog.writeLog("[create_event:] " + "unauthenticated user tried to access this page /n");
-		response.sendRedirect("index.jsp?error=Please log in");
+		response.sendRedirect("index.jsp?message=Please log in");
 		return;
 	}
 	if (dbaccess.getFlagStatus() == false) {
 		elog.writeLog("[create_event:] " + "Database connection error /n");
-		response.sendRedirect("index.jsp?error=Database connection error");
+		response.sendRedirect("index.jsp?message=Database connection error");
 		return;
 	} //End page validation
 	

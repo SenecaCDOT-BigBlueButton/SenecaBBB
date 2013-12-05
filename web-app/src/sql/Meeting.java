@@ -106,6 +106,22 @@ public class Meeting extends Sql {
     
     /**
      * Fields:<p>
+     * (0)ms_id 
+     * @param result
+     * @param bu_id
+     * @return
+     */
+    public boolean getLatestCreatedSchduleForUser(ArrayList<ArrayList<String>> result, String bu_id) {
+        _sql = "SELECT ms_id "
+                + "FROM meeting_schedule "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "ORDER BY ms_id DESC "
+                + "LIMIT 1";;
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * Fields:<p>
      * (0)ms_id (1)m_id (2)m_inidatetime (3)m_duration (4)m_iscancel (5)m_description (6)m_modpass (7)m_userpass
      * (8)m_setting(meeting) (9)ms_title
      * @param result
@@ -396,19 +412,19 @@ public class Meeting extends Sql {
     }
     
     public boolean isMPresentation(MyBoolean bool, String mp_title, String ms_id, String m_id) {
-        _sql = "SELECT 1 "
-                + "FROM meeting_presentation "
-                + "WHERE ms_id = '" + ms_id + "' "
-                + "AND m_id = '" + m_id + "' "
-                + "AND mp_title = '" + mp_title + "'";
-        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
-        boolean flag =_dbAccess.queryDB(tempResult, _sql);
-        if (flag) {
-            bool.set_value(tempResult.isEmpty() ? false : true);
-        }
-        return flag;
-    }
-    
+	    _sql = "SELECT 1 "
+	            + "FROM meeting_presentation "
+	            + "WHERE ms_id = '" + ms_id + "' "
+	            + "AND m_id = '" + m_id + "' "
+	            + "AND mp_title = '" + mp_title + "'";
+	    ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+	    boolean flag =_dbAccess.queryDB(tempResult, _sql);
+	    if (flag) {
+	        bool.set_value(tempResult.isEmpty() ? false : true);
+	    }
+	    return flag;
+	}
+
     public boolean defaultMeetingSetting(String ms_id, String m_id) {
         _sql = "UPDATE meeting as a "
                 + "CROSS JOIN (SELECT key_value FROM bbb_admin WHERE key_name='default_meeting') as b "

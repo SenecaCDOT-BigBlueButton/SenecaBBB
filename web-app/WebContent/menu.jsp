@@ -31,6 +31,9 @@
                     out.write("<div class=\"menu\"><li id=\"inviteGuest\"><a href=\"invite_guest.jsp\" tabindex=\"14\" title=\"Click here to create guest account\">Invite Guest</a></li></div>");					
 				}
 			%>
+			<div class="menu">
+                <li id="QuickMeeting"><a href="quickMeeting.jsp" tabindex="15" title="Click here to start a quick meeting">Quick Meeting</a></li>
+            </div>
 		</ul>
 	</nav>
 

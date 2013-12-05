@@ -208,10 +208,10 @@
                 messages: {
                     eventTitle: { 
                         pattern:"Please enter a valid Title.",
-                        required:"Title is required"
+                        required:"Meeting Title is required"
                     },
-                    startTime:"Please enter a valid Time Format",
-                    eventDuration:"Please enter a valid Number",
+                    startTime:"Please enter a valid Time Format: 00:00:00",
+                    eventDuration:"Number Only",
                 }
             });
 

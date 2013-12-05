@@ -119,7 +119,7 @@ public static String getMonthNumber(String month) {
 	String numberOfOccurrences = request.getParameter("occurrences"); // if after number of occurrences is chosen, times of repeating
 	String repeatEndDate = null;
 	if(fromquickmeeting ==null) {
-		request.getParameter("dropdownYearEnds").concat("-").concat(endMonthNumber).concat("-").concat(request.getParameter("dropdownDayEnds")); // if on specified date is chosen, specified end date
+		repeatEndDate=request.getParameter("dropdownYearEnds").concat("-").concat(endMonthNumber).concat("-").concat(request.getParameter("dropdownDayEnds")); // if on specified date is chosen, specified end date
 	}
     
 	// weekly recurrence, weekday selected	
@@ -163,7 +163,7 @@ public static String getMonthNumber(String month) {
     }	
 	if(eventType.equals("Meeting")){   //create a meeting event		
 	   if(meeting.createMeetingSchedule(title, inidatetime, spec, duration, description, userId)){
-		   if(fromquickmeeting.equals("fromquickmeeting")){
+		   if(fromquickmeeting !=null){
 			   meeting.getLatestCreatedSchduleForUser(latestCreatedSchedule, userId);
 			   meeting.getMeetingInfo(latestCreatedMeeting, latestCreatedSchedule.get(0).get(0));
 			   response.sendRedirect("add_attendee.jsp?successMessage= Quick Meeting created, please add attendees to your meeting&m_id="+latestCreatedMeeting.get(0).get(1) + "&ms_id=" + latestCreatedSchedule.get(0).get(0));

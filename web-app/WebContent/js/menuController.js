@@ -118,6 +118,15 @@ $(document).ready(function(){
 	            $(this).parent(this).css({"border-right":"10px solid #9F100B"});
 	        }
 	    );
+	    
+	    /* Quick Meeting - MOUSEOVER */
+	    $("aside nav #QuickMeeting").mouseover(
+	        function () {
+	            $(this).css({"background-color":"#9F100B"});
+	            $(this).css({"border-left":"47px solid #EEE"});
+	            $(this).parent(this).css({"border-right":"10px solid #9F100B"});
+	        }
+	    );
 	}
 	
 	clear();

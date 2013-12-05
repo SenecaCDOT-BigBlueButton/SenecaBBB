@@ -263,6 +263,7 @@ $(function(){
                 <a href="add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" tabindex="15">add_student</a></p>
             <!-- PAGE NAME -->
             <h1>Add Student</h1>
+            <a href="help_addAttendee.jsp" target="_blank">help</a> 
             <br />
 	        <!-- MESSAGES -->
 	        <div class="warningMessage"><%=message %></div>

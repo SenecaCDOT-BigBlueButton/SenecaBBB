@@ -69,9 +69,9 @@
                 <hr />
                     <h2>What formats are accepted in the SEARCH USER field?</h2>
                     <ol>
-                        <li><b>You can enter a single term, this can be first name or last name.</li>
-                        <li><b>You can enter 2 terms separated by a space or comma.</li>
-                        <li><b>Examples: ""firstname lastname" "firstname.lastname"</li>
+                        <li>You can enter a single (1) term, this can be first name or last name.</li>
+                        <li>You can enter two (2) terms separated by a space or comma.</li>
+                        <li>Examples: ""firstname lastname" "firstname.lastname"</li>
                     </ol>
                 </fieldset>
             </div>

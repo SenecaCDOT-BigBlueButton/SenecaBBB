@@ -380,6 +380,8 @@ $(function(){
     <script>    
    // form validation, edit the regular expression pattern and error messages to meet your needs
        $(document).ready(function(){
+    	   $("#help").attr({href:"help_addAttendee.jsp" ,
+               target:"_blank"});
     	   $('#addAttendee').validate({
     	        validateOnBlur : true,
     	        rules: {

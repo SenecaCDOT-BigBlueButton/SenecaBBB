@@ -205,6 +205,8 @@
 <script type="text/javascript">
 /* TABLE */
 $(screen).ready(function() {
+    $("#help").attr({href:"help_addAttendee.jsp" ,
+        target:"_blank"});
     /* CURRENT EVENT */
     $('#tbGuest').dataTable({"sPaginationType": "full_numbers"});
     $('#tbGuest').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});

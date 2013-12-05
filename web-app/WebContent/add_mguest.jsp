@@ -231,6 +231,7 @@ $(function(){
                 <a href="add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" tabindex="15">add_mguest</a></p>
             <!-- PAGE NAME -->
             <h1>Add Meeting Guest</h1>
+            <a href="help_addAttendee.jsp" target="_blank">help</a> 
             <br />
 	        <!-- MESSAGES -->
 	        <div class="warningMessage"><%=message %></div>

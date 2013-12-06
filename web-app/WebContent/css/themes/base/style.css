@@ -978,7 +978,15 @@ footer div#copyright {
 }
 .tableComponent table tbody tr td a.view img {
 	border: none;
-	background-image: url('../../../images/view.svg');
+	background-image: url('../../../images/details.svg');
+}
+.tableComponent table tbody tr td a.schedule img {
+    border: none;
+    background-image: url('../../../images/view.svg');
+}
+.tableComponent table tbody tr td a.users img {
+    border: none;
+    background-image: url('../../../images/users.svg');
 }
 .tableComponent table tbody tr td a.modify img {
 	border: none;

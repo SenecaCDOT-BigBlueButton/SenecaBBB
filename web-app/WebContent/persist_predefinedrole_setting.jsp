@@ -32,48 +32,30 @@
     
     User user = new User(dbaccess);
     MyBoolean prof = new MyBoolean();
+    ArrayList<ArrayList<String>> allUserRole = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> predefinedRoleResult = new ArrayList<ArrayList<String>>();
-    HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
-    HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
     HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
-    HashMap<String, Integer> employeePrdefinedroleMask = new HashMap<String, Integer>();
     HashMap<String, Integer> studentPrdefinedroleMask = new HashMap<String, Integer>();
     HashMap<String, Integer> guestPrdefinedroleMask = new HashMap<String, Integer>();
-    userSettings = usersession.getUserSettingsMask();
-    meetingSettings = usersession.getUserMeetingSettingsMask();
-    roleMask = usersession.getRoleMask();
-    
     Admin admin = new Admin(dbaccess);
-    admin.getPreDefinedRole(predefinedRoleResult);
-    
-    employeePrdefinedroleMask.clear();
-    employeePrdefinedroleMask.put("recordableMeetings",Integer.parseInt(request.getParameter("recordableMeeting-employee")));
-    employeePrdefinedroleMask.put("guestAccountCreation",Integer.parseInt(request.getParameter("guestAccountCreate-employee")));   
-	if(!admin.setPredefinedDefaultMask(employeePrdefinedroleMask,"employee")){
-	    elog.writeLog("[persist_predefinedrole_setting:] " + "setting employee default mask fail /n");	      
-	    response.sendRedirect("system_settings.jsp?message=Database error!");
-	    return;
-	}
-    
-    studentPrdefinedroleMask.clear();
-    studentPrdefinedroleMask.put("recordableMeetings",Integer.parseInt(request.getParameter("recordableMeeting-student")));
-    studentPrdefinedroleMask.put("guestAccountCreation",Integer.parseInt(request.getParameter("guestAccountCreate-student")));
-    if(!admin.setPredefinedDefaultMask(studentPrdefinedroleMask,"student")){
-    	elog.writeLog("[persist_predefinedrole_setting:] " + "setting student default mask fail /n"); 
-        response.sendRedirect("system_settings.jsp?message=Database error!");
-        return;
+    admin.getAllUserRoleInfo(allUserRole);
+    System.out.println(allUserRole.size());
+    try{
+	    for(int i=1;i<=allUserRole.size();i++){
+	    	roleMask.clear();
+	    	roleMask.put("guestAccountCreation",request.getParameter("guestAccountCreate-".concat(String.valueOf(i)))==null? 0:1);
+	        roleMask.put("recordableMeetings",request.getParameter("recordMeeting-".concat(String.valueOf(i)))==null? 0:1); 
+	        if(!user.setUserRoleSetting(roleMask, i)){
+	            response.sendRedirect("system_settings.jsp?message=User Role Setting Error!");
+	            return;
+	        }
+	    }
+    }catch(Exception e){
+    	elog.writeLog("[persist_predefinedrole_setting:] " + e.getMessage() +" /n" + e.getStackTrace()); 
+    	response.sendRedirect("system_settings.jsp?message=User Role Setting Error!");
+    	return;
     }
-    
-    guestPrdefinedroleMask.clear();
-    guestPrdefinedroleMask.put("recordableMeetings",Integer.parseInt(request.getParameter("recordableMeeting-guest")));
-    guestPrdefinedroleMask.put("guestAccountCreation",Integer.parseInt(request.getParameter("guestAccountCreate-guest")));
-    if(!admin.setPredefinedDefaultMask(guestPrdefinedroleMask,"guest")){
-    	elog.writeLog("[persist_predefinedrole_setting:] " + "setting guest default mask fail /n"); 
-        response.sendRedirect("system_settings.jsp?message=Database error!");
-        return;
-    }
-    
-    response.sendRedirect("system_settings.jsp?successMessage=Predefined RoleMask Setting Saved Successfully!");
+    response.sendRedirect("system_settings.jsp?successMessage=User Role Setting Updated!");
 
 %>
 

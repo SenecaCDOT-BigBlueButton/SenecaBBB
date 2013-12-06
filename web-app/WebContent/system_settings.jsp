@@ -59,15 +59,13 @@
     Admin admin = new Admin(dbaccess);
     ArrayList<ArrayList<String>> timeout = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> systemInfo = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> predefinedRole = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> allUserRole = new ArrayList<ArrayList<String>>();
     MyBoolean prof = new MyBoolean();
     HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
-    HashMap<String, Integer> prRoleSettings = new HashMap<String, Integer>();
     HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
     userSettings = usersession.getUserSettingsMask();
     roleMask = usersession.getRoleMask();
-
-    admin.getPreDefinedRole(predefinedRole);
+    admin.getAllUserRoleInfo(allUserRole);
     admin.getSystemInfo(systemInfo);
     int guestAccount = 0;
     int recordableMeeting = 0;
@@ -106,7 +104,7 @@
         <form method="get" action="persist_predefinedrole_setting.jsp" name="predefinedRoleForm" id="predefinedRoleForm">
             <article>
                 <header>
-                    <h2>Predefined Role Setting</h2>
+                    <h2>User Role Setting</h2>
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
                 <div class="content">                
@@ -114,25 +112,24 @@
                       <table id="predefinedRoleList" border="0" cellpadding="0" cellspacing="0">
                         <thead>
                           <tr>
-                            <th width="200" class="firstColumn" tabindex="16" title="Username">Role name<span></span></th>                          
-                            <th  title="Name">guest account creation<span></span></th>
-                            <th  title="Name">recordable meeting<span></span></th>                          
+                            <th width="100" class="firstColumn" tabindex="16" title="UserRoleid">Role Id<span></span></th> 
+                            <th width="200"  tabindex="17" title="Username">Role name<span></span></th>                          
+                            <th  title="Name">Create Guest Account<span></span></th>
+                            <th  title="Name">Record Meeting<span></span></th>                          
                           </tr>
                         </thead>
                         <tbody>
-                        <%for(int i=0;i<predefinedRole.size();i++) {
-                           prRoleSettings.clear();
-                           user.getPredefinedUserRoleSetting(prRoleSettings,predefinedRole.get(i).get(0));
-                           recordableMeeting= prRoleSettings.get(Settings.ur_rolemask[0]);
-                           guestAccount= prRoleSettings.get(Settings.ur_rolemask[1]);
+                        <%for(int i=0;i<allUserRole.size();i++) {
+                           roleMask.clear();
+                           user.getUserRoleSetting(roleMask,i+1);
+                           recordableMeeting= roleMask.get(Settings.ur_rolemask[0]);
+                           guestAccount= roleMask.get(Settings.ur_rolemask[1]);
                         %>
                           <tr>
-                            <td><input style="border:none" readonly type="text" name="<%= predefinedRole.get(i).get(0) %>" value="<%= predefinedRole.get(i).get(0) %>"></td>                           
-                            <td><input type="checkbox"  <% if(guestAccount==1) out.print("checked=checked"); else out.print(""); %>>
-                                <input type="text"  hidden=hidden name="<%= "guestAccountCreate".concat("-").concat(predefinedRole.get(i).get(0)) %>" <% if(guestAccount==1) out.print("value = 1"); else out.print("value=0"); %>></td>
-                            <td><input type="checkbox"  <% if (recordableMeeting==1) out.print("value = 1 checked=checked"); else out.print("value=0"); %> >
-                                <input type="text"  hidden=hidden name="<%= "recordableMeeting".concat("-").concat(predefinedRole.get(i).get(0)) %>" <% if(recordableMeeting==1) out.print("value = 1"); else out.print("value=0"); %>></td>
-                           
+                            <td><input style="border:none" readonly type="text" name="userroleid" value="<%= i+1 %>"></td>                      
+                            <td><input style="border:none" readonly type="text" name="<%= allUserRole.get(i).get(1) %>" value="<%= allUserRole.get(i).get(1) %>"></td>                           
+                            <td><input type="checkbox" name="<%= "guestAccountCreate-".concat(String.valueOf(i+1)) %>" <% if(guestAccount==1) out.print("checked=checked"); else out.print(""); %>>
+                            <td><input type="checkbox" name="<%= "recordMeeting-".concat(String.valueOf(i+1)) %>" <% if (recordableMeeting==1) out.print("checked=checked"); else out.print(""); %> >     
                           </tr><% } %>
                         </tbody>
                       </table>

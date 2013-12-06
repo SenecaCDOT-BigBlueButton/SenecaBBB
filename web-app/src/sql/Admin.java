@@ -41,6 +41,19 @@ public class Admin extends Sql {
     }
     
     /**
+     * Get all user_role on system<p>
+     * Fields:<p>
+     * (0)ur_id(1)pr_name (2)ur_rolemask
+     * @param result
+     * @return
+     */
+    public Boolean getAllUserRoleInfo(ArrayList<ArrayList<String>> result){
+        _sql = "SELECT * "
+                + "FROM user_role ";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
      * Get system settings information<p>
      * Fields:<p>
      * (0)key_name (1)key_title (2)key_value 

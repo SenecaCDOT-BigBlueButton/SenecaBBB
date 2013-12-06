@@ -201,7 +201,7 @@ $(function(){
 									<tr>
 										<td class="row"><%= deptList.get(i).get(0) %></td>
 										<td><%= deptList.get(i).get(1) %></td>
-										<td class="icons" align="center"><a href="department_users.jsp?DeptCode=<%= deptList.get(i).get(0) %>" class="view"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
+										<td class="icons" align="center"><a href="department_users.jsp?DeptCode=<%= deptList.get(i).get(0) %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
 										<% //The ampersand symbol that are in some department names needs to be escaped to %26 before merged into GET URL %>
 										<td class="icons" align="center"><a href="modify_department.jsp?mod_d_code=<%= deptList.get(i).get(0) %>&mod_d_name=<%= deptList.get(i).get(1).replace("&", "%26") %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
 										<% if (usersession.isSuper()) { %>

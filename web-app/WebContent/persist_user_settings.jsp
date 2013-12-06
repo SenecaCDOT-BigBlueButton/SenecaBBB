@@ -28,13 +28,20 @@
 	String message = "";
 	HashMap<String, Integer> map = new HashMap<String, Integer>();
 	User user = new User(dbaccess);
-	
+	ArrayList<ArrayList<String>> roleInfoResult = new ArrayList<ArrayList<String>>();
 	String nickname = request.getParameter("nickname");
 	if (nickname == null) {
 		nickname = "";
 	}
-	user.setNickName(usersession.getNick(), nickname);
-	usersession.setNick(nickname);
+    user.getRoleInfo(roleInfoResult, userId);
+    Boolean flag = false;
+    if(usersession.isSuper()||usersession.isProfessor()|| usersession.isDepartmentAdmin() || roleInfoResult.get(0).get(1).equals("employee")){
+        flag = true;
+    }
+    if(flag){
+		user.setNickName(userId, nickname);
+		usersession.setNick(nickname);
+    }
 	//Language selector
 	map.put(Settings.bu_setting[2],1);
 	

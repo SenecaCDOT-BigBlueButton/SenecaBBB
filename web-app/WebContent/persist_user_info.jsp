@@ -38,6 +38,7 @@
     String bbbUserName = request.getParameter("bbbUserName");
     String bbbUserLastName = request.getParameter("bbbUserLastName");
     String bbbUserEmail = request.getParameter("bbbUserEmail");
+    int userRole = Integer.parseInt(request.getParameter("bbbUserList").substring(0 , 1));
     if(request.getParameter("bbbUserIsBanned") !=null && request.getParameter("bbbUserIsBanned").equals("on")){
         IsBanned = true;        
     }  
@@ -84,6 +85,7 @@
     Boolean mybool = false;
     if(searchSucess){
 	    mybool=user.setActive(bu_id, IsActive);
+	    user.setUserRole(bu_id, userRole);
 	    if(mybool){
 	        mybool=user.setBannedFromSystem(bu_id, IsBanned);   
 	    }

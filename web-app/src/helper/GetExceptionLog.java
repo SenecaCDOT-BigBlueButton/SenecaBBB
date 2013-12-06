@@ -9,12 +9,13 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.Writer;
 import java.sql.Timestamp;
+import config.Config;
 
 public class GetExceptionLog {
 	
 	public void writeLog(String s) {		
 		try {
-			FileInputStream fstream = new FileInputStream("/var/lib/tomcat7/webapps/SenecaBBB/WEB-INF/exceptionlog.txt");  
+			FileInputStream fstream = new FileInputStream(Config.getProperty("logfilepath"));  
 	        // Get the object of DataInputStream  
 	        DataInputStream in = new DataInputStream(fstream);  
 	        BufferedReader br = new BufferedReader(new InputStreamReader(in));  
@@ -31,14 +32,14 @@ public class GetExceptionLog {
 	        sb.append(s + "\n");
 	        
 	        Writer output = null;  
-	        File file = new File("/var/lib/tomcat7/webapps/SenecaBBB/WEB-INF/exceptionlog.txt");  
+	        File file = new File(Config.getProperty("logfilepath"));  
 	        output = new BufferedWriter(new FileWriter(file));  
 	        output.write(sb.toString());
 	        output.close();  
 		} catch (Exception e2) {
 	        try {
 				Writer output = null;  
-	            File file = new File("/var/lib/tomcat7/webapps/SenecaBBB/WEB-INF/exceptionlog.txt");  
+	            File file = new File(Config.getProperty("logfilepath"));  
 	            output = new BufferedWriter(new FileWriter(file));  
 				output.write(s);
 				output.close();

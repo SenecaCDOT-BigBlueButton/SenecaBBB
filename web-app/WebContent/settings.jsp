@@ -53,44 +53,50 @@
 	HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
 	HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
 	HashMap<String, Integer> roleMask = new HashMap<String, Integer>();	
+	ArrayList<ArrayList<String>> roleInfoResult = new ArrayList<ArrayList<String>>();
 	userSettings = usersession.getUserSettingsMask();	
 	meetingSettings = usersession.getUserMeetingSettingsMask();
 	roleMask = usersession.getRoleMask();
+	user.getRoleInfo(roleInfoResult, userId);
 	String nickName=null;
+	Boolean flag = false;
+	if(usersession.isSuper()||usersession.isProfessor()|| usersession.isDepartmentAdmin() || roleInfoResult.get(0).get(1).equals("employee")){
+		flag = true;
+	}
     nickName = usersession.getNick();	
 
 %>
 <script type="text/javascript">
 $(document).ready(function() {
 	<%if (userSettings.get("autoShareAudio") == 0) {%>
+	//	$(".checkbox .box:eq(0)").next(".checkmark").toggle();
+	//	$(".checkbox .box:eq(0)").attr("aria-checked", "false");
+	//	$(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
+	<%}%>
+	<%if (userSettings.get("autoShareWebcam") == 0) {%>
+	//	$(".checkbox .box:eq(1)").next(".checkmark").toggle();
+	//	$(".checkbox .box:eq(1)").attr("aria-checked", "false");
+	//	$(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
+	<%}%>
+	<%if (meetingSettings.get("isPrivateChatEnabled")==0){%>
+	//	$(".checkbox .box:eq(2)").next(".checkmark").toggle();
+	//	$(".checkbox .box:eq(2)").attr("aria-checked", "false");
+	//	$(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
+	<%}%>	
+	<%if (meetingSettings.get("isViewerWebcamEnabled")==0){%>
+	//	$(".checkbox .box:eq(3)").next(".checkmark").toggle();
+	//	$(".checkbox .box:eq(3)").attr("aria-checked", "false");
+	//	$(".checkbox .box:eq(3)").siblings().last().prop("checked", false);
+	<%}%>	
+	<%if (meetingSettings.get("isMultiWhiteboard")==0){%>
+	//	$(".checkbox .box:eq(4)").next(".checkmark").toggle();
+	//	$(".checkbox .box:eq(4)").attr("aria-checked", "false");
+	//	$(".checkbox .box:eq(4)").siblings().last().prop("checked", false);
+	<%}%>	
+	<%if (meetingSettings.get("isRecorded")==0){%>
 		$(".checkbox .box:eq(0)").next(".checkmark").toggle();
 		$(".checkbox .box:eq(0)").attr("aria-checked", "false");
 		$(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
-	<%}%>
-	<%if (userSettings.get("autoShareWebcam") == 0) {%>
-		$(".checkbox .box:eq(1)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(1)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
-	<%}%>
-	<%if (meetingSettings.get("isPrivateChatEnabled")==0){%>
-		$(".checkbox .box:eq(2)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(2)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
-	<%}%>	
-	<%if (meetingSettings.get("isViewerWebcamEnabled")==0){%>
-		$(".checkbox .box:eq(3)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(3)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(3)").siblings().last().prop("checked", false);
-	<%}%>	
-	<%if (meetingSettings.get("isMultiWhiteboard")==0){%>
-		$(".checkbox .box:eq(4)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(4)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(4)").siblings().last().prop("checked", false);
-	<%}%>	
-	<%if (meetingSettings.get("isRecorded")==0){%>
-		$(".checkbox .box:eq(5)").next(".checkmark").toggle();
-		$(".checkbox .box:eq(5)").attr("aria-checked", "false");
-		$(".checkbox .box:eq(5)").siblings().last().prop("checked", false);
 	<%}%>
 });
 </script>
@@ -116,7 +122,7 @@ $(document).ready(function() {
 						<%if (nickName != null) { %>
 						<div class="component">
 							<label for="nickname" class="label">Nickname:</label>
-							<input type="text" name="nickname" id="nickname" class="input" tabindex="15" title="Nickname" value=<%= nickName %>>
+							<input type="text" name="nickname" id="nickname" class="input" tabindex="15" title="Nickname" value=<%= nickName %> <% if(!flag) out.print("readonly='readonly'");%>>
 						</div>
 						<%}%>
 						<!-- 

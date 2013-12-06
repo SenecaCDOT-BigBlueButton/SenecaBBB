@@ -14,11 +14,17 @@
 <link rel="icon" href="http://www.cssreset.com/favicon.png">
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
+<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>   
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
+<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>    
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
-<script type="text/javascript" src="js/checkboxController.js"></script>
 
 <%
     //Start page validation
@@ -57,7 +63,8 @@
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-    ArrayList<ArrayList<String>>  bbbUserInfo= new ArrayList<ArrayList<String> >();
+    ArrayList<ArrayList<String>> bbbUserInfo = new ArrayList<ArrayList<String> >();
+    ArrayList<ArrayList<String>> userRoleList = new ArrayList<ArrayList<String> >();
 
     
     // Start User Validatation
@@ -99,7 +106,8 @@
     //get all information for this user
     if(searchSucess){
     	user.isnonLDAP(isNonLdap, bu_id);
-        user.getUserInfo(bbbUserInfo,bu_id);
+        user.getUserInfo(bbbUserInfo, bu_id);
+        user.getRoleInfo(userRoleList);
     }else{
     	elog.writeLog("[edit_user:] " + "invalid user id" +" /n");
     	response.sendRedirect("calendar.jsp?message=Invalid User Id");
@@ -171,7 +179,14 @@
                             <input name="bbbUserEmail" id="bbbUserEmail" class="input" tabindex="19" title="User Email" type="text" value="<%= bbbUserInfo.get(0).get(13) %>" required autofocus>
                         </div>
                           <%} %>    
-
+                        <div class="component">
+                            <label for="bbbUserList" class="label">User Role:</label>
+                            <select name="bbbUserList" id="bbbUserList" title="Please Select a user role">
+                            <% for(i=0;i<userRoleList.size();i++){ %>
+                                <option <% if(bbbUserInfo.get(0).get(8).equals(Integer.toString(i+1))){out.print("selected=selected");} %>><%= userRoleList.get(i).get(0).concat("-").concat(userRoleList.get(i).get(1)) %></option>
+                            <% } %>
+                            </select>
+                        </div>
                        <div class="component">
                             <div class="checkbox" title="bbbUser Is Banned"> <span class="box" role="checkbox"  aria-checked="true"  aria-labelledby="userinfor1"></span>
                                 <label class="checkmark"></label>

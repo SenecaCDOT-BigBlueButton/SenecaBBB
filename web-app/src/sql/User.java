@@ -203,6 +203,19 @@ public class User extends Sql {
     }
     
     /**
+     * Fields:
+     * (0)ur_id (1)pr_name
+     * @param result
+     * @return
+     */
+    public boolean getRoleInfo(ArrayList<ArrayList<String>> result) {
+        _sql = "SELECT user_role.ur_id, user_role.pr_name "
+                + "FROM user_role "
+                + "ORDER BY ur_id";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
      * (0)d_code, (1)d_name
      * @param result
      * @param bu_id

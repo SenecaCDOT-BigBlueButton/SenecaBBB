@@ -133,6 +133,10 @@
 		    $(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
 		<%}%>
 	});
+	/* SELECT BOX */
+	$(function(){
+	    $('select').selectmenu();
+	});
 </script>
 </head>
 <body>

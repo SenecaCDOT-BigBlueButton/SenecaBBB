@@ -102,3 +102,6 @@ frompassword=XXXXXX
 
 #email signature
 emailsignature=XXXXXX
+
+#log file name and saved path in tomcat7 server
+logfilepath=/var/lib/tomcat7/webapps/SenecaBBB/WEB-INF/XXXXXX.txt

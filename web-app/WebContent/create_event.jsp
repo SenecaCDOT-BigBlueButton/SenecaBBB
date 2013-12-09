@@ -104,24 +104,24 @@
 	}
 	$(document).ready(function() {
 		<%if (meetingSettings.get("isPrivateChatEnabled")==0){%>
+		//	$(".checkbox .box:eq(0)").next(".checkmark").toggle();
+		//	$(".checkbox .box:eq(0)").attr("aria-checked", "false");
+		//	$(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
+		<%}%>	
+		<%if (meetingSettings.get("isViewerWebcamEnabled")==0){%>
+		//	$(".checkbox .box:eq(1)").next(".checkmark").toggle();
+		//	$(".checkbox .box:eq(1)").attr("aria-checked", "false");
+		//	$(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
+		<%}%>	
+		<%if (meetingSettings.get("isMultiWhiteboard")==0){%>
+		//	$(".checkbox .box:eq(2)").next(".checkmark").toggle();
+		//	$(".checkbox .box:eq(2)").attr("aria-checked", "false");
+		//	$(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
+		<%}%>	
+		<%if (meetingSettings.get("isRecorded")==0){%>
 			$(".checkbox .box:eq(0)").next(".checkmark").toggle();
 			$(".checkbox .box:eq(0)").attr("aria-checked", "false");
 			$(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
-		<%}%>	
-		<%if (meetingSettings.get("isViewerWebcamEnabled")==0){%>
-			$(".checkbox .box:eq(1)").next(".checkmark").toggle();
-			$(".checkbox .box:eq(1)").attr("aria-checked", "false");
-			$(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
-		<%}%>	
-		<%if (meetingSettings.get("isMultiWhiteboard")==0){%>
-			$(".checkbox .box:eq(2)").next(".checkmark").toggle();
-			$(".checkbox .box:eq(2)").attr("aria-checked", "false");
-			$(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
-		<%}%>	
-		<%if (meetingSettings.get("isRecorded")==0){%>
-			$(".checkbox .box:eq(3)").next(".checkmark").toggle();
-			$(".checkbox .box:eq(3)").attr("aria-checked", "false");
-			$(".checkbox .box:eq(3)").siblings().last().prop("checked", false);
 		<%}%>
         $("#dropdownDayStarts").selectmenu({'refresh': true});
         $("#dropdownMonthStarts").selectmenu({'refresh': true});

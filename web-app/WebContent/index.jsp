@@ -40,7 +40,13 @@
 <link rel="shortcut icon" href="http://www.cssreset.com/favicon.png" />
 <link href="css/themes/base/style.css" rel="stylesheet" type="text/css" media="all">
 <link href="css/fonts.css" rel="stylesheet" type="text/css" media="all">
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+<script type="text/javascript">
+    if (window.location.protocol == "http:") {
+        var restOfUrl = window.location.href.substr(5);
+        window.location = "https:" + restOfUrl;
+    }
+</script>
 <script type="text/javascript">
 	function trim(s) {
 		return s.replace(/^\s*/, "").replace(/\s*$/, "");

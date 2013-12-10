@@ -39,7 +39,6 @@
     HashMap<String, Integer> guestPrdefinedroleMask = new HashMap<String, Integer>();
     Admin admin = new Admin(dbaccess);
     admin.getAllUserRoleInfo(allUserRole);
-    System.out.println(allUserRole.size());
     try{
 	    for(int i=1;i<=allUserRole.size();i++){
 	    	roleMask.clear();

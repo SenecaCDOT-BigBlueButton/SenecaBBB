@@ -57,7 +57,6 @@
 		String key = hash.createRandomSalt();	
 		ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 		user.getUsersLike(result, bu_id);
-		System.out.println(result);
 		int counter = 0;
 		String name, pattern = bu_id + "\\d*";
 		while (!result.isEmpty()){

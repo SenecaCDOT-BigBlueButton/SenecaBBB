@@ -333,7 +333,7 @@ public class LDAPAuthenticate {
             } catch (NamingException e) {
                 elog.writeLog("[LDAP Search] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());                
             } catch (Exception e) {
-                System.out.println("User " + user + " not found in LDAP. Checking local database for user.");
+               // System.out.println("User " + user + " not found in LDAP. Checking local database for user.");
                 elog.writeLog("[LDAP Search] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());                               
             }
         }

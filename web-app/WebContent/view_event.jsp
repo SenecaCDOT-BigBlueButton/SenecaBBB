@@ -19,7 +19,7 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
 <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
@@ -282,6 +282,7 @@
     ArrayList<ArrayList<String>> lectureResult = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> startTimeResult = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> durationResult = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> modPassResult = new ArrayList<ArrayList<String>>();
     String startDate="";
     String startTime="";
     String eventCreator="null";
@@ -299,6 +300,7 @@
     		meeting.getMeetingCreators(creatorResult, ms_id);
     		meeting.getMeetingInitialDatetime(startTimeResult, ms_id, m_id);
     		meeting.getMeetingDuration(durationResult, ms_id, m_id);
+    		meeting.getMeetingModPass(modPassResult, ms_id, m_id);
     		duration = durationResult.get(0).get(0);
     		startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
     		startDate = startTimeResult.get(0).get(0).split(" ")[0];
@@ -312,6 +314,7 @@
             lecture.getLectureScheduleInfo(lectureResult,ls_id);
             lecture.getLectureInitialDatetime(startTimeResult, ls_id, l_id);
             lecture.getLectureDuration(durationResult, ls_id, l_id);
+            lecture.getLectureModPass(modPassResult, ls_id, l_id);
             c_id=lectureResult.get(0).get(1);
             sc_id=lectureResult.get(0).get(2);
             sc_semesterid=lectureResult.get(0).get(3);
@@ -322,7 +325,8 @@
             eventCreator=creatorResult.get(0).get(0); 
             storedEventId = "Lecture-".concat(l_id).concat("-").concat(ls_id);
         }
-    }
+    }   
+    String isMeetingRunning = isMeetingRunning(storedEventId);
 
 %>
 <script type="text/javascript">
@@ -350,6 +354,7 @@
 	$(function(){
 	    $('select').selectmenu();
 	});
+
 
 </script>
 </head>
@@ -422,12 +427,17 @@
 		                        if(diffMinutes<=15 &&diffMinutes>-eventDuration){
 		                        	startEvent = true;
 		                        }
-		                        if(startEvent){
+		                        if(startEvent && isEventCreator.get_value() && isMeetingRunning.equals("false")){
                              %>                      
-                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="<%= isEventCreator.get_value()? "create":"join"  %>" title="Click here to go to the event" >
-                                    <% if(isEventCreator.get_value()){ out.print("Create");} else {out.print("Join");} if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
-
-                            <% }else{ %>  
+                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="create" title="Click here to create the event" >Create
+                                    <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
+                            <% }else if(isMeetingRunning.equals("true") && isEventCreator.get_value()){%>
+                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="joinAsMod" title="Click here to join the event" >Join
+                                    <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
+                            <%}else if(isMeetingRunning.equals("true") && !isEventCreator.get_value()){%>
+                                   <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="joinAsViewer" title="Click here to join the event" >Join
+                                   <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
+		                    <% } else{ %>  
                                     <button style="background-color:grey" type="button" name="EventButton" id="EventButton" class="button" value="<%= isEventCreator.get_value()? "create":"join"  %>" title="Click here to go to the event" >
                                     <% if(isEventCreator.get_value()){ out.print("Create");} else {out.print("Join");} if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
                             <%} %> 
@@ -447,11 +457,15 @@
                                     <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Presentation" 
                                         onclick="window.location.href='add_lpresentation.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Presentation</button>                                                          
 		                        <% } %>
+		                        <% if(isEventCreator.get_value()){ %>
+                                     <button type="submit" name="endMeeting" id="endMeeting" class="button" title="Click here to end meeting" value="endevent" >Terminate Event</button>
+                                <% } %>
 		                    </div>
 	                </div>
 	            </article>
 	        </form>                                       
        <% } %>
+
         <form action="persist_user_settings.jsp" method="get">
             <article>
                 <header>
@@ -770,4 +784,3 @@
 </div>
 </body>
 </html>
-

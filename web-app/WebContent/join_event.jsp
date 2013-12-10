@@ -2,6 +2,8 @@
 <%@page import="java.util.*"%>
 <%@page import="helper.*"%>
 <%@page import="config.*"%>
+<%@page import="java.util.Timer"%>
+<%@page import="java.util.TimerTask"%>
 <%@ include file="bbb_api.jsp"%> 
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
@@ -31,6 +33,7 @@
  String eventType = request.getParameter("eventType");
  String eventId = request.getParameter("eventId");
  String eventScheduleId = request.getParameter("eventScheduleId");
+ String terminateEvent = request.getParameter("endMeeting");
  user.getNickName(nickNameResult, userId);
  username = nickNameResult.get(0).get(0);
  String isRecorded="false";
@@ -67,7 +70,15 @@
 	 response.sendRedirect("calendar.jsp?message=Create or Join event fail");
 	 return;
  }
-
+ 
+ if(terminateEvent !=null){
+	 endMeeting(eventTitle,modPwd);
+	 if(eventType.equals("Lecture"))
+	     response.sendRedirect("view_event.jsp?ls_id="+eventScheduleId+"&l_id="+ eventId +"&successMessage=Lecture Terminated!");
+	 else
+	     response.sendRedirect("view_event.jsp?ms_id="+eventScheduleId+"&m_id="+ eventId +"&successMessage=Meeting Terminated!");
+     return;
+ }
  String logOutUrl="";
  if(eventType.equals("Meeting")){
      logOutUrl = "view_event.jsp?ms_id=" + eventScheduleId + "&m_id=" + eventId +"&eventName="+ eventTitle;   
@@ -90,18 +101,12 @@
      response.sendRedirect(joinURL);
      return;
  }
- //if event is not created, redirect attendee back to the view_event page
- else if(isMeetingRunning.equals("false") && action.equals("join")){
-     response.sendRedirect(logOutUrl+"&message=Event is not ready, please come back later!");
-     return;
- }
-
  else{
-	 if(action.equals("create")){
+	 if(action.equals("joinAsMod")){
 		 joinURL = getJoinMeetingURL(username, eventTitle, modPwd);
 		 response.sendRedirect(joinURL);
 		 return;
-	 }else if(action.equals("join")){
+	 }else if(action.equals("joinAsViewer")){
 		 if(isMeetingRunning.equals("false")){
 			 String err = "Event is not ready, please come back later!";
 			 response.sendRedirect(logOutUrl + "&message=" + err);

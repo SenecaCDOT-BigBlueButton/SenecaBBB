@@ -91,7 +91,7 @@
     boolean searchSucess = false;
     String bu_id = request.getParameter("addBox");
     String nonldap = request.getParameter("searchBox");
-    if (bu_id!=null) {
+    if (bu_id!=null && bu_id!="") {
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
             message = Validation.getErrMsg();
@@ -139,7 +139,7 @@
         } else {
         	successMessage = bu_id + " added to meeting guest list";
         }
-    } else if (nonldap != null) {
+    } else if (nonldap != null && nonldap !="") {
         nonldap = Validation.prepare(nonldap);
         if (!(Validation.checkBuId(nonldap))) {
             message = Validation.getErrMsg();

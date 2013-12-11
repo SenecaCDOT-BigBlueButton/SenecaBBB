@@ -166,10 +166,10 @@ public static String getMonthNumber(String month) {
     if(eventType.equals("Meeting")){   //update a meeting schedule      
        if( meeting.updateMeetingSchedule(eventId, inidatetime, spec, eventDescription)){
            if(meeting.updateMeetingDuration(3, eventId, "1", duration)){
-               response.sendRedirect("calendar.jsp?successMessage=meeting updated successfully"); 
+               response.sendRedirect("calendar.jsp?successMessage=Meeting updated successfully"); 
                return;
            }else{
-               response.sendRedirect("calendar.jsp?message=update fail"); 
+               response.sendRedirect("calendar.jsp?message=Update fail"); 
                return;
            }
        }
@@ -178,10 +178,10 @@ public static String getMonthNumber(String month) {
     else{ //update a lecture schedule
         if(lecture.updateLectureSchedule(eventId, inidatetime, spec, eventDescription)){
             if(lecture.updateLectureDuration(3, eventId, "1", duration)){
-                response.sendRedirect("calendar.jsp?successMessage=lecture updated successfully"); 
+                response.sendRedirect("calendar.jsp?successMessage=Lecture updated successfully"); 
                 return;
             }else{
-                response.sendRedirect("calendar.jsp?message=update fail");  
+                response.sendRedirect("calendar.jsp?message=Update fail");  
             } 
         }
     }

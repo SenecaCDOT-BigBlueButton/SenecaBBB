@@ -17,12 +17,14 @@ html, body {
 	color:red;
 	font-size:16px;
 	font-weight:bold;
+	display:none
 }
 
 .successMessage{
 	color:#2FD651;
     font-size:16px;
     font-weight:bold;
+    display:none
 }
 
 option:hover {
@@ -1199,3 +1201,7 @@ div.contactus a:active,div.help a:active{
     
 }
 
+.notyCloseButton {
+position: relative;
+float: right;
+}

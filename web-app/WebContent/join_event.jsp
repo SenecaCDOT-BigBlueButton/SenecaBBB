@@ -116,7 +116,7 @@
 		     response.sendRedirect(joinURL);
 		 }
 	 }else{
-		 response.sendRedirect("calendar.jsp?message=fail to join event!!!!");
+		 response.sendRedirect("calendar.jsp?message=Fail to join event!");
 	 }
  }
  %>

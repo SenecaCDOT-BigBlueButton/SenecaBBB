@@ -44,10 +44,10 @@
     String messageText = "<p>Dear Guest User:</p><p>You are invited to join an event in our web conferencing system. A guest account is created for you.</p><p> Your user name is: <strong>" 
                          + bu_id + "</strong></p><p> Please visit the following link to activate your account:</p>"+ link; 
 	if(sendToGuest.send(to, subject, messageText)){
-        successMessage="email sent";
+        successMessage="Email sent";
 	    response.sendRedirect("calendar.jsp?successMessage="+ successMessage);
 	}else{
-	    message="send email fail";
+	    message="Fail to send email";
 	    response.sendRedirect("calendar.jsp?message="+ message);
 	}
 %>

@@ -54,7 +54,6 @@
     if (successMessage == null) {
         successMessage="";
     }
-
     String adminStatus = "";
     String d_code = request.getParameter("DeptCode");
     if (d_code==null) {
@@ -156,6 +155,8 @@
                     elog.writeLog("[department_users:] " + message +"/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
+                }else{
+                	successMessage="Admin status was updated for user "+ mod+" from "+d_code;
                 }
             }  
         } else if (remove != null) {
@@ -177,6 +178,8 @@
                         elog.writeLog("[department_users:] " + message +"/n");
                         response.sendRedirect("logout.jsp?message=" + message);
                         return;   
+                    }else{
+                        successMessage="User "+ mod+" from "+d_code+" was removed.";
                     }
                 }
             }  
@@ -194,6 +197,7 @@
     
 %>
 <script type="text/javascript">
+
     $(screen).ready(function() {
         /* TABLE */
         $('#tableName').dataTable({
@@ -211,11 +215,15 @@
         $('.dataTables_filter input').attr("placeholder", "Filter entries");
         $(".remove").click(function(){
             return window.confirm("Remove this user from list?");
-        });  
+        });
+
+        
     });
     $(function() {
         $('select').selectmenu();
     });
+
+
 </script>
 </head>
 <body>
@@ -234,7 +242,8 @@
                 <h1>Department Users</h1>
 		        <!-- MESSAGES -->
 		        <div class="warningMessage"><%=message %></div>
-		        <div class="successMessage"><%=successMessage %></div> 
+		        <div class="successMessage"><%=successMessage %></div>
+
 		    </header>
             <form name="DeptUser" method="get" action="department_users.jsp">
                 <article>
@@ -303,12 +312,12 @@
                                             <td><%= adminStatus = (deptUserList.get(i).get(2).equals("1")) ? "Yes" : "" %></td>
                                             <% if (usersession.isSuper()) { %>
                                             <td class="icons" align="center">
-                                                <a href="department_users.jsp?DeptCode=<%= deptUserList.get(i).get(1) %>&mod=<%= deptUserList.get(i).get(0) %>" class="modify">
+                                                <a onclick="savePageOffset()" href="department_users.jsp?DeptCode=<%= deptUserList.get(i).get(1) %>&mod=<%= deptUserList.get(i).get(0) %>" class="modify" >
                                                 <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
                                             </a></td>
                                             <% }  %>
                                             <td class="icons" align="center">
-                                            <a href="department_users.jsp?DeptCode=<%= deptUserList.get(i).get(1) %>&remove=<%= deptUserList.get(i).get(0) %>" class="remove">
+                                            <a onclick="savePageOffset()" href="department_users.jsp?DeptCode=<%= deptUserList.get(i).get(1) %>&remove=<%= deptUserList.get(i).get(0) %>" class="remove">
                                                 <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                             </a></td>
                                         </tr>

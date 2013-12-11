@@ -1,5 +1,36 @@
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
+<script type="text/javascript" src="js/jquery.noty.packaged.js"></script>
 <script type="text/javascript" src="js/menuController.js"></script>
+
+<script type="text/javascript">
+
+	function savePageOffset(){
+	    localStorage.Y = window.pageYOffset;
+	    localStorage.X = window.pageXOffset;
+	}
+	
+	$(document).ready(function(){
+	    if(localStorage.Y > 0 || localStorage.X > 0){ 
+	        window.scrollBy(localStorage.X,localStorage.Y);  
+	    }
+	    if($(".warningMessage").text() !=""){
+	    	var message = $(".warningMessage").text();
+	        var notierrMessage = noty({text: '<div>'+ message+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+	                      layout:'top',
+	                      type:'error'});
+	        }
+	
+	    if($(".successMessage").text() !=""){
+	    	var successMessage = $(".successMessage").text();
+	        var notiMessage = noty({text: '<div>'+ successMessage+'<img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+	                      layout:'top',
+	                      type:'success'
+	                     });
+	        }
+	
+	});
+</script>
+
 <aside>
 	<nav>
 		<ul>

@@ -92,7 +92,7 @@
     boolean searchSucess = false;
     String bu_id = request.getParameter("addBox");
     String nonldap = request.getParameter("searchBox");
-    if (bu_id!=null) {
+    if (bu_id!=null && bu_id !="") {
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
             message = Validation.getErrMsg();
@@ -147,7 +147,7 @@
         } else {
         	successMessage = bu_id + " added to student list";
         }
-    } else if (nonldap != null) {
+    } else if (nonldap != null && nonldap !="") {
         nonldap = Validation.prepare(nonldap);
         if (!(Validation.checkBuId(nonldap))) {
             message = Validation.getErrMsg();
@@ -183,6 +183,9 @@
                     elog.writeLog("[add_student:] " + message +"/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
+                }
+                else{
+                	successMessage=mod + " banned status was change!";
                 }
             }  
         } else if (remove != null) {
@@ -245,6 +248,8 @@ $(screen).ready(function() {
     $(".remove").click(function(){
         return window.confirm("Remove this student from list?");
     }); 
+    $("#help").attr({href:"help_addAttendee.jsp" ,
+        target:"_blank"});
 });
 /* SELECT BOX */
 $(function(){
@@ -265,7 +270,6 @@ $(function(){
                 <a href="add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" tabindex="15">add_student</a></p>
             <!-- PAGE NAME -->
             <h1>Add Student</h1>
-            <a href="help_addAttendee.jsp" target="_blank">help</a> 
             <br />
 	        <!-- MESSAGES -->
 	        <div class="warningMessage"><%=message %></div>
@@ -366,11 +370,11 @@ $(function(){
                                         <td><%= stuList.get(i).get(5) %></td>
                                         <td><%= stuList.get(i).get(4).equals("1") ? "Yes" : "" %></td>
                                         <td class="icons" align="center">
-                                            <a href="add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&mod=<%= stuList.get(i).get(0) %>" class="modify">
+                                            <a onclick="savePageOffset()" href="add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&mod=<%= stuList.get(i).get(0) %>" class="modify">
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
                                         </a></td>
                                         <td class="icons" align="center">
-                                            <a href="add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&remove=<%= stuList.get(i).get(0) %>" class="remove">
+                                            <a onclick="savePageOffset()" href="add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&remove=<%= stuList.get(i).get(0) %>" class="remove">
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                         </a></td>
                                     </tr>

@@ -94,7 +94,7 @@
     boolean searchSucess = false;
     String bu_id = request.getParameter("addBox");
     String nonldap = request.getParameter("searchBox");
-    if (bu_id!=null) {
+    if (bu_id!=null && bu_id !="") {
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
             message = Validation.getErrMsg();
@@ -123,7 +123,7 @@
                     if (findUser(dbaccess, ldap, bu_id)) {
                         searchSucess = true;
                     } else {
-                        message = "Could not add User";
+                        message = "Could not find user,incorrect user id!";
                     }
                 }
             }
@@ -142,7 +142,7 @@
         } else {
         	successMessage = bu_id + " added to meeting attendee list successfully";
         }
-    } else if (nonldap != null) {
+    } else if (nonldap != null && nonldap !="") {
         nonldap = Validation.prepare(nonldap);
         if (!(Validation.checkBuId(nonldap))) {
             message = Validation.getErrMsg();
@@ -178,6 +178,8 @@
                     elog.writeLog("[add_attendee:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);                    
                     return;   
+                }else{
+                	successMessage=mod+" moderator status was changed!";
                 }
             }  
         } else if (remove != null) {
@@ -350,7 +352,7 @@ $(function(){
                                         <td><%= eventAttendee.get(i).get(3) %></td>
                                         <td><%= eventAttendee.get(i).get(2).equals("1") ? "Yes" : "" %></td>
                                         <td class="icons" align="center">
-                                            <a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&mod=<%= eventAttendee.get(i).get(0) %>" class="modify">
+                                            <a onclick="savePageOffset()" href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&mod=<%= eventAttendee.get(i).get(0) %>" class="modify">
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
                                         </a></td>
                                         <td class="icons" align="center">

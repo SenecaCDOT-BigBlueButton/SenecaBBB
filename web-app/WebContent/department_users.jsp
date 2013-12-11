@@ -156,7 +156,7 @@
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;   
                 }else{
-                	successMessage="admin status was updated for user "+ mod+" from "+d_code;
+                	successMessage="Admin status was updated for user "+ mod+" from "+d_code;
                 }
             }  
         } else if (remove != null) {

@@ -58,21 +58,21 @@
     if(toDel==null){
     	if(sectionInUse.size()>0){
     	    elog.writeLog("[persist_section:] " + "username "+ userId +" tried to create a duplicated section"+" /n");           
-    		response.sendRedirect("subjects.jsp?message= duplicated section, please create a new one");
+    		response.sendRedirect("subjects.jsp?message= Duplicated section, please create a new one");
     		return;
     	}else{
 		    section.createSection(c_id, sc_id, sc_semesterid, d_code);
-		    response.sendRedirect("subjects.jsp?successMessage=section created");
+		    response.sendRedirect("subjects.jsp?successMessage=Section created");
 		    return;
 	    }
     }else{
     	if(studentInSection.size()>0 || professorInSection.size()>0 || sectionInSchedule.size()>0){
     		elog.writeLog("[persist_section:] " + "username "+ userId +" tried to remove a section which is used in other table"+" /n");
-    		response.sendRedirect("subjects.jsp?message= section in use,could not be removed");
+    		response.sendRedirect("subjects.jsp?message= Section in use,could not be removed");
     		return;
     	}else{
 	        section.removeSection(c_id, sc_id, sc_semesterid);
-	        response.sendRedirect("subjects.jsp?successMessage=section removed successfully");    	
+	        response.sendRedirect("subjects.jsp?successMessage=Section removed successfully");    	
         }
     }
             

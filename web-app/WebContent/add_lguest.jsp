@@ -90,7 +90,7 @@
     boolean searchSucess = false;
     String bu_id = request.getParameter("addBox");
     String nonldap = request.getParameter("searchBox");
-    if (bu_id!=null) {
+    if (bu_id!=null && bu_id !="") {
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
             message = Validation.getErrMsg();
@@ -138,7 +138,7 @@
         } else {
         	successMessage = bu_id + " added to lecture guest list";
         }
-    } else if (nonldap != null) {
+    } else if (nonldap != null && nonldap !="") {
         nonldap = Validation.prepare(nonldap);
         if (!(Validation.checkBuId(nonldap))) {
             message = Validation.getErrMsg();
@@ -217,6 +217,8 @@ $(screen).ready(function() {
     $(".remove").click(function(){
         return window.confirm("Remove this person from list?");
     });
+    $("#help").attr({href:"help_addAttendee.jsp" ,
+        target:"_blank"});
 });
 /* SELECT BOX */
 $(function(){
@@ -237,7 +239,6 @@ $(function(){
                 <a href="add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" tabindex="15">add_lguest</a></p>
             <!-- PAGE NAME -->
             <h1>Add Lecture Guest</h1>
-            <a href="help_addAttendee.jsp" target="_blank">help</a> 
             <br />
             <!-- MESSAGES -->
             <div class="warningMessage"><%=message %></div>

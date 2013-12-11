@@ -93,7 +93,7 @@
 					usersession.setDepartmentAdmin(depAdmin.get_value());
 					user.setLastLogin(userID);
 				}
-				response.sendRedirect("calendar.jsp?successMessage=Welcome!");
+				response.sendRedirect("calendar.jsp?successMessage=Welcome to BBBMAN Web Conferencing Management System!");
 				return;
 			}
 		}
@@ -128,7 +128,7 @@
 					usersession.setUserLevel(userInfo.get(15));
 				}
 				usersession.setLDAP(false);
-				response.sendRedirect("calendar.jsp?successMessage=User login successfully");
+				response.sendRedirect("calendar.jsp?successMessage=Login successfully");
 				return;
 			} 
 			else {

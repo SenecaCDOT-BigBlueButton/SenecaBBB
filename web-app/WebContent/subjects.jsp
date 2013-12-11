@@ -26,23 +26,8 @@
 	<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-	<script type="text/javascript">
-	//Table
-		$(screen).ready(function() {
-		    /* Subjects List*/
-            $('#subjectsList').dataTable({"sPaginationType": "full_numbers"});
-            $('#subjectsList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-            $.fn.dataTableExt.sErrMode = 'throw';
-            $('.dataTables_filter input').attr("placeholder", "Filter entries");
-            $(".remove").click(function(){
-                return window.confirm("Are you sure to remove this item?");;
-            });   
-		});
-		/* SELECT BOX */
-		$(function(){
-		    $('select').selectmenu();
-		});
-	</script>
+	
+
 	<%
 	//Start page validation
 	String userId = usersession.getUserId();
@@ -88,8 +73,25 @@
 	
 	section.getSectionInfo(sectionInfo);
 	section.getCourse(allCourse);
-		
 	%>
+	<script type="text/javascript">
+    //Table
+        $(screen).ready(function() {
+            /* Subjects List*/
+            $('#subjectsList').dataTable({"sPaginationType": "full_numbers"});
+            $('#subjectsList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $.fn.dataTableExt.sErrMode = 'throw';
+            $('.dataTables_filter input').attr("placeholder", "Filter entries");
+            $(".remove").click(function(){
+                return window.confirm("Are you sure to remove this item?");;
+            });   
+        });
+        /* SELECT BOX */
+        $(function(){
+            $('select').selectmenu();
+        });
+    </script>
+
 </head>
 <body>
 <div id="page">
@@ -147,7 +149,7 @@
 			                    <td ><%= sectionInfo.get(i).get(2) %></td>
 			                    <td ><%= sectionInfo.get(i).get(3) %></td>
 			                    <td ><%= sectionInfo.get(i).get(4) %></td>   
-			                    <td  align="center"><a href="persist_section.jsp?courseCode=<%= sectionInfo.get(i).get(0) %>&courseSection=<%= sectionInfo.get(i).get(1) %>&semesterID=<%= sectionInfo.get(i).get(2) %>&toDel=1" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove Subject" alt="Remove"/></a></td>
+			                    <td  align="center"><a onclick="savePageOffset()" href="persist_section.jsp?courseCode=<%= sectionInfo.get(i).get(0) %>&courseSection=<%= sectionInfo.get(i).get(1) %>&semesterID=<%= sectionInfo.get(i).get(2) %>&toDel=1" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove Subject" alt="Remove"/></a></td>
 			                  </tr><% } %>
 			                </tbody>
 			              </table>

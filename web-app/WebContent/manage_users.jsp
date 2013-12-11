@@ -199,8 +199,8 @@ $(function(){
 									    <td><%= allUserInfo.get(i).get(3) %></td>
 									    <td><%= allUserInfo.get(i).get(6) %></td>
 									    <td><%= allUserInfo.get(i).get(7) %></td>
-									    <td class="icons" align="center"><a class="schedule"  href='view_schedule.jsp?id=<%= allUserInfo.get(i).get(0) %>' ><img alt="Search" src="images/iconPlaceholder.svg" width="17" height="17" title="User Schedule" /></a></td>
-									    <td class="icons" align="center"><a class="modify" href= <%= "edit_user.jsp?id=" +  allUserInfo.get(i).get(0)  +"&action=edit" %>><img alt="Edit" src="images/iconPlaceholder.svg" width="17" height="17" title="Edit User" /></a></td>
+									    <td class="icons" align="center"><a  class="schedule"  href='view_schedule.jsp?id=<%= allUserInfo.get(i).get(0) %>' ><img alt="Search" src="images/iconPlaceholder.svg" width="17" height="17" title="User Schedule" /></a></td>
+									    <td class="icons" align="center"><a  class="modify" href= <%= "edit_user.jsp?id=" +  allUserInfo.get(i).get(0)  +"&action=edit" %>><img alt="Edit" src="images/iconPlaceholder.svg" width="17" height="17" title="Edit User" /></a></td>
 									 </tr>
 								   <%}%>
 									</tbody>

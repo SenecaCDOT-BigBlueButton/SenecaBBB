@@ -295,6 +295,8 @@
                weekDayNumber=6;
            $("#selectedDayofWeek").attr('value',weekDayNumber);
        });
+       $("#help").attr({href:"help_editEventSchedule.jsp" ,
+           target:"_blank"});
       
    });
     
@@ -307,7 +309,6 @@
       <header>
         <p><a href="calendar.jsp" tabindex="13">home</a> » edit event schedule</p>
         <h1>Edit Event Schedule</h1>
-         <a href="help_editEventSchedule.jsp" target="_blank">help</a> 
         <!-- MESSAGES -->
         <div class="warningMessage"><%=message %></div>
         <div class="successMessage"><%=successMessage %></div> 

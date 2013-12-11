@@ -281,7 +281,7 @@ if (removeStudentId != null) {
                                         <td><% if(user.getNickName(nickNameResult, stuList.get(k).get(0))) out.print(nickNameResult.get(0).get(0)); %></td>
                                         <td><%= stuList.get(k).get(4)%></td>
                                         <td class="icons" align="center">
-                                            <a href="<%= "class_settings.jsp?class="+ selectedclass + "&removeStudent=" + stuList.get(k).get(0) %>" class="remove">
+                                            <a onclick="savePageOffset()" href="<%= "class_settings.jsp?class="+ selectedclass + "&removeStudent=" + stuList.get(k).get(0) %>" class="remove">
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                         </a></td>
                                     </tr>

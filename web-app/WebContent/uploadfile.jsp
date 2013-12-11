@@ -337,7 +337,7 @@
                 }
                 // User already added
                 if (myBool.get_value()) {
-                    message += bu_id+ "  already added in the class </br>";
+                    message += "Student "+ bu_id + " already added in the class </br>";
                 } else {
                     if (!user.isUser(myBool, bu_id)) {
                         message += user.getErrMsg("AS04");
@@ -353,7 +353,7 @@
                         if (findUser(dbaccess, ldap, bu_id)) {
                             searchSucess = true;
                         } else {
-                            message += bu_id + " Not Found </br>";
+                            message += "Student id "+bu_id + " Not Found </br>";
                         }
                     }
                 }

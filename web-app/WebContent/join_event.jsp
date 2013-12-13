@@ -108,7 +108,7 @@
 		 return;
 	 }else if(action.equals("joinAsViewer")){
 		 if(isMeetingRunning.equals("false")){
-			 String err = "Event is not ready, please come back later!";
+			 String err = "Event not started yet or it has already ended.";
 			 response.sendRedirect(logOutUrl + "&message=" + err);
 			 return;
 		 }else{

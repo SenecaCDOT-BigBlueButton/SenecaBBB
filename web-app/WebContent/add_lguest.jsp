@@ -217,8 +217,6 @@ $(screen).ready(function() {
     $(".remove").click(function(){
         return window.confirm("Remove this person from list?");
     });
-    $("#help").attr({href:"help_addAttendee.jsp" ,
-        target:"_blank"});
 });
 /* SELECT BOX */
 $(function(){

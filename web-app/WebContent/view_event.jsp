@@ -375,12 +375,18 @@
 	        $("#EventButton").click(function(){
 	        	var alertMessage;
 	        	<% if (isEventCreator.get_value()){%>
-	        	alertMessage = "Please note that you can create this event 15 minutes before the schedule start time only!";
+	        	alertMessage = "Please note that you can start this event 15 minutes before the scheduled start time.";
 	        	<%}else{%>
-	        	alertMessage ="Event not start yet or event end";
+	        	alertMessage ="Event not started yet or it has already ended.";
 	        	<%}%>
 	        	alert(alertMessage);
 	        });
+	        $("#endMeeting").click(function(){
+	        	$("#joinEvent").removeAttr('target');
+	        });
+	        $("#joinEventButton").click(function(){
+	                $("#joinEvent").attr('target','_blank');
+	          });
 	    });
     </script>
     <section>
@@ -429,7 +435,7 @@
 		                        }
 		                        if(startEvent && isEventCreator.get_value() && isMeetingRunning.equals("false")){
                              %>                      
-                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="create" title="Click here to create the event" >Create
+                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="create" title="Click here to create the event" >Start
                                     <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
                             <% }else if(isMeetingRunning.equals("true") && isEventCreator.get_value()){%>
                                     <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="joinAsMod" title="Click here to join the event" >Join
@@ -439,7 +445,7 @@
                                    <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
 		                    <% } else{ %>  
                                     <button style="background-color:grey" type="button" name="EventButton" id="EventButton" class="button" value="<%= isEventCreator.get_value()? "create":"join"  %>" title="Click here to go to the event" >
-                                    <% if(isEventCreator.get_value()){ out.print("Create");} else {out.print("Join");} if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
+                                    <% if(isEventCreator.get_value()){ out.print("Start");} else {out.print("Join");} if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
                             <%} %> 
 
 		                        <% if (status==1) { %>

@@ -79,14 +79,15 @@
 	     response.sendRedirect("view_event.jsp?ms_id="+eventScheduleId+"&m_id="+ eventId +"&successMessage=Meeting Terminated!");
      return;
  }
- String logOutUrl="";
+ String logOutUrl="leaveMeeting.jsp";
+ /*
  if(eventType.equals("Meeting")){
      logOutUrl = "view_event.jsp?ms_id=" + eventScheduleId + "&m_id=" + eventId +"&eventName="+ eventTitle;   
  }
  if(eventType.equals("Lecture")){
      logOutUrl = "view_event.jsp?ls_id=" + eventScheduleId + "&l_id=" + eventId +"&eventName="+ eventTitle;
  }
-
+ */
  String welcome = "Welcome to Seneca BigBlueButton Web Conferencing System!";
  String joinURL;
  String isMeetingRunning = isMeetingRunning(eventTitle);

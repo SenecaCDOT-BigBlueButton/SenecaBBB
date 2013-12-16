@@ -54,54 +54,6 @@ create user 'senecaBBB'@'%' identified by 'db';
 grant all on db.* to 'senecaBBB'@'%' IDENTIFIED by 'db';
 ```
 
-# To connect to database,bigbluebutton server, and email server,please add a config.properties file in directory: 
+To connect to database,bigbluebutton server, and email server, please copy the config.properties.template file in directory: 
 # web-app/WebContent/WEB-INF/classes/config/
-# and specify the following information:
-
-#project version number
-version=XXXXXX
-
-#database username
-databaseuser=XXXXXX
-	
-#database password
-databasepass=XXXXXX
-	
-#database name
-databasename=XXXXXX
-	
-#database connection url
-jdburl=XXXXXXXXXXXXX
-	
-#bigbluebutton server salt, use "sudo bbb-conf --salt" command to get the salt 
-salt=XXXXXX
-	
-#bigbluebutton server url, use "sudo bbb-conf --salt" command to get the url 
-bigbluebuttonurl=XXXXXX
-	
-#your project domain name
-domain=XXXXXX
-	
-#your email server
-emailhost=XXXXXX
-	
-#email transport protocol
-mailtransportprotocol=XXXXXX
-	
-#email port
-mailport=XXXXXX
-
-#from email
-fromemail=XXXXXX
-
-#from email username
-fromusername=XXXXXX
-
-#from email password
-frompassword=XXXXXX
-
-#email signature
-emailsignature=XXXXXX
-
-#log file name and saved path in tomcat7 server
-logfilepath=/var/lib/tomcat7/webapps/SenecaBBB/WEB-INF/XXXXXX.txt
+and rename it to config.properties. Please also fill in the missing information in the file.

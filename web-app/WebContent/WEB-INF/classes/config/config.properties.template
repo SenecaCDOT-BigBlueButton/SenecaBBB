@@ -1,0 +1,55 @@
+#-----------VERSION INFORMATION----------------------
+version=Alpha
+
+#-----------LOG INFORMATION--------------------------
+logfilepath=/var/lib/tomcat7/webapps/SenecaBBB/WEB-INF/exceptionlog.txt
+
+#-----------DATABASE INFORMATION---------------------
+###database information
+#database username
+databaseuser=
+
+#database password
+databasepass=
+
+#database name
+databasename=db
+
+#database connection url
+jdburl=jdbc:mysql://127.0.0.1:3309/
+
+#-----------BIGBLUEBUTTON SERVER INFORMATION----------
+#bigbluebutton server salt, use "sudo bbb-conf --salt" command to get the salt 
+salt=
+
+#bigbluebutton server url, use "sudo bbb-conf --salt" command to get the url 
+bigbluebuttonurl=
+
+#-----------PROJECT INFORMATION-----------------------
+#Your project domain name
+domain=
+
+#-----------EMAIL SERVER INFORMATION------------------
+#Your email server
+emailhost=
+
+#email transport protocol
+mailtransportprotocol=smtp
+
+#mail.smtp.auth
+smtpauth=true
+
+#email port
+mailport=25
+
+#from email info
+fromemail=
+fromusername=
+frompassword=
+
+#emailsignature
+emailsignature=<p><img src="http://bbbman.senecacollege.ca/SenecaBBB/images/logo.png" width="102" border="0" height="25" alt="Seneca College logo"/></p><p>Seneca College of Applied Arts and Technology</p><p>School of Information & Communication Technology</p><p>Centre for Development of Open Technology</p><p>Email:bbbadmin@senecacollege.ca</p><p>Website: bbbman.senecacollege.ca</p>
+
+#-----------AUTHENTICATION-------------------
+ldapurl=
+ldapo=

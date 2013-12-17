@@ -29,11 +29,6 @@
         String redirecturl = (String)session.getAttribute("redirecturl");
         // User exists in LDAP
         if (ldap.search(userID, password)) {
-            if (ldap.getAccessLevel() < 0) {
-                elog.writeLog("[auth:] " + "permission denied" +"/n");
-                response.sendRedirect("index.jsp?message=Sorry,you don't have permission to access this system!");
-                return;
-            } else {
                 int ur_id=0;
                 if (ldap.getPosition().equals("Student")) {
                     usersession.setUserLevel("student");
@@ -70,6 +65,7 @@
                 usersession.setNick(result.get(0).get(1));
                 user.setLastLogin(userID);
                 
+                
                 // Handling system time out
                 // Redirect user to proper destination when user refreshes the page or clicks a link 
                 // On each page's validation: if (userId.equals("")), save the current request url and query string
@@ -81,8 +77,7 @@
                 } else {
                     response.sendRedirect("calendar.jsp?successMessage=Login successfully");
                     return;
-                }  
-            }
+                }              
         }
         // User is registered in database but is non_ldap user.
         else if (hash.validatePassword(password.toCharArray(), userID)) {

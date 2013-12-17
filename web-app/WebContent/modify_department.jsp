@@ -21,7 +21,7 @@
 <script type="text/javascript" src="js/additional-methods.min.js"></script>
 
 <%
-	//Start page validation
+    //Start page validation
 	String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
 	if (userId.equals("")) {
@@ -81,7 +81,6 @@
 		}	
 	}	
 	//End page validation
-	
 %>
 </head>
 <body>

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import helper.GetExceptionLog;
 
@@ -89,6 +90,49 @@ public class DBAccess {
         return _flag;
     }
 
+    /**
+     * Executes all queries<p>
+     * Note that once _flag is set to false, it must be manually set back to
+     * true by the resetFlag() function before further SQL statement can be executed 
+     * @param result
+     * @param query
+     * @return
+     */
+    public boolean queryDB2(ArrayList<HashMap<String, String>> result, String query) {
+        result.clear();
+        if(_flag) { //statement do no execute if there is previous error
+            _flag = openConnection();
+            if (!_flag) { //check connection error
+                _errCode = _db.getErrCode();
+                _errLog = _db.getErrLog();
+            }
+            else {
+                try {
+                    _stmt = _conn.prepareStatement(query);
+                    _rs = _stmt.executeQuery();
+                    int colCount = _rs.getMetaData().getColumnCount();
+                    while (_rs.next()) {
+                        HashMap<String, String> row = new HashMap<String, String>();
+                        for (int i=1; i<=colCount; i++) {
+                            row.put(_rs.getMetaData().getColumnName(i), _rs.getString(i));
+                        }
+                        result.add(row);
+                    }
+                }
+                catch (SQLException e) {
+                    _errCode = Integer.toString(e.getErrorCode());
+                    _errLog = e.getMessage();
+                    _flag = false;
+                    elog.writeLog("[queryDB:] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());                    
+                }
+                finally {
+                    _flag = closeConnection() && _flag; 
+                }
+            }
+        }
+        return _flag;
+    }
+    
     /**
      * Executes all queries<p>
      * Note that once _flag is set to false, it must be manually set back to

@@ -11,6 +11,7 @@ import sql.*;
 
 public class Test_Helper {
     static ArrayList<ArrayList<String>> _result = null;
+    static ArrayList<ArrayList<String>> _result2 = null;
     static HashMap<String, Integer> _hm = null;
     static Sql _test = null;
     static int _counter;

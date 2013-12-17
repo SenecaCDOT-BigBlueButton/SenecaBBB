@@ -26,7 +26,7 @@
 <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 
 <%
-	//Start page validation
+    //Start page validation
 	boolean validFlag; 
 	String userId = usersession.getUserId();
 	GetExceptionLog elog = new GetExceptionLog();
@@ -93,7 +93,7 @@
 	    		if (!dept.removeDepartment(deptRemove)) {
 	    		    message = "Could not remove department " + deptRemove + dept.getErrMsg("D03");
 	    		    elog.writeLog("[departments:] " + message +"/n");
-            		dept.resetErrorFlag();
+    		dept.resetErrorFlag();
         		} else {
         			successMessage = "Department " + deptRemove + " was removed";
         		}
@@ -124,19 +124,18 @@
 	    if (!dept.getDepartment(deptList)) {
 	        message = "Could not get department list" + dept.getErrMsg("D05");
 	        elog.writeLog("[departments:] " + message +"/n");
-            response.sendRedirect("logout.jsp?message=" + message);
-            return;
+    response.sendRedirect("logout.jsp?message=" + message);
+    return;
         }
 	}
 	else {
 	    if (!dept.getDepartment(deptList, userId)) {
 	        message = "Could not get department list" + dept.getErrMsg("D06");
 	        elog.writeLog("[departments:] " + message +"/n");
-            response.sendRedirect("logout.jsp?message=" + message);
-            return;
+    response.sendRedirect("logout.jsp?message=" + message);
+    return;
         }
 	}
-		
 %>
 <script type="text/javascript">
 /* TABLE */

@@ -28,7 +28,7 @@
 	<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <%@ include file="search.jsp" %>
 <%
-	//Start page validation
+    //Start page validation
 	String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
 	if (userId.equals("")) {
@@ -80,15 +80,15 @@
     }
     if (!usersession.isSuper()) {
         if (!user.isDepartmentAdmin(myBool, usersession.getUserId(), d_code)) {
-            message = "Could not verify department admin status for: " + usersession.getUserId() + dept.getErrMsg("DU02");
-            elog.writeLog("[department_users:] " + message +"/n");
-            response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+    message = "Could not verify department admin status for: " + usersession.getUserId() + dept.getErrMsg("DU02");
+    elog.writeLog("[department_users:] " + message +"/n");
+    response.sendRedirect("logout.jsp?message=" + message);
+    return;   
         }
         if (!myBool.get_value()) {
-            elog.writeLog("[department_users:] " + "username: " + userId + "tried to access this page,permission denied"+" /n");           
-            response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
-            return;
+    elog.writeLog("[department_users:] " + "username: " + userId + "tried to access this page,permission denied"+" /n");           
+    response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
+    return;
         }    
     }    
     //End page validation
@@ -99,46 +99,46 @@
     if (bu_id!=null) {
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
-            message = Validation.getErrMsg();
+    message = Validation.getErrMsg();
         } else {
-            if (!user.isDepartmentUser(myBool, bu_id, d_code)) {
-                message = user.getErrMsg("DU03");
-                elog.writeLog("[department_users:] " + message +"/n");
-                response.sendRedirect("logout.jsp?message=" + message);
-                return;   
-            }
-            // User already added
-            if (myBool.get_value()) {
-                message = "User already added";
+    if (!user.isDepartmentUser(myBool, bu_id, d_code)) {
+        message = user.getErrMsg("DU03");
+        elog.writeLog("[department_users:] " + message +"/n");
+        response.sendRedirect("logout.jsp?message=" + message);
+        return;   
+    }
+    // User already added
+    if (myBool.get_value()) {
+        message = "User already added";
+    } else {
+        if (!user.isUser(myBool, bu_id)) {
+            message = user.getErrMsg("DU04");
+            elog.writeLog("[department_users:] " + message +"/n");
+            response.sendRedirect("logout.jsp?message=" + message);
+            return;   
+        }
+        // User already in Database
+        if (myBool.get_value()) {   
+            searchSucess = true;
+        } else {
+            // Found userId in LDAP
+            if (findUser(dbaccess, ldap, bu_id)) {
+                searchSucess = true;
             } else {
-                if (!user.isUser(myBool, bu_id)) {
-                    message = user.getErrMsg("DU04");
-                    elog.writeLog("[department_users:] " + message +"/n");
-                    response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
-                }
-                // User already in Database
-                if (myBool.get_value()) {   
-                    searchSucess = true;
-                } else {
-                    // Found userId in LDAP
-                    if (findUser(dbaccess, ldap, bu_id)) {
-                        searchSucess = true;
-                    } else {
-                        message = "User Not Found";
-                    }
-                }
+                message = "User Not Found";
             }
+        }
+    }
         }
     }
         
     // End User Search
     if (searchSucess) {
         if (!dept.createDepartmentUser(bu_id, d_code, false)) {
-            message = dept.getErrMsg("DU05");
-            elog.writeLog("[department_users:] " + message +"/n");
-            response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+    message = dept.getErrMsg("DU05");
+    elog.writeLog("[department_users:] " + message +"/n");
+    response.sendRedirect("logout.jsp?message=" + message);
+    return;   
         } else {
         	successMessage = bu_id + " added to department user list";
         }
@@ -146,43 +146,43 @@
         String mod = request.getParameter("mod");
         String remove = request.getParameter("remove");
         if (mod != null && usersession.isSuper()) {
-            mod = Validation.prepare(mod);
-            if (!(Validation.checkBuId(mod))) {
-                message = Validation.getErrMsg();
-            } else {
-                if (!dept.setDepartmentAdmin(mod, d_code)) {
-                    message = dept.getErrMsg("DU06");
-                    elog.writeLog("[department_users:] " + message +"/n");
-                    response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
-                }else{
-                	successMessage="Admin status was updated for user "+ mod+" from "+d_code;
-                }
-            }  
+    mod = Validation.prepare(mod);
+    if (!(Validation.checkBuId(mod))) {
+        message = Validation.getErrMsg();
+    } else {
+        if (!dept.setDepartmentAdmin(mod, d_code)) {
+            message = dept.getErrMsg("DU06");
+            elog.writeLog("[department_users:] " + message +"/n");
+            response.sendRedirect("logout.jsp?message=" + message);
+            return;   
+        }else{
+        	successMessage="Admin status was updated for user "+ mod+" from "+d_code;
+        }
+    }  
         } else if (remove != null) {
-            remove = Validation.prepare(remove);
-            if (!(Validation.checkBuId(remove))) {
-                message = Validation.getErrMsg();
-            } else {
-                if (!user.isDepartmentAdmin(myBool, remove, d_code)) {
-                    message = dept.getErrMsg("DU07");
-                    elog.writeLog("[department_users:] " + message +"/n");
-                    response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
-                }
-                if (myBool.get_value() && !usersession.isSuper()) {
-                    message = "You do not have permission to delete that user";
-                } else {    
-                    if (!dept.removeDepartmentUser(remove, d_code)) {
-                        message = dept.getErrMsg("DU08");
-                        elog.writeLog("[department_users:] " + message +"/n");
-                        response.sendRedirect("logout.jsp?message=" + message);
-                        return;   
-                    }else{
-                        successMessage="User "+ mod+" from "+d_code+" was removed.";
-                    }
-                }
-            }  
+    remove = Validation.prepare(remove);
+    if (!(Validation.checkBuId(remove))) {
+        message = Validation.getErrMsg();
+    } else {
+        if (!user.isDepartmentAdmin(myBool, remove, d_code)) {
+            message = dept.getErrMsg("DU07");
+            elog.writeLog("[department_users:] " + message +"/n");
+            response.sendRedirect("logout.jsp?message=" + message);
+            return;   
+        }
+        if (myBool.get_value() && !usersession.isSuper()) {
+            message = "You do not have permission to delete that user";
+        } else {    
+            if (!dept.removeDepartmentUser(remove, d_code)) {
+                message = dept.getErrMsg("DU08");
+                elog.writeLog("[department_users:] " + message +"/n");
+                response.sendRedirect("logout.jsp?message=" + message);
+                return;   
+            }else{
+                successMessage="User "+ mod+" from "+d_code+" was removed.";
+            }
+        }
+    }  
         }
     }
     
@@ -194,7 +194,6 @@
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
-    
 %>
 <script type="text/javascript">
 

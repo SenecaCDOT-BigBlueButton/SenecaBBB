@@ -16,7 +16,7 @@
     GetExceptionLog elog = new GetExceptionLog();
     String message="";
 	if (userId.equals("")) {
-		elog.writeLog("[persist_user_info:] " + "unauthenticated user tried to access this page /n");
+		session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
 	    response.sendRedirect("index.jsp?message=Please log in");
 	    return;
 	}

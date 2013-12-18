@@ -26,7 +26,7 @@
     GetExceptionLog elog = new GetExceptionLog();
     HashMap<String, Integer> roleMask = usersession.getRoleMask();
 	if (userId.equals("")) {
-		elog.writeLog("[invite_guest:] " + "unauthenticated user tried to access this page /n");
+		session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
 	    response.sendRedirect("index.jsp?message=Please log in");
 	    return;
 	}

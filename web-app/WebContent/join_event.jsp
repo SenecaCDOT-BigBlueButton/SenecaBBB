@@ -37,7 +37,24 @@
  user.getNickName(nickNameResult, userId);
  username = nickNameResult.get(0).get(0);
  String isRecorded="false";
- if(eventType.equals("Meeting")){
+ MyBoolean isAttendee = new MyBoolean();
+ MyBoolean isCreator = new MyBoolean();
+ MyBoolean isGuest = new MyBoolean();
+ MyBoolean isEvent = new MyBoolean();
+ MyBoolean isGuestTeaching = new MyBoolean();
+ if(eventType !=null && eventType.equals("Meeting")){
+	 meeting.isMeeting(isEvent, eventScheduleId, eventId);
+	 if(!isEvent.get_value()){
+	     response.sendRedirect("index.jsp?message=Invalid meeting schedule or meeting information!");
+	     return;		 
+	 }
+	 user.isMeetingAttendee(isAttendee, eventScheduleId, userId);
+	 user.isMeetingCreator(isCreator, eventScheduleId, userId);
+	 user.isMeetingGuest(isGuest, eventScheduleId, eventId, userId);
+	 if(!(isAttendee.get_value() ||isCreator.get_value()||isGuest.get_value())){
+         response.sendRedirect("index.jsp?message=You are not the meeting creator or attendee!");
+		 return;
+	 }
      meeting.getMeetingModPass(modPassResult, eventScheduleId, eventId);
      meeting.getMeetingUserPass(viewerPassResult, eventScheduleId, eventId);
      meeting.getMeetingScheduleInfo(eventTitleResult, eventScheduleId);
@@ -50,7 +67,12 @@
      modPwd=modPassResult.get(0).get(0);
      viewerPwd=viewerPassResult.get(0).get(0);
      eventTitle="Meeting-".concat(eventId).concat("-").concat(eventScheduleId);
- }else if (eventType.equals("Lecture")){
+ }else if (eventType !=null && eventType.equals("Lecture")){
+	 lecture.isLecture(isEvent,eventScheduleId, eventId);
+     if(!isEvent.get_value()){
+         response.sendRedirect("index.jsp?message=Invalid lecture schedule or lecture information!");
+         return;         
+     }
      lecture.getLectureModPass(modPassResult, eventScheduleId, eventId);
      lecture.getLectureUserPass(viewerPassResult, eventScheduleId, eventId);
      lecture.getLectureScheduleInfo(eventTitleResult, eventScheduleId);
@@ -58,6 +80,13 @@
      sc_id=eventTitleResult.get(0).get(2);
      sc_semesterid=eventTitleResult.get(0).get(3);
      lecture.getLectureSetting(isRecordedResult, c_id, sc_id, sc_semesterid);
+     user.isTeaching(isCreator, eventScheduleId, userId);
+     user.isGuestTeaching(isGuestTeaching, eventScheduleId, eventId, userId);
+     user.isLectureStudent(isAttendee, c_id, sc_id, sc_semesterid, userId);
+     if(!(isAttendee.get_value() ||isCreator.get_value()||isGuestTeaching.get_value())){
+         response.sendRedirect("index.jsp?message=You are not the teacher or student of the lecture!");
+         return;   	 
+     }
      if(isRecordedResult.get("isRecorded")==1){
          isRecorded="true";
      }else{
@@ -67,7 +96,7 @@
      viewerPwd=viewerPassResult.get(0).get(0);
      eventTitle="Lecture-".concat(eventId).concat("-").concat(eventScheduleId);
  }else{
-	 response.sendRedirect("calendar.jsp?message=Create or Join event fail");
+	 response.sendRedirect("calendar.jsp?message=Start or join event fail");
 	 return;
  }
  

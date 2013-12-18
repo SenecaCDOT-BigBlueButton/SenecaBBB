@@ -10,7 +10,7 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-    	elog.writeLog("[persist_predefinedrole_setting:] " + "unauthenticated user tried to access this page /n");
+    	session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }

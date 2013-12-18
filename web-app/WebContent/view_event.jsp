@@ -36,7 +36,7 @@
     String eventTitle = request.getParameter("eventName"); 
     String storedEventId="";
     if (userId.equals("")) {
-    	elog.writeLog("[view_event:] " + "unauthenticated user tried to access this page /n");
+    	session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }

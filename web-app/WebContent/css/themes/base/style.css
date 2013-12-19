@@ -12,7 +12,14 @@ html, body {
 	font-weight: 400;
 	background-color: #E6E6E6;
 }
-
+#siteDescription{
+    color: #BCBCCA;
+    font-size: 16px;
+    margin-left: 10px;
+    margin-top: 40px;
+    position: absolute;
+    white-space: nowrap;
+}
 .warningMessage{
 	color:red;
 	font-size:16px;

@@ -7,6 +7,8 @@
         <li><a href="contactUs.jsp" title="Click here to enter in contact with us">Contact Us</a></li>
         <li>|</li>
         <li><a href="help.jsp" title="Click here to obtain help information">Help</a></li>
+        <li>|</li>
+        <li><a href="https://github.com/SenecaCDOT-BigBlueButton/SenecaBBB/issues?state=open" target="_blank" title="Click here to report issue">Report Issue</a></li>
       </ul>
     </nav>
     <div id="copyright">

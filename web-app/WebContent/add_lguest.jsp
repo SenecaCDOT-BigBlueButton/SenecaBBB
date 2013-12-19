@@ -58,8 +58,8 @@
     	response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
         return;
     }
-    User user = new User(dbaccess);
-    Lecture lecture = new Lecture(dbaccess);
+    User2 user = new User2(dbaccess);
+    Lecture2 lecture = new Lecture2(dbaccess);
     MyBoolean myBool = new MyBoolean();    
     if (!lecture.isLecture(myBool, ls_id, l_id)) {
         message = lecture.getErrMsg("ALG01");
@@ -127,7 +127,7 @@
     }
     // End User Search
     
-    ArrayList<ArrayList<String>> searchResult = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String, String>> searchResult = new ArrayList<HashMap<String, String>>();
     
     if (searchSucess) {
         if (!lecture.createLectureGuest(bu_id, ls_id, l_id, false)) {
@@ -193,7 +193,7 @@
         }
     }
     
-    ArrayList<ArrayList<String>> eventGuest = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String, String>> eventGuest = new ArrayList<HashMap<String, String>>();
     if (!lecture.getLectureGuest(eventGuest, ls_id, l_id)) {
         message = lecture.getErrMsg("ALG08");
         elog.writeLog("[add_lguest:] " + message + "/n");
@@ -296,11 +296,11 @@ $(function(){
                                 <tbody>
                                 <% for (i=0; i<searchResult.size(); i++) { %>
                                     <tr>
-                                        <td class="row"><%= searchResult.get(i).get(0) %></td>
-                                        <td><%= searchResult.get(i).get(1) %></td>
-                                        <td><%= searchResult.get(i).get(2) %></td>
+                                        <td class="row"><%= searchResult.get(i).get("bu_id") %></td>
+                                        <td><%= searchResult.get(i).get("nu_name") %></td>
+                                        <td><%= searchResult.get(i).get("nu_lastname") %></td>
                                         <td class="icons" align="center">
-                                            <a href="add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&addBox=<%= searchResult.get(i).get(0) %>" class="add">
+                                            <a href="add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&addBox=<%= searchResult.get(i).get("bu_id") %>" class="add">
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Add user" alt="Add"/>
                                         </a></td>
                                     </tr>
@@ -333,15 +333,15 @@ $(function(){
                                 <tbody>
                                 <% for (i=0; i<eventGuest.size(); i++) { %>
                                     <tr>
-                                        <td class="row"><%= eventGuest.get(i).get(0) %></td>
-                                        <td><%= eventGuest.get(i).get(2) %></td>
-                                        <td><%= eventGuest.get(i).get(1).equals("1") ? "Yes" : "" %></td>
+                                        <td class="row"><%= eventGuest.get(i).get("bu_id") %></td>
+                                        <td><%= eventGuest.get(i).get("bu_nick") %></td>
+                                        <td><%= eventGuest.get(i).get("gl_ismod").equals("1") ? "Yes" : "" %></td>
                                         <td class="icons" align="center">
-                                            <a href="add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&mod=<%= eventGuest.get(i).get(0) %>" class="modify">
+                                            <a href="add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&mod=<%= eventGuest.get(i).get("bu_id") %>" class="modify">
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
                                         </a></td>
                                         <td class="icons" align="center">
-                                            <a href="add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&remove=<%= eventGuest.get(i).get(0) %>" class="remove">
+                                            <a href="add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&remove=<%= eventGuest.get(i).get("bu_id") %>" class="remove">
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                         </a></td>
                                     </tr>

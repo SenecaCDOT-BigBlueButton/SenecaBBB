@@ -62,8 +62,8 @@
     	response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
         return;
     }
-    User user = new User(dbaccess);
-    Meeting meeting = new Meeting(dbaccess);
+    User2 user = new User2(dbaccess);
+    Meeting2 meeting = new Meeting2(dbaccess);
     MyBoolean myBool = new MyBoolean();    
     if (!meeting.isMeeting(myBool, ms_id, m_id)) {
         message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AA01");
@@ -131,7 +131,7 @@
     }
     // End User Search
     
-    ArrayList<ArrayList<String>> searchResult = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String, String>> searchResult = new ArrayList<HashMap<String, String>>();
     
     if (searchSucess) {
         if (!meeting.createMeetingAttendee(bu_id, ms_id, false)) {
@@ -210,7 +210,7 @@
         }
     }
     
-    ArrayList<ArrayList<String>> eventAttendee = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String, String>> eventAttendee = new ArrayList<HashMap<String, String>>();
     if (!meeting.getMeetingAttendee(eventAttendee, ms_id)) {
         message = meeting.getErrMsg("AA09");
         elog.writeLog("[add_attendee:] " + message + "/n");
@@ -311,11 +311,11 @@ $(function(){
                                 <tbody>
                                 <% for (i=0; i<searchResult.size(); i++) { %>
                                     <tr>
-                                        <td class="row"><%= searchResult.get(i).get(0) %></td>
-                                        <td><%= searchResult.get(i).get(1) %></td>
-                                        <td><%= searchResult.get(i).get(2) %></td>
+                                        <td class="row"><%= searchResult.get(i).get("bu_id") %></td>
+                                        <td><%= searchResult.get(i).get("nu_name") %></td>
+                                        <td><%= searchResult.get(i).get("nu_lastname") %></td>
                                         <td class="icons" align="center">
-                                            <a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&addBox=<%= searchResult.get(i).get(0) %>" class="add">
+                                            <a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&addBox=<%= searchResult.get(i).get("bu_id") %>" class="add">
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Add user" alt="Add"/>
                                         </a></td>
                                     </tr>
@@ -348,15 +348,15 @@ $(function(){
                                 <tbody>
                                 <% for (i=0; i<eventAttendee.size(); i++) { %>
                                     <tr>
-                                        <td class="row"><%= eventAttendee.get(i).get(0) %></td>
-                                        <td><%= eventAttendee.get(i).get(3) %></td>
-                                        <td><%= eventAttendee.get(i).get(2).equals("1") ? "Yes" : "" %></td>
+                                        <td class="row"><%= eventAttendee.get(i).get("bu_id") %></td>
+                                        <td><%= eventAttendee.get(i).get("bu_nick") %></td>
+                                        <td><%= eventAttendee.get(i).get("ma_ismod").equals("1") ? "Yes" : "" %></td>
                                         <td class="icons" align="center">
-                                            <a onclick="savePageOffset()" href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&mod=<%= eventAttendee.get(i).get(0) %>" class="modify">
+                                            <a onclick="savePageOffset()" href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&mod=<%= eventAttendee.get(i).get("bu_id") %>" class="modify">
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
                                         </a></td>
                                         <td class="icons" align="center">
-                                            <a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&remove=<%= eventAttendee.get(i).get(0) %>" class="remove">
+                                            <a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&remove=<%= eventAttendee.get(i).get("bu_id") %>" class="remove">
                                             <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                         </a></td>
                                     </tr>

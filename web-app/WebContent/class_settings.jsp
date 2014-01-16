@@ -115,8 +115,9 @@ if(isSuper){
     return;
 }
 
-if (listofclasses.size() < 0){
-    message = "There are no classes to show";
+if (listofclasses.size() <= 0){
+	response.sendRedirect("calendar.jsp?message=Sorry,there are no classes in system.");
+	return;
 } 
 
 //to remove a student from section

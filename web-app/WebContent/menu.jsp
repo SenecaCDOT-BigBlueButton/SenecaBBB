@@ -17,6 +17,7 @@
 	    	var message = $(".warningMessage").text();
 	        var notierrMessage = noty({text: '<div>'+ message+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
 	                      layout:'top',
+	                      timeout:3000,
 	                      type:'error'});
 	        }
 	
@@ -24,9 +25,11 @@
 	    	var successMessage = $(".successMessage").text();
 	        var notiMessage = noty({text: '<div>'+ successMessage+'<img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
 	                      layout:'top',
+	                      timeout:3000,
 	                      type:'success'
 	                     });
 	        }
+
 	
 	});
 </script>

@@ -79,45 +79,7 @@
 
 <script type="text/javascript">
 	
-	function searchUser(){
-		var xmlhttp;
-		if (window.XMLHttpRequest)
-		{// code for IE7+, Firefox, Chrome, Opera, Safari
-		  xmlhttp=new XMLHttpRequest();
-		}
-		else
-		{// code for IE6, IE5
-		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange=function()
-		{
-		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		  {
-			  var json = xmlhttp.responseText;
-			  obj = JSON.parse(json);
-		    document.getElementById("responseDiv").innerHTML=xmlhttp.responseText;
-		  }
-		}
-		userName = document.getElementById("searchBoxAddAttendee").value;
-	    xmlhttp.open("GET","search.jsp?userName=" + userName,true);
-	    xmlhttp.send();
-	}
 	$(document).ready(function() {
-		<%if (meetingSettings.get("isPrivateChatEnabled")==0){%>
-		//	$(".checkbox .box:eq(0)").next(".checkmark").toggle();
-		//	$(".checkbox .box:eq(0)").attr("aria-checked", "false");
-		//	$(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
-		<%}%>	
-		<%if (meetingSettings.get("isViewerWebcamEnabled")==0){%>
-		//	$(".checkbox .box:eq(1)").next(".checkmark").toggle();
-		//	$(".checkbox .box:eq(1)").attr("aria-checked", "false");
-		//	$(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
-		<%}%>	
-		<%if (meetingSettings.get("isMultiWhiteboard")==0){%>
-		//	$(".checkbox .box:eq(2)").next(".checkmark").toggle();
-		//	$(".checkbox .box:eq(2)").attr("aria-checked", "false");
-		//	$(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
-		<%}%>	
 		<%if (meetingSettings.get("isRecorded")==0){%>
 			$(".checkbox .box:eq(0)").next(".checkmark").toggle();
 			$(".checkbox .box:eq(0)").attr("aria-checked", "false");
@@ -231,41 +193,17 @@
                   <%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)) %></option>
                   <% }
                   }
-                  else if(isSuper){ 
+                  else if(isSuper && professor.size()>0){ 
                       for(int i=0;i<professor.size();i++){  %>
                           <option value="<%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %>" >
                           <%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %></option>
                     <%}
                   }else{%>
-                	  <%=" <option> You don't have any courses yet!</option>"%>
+                	  <%=" <option> No subjects in system!</option>"%>
                  <% }%>                 
               </select>
             </div>
 
-
-            <!-- 
-            <div class="component">
-              <div class="checkbox" title="Allow microphone sharing."> <span class="box" role="checkbox" aria-checked="true" tabindex="17" aria-labelledby="eventSetting1"></span>
-                <label class="checkmark"></label>
-                <label class="text" id="eventSetting1">Allow microphone sharing.</label>
-                <input type="checkbox" name="eventSetting1box" checked="checked" aria-disabled="true">
-              </div>
-            </div>
-            <div class="component">
-              <div class="checkbox" title="Allow camera sharing"> <span class="box" role="checkbox" aria-checked="true" tabindex="18" aria-labelledby="eventSetting2"></span>
-                <label class="checkmark"></label>
-                <label class="text" id="eventSetting2">Allow camera sharing.</label>
-                <input type="checkbox" name="eventSetting2box" checked="checked" aria-disabled="true">
-              </div>
-            </div>
-            <div class="component">
-              <div class="checkbox" title="Allow public whiteboard"> <span class="box" role="checkbox" aria-checked="true" tabindex="19" aria-labelledby="eventSetting3"></span>
-                <label class="checkmark"></label>
-                <label class="text" id="eventSetting3">Allow public whiteboard.</label>
-                <input type="checkbox" name="eventSetting3box" checked="checked" aria-disabled="true">
-              </div>
-            </div>
-            -->
             <div class="component" style="z-index: 2;">
               <div class="checkbox" title="Allow event recording."> <span class="box" role="checkbox" aria-checked="true" tabindex="20" aria-labelledby="eventSetting4"></span>
                 <label class="checkmark"></label>
@@ -334,12 +272,6 @@
               <select name="dropdownOccursBy" id="dropdownOccursBy" title="Occurs by" tabindex="26" role="listbox" style="width: 402px">
                 <option role="option" selected="selected">Day of the month</option>
                 <option role="option">First occurrence of the day of the week</option>
-                <!-- 
-                <option role="option">Second occurrence of the day of the week</option>
-                <option role="option">Third occurrence of the day of the week</option>
-                <option role="option">Fourth occurrence of the day of the week</option>
-                <option role="option">Last occurrence of the day of the week</option>
-                -->
               </select>
             </div>
             <div id="selectDayoftheMonth" class="component">

@@ -48,6 +48,7 @@
         var restOfUrl = window.location.href.substr(5);
         window.location = "https:" + restOfUrl;
     }
+    
 	function trim(s) {
 		return s.replace(/^\s*/, "").replace(/\s*$/, "");
 	}

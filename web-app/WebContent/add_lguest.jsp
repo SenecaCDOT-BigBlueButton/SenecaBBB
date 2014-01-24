@@ -27,6 +27,7 @@
 	<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <%@ include file="search.jsp" %>
+<%@ include file="send_Notification.jsp" %>
 <%
     //Start page validation
     String userId = usersession.getUserId();
@@ -137,6 +138,7 @@
             return;   
         } else {
         	successMessage = bu_id + " added to lecture guest list";
+        	sendNotification(dbaccess,ldap,bu_id,"lecture",ls_id,l_id,usersession.getGivenName());
         }
     } else if (nonldap != null && nonldap !="") {
         nonldap = Validation.prepare(nonldap);

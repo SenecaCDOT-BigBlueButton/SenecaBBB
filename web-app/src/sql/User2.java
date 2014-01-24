@@ -3,6 +3,7 @@ package sql;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import helper.*;
 import db.DBAccess;
 
@@ -141,6 +142,20 @@ public class User2 extends Sql {
                 + "INNER JOIN user_role "
                 + "ON bbb_user.ur_id = user_role.ur_id "
                 + "WHERE bbb_user.bu_id = '" + bu_id + "'";
+        return _dbAccess.queryDB2(result, _sql);
+    }
+    
+    /**
+     * Fields:
+     * (0)nu_email
+     * @param result
+     * @param bu_id
+     * @return
+     */
+    public boolean getNonLdapUserEmail(ArrayList<HashMap<String, String>> result, String bu_id) {
+        _sql = "SELECT nu_email "
+                + "FROM non_ldap_user "
+                + "Where bu_id= '" + bu_id + "'";
         return _dbAccess.queryDB2(result, _sql);
     }
 

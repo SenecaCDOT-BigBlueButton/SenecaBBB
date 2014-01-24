@@ -343,8 +343,8 @@
 	    $('#tbGuest').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
 	    $('#tbAttendance').dataTable({"sPaginationType": "full_numbers"});
 	    $('#tbAttendance').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-	    $('#tbPresentation').dataTable({"sPaginationType": "full_numbers"});
-	    $('#tbPresentation').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+	  //  $('#tbPresentation').dataTable({"sPaginationType": "full_numbers"});
+	  // $('#tbPresentation').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
 	    $('#legend').dataTable({"sPaginationType": "full_numbers"});
 	    $('#legend').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});       
 	    $.fn.dataTableExt.sErrMode = "throw";
@@ -369,7 +369,7 @@
 	        $('#expandAttendee').click();
 	        $('#expandGuest').click();
 	        $('#expandAttendance').click();
-	        $('#expandPresentation').click();
+	      //  $('#expandPresentation').click();
 	        $("#help").attr({href:"help_viewEvent.jsp" ,
                              target:"_blank"});
 	        $("#EventButton").click(function(){
@@ -453,15 +453,15 @@
 		                                onclick="window.location.href='add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Attendee</button>
 		                            <button type="button" name="button" id="addMGuest" class="button" title="Click here to add Meeting Guest" 
                                         onclick="window.location.href='add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Guest</button>
-                                    <button type="button" name="button" id="addMPresentation" class="button" title="Click here to add Meeting Presentation" 
-                                        onclick="window.location.href='add_mpresentation.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Presentation</button>                           
+                                 <!--    <button type="button" name="button" id="addMPresentation" class="button" title="Click here to add Meeting Presentation" 
+                                        onclick="window.location.href='add_mpresentation.jsp?ms_id= <%-- <%= ms_id %>&m_id=<%= m_id %> --%> '">Manage Presentation</button>    -->                        
 		                        <% } else if (status==3) { %>
 		                            <button type="button" name="button" id="addStudent" class="button" title="Click here to add Student" 
 		                                onclick="window.location.href='add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Student</button>
 		                            <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Guest" 
                                         onclick="window.location.href='add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Guest</button>  
-                                    <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Presentation" 
-                                        onclick="window.location.href='add_lpresentation.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Presentation</button>                                                          
+                                 <!--   <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Presentation" 
+                                        onclick="window.location.href='add_lpresentation.jsp?ls_id=  <%-- <%= ls_id %>&l_id=<%= l_id %> --%> '">Manage Presentation</button>     -->                                                        
 		                        <% } %>
 		                        <% if(isEventCreator.get_value()){ %>
                                      <button type="submit" name="endMeeting" id="endMeeting" class="button" title="Click here to end meeting" value="endevent" >Terminate Event</button>
@@ -710,6 +710,7 @@
                 </div>
             </article>
             <% } %>
+            <!--  
             <article>
                 <header id="expandPresentation">
                     <h2>Presentation List</h2>
@@ -726,11 +727,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <% for (i=0; i<eventPresentation.size(); i++) { %>
+                             <%--    <% for (i=0; i<eventPresentation.size(); i++) { %>     --%>
                                     <tr>
-                                        <td class="row"><%= eventPresentation.get(i).get(0) %></td>
+                                        <td class="row"><%--  <%= eventPresentation.get(i).get(0) %>  --%></td>
                                     </tr>
-                                <% } %>
+                             <%--    <% } %>   --%>
                                 </tbody>
                             </table>
                         </div>
@@ -738,6 +739,7 @@
                     <br />
                 </div>
             </article>
+            -->
             <article>
                 <header id="legendExpand">
                             <h2>Legend</h2>

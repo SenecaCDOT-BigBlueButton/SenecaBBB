@@ -30,6 +30,7 @@
     <script type="text/javascript" src="js/additional-methods.min.js"></script>
 	
 <%@ include file="search.jsp" %>
+<%@ include file="send_Notification.jsp" %>
 <%
     //Start page validation
     String userId = usersession.getUserId();
@@ -141,6 +142,7 @@
             return;   
         } else {
         	successMessage = bu_id + " added to meeting attendee list successfully";
+        	sendNotification(dbaccess,ldap,bu_id,"meeting",ms_id,m_id,usersession.getGivenName()); 
         }
     } else if (nonldap != null && nonldap !="") {
         nonldap = Validation.prepare(nonldap);

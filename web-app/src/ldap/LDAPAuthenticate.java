@@ -113,9 +113,9 @@ public class LDAPAuthenticate {
                 }
 
                 //prints out all possible attributes
-//                for (NamingEnumeration<?> i = at.getAll(); i.hasMore();) {
-//                    System.out.println((Attribute) i.next());
-//                }
+               // for (NamingEnumeration<?> i = at.getAll(); i.hasMore();) {
+                //    System.out.println((Attribute) i.next());
+               // }
             	emailAddress = at.get("mail").toString().split(": ")[1];
                 authenticated = "true"; //TODO
 
@@ -140,7 +140,42 @@ public class LDAPAuthenticate {
 
         return false;
     }
+    
+  /**
+   * Try to access user email from LDAP, however, we don't have permission to get student's information
+   
+   
+    public String searchEmail(String user){
+    	String userEmail=null;
+        if (ldapContextNone != null) { // if the initial context was created fine
+            try {
+                NamingEnumeration<SearchResult> results = ldapContextNone.search("o=" + o, "(&(uid=" + user + "))", searchCtrl);
 
+                if (!results.hasMore()) // search failed
+                {
+                  System.out.println("test");
+                    throw new Exception();
+                }
+
+                SearchResult sr = results.next();
+                Attributes at = sr.getAttributes();
+              for (NamingEnumeration<?> i = at.getAll(); i.hasMore();) {
+              System.out.println((Attribute) i.next());
+             }
+                userEmail = at.get("mailequivalentaddress").toString().split(": ")[1];
+                return userEmail;
+            } catch (NamingException e) {
+                elog.writeLog("[LDAP Search] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());                
+            } catch (Exception e) {
+               // System.out.println("User " + user + " not found in LDAP. Checking local database for user.");
+                elog.writeLog("[LDAP Search] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());                               
+            }
+        }
+    	
+    	return userEmail;
+    }
+    */
+    
     public boolean search(String user) {
 
         if (ldapContextNone != null) { // if the initial context was created fine

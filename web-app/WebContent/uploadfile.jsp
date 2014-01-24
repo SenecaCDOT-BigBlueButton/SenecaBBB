@@ -13,6 +13,7 @@
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <%@ include file="search.jsp" %>
+<%@ include file="send_Notification.jsp" %>
 <%
 
     //Start page validation
@@ -370,6 +371,9 @@
                 return;  
             } else {
                 counter += 1;
+                ArrayList<ArrayList<String>> scheduleResult = new ArrayList<ArrayList<String>>();
+                section.getLectureSchedule(scheduleResult,classSection.split("-")[0], classSection.split("-")[1],classSection.split("-")[2]);
+                sendNotification(dbaccess,ldap,bu_id,"lecture",scheduleResult.get(0).get(0),"",usersession.getGivenName());
                 successMessage = "Total of: "+ counter +  " students added to the class </br>";
             }
         }

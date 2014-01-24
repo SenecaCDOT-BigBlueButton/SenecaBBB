@@ -27,6 +27,8 @@
 	<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
 	<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 <%@ include file="search.jsp" %>
+<%@ include file="send_Notification.jsp" %>
+
 <%
     //Start page validation
     String userId = usersession.getUserId();
@@ -138,6 +140,7 @@
             return;   
         } else {
         	successMessage = bu_id + " added to meeting guest list";
+        	sendNotification(dbaccess,ldap,bu_id,"meeting",ms_id,m_id,usersession.getGivenName());       	
         }
     } else if (nonldap != null && nonldap !="") {
         nonldap = Validation.prepare(nonldap);
@@ -241,6 +244,7 @@ $(function(){
 <div id="page">
     <jsp:include page="header.jsp"/>
     <jsp:include page="menu.jsp"/>
+    
     <section>
         <header> 
             <!-- BREADCRUMB -->

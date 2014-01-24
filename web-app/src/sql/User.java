@@ -122,6 +122,7 @@ public class User extends Sql {
         return _dbAccess.queryDB(result, _sql);
     }
 
+
     /**
      * Getting all data related to a bbb_user<p>
      * Fields:<p>

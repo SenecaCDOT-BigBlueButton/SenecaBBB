@@ -6,6 +6,7 @@
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <%@ include file="search.jsp" %>
+<%@ include file="send_Notification.jsp" %>
 <% 
     //Start page validation
     String userId = usersession.getUserId();
@@ -91,6 +92,9 @@ if (searchSucess) {
         return;   
     } else {
     	successMessage = bu_id + " added to student list";
+    	ArrayList<ArrayList<String>> scheduleResult = new ArrayList<ArrayList<String>>();
+    	section.getLectureSchedule(scheduleResult,selectedclass.split("-")[0], selectedclass.split("-")[1],selectedclass.split("-")[2]);
+    	sendNotification(dbaccess,ldap,bu_id,"lecture",scheduleResult.get(0).get(0),"",usersession.getGivenName());
         response.sendRedirect("class_settings.jsp?successMessage=" + successMessage + "&class=" + selectedclass);
         return;
     }

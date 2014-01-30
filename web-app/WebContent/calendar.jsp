@@ -27,12 +27,16 @@
 	<%
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
+    String welcomeMessage = request.getParameter("welcomeMessage");
     GetExceptionLog elog = new GetExceptionLog();
     if (message == null || message == "null") {
         message="";
     }
     if (successMessage == null) {
         successMessage="";
+    }
+    if (welcomeMessage == null) {
+    	welcomeMessage="";
     }
 
 	boolean check1 = true, check2 = true, check3 = true, check4 = true;
@@ -123,7 +127,8 @@
 				<h1>Calendar</h1>
 		        <!-- MESSAGES -->
 		        <div class="warningMessage"><%=message %></div>
-		        <div class="successMessage"><%=successMessage %></div> </header>
+		        <div class="successMessage"><%=successMessage %></div>
+		        <div class="welcomeMessage"><%=welcomeMessage %></div> </header> </header>
 		    </header>
 				<form>
 					<article>

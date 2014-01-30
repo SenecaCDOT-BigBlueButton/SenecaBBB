@@ -33,7 +33,12 @@ html, body {
     font-weight:bold;
     display:none
 }
-
+.welcomeMessage{
+    color:#2FD651;
+    font-size:16px;
+    font-weight:bold;
+    display:none
+}
 option:hover {
 	background-color: #0F6;
 }

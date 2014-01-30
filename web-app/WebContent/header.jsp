@@ -5,7 +5,7 @@
 </a>
     <nav>
       <ul>
-        <li><a href="logout.jsp?message=Logged out successfully" tabindex="5" title="Logout">Logout</a></li>
+        <li><a href="logout.jsp?successMessage=Logged out successfully" tabindex="5" title="Logout">Logout</a></li>
         <li class="divisor">|</li>
         <li><a id="help" href="help.jsp" tabindex="4" title="Help" >Help</a> </li>
         <li class="divisor">|</li>

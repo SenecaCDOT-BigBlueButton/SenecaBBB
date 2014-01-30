@@ -43,12 +43,12 @@
 <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/jquery.noty.packaged.js"></script>
 <script type="text/javascript">
-
+/*
     if (window.location.protocol == "http:") {
         var restOfUrl = window.location.href.substr(5);
         window.location = "https:" + restOfUrl;
     }
-    
+*/    
 	function trim(s) {
 		return s.replace(/^\s*/, "").replace(/\s*$/, "");
 	}

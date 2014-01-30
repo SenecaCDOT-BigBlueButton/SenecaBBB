@@ -25,6 +25,7 @@
 <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>    
 <script type="text/javascript" src="js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="js/additional-methods.min.js"></script>
+<script type="text/javascript" src="js/checkboxController.js"></script>
 
 <%
     //Start page validation

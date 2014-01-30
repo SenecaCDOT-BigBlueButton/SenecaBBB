@@ -75,7 +75,7 @@
                     response.sendRedirect(redirecturl);
                     return;
                 } else {
-                    response.sendRedirect("calendar.jsp?successMessage=Login successfully");
+                    response.sendRedirect("calendar.jsp?welcomeMessage=Login successfully");
                     return;
                 }              
         }
@@ -116,7 +116,7 @@
                     response.sendRedirect(redirecturl);
                     return;
                 } else {
-                    response.sendRedirect("calendar.jsp?successMessage=Login successfully");
+                    response.sendRedirect("calendar.jsp?welcomeMessage=Login successfully");
                     return;
                 }  
             } 

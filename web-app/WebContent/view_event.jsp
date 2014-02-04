@@ -190,6 +190,8 @@
     ArrayList<ArrayList<String>> eventGuest = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> eventAttendance = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> eventPresentation = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> eventModerator = new ArrayList<ArrayList<String>>();
+    Boolean isModerator = false;
     String type = "";
     if (status == 1 || status == 2 || status == 6) {
         if (!meeting.getMeetingInfo(eventResult, ms_id, m_id)) {
@@ -232,6 +234,8 @@
             }
         } else {
             type = (status == 2) ? "Meeting (A)" : "Meeting (G)";
+            meeting.getMeetingAttendee(eventModerator,ms_id);
+            isModerator = eventModerator.get(0).get(2).equals("1")?true:false;
         }
     } else {
         if (!lecture.getLectureInfo(eventResult, ls_id, l_id)) {
@@ -433,19 +437,19 @@
 		                        if(diffMinutes<=15 &&diffMinutes>-eventDuration){
 		                        	startEvent = true;
 		                        }
-		                        if(startEvent && isEventCreator.get_value() && isMeetingRunning.equals("false")){
+		                        if(startEvent && (isEventCreator.get_value()||isModerator) && isMeetingRunning.equals("false")){
                              %>                      
                                     <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="create" title="Click here to create the event" >Start
                                     <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
-                            <% }else if(isMeetingRunning.equals("true") && isEventCreator.get_value()){%>
+                            <% }else if(isMeetingRunning.equals("true") && (isEventCreator.get_value()||isModerator)){%>
                                     <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="joinAsMod" title="Click here to join the event" >Join
                                     <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
-                            <%}else if(isMeetingRunning.equals("true") && !isEventCreator.get_value()){%>
+                            <%}else if(isMeetingRunning.equals("true") && !isEventCreator.get_value() && !isModerator){%>
                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="joinAsViewer" title="Click here to join the event" >Join
                                    <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
 		                    <% } else{ %>  
-                                    <button style="background-color:grey" type="button" name="EventButton" id="EventButton" class="button" value="<%= isEventCreator.get_value()? "create":"join"  %>" title="Click here to go to the event" >
-                                    <% if(isEventCreator.get_value()){ out.print("Start");} else {out.print("Join");} if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
+                                    <button style="background-color:grey" type="button" name="EventButton" id="EventButton" class="button" value="<%= (isEventCreator.get_value()||isModerator)? "create":"join"  %>" title="Click here to go to the event" >
+                                    <% if(isEventCreator.get_value() || isModerator){ out.print("Start");} else {out.print("Join");} if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
                             <%} %> 
 
 		                        <% if (status==1) { %>

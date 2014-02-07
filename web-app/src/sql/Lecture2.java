@@ -109,6 +109,19 @@ public class Lecture2 extends Sql {
         return _dbAccess.queryDB2(result, _sql);
     }
 
+    
+    /**
+     * (0)l_description
+     * @param result
+     * @param ls_id
+     * @return
+     */
+    public boolean getLectureDescription(ArrayList<HashMap<String, String>> result, String ls_id) {
+        _sql = "SELECT l_description "
+                + "FROM lecture "
+                + "WHERE ls_id = '" + ls_id + "'";
+        return _dbAccess.queryDB2(result, _sql);
+    }
     /**
      * (0)l_inidatetime
      * @param result

@@ -87,7 +87,7 @@ public static String getMonthNumber(String month) {
     }
     String eventId = request.getParameter("eventScheduleId");
     String e_Id = request.getParameter("eventId");
-    String eventDescription = request.getParameter("eventDescription");
+    String eventDescription = (request.getParameter("eventDescription")!=null)?request.getParameter("eventDescription"):"";
     String title = request.getParameter("eventTitle");
     String eventType = request.getParameter("eventType");  
     String duration = request.getParameter("eventDuration");

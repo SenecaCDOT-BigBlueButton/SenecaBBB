@@ -182,7 +182,7 @@
             </div>
             <div class="component">
               <label for="eventDescription" class="label">Description:</label>
-              <textarea name="eventDescription" id="eventDescription" class="input" tabindex="15" title="Event title"  autofocus></textarea>
+              <input name="eventDescription" id="eventDescription" class="input" tabindex="15" title="Event title"  autofocus />
             </div>
             <div class="component" id="lectureCourse">
               <label for="courseCode" class="label">Course Information:</label>
@@ -398,6 +398,7 @@
 		           },
 		           eventDescription:{
 		        	   required: false,
+                       maxlength: 100,
 		        	   pattern: /^[^<>]+$/
 		           },
 		           startTime:{
@@ -424,11 +425,11 @@
 		        		pattern:"Please enter a valid Title.",
 		        		required:"Title is required"
 		        	},
-		        	eventDescription:"Do not use <> ",
 		        	startTime:"Please enter a valid Time Format",
 		        	eventDuration:"Please enter a valid Number",
 		        	repeatsEvery:"Please enter a valid Number",
-		        	occurrences:"Please enter a valid Number"
+		        	occurrences:"Please enter a valid Number",
+		        	eventDescription:"Invalid characters"
 		        }
 		    });
 		    //Date picker

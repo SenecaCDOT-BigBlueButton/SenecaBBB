@@ -256,7 +256,7 @@ $(function(){
             <div class="warningMessage"><%=message %></div>
             <div class="successMessage"><%=successMessage %></div> 
         </header>
-        <form name="EditMeeting" method="get" action="edit_meeting.jsp">
+        <form name="EditMeeting" id="EditMeeting" method="get" action="edit_meeting.jsp">
             <article>
                 <header>
                     <h2>Current Event</h2>
@@ -303,7 +303,7 @@ $(function(){
                         </div>
                         <div class="component" >
                             <label for="description" class="label">Description:</label>
-                            <textarea name="description" id="description" class="input" cols="35" rows="5" title="Description" autofocus><%= event.get(0).get(5) %></textarea>           
+                            <input name="description" id="description" class="input" cols="35" rows="5" title="Description"  value="<%= event.get(0).get(5) %>" autofocus />      
                         </div>
                         <div class="component">
                             <div class="checkbox" title="Cancel Event"> <span class="box" role="checkbox" 
@@ -327,6 +327,39 @@ $(function(){
             </article>
         </form>
     </section>
+    <script>    
+   // form validation, edit the regular expression pattern and error messages to meet your needs
+   
+       $(document).ready(function(){
+            $('#EditMeeting').validate({
+                validateOnBlur : true,
+                rules: {
+
+                	description:{
+                       required: false,
+                       maxlength: 100,
+                       pattern: /^[^<>]+$/
+                   },
+                   startTime:{
+                       required: true,
+                       pattern: /^\s*[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\s*$/
+                   },
+                   eventDuration:{
+                       required: true,
+                       range:[1,999]
+                       
+                   },
+                   
+                },
+                messages: {
+                    startTime:"Please enter a valid Time Format",
+                    eventDuration:"Please enter a valid Number",
+                    description:"Invalid characters"
+                }
+            });
+          
+        });
+  </script>
     <jsp:include page="footer.jsp"/>
 </div>
 </body>

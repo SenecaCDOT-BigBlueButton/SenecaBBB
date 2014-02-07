@@ -100,6 +100,7 @@
     
 	ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>(); 
 	ArrayList<ArrayList<String>> lectureProfessor = new ArrayList<ArrayList<String>>();
+	ArrayList<ArrayList<String>> descriptionResult = new ArrayList<ArrayList<String>>();
 	String courseInfo = "";
 	String startDate ="";
 	String startTime ="";
@@ -114,11 +115,13 @@
 	String weeklyString ="abcdefg";
 	String dayOfMonth = "";
 	String firstOccurDayOfWeek = "";
-	String allProfessorforLecture ="";			
-          
+	String allProfessorforLecture ="";		
+	String eventDescription ="";
+
     if(isMeeting){
     	try{
     	   meeting.getMeetingScheduleInfo(result, ms_id);  	
+    	   meeting.getMeetingDescription(descriptionResult, ms_id);
     	}catch(Exception e){
     	   elog.writeLog("[edit_event_schedule:] " + e.getMessage() +"-"+ e.getStackTrace()+" /n");
     	}
@@ -127,7 +130,8 @@
     	//show the professor name,course,section, and semester information to super admin in course information field 
     	//if the user is professor, only show course,section, and semester information
     	try{
-	        lecture.getLectureScheduleInfo(result, ls_id);          
+	        lecture.getLectureScheduleInfo(result, ls_id);   
+	        lecture.getLectureDescription(descriptionResult, ls_id);
 	        lecture.getLectureProfessor(lectureProfessor, result.get(0).get(1), result.get(0).get(2), result.get(0).get(3));
 	        for(int j=0;j<lectureProfessor.size();j++){       	
 	        	allProfessorforLecture=allProfessorforLecture.concat(lectureProfessor.get(j).get(0)).concat(" ");
@@ -149,9 +153,67 @@
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-
+    eventDescription = descriptionResult.get(0).get(0);
+    //working on ls_spec or ms_spec
+    String spec = null;
+    spec = isMeeting? result.get(0).get(3): result.get(0).get(5);
+    if(!spec.equals("1")){
+        //recurrence daily
+        if(spec.split(";")[0].equals("2")){
+            //repeat for a number of times
+            if(spec.split(";")[1].equals("1")){
+                repeatEvery = spec.split(";")[3];
+                occurences = spec.split(";")[2];
+            }
+            //repeat until a certain date
+            if(spec.split(";")[1].equals("2")){
+                repeatEvery = spec.split(";")[3];
+                endsYear = spec.split(";")[2].split("-")[0];
+                endsMonth = spec.split(";")[2].split("-")[1];
+                endsDay = spec.split(";")[2].split("-")[2];                     
+            }
+        }
+        //recurrence weekly
+        if(spec.split(";")[0].equals("3")){
+            //repeat for a number of times
+            if(spec.split(";")[1].equals("1")){
+                repeatEvery = spec.split(";")[3];
+                occurences = spec.split(";")[2];
+                weeklyString = spec.split(";")[4];
+            }
+            //repeat for a number of weeks
+            if(spec.split(";")[1].equals("2")){
+                repeatEvery = spec.split(";")[3];
+                occurences = spec.split(";")[2];
+                weeklyString = spec.split(";")[4];
+            }
+            //repeat until end date is reached
+            if(spec.split(";")[1].equals("3")){
+                repeatEvery = spec.split(";")[3];
+                weeklyString = spec.split(";")[4];
+                endsYear = spec.split(";")[2].split("-")[0];
+                endsMonth = spec.split(";")[2].split("-")[1];
+                endsDay = spec.split(";")[2].split("-")[2];  
+            }
+        }
+        //recurrence monthly
+        if(spec.split(";")[0].equals("4")){
+            //repeat on same day each month
+            if(spec.split(";")[1].equals("1")){
+                repeatEvery = spec.split(";")[3];
+                occurences = spec.split(";")[2];
+                dayOfMonth = spec.split(";")[4];
+            }
+            //repeat the first occurrence of day-of-week in a month
+            if(spec.split(";")[1].equals("2")){
+                repeatEvery = spec.split(";")[3];
+                occurences = spec.split(";")[2];
+                firstOccurDayOfWeek= spec.split(";")[4];                        
+            }
+        }
+    }
+    startDate= isMeeting? result.get(0).get(2).split(" ")[0]: result.get(0).get(4).split(" ")[0];
 %>
-
 <script type="text/javascript">   
     function searchUser(){
         var xmlhttp;
@@ -177,13 +239,12 @@
         xmlhttp.send();
     }
     $(document).ready(function() { 
-        $("#dropdownDayStarts").selectmenu({'refresh': true});
-        $("#dropdownMonthStarts").selectmenu({'refresh': true});
-        $("#dropdownYearStarts").selectmenu({'refresh': true});
+
         $("#dropdownEventType").selectmenu({'refresh': true});
         $("#Recurrence").selectmenu({'refresh': true});
         $("#courseCode").selectmenu({'refresh': true});
         $('#startTime').timepicker({ 'scrollDefaultNow': true });
+
 
       //Date picker
         $(function(){
@@ -202,10 +263,13 @@
             month[11]="December";
             
             var datePickerStarts = {
+                dateFormat: "yy-mm-dd",
                 showOn: "button",
                 buttonText:"",
                 minDate: 0,
                 maxDate: "+1Y",
+                showOtherMonths: true,
+                selectOtherMonths: true,
                 onSelect:function(dateText){
                     var startDate = new Date(dateText);
                     $("#dropdownDayStarts").val(startDate.getUTCDate());
@@ -218,12 +282,17 @@
                     $("#dropdownYearStarts").selectmenu({'refresh': true});
                    
                 }
+            <% if(startDate.equals("")) out.write(""); else out.write(",defaultDate: "+"\""+ startDate+"\"");%>
+            
             };
             var datePickerEnds = {
+                dateFormat: "yy-mm-dd",
                 showOn: "button",
                 buttonText:"",
                 minDate: 0,
                 maxDate: "+1Y",
+                showOtherMonths: true,
+                selectOtherMonths: true,
                 onSelect:function(dateText){
                     var endDate = new Date(dateText);
                     $("#dropdownDayEnds").val(endDate.getUTCDate());
@@ -235,6 +304,8 @@
                     $("#dropdownYearEnds").selectmenu({'refresh': true});
                    
                 }
+            <% if(endsYear.equals("")|| endsMonth.equals("") || endsDay.equals("")) out.write(""); else out.write(",defaultDate:"+"\""+ endsYear+"-"+endsMonth+"-"+endsDay+"\"");%>
+   
             };
             $("#datePickerStarts").datepicker(datePickerStarts);
             $("#datePickerEnds").datepicker(datePickerEnds);
@@ -380,66 +451,7 @@
               <label for="eventDuration" class="label">Event Duration:</label> 
               <input id="eventDuration" name="eventDuration"  type="text"  class="input"  tabindex="25" title="Event Duration"  value="<%=  isMeeting? result.get(0).get(4): result.get(0).get(6)%>" required autofocus/>            
             </div>
-            <%
-            //working on ls_spec or ms_spec
-            String spec = null;
-            spec = isMeeting? result.get(0).get(3): result.get(0).get(5);
-            if(!spec.equals("1")){
-            	//recurrence daily
-            	if(spec.split(";")[0].equals("2")){
-            		//repeat for a number of times
-            		if(spec.split(";")[1].equals("1")){
-            			repeatEvery = spec.split(";")[3];
-            			occurences = spec.split(";")[2];
-            		}
-            		//repeat until a certain date
-                    if(spec.split(";")[1].equals("2")){
-                    	repeatEvery = spec.split(";")[3];
-                    	endsYear = spec.split(";")[2].split("-")[0];
-                    	endsMonth = spec.split(";")[2].split("-")[1];
-                    	endsDay = spec.split(";")[2].split("-")[2];                  	
-                    }
-            	}
-                //recurrence weekly
-                if(spec.split(";")[0].equals("3")){
-                    //repeat for a number of times
-                    if(spec.split(";")[1].equals("1")){
-                    	repeatEvery = spec.split(";")[3];
-                    	occurences = spec.split(";")[2];
-                    	weeklyString = spec.split(";")[4];
-                    }
-                    //repeat for a number of weeks
-                    if(spec.split(";")[1].equals("2")){
-                    	repeatEvery = spec.split(";")[3];
-                    	occurences = spec.split(";")[2];
-                    	weeklyString = spec.split(";")[4];
-                    }
-                    //repeat until end date is reached
-                    if(spec.split(";")[1].equals("3")){
-                    	repeatEvery = spec.split(";")[3];
-                    	weeklyString = spec.split(";")[4];
-                        endsYear = spec.split(";")[2].split("-")[0];
-                        endsMonth = spec.split(";")[2].split("-")[1];
-                        endsDay = spec.split(";")[2].split("-")[2];  
-                    }
-                }
-                //recurrence monthly
-                if(spec.split(";")[0].equals("4")){
-                    //repeat on same day each month
-                    if(spec.split(";")[1].equals("1")){
-                    	repeatEvery = spec.split(";")[3];
-                    	occurences = spec.split(";")[2];
-                    	dayOfMonth = spec.split(";")[4];
-                    }
-                    //repeat the first occurrence of day-of-week in a month
-                    if(spec.split(";")[1].equals("2")){
-                        repeatEvery = spec.split(";")[3];
-                        occurences = spec.split(";")[2];
-                        firstOccurDayOfWeek= spec.split(";")[4];                        
-                    }
-                }
-            }
-            %>
+
             <div class="component">
               <label for="Recurrence" class="label">Recurrence:</label>
               <select name="Recurrence" id="Recurrence" title="Recurrence" tabindex="24" role="listbox" style="width: 402px">
@@ -581,7 +593,7 @@
             </div>
             <div class="component" >
                 <label for="eventDescription" class="label">Description:</label>
-                <textarea name="eventDescription" id="eventDescription" class="input" cols="35" rows="5" title="Description" autofocus></textarea>           
+                <input name="eventDescription" id="eventDescription" class="input" cols="35" rows="5" title="Description" value="<%= eventDescription %>" autofocus>     
             </div>
           </fieldset>
         </div>
@@ -620,6 +632,8 @@
                 rules: {
                     eventTitle: {
                        required: true,
+                       minlength: 3,
+                       maxlength: 50,
                        pattern: /^[- a-zA-Z0-9]+$/
                    },
                    startTime:{
@@ -638,6 +652,11 @@
                    numberOfOccurrences:{
                        required: true,
                        range:[1,100]
+                   },
+                   eventDescription:{
+                	   required: false,
+                	   maxlength: 100,
+                	   pattern: /^[^<>]+$/
                    }
                    
                 },
@@ -649,7 +668,8 @@
                     startTime:"Please enter a valid Time Format",
                     eventDuration:"Please enter a valid Number",
                     repeatsInterval:"Please enter a valid Number",
-                    numberOfOccurrences:"Please enter a valid Number"
+                    numberOfOccurrences:"Please enter a valid Number",
+                    eventDescription:"Invalid characters"
                 }
             });
             //populate event end date 
@@ -666,6 +686,7 @@
             month[9]="October";
             month[10]="November";
             month[11]="December";
+
             <% if(!endsYear.equals("") && !endsMonth.equals("") && !endsDay.equals("") ){%>
                 var endDate = new Date(<%= Integer.parseInt(endsYear) %>,<%= Integer.parseInt(endsMonth)-1 %>,<%= Integer.parseInt(endsDay) %>);
 	            $("#dropdownDayEnds").val(endDate.getUTCDate());
@@ -675,6 +696,13 @@
 	            $("#dropdownMonthEnds").selectmenu({'refresh': true});
 	            $("#dropdownYearEnds").selectmenu({'refresh': true});
             <%}%>
+            var startDate = new Date(<%= Integer.parseInt(startDate.split("-")[0]) %>,<%= Integer.parseInt(startDate.split("-")[1])-1 %>,<%= Integer.parseInt(startDate.split("-")[2]) %>);
+            $("#dropdownDayStarts").val(startDate.getUTCDate());
+            $("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
+            $("#dropdownYearStarts").val(startDate.getUTCFullYear());
+            $("#dropdownDayStarts").selectmenu({'refresh': true});
+            $("#dropdownMonthStarts").selectmenu({'refresh': true});
+            $("#dropdownYearStarts").selectmenu({'refresh': true});
         });
   </script>
   <jsp:include page="footer.jsp"/>

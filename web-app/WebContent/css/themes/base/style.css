@@ -1217,3 +1217,7 @@ div.contactus a:active,div.help a:active{
 position: relative;
 float: right;
 }
+
+.highlight{
+	background:red;
+}

@@ -98,6 +98,20 @@ public class Lecture extends Sql {
      * (0)l_description
      * @param result
      * @param ls_id
+     * @return
+     */
+    public boolean getLectureDescription(ArrayList<ArrayList<String>> result, String ls_id) {
+        _sql = "SELECT l_description "
+                + "FROM lecture "
+                + "WHERE ls_id = '" + ls_id + "' ";
+        return _dbAccess.queryDB(result, _sql);
+    }
+
+    
+    /**
+     * (0)l_description
+     * @param result
+     * @param ls_id
      * @param l_id
      * @return
      */
@@ -108,7 +122,6 @@ public class Lecture extends Sql {
                 + "AND l_id = '" + l_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
-
     /**
      * (0)l_inidatetime
      * @param result

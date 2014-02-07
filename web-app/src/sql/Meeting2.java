@@ -165,6 +165,19 @@ public class Meeting2 extends Sql {
      * (0)m_description
      * @param result
      * @param ms_id
+     * @return
+     */
+    public boolean getMeetingDescription(ArrayList<HashMap<String, String>> result, String ms_id) {
+        _sql = "SELECT m_description "
+                + "FROM meeting "
+                + "WHERE ms_id = '" + ms_id + "' ";
+        return _dbAccess.queryDB2(result, _sql);
+    }
+    
+    /**
+     * (0)m_description
+     * @param result
+     * @param ms_id
      * @param m_id
      * @return
      */
@@ -175,6 +188,7 @@ public class Meeting2 extends Sql {
                 + "AND m_id = '" + m_id + "'";
         return _dbAccess.queryDB2(result, _sql);
     }
+    
     
     /**
      * (0)m_inidatetime

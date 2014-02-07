@@ -176,6 +176,20 @@ public class Meeting extends Sql {
         return _dbAccess.queryDB(result, _sql);
     }
     
+    
+    /**
+     * (0)m_description
+     * @param result
+     * @param ms_id
+     * @return
+     */
+    public boolean getMeetingDescription(ArrayList<ArrayList<String>> result, String ms_id) {
+        _sql = "SELECT m_description "
+                + "FROM meeting "
+                + "WHERE ms_id = '" + ms_id + "' ";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
     /**
      * (0)m_inidatetime
      * @param result

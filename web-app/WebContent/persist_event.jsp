@@ -95,7 +95,7 @@ public static String getMonthNumber(String month) {
         return;
     }
     String duration = request.getParameter("eventDuration");
-    String description = request.getParameter("eventDescription");
+    String description = (request.getParameter("eventDescription")!=null)?request.getParameter("eventDescription"):"";
     String eventType = request.getParameter("dropdownEventType");
     String c_id=null;
     String sc_id=null;

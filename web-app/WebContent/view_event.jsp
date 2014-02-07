@@ -331,7 +331,7 @@
         }
     }   
     String isMeetingRunning = isMeetingRunning(storedEventId);
-
+    url = getRecordings(storedEventId);
 %>
 <script type="text/javascript">
 /* TABLE */
@@ -408,12 +408,6 @@
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                    </header>
 	                <div class="content">                      
-	                        <% 	                          	                           
-	                           if(eventTitle !=null){                        	   
-                                   url = getRecordings(eventTitle);  
-	                           }else{
-	                        	   url = getRecordings(storedEventId);
-	                           } %>
 	                        <div class="component" style="display:none">
                                 <label for="eventType" class="label">Event Type:</label>
                                 <input type="text" name="eventType" id="eventType" class="input" readonly tabindex="3"  value="<%= (m_id==null)? "Lecture":"Meeting" %>" 

@@ -64,7 +64,7 @@
 	        <div class="warningMessage"><%=message %></div>
 	        <div class="successMessage"><%=successMessage %></div>       
 	        </header>
-        <form name="createCourse" id="createCourse" method="post" action="persist_bbbadmin_setting.jsp">
+        <form name="editAdmin" id="editAdmin" method="post" action="persist_bbbadmin_setting.jsp">
             <article>
                 <header>
                     <h2>Admin Information</h2>
@@ -106,7 +106,7 @@
    <script>    
    // form validation, edit the regular expression pattern and error messages to meet your needs
        $(document).ready(function(){
-            $('#createCourse').validate({
+            $('#editAdmin').validate({
                 validateOnBlur : true,
                 rules: {
                 	key_value: {
@@ -118,8 +118,8 @@
                        pattern: /^\s*[0-9]+\s*$/
                    },
                    key_value:{
-                       required: true,
-                       pattern: /^\s*[a-zA-z0-9 ]+\s*$/
+                       required: false,
+                       pattern: /^\s*[#@!,\.a-zA-z0-9 ]+\s*$/
                    }
                 },
                 messages: {
@@ -132,8 +132,7 @@
                         pattern: "number only"
                     },
                     key_value:{
-                        required: "key value is required",
-                        pattern:"number and letter only"
+                        pattern:"Invalid characters"
                     }
                 }
             });

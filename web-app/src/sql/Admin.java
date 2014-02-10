@@ -205,6 +205,33 @@ public class Admin extends Sql {
         return _dbAccess.queryDB(result, _sql);
     }
     
+    
+    /**
+     * Get default user setting in readable format on system<p>
+     * Fields:<p>
+     * (0)key_name (1)key_title (2)key_value 
+     * @param result
+     * @return
+     */
+    public Boolean getNotification(ArrayList<ArrayList<String>> result){
+        _sql = "SELECT key_value "
+                + "FROM bbb_admin "
+        		+ "WHERE key_name='notification'";
+        return _dbAccess.queryDB(result, _sql);
+    }
+    
+    /**
+     * (0)key_name (1)key_value
+     * @param message
+     * @return
+     */
+    public boolean setNotification(String message) {
+        _sql = "UPDATE bbb_admin "
+                + "SET key_value = '" + message + "' "
+                + "WHERE key_name = 'notification'";
+        return _dbAccess.updateDB(_sql);
+    }
+    
     /**
      * (0)key_name (1)key_value
      * @param message

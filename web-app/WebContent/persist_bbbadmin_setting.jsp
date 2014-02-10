@@ -69,6 +69,11 @@
 	        admin.setRecordingMsg(key_value);
 	        response.sendRedirect("system_settings.jsp?successMessage=System Recording Message Setting Saved Successfully!");	       
 	    }
+	    
+       if(key_name.equals("notification")){
+            admin.setNotification(key_value);
+            response.sendRedirect("system_settings.jsp?successMessage=System Notification Saved Successfully!");          
+        }
     }catch(Exception e){
         elog.writeLog("[persist_bbbadmin_setting:] " + e.getMessage()+ " /n" + e.getStackTrace()+"/n");       
     }

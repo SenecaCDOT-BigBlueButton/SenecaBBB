@@ -13,20 +13,24 @@ html, body {
 	background-color: #E6E6E6;
 }
 #notification{
-    background: none repeat scroll 0 0 #BDE5F8;
-    border: 2px solid #BDE5F8;
-    border-radius: 15px;
-    color: #00529B;
+    background: none repeat scroll 0 0 #CD352B;
+    border: 2px solid #CD352B;
+    border-radius: 15px 15px 15px 15px;
+    color: #FFFFFF;
     float: right;
     height: 60px;
+    margin-bottom: -35%;
+    margin-top: 5%;
     padding: 10px;
     text-align: center;
     width: 620px;
+    opacity:0.9;
+    font-size: 18px;
 }
 
 #notification p{
-	padding:10px;
-	margin-top: 5px;
+	padding:3px;
+	margin-top: 3px;
 }
 #siteDescription{
     color: #BCBCCA;

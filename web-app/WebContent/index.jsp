@@ -111,6 +111,19 @@
 <!-- Login form. -->
 <div id="page">
   <jsp:include page="header_plain.jsp"/>
+  <% 
+	  DBAccess dbaccess = new DBAccess(); 
+	  Admin admin = new Admin(dbaccess);
+	  String notification="";
+	  notification = getNotification(dbaccess,admin);
+	  if (!notification.equals("")) {
+  %>
+  <section>
+    <div id="notification">     
+      <p><%= notification %></p>
+    </div>
+  </section>
+  <% } %>
   <section id="login">
   	<header>
             <!-- MESSAGES -->
@@ -118,6 +131,7 @@
             <div class="successMessage"><%=successMessage %></div>
 		<br /><br />
 	</header>
+
     <form id="login" name="formLogin" action="auth.jsp" onSubmit="return validate();" method="post">
       <article >
         <fieldset>
@@ -140,19 +154,7 @@
       </article>
     </form>
   </section>
-  <% 
-  DBAccess dbaccess = new DBAccess(); 
-  Admin admin = new Admin(dbaccess);
-  String notification="";
-  notification = getNotification(dbaccess,admin);
-  if (!notification.equals("")) {
-  %>
-  <section>
-    <div id="notification">     
-      <p><%= notification %></p>
-    </div>
-  </section>
-  <% } %>
+
  <jsp:include page="footer.jsp"/>
 </div>
 </body>

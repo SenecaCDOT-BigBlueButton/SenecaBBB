@@ -1,4 +1,7 @@
 <%@page import="db.DBConnection"%>
+<%@page import="db.DBAccess" %>
+<%@page import="sql.Admin" %>
+<%@page import="java.util.ArrayList" %>
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <jsp:useBean id="ldap" scope="session" class="ldap.LDAPAuthenticate" />
 <%
@@ -63,7 +66,24 @@
 			return false;
 		}
 	}
-
+/*	 
+    function showNotification()
+    {
+        var xmlhttp;   
+        if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        }else{// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange=function(){
+          if (xmlhttp.readyState==4 && xmlhttp.status==200){
+               document.getElementById("notification").innerHTML=xmlhttp.responseText;
+          }
+        }
+        xmlhttp.open("POST","getNotification.jsp",true);
+        xmlhttp.send();
+    }
+*/
     $(document).ready(function(){
         if(localStorage.Y > 0 || localStorage.X > 0){ 
             window.scrollBy(localStorage.X,localStorage.Y);  
@@ -81,7 +101,8 @@
                           layout:'top',
                           type:'success'
                          });
-            }
+        }
+        
     
     });
 </script>
@@ -119,7 +140,33 @@
       </article>
     </form>
   </section>
+  <% 
+  DBAccess dbaccess = new DBAccess(); 
+  Admin admin = new Admin(dbaccess);
+  String notification="";
+  notification = getNotification(dbaccess,admin);
+  if (!notification.equals("")) {
+  %>
+  <section>
+    <div id="notification">     
+      <p><%= notification %></p>
+    </div>
+  </section>
+  <% } %>
  <jsp:include page="footer.jsp"/>
 </div>
 </body>
 </html>
+
+<%!
+	public String getNotification(DBAccess dbaccess,Admin admin) {
+		ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+		String msg="";
+		if(admin.getNotification(result)){
+			if(result.size()>0){
+				msg = result.get(0).get(0);
+			}
+		}
+		return msg;
+	}
+%>

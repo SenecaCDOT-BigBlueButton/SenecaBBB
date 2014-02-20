@@ -103,11 +103,15 @@
                 rules: {
                 	firstName: {
                        required: true,
-                       pattern: /^\s*[a-zA-Z]+[\.\-a-zA-Z]*\s*$/
+                       minlength: 2,
+                       maxlength: 45,
+                       pattern: /^\s*([a-zA-Z]+[\s]*[\'\,\.\-]?[\s]*){1,5}\s*$/
                    },
                    lastName:{
                        required: true,
-                       pattern: /^\s*[a-zA-Z]+[\.\-a-zA-Z]*\s*$/
+                       minlength: 2,
+                       maxlength: 45,
+                       pattern: /^\s*([a-zA-Z]+[\s]*[\'\,\.\-]?[\s]*){1,5}\s*$/
                    },
                    email:{
                        required: true,
@@ -118,11 +122,15 @@
                 messages: {
                     firstName: {
                         required: "Please enter guest first name",
-                        pattern: "invalid name"
+                        pattern: "invalid name",
+                        minlength:"minimum 2 characters",
+                        maxlength:"maximum 45 characters"
                     },
                     lastName:{
                         required: "Please enter guest last name",
-                        pattern: "invalid name"
+                        pattern: "invalid name",
+                        minlength:"minimum 2 characters",
+                        maxlength:"maximum 45 characters"
                     },
                     email:{
                         required: "Please enter guest email",

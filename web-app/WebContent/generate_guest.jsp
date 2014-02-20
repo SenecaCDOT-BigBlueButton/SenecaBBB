@@ -53,7 +53,25 @@
 		return;
 	}
 	else {
-		String bu_id = "guest." + firstName.toLowerCase().substring(0, 1) + lastName.toLowerCase();
+		String[] fName = firstName.split("\\s+");
+		String[] lName = lastName.split("\\s+");
+		StringBuffer br = new StringBuffer();
+		for(int i=0;i<fName.length;i++){
+			br = br.append(fName[i]);
+			if(i<fName.length-1){
+				br.append(" ");
+			}
+		}
+		firstName = br.toString();
+		br.setLength(0);
+        for(int j=0;j<lName.length;j++){
+            br = br.append(lName[j]);
+            if(j<lName.length-1){
+                br.append(" ");
+            }
+        }
+		lastName = br.toString();
+		String bu_id = "guest." + firstName.toLowerCase().substring(0, 1) + lastName.replaceAll(" ","").toLowerCase();
 		String key = hash.createRandomSalt();	
 		ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 		user.getUsersLike(result, bu_id);

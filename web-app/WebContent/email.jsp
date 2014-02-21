@@ -34,7 +34,7 @@
 		response.sendRedirect("index.jsp?message=Database connection error");
 	    return;
 	}//End page validation
-
+	
 	Email sendToGuest = new Email();
     String to = session.getAttribute("email").toString();
     String subject = "SenecaBBB Guest Account Activation"; 

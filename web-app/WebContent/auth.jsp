@@ -127,7 +127,11 @@
                 return;
             }
         // User doesn't exist in database or LDAP
-        } else {
+        }else if(ldap.isExpired()){
+            response.sendRedirect("index.jsp?message=Your password is expired, please contact Seneca Service Desk to activate your account. ");
+            return;
+        }
+        else {
                 message = "Invalid username and/or password.";
                 elog.writeLog("[auth:] " + "username: "+ userID + "tried to log in with " + message +"/n");
                 response.sendRedirect("index.jsp?message=" + message);

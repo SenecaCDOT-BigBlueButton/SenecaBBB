@@ -44,6 +44,7 @@ public class LDAPAuthenticate {
     private String title;
     private Date lastAccess;
     private String emailAddress;
+    private Boolean pwdIsExpired=false;
     GetExceptionLog elog = new GetExceptionLog();
     private boolean logout;
 
@@ -128,7 +129,10 @@ public class LDAPAuthenticate {
                 return true;
             } catch (NamingException e) {
                 authenticated = "failed";
-                e.printStackTrace();
+                e.printStackTrace();         
+                if(e.getMessage().indexOf("LDAP: error code 49")>=0 && e.getMessage().indexOf("expired")>=0){
+                	pwdIsExpired = true;
+                }
                 elog.writeLog("[LDAP Search NamingException] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());                 
             } catch (Exception e) {
                 //e.printStackTrace();
@@ -206,7 +210,6 @@ public class LDAPAuthenticate {
             } catch (NamingException e) {
                 elog.writeLog("[LDAP Search] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());                
             } catch (Exception e) {
-               // System.out.println("User " + user + " not found in LDAP. Checking local database for user.");
                 elog.writeLog("[LDAP Search] " + "-" + e.getMessage() + "/n"+ e.getStackTrace().toString());                               
             }
         }
@@ -230,7 +233,9 @@ public class LDAPAuthenticate {
     public String getTitle() {
         return title;
     }
-
+	public boolean isExpired(){
+		return pwdIsExpired;
+	}
     public String getPosition() {
         //getOU()
         return position;

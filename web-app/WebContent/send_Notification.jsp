@@ -29,6 +29,8 @@ public boolean sendNotification(DBAccess dbaccess, LDAPAuthenticate ldap, String
         	    String eventStartTime=null;  
         	    String eventTitle = null;
         	    String emailText = null;
+        	    user.isnonLDAP(isNonLdap, bu_id);
+        	    String accountText = isNonLdap.get_value()?"Guest id: "+bu_id : "Seneca College user account";
         	    if(event != null && event.equals("meeting")){
         	         Meeting2 meeting = new Meeting2(dbaccess);
         	         meeting.getMeetingScheduleInfo(scheduleResult, ms_id);
@@ -43,7 +45,7 @@ public boolean sendNotification(DBAccess dbaccess, LDAPAuthenticate ldap, String
                      
                       emailText = "<p>Hello:</p>"
                                          + "<p>You are invited by <strong>" + sender + "</strong> to join a meeting in Seneca BigBlueButton web conferencing system.</p>"                                    
-                                         + "<p> Please use your Seneca College user account and password to join the meeting at: " + domain + "</p>"
+                                         + "<p> Please use your "+  accountText + " to login and to join the meeting at: " + domain + "</p>"
                                          + "<p> Meeting Title: <strong>"+ eventTitle + " </strong></p>"
                                          + "<p> Meeting Initial Date and Time: <strong>"+ eventStartTime + " </strong></p>"
                                          + "<p>This is an automated message, please don't reply.</p>"
@@ -60,7 +62,7 @@ public boolean sendNotification(DBAccess dbaccess, LDAPAuthenticate ldap, String
                     }
                      emailText = "<p>Hello:</p>"
                             + "<p>You are added to a class section by professor <strong>" + sender + "</strong> in Seneca BigBlueButton web conferencing system.</p>"                                    
-                            + "<p> Please use your Seneca College user account and password to join the class at: " + domain + "</p>"
+                            + "<p> Please use your "+  accountText + " to login and to join the meeting at: " + domain + "</p>"
                             + "<p> Course: <strong>"+ scheduleResult.get(0).get("c_id") + " </strong></p>"
                             + "<p> Section: <strong>"+ scheduleResult.get(0).get("sc_id") + " </strong></p>"
                             + "<p> Semester: <strong>"+ scheduleResult.get(0).get("sc_semesterid") + " </strong></p>"
@@ -69,7 +71,7 @@ public boolean sendNotification(DBAccess dbaccess, LDAPAuthenticate ldap, String
                             +"<p><p></p><p></p>Thank you,<p></p>"; 
         	    }
         	                        
-        	    user.isnonLDAP(isNonLdap, bu_id);
+        	    
         	    if(isNonLdap.get_value()){
                     user.getNonLdapUserEmail(searchEmailResult,bu_id);
                     attendeeEmail = searchEmailResult.get(0).get("nu_email");

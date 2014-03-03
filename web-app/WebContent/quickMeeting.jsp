@@ -91,9 +91,9 @@
     }
     $(document).ready(function() { 
         <%if (meetingSettings.get("isRecorded")==0){%>
-            $(".checkbox .box:eq(3)").next(".checkmark").toggle();
-            $(".checkbox .box:eq(3)").attr("aria-checked", "false");
-            $(".checkbox .box:eq(3)").siblings().last().prop("checked", false);
+            $(".checkbox .box:eq(0)").next(".checkmark").toggle();
+            $(".checkbox .box:eq(0)").attr("aria-checked", "false");
+            $(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
         <%}%>
         $('#startTime').timepicker({ 'scrollDefaultNow': true });
     });
@@ -126,6 +126,7 @@
               <label for="eventTitle" class="label">Meeting Title:</label>
               <input name="eventTitle" id="eventTitle" class="input" tabindex="15" title="Event title" type="text" autofocus>
             </div>
+            <!--  
             <div class="component" style="z-index: 2;">
               <div class="checkbox" title="Allow event recording."> <span class="box" role="checkbox" aria-checked="true" tabindex="20" aria-labelledby="eventSetting4"></span>
                 <label class="checkmark"></label>
@@ -133,6 +134,7 @@
                 <input type="checkbox" name="eventSetting4box" checked="checked" aria-disabled="true">
               </div>
             </div>
+            -->
             <div class="component" style="display:none">
               <input id="dropdownRecurrence" name="dropdownRecurrence"  type="text"  value="Only once"/>   
               <input id="eventDescription" name="eventDescription"  type="text"  value="Quick Meeting"/>  

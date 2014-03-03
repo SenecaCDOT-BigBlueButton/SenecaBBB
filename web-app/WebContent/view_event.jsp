@@ -380,12 +380,14 @@
                              target:"_blank"});
 	        $("#EventButton").click(function(){
 	        	var alertMessage;
-	        	<% if (isEventCreator.get_value()){%>
-	        	alertMessage = "Please note that you can start this event 15 minutes before the scheduled start time.";
+	        	<% if (isCancel.equals("Yes")){%>
+	        	    alertMessage = "Event is cancelled.";	        	
+	        	<% } else if (isEventCreator.get_value()){%>	        	
+	        	    alertMessage = "Please note that you can start this event 15 minutes before the scheduled start time.";
 	        	<%}else{%>
-	        	alertMessage ="Event not started yet or it has already ended.";
+	                alertMessage = "Event not started yet or it has already ended.";               
 	        	<%}%>
-	        	alert(alertMessage);
+	        	   alert(alertMessage);
 	        });
 	        $("#endMeeting").click(function(){
 	        	$("#joinEvent").removeAttr('target');
@@ -430,7 +432,7 @@
 		                        long timediff = expectStart.getTime() - now.getTime();		                        	                        
 		                        long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(timediff);
 		                        long eventDuration = (long)Integer.valueOf(duration);
-		                        if(diffMinutes<=15 &&diffMinutes>-eventDuration){
+		                        if(diffMinutes<=15 &&diffMinutes>-eventDuration && isCancel.equals("No")){
 		                        	startEvent = true;
 		                        }
 		                        if(startEvent && (isEventCreator.get_value()||isModerator) && isMeetingRunning.equals("false")){

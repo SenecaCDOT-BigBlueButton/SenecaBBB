@@ -66,7 +66,6 @@
     String ms_id = request.getParameter("ms_id");
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
-
     if (!(m_id==null || ms_id==null)) {
         m_id = Validation.prepare(m_id);
         ms_id = Validation.prepare(ms_id);
@@ -183,9 +182,7 @@
     } else {
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
-    }
-    
-
+    }   
     // End page validation
     ArrayList<ArrayList<String>> eventResult = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> eventSResult = new ArrayList<ArrayList<String>>();
@@ -332,9 +329,11 @@
         lecture.getLectureProfessor(creatorResult, c_id, sc_id, sc_semesterid);
         eventCreator=creatorResult.get(0).get(0); 
         storedEventId = "Lecture-".concat(l_id).concat("-").concat(ls_id);
+        lecture.getLectureSetting(isRecordedResult, c_id, sc_id, sc_semesterid);
     }
     String isMeetingRunning = isMeetingRunning(storedEventId);
     url = getRecordings(storedEventId);
+    
 %>
 <script type="text/javascript">
 /* TABLE */

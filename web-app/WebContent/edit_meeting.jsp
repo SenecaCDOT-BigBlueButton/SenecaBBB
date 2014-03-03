@@ -170,6 +170,7 @@
         map.put(Settings.meeting_setting[4], 0);
         if(!meeting.setMeetingSetting(map,ms_id,m_id)){
         	response.sendRedirect("logout.jsp?message=Fail to change meeting setting");
+        	return;
         }
     }
     if (edited && !editError) {

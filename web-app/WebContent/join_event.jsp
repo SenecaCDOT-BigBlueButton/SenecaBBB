@@ -120,7 +120,6 @@
  String welcome = "Welcome to Seneca BigBlueButton Web Conferencing System!";
  String joinURL;
  String isMeetingRunning = isMeetingRunning(eventTitle);
- System.out.println(isRecorded);
  //moderator creates the meeting if meeting is not running
  if(isMeetingRunning.equals("false") && action.equals("create")){
      Map<String,String> metadata=new HashMap<String,String>();    

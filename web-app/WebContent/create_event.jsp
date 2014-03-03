@@ -81,9 +81,9 @@
 	
 	$(document).ready(function() {
 		<%if (meetingSettings.get("isRecorded")==0){%>
-			$(".checkbox .box:eq(0)").next(".checkmark").toggle();
-			$(".checkbox .box:eq(0)").attr("aria-checked", "false");
-			$(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
+		//	$(".checkbox .box:eq(0)").next(".checkmark").toggle();
+		//	$(".checkbox .box:eq(0)").attr("aria-checked", "false");
+		//	$(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
 		<%}%>
         $("#dropdownDayStarts").selectmenu({'refresh': true});
         $("#dropdownMonthStarts").selectmenu({'refresh': true});
@@ -203,14 +203,16 @@
                  <% }%>                 
               </select>
             </div>
-
+<!--  
             <div class="component" style="z-index: 2;">
               <div class="checkbox" title="Allow event recording."> <span class="box" role="checkbox" aria-checked="true" tabindex="20" aria-labelledby="eventSetting4"></span>
                 <label class="checkmark"></label>
                 <label class="text" id="eventSetting4">Allow event recording.</label>
                 <input type="checkbox" name="eventSetting4box" checked="checked" aria-disabled="true">
               </div>
+
             </div>
+-->
           </fieldset>
         </div>
       </article>

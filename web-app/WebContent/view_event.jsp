@@ -66,6 +66,7 @@
     String ms_id = request.getParameter("ms_id");
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
+
     if (!(m_id==null || ms_id==null)) {
         m_id = Validation.prepare(m_id);
         ms_id = Validation.prepare(ms_id);
@@ -183,6 +184,8 @@
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
     }
+    
+
     // End page validation
     ArrayList<ArrayList<String>> eventResult = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> eventSResult = new ArrayList<ArrayList<String>>();
@@ -281,7 +284,7 @@
         }
     }
         
-    String isCancel = (eventResult.get(0).get(4).equals("1")) ? "Yes" : "";
+    String isCancel = (eventResult.get(0).get(4).equals("1")) ? "Yes" : "No";
     ArrayList<ArrayList<String>> creatorResult = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> lectureResult = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> startTimeResult = new ArrayList<ArrayList<String>>();
@@ -295,41 +298,41 @@
     MyBoolean isEventCreator = new MyBoolean();
     MyBoolean isEventAttendee = new MyBoolean();
     MyBoolean isEventGuest = new MyBoolean();
+    HashMap<String, Integer> isRecordedResult = new HashMap<String, Integer>();
     int i = 0;   
-    if(!isCancel.equals("Yes")){
-    	if (!(m_id==null || ms_id==null)) {            
-    		user.isMeetingCreator(isEventCreator, ms_id, userId);
-    	    user.isMeetingAttendee(isEventAttendee, ms_id, userId);
-    	    user.isMeetingGuest(isEventGuest, ms_id, m_id, userId);
-    		meeting.getMeetingCreators(creatorResult, ms_id);
-    		meeting.getMeetingInitialDatetime(startTimeResult, ms_id, m_id);
-    		meeting.getMeetingDuration(durationResult, ms_id, m_id);
-    		meeting.getMeetingModPass(modPassResult, ms_id, m_id);
-    		duration = durationResult.get(0).get(0);
-    		startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
-    		startDate = startTimeResult.get(0).get(0).split(" ")[0];
-    		eventCreator=creatorResult.get(0).get(0);  	
-    		storedEventId = "Meeting-".concat(m_id).concat("-").concat(ms_id);
-    	}
-        if (!(l_id==null || ls_id==null)) {
-            user.isTeaching(isEventCreator, ls_id, userId);            
-            user.isLectureStudent(isEventAttendee, ls_id, userId);         
-            user.isGuestTeaching(isEventGuest, ls_id, l_id, userId);
-            lecture.getLectureScheduleInfo(lectureResult,ls_id);
-            lecture.getLectureInitialDatetime(startTimeResult, ls_id, l_id);
-            lecture.getLectureDuration(durationResult, ls_id, l_id);
-            lecture.getLectureModPass(modPassResult, ls_id, l_id);
-            c_id=lectureResult.get(0).get(1);
-            sc_id=lectureResult.get(0).get(2);
-            sc_semesterid=lectureResult.get(0).get(3);
-            duration = durationResult.get(0).get(0);
-            startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
-            startDate = startTimeResult.get(0).get(0).split(" ")[0];
-            lecture.getLectureProfessor(creatorResult, c_id, sc_id, sc_semesterid);
-            eventCreator=creatorResult.get(0).get(0); 
-            storedEventId = "Lecture-".concat(l_id).concat("-").concat(ls_id);
-        }
-    }   
+   	if (!(m_id==null || ms_id==null)) {            
+   		user.isMeetingCreator(isEventCreator, ms_id, userId);
+   	    user.isMeetingAttendee(isEventAttendee, ms_id, userId);
+   	    user.isMeetingGuest(isEventGuest, ms_id, m_id, userId);
+   		meeting.getMeetingCreators(creatorResult, ms_id);
+   		meeting.getMeetingInitialDatetime(startTimeResult, ms_id, m_id);
+   		meeting.getMeetingDuration(durationResult, ms_id, m_id);
+   		meeting.getMeetingModPass(modPassResult, ms_id, m_id);
+   		duration = durationResult.get(0).get(0);
+   		startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
+   		startDate = startTimeResult.get(0).get(0).split(" ")[0];
+   		eventCreator=creatorResult.get(0).get(0);  	
+   		storedEventId = "Meeting-".concat(m_id).concat("-").concat(ms_id);
+   		meeting.getMeetingSetting(isRecordedResult, ms_id, m_id);
+   	}
+    if (!(l_id==null || ls_id==null)) {
+        user.isTeaching(isEventCreator, ls_id, userId);            
+        user.isLectureStudent(isEventAttendee, ls_id, userId);         
+        user.isGuestTeaching(isEventGuest, ls_id, l_id, userId);
+        lecture.getLectureScheduleInfo(lectureResult,ls_id);
+        lecture.getLectureInitialDatetime(startTimeResult, ls_id, l_id);
+        lecture.getLectureDuration(durationResult, ls_id, l_id);
+        lecture.getLectureModPass(modPassResult, ls_id, l_id);
+        c_id=lectureResult.get(0).get(1);
+        sc_id=lectureResult.get(0).get(2);
+        sc_semesterid=lectureResult.get(0).get(3);
+        duration = durationResult.get(0).get(0);
+        startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
+        startDate = startTimeResult.get(0).get(0).split(" ")[0];
+        lecture.getLectureProfessor(creatorResult, c_id, sc_id, sc_semesterid);
+        eventCreator=creatorResult.get(0).get(0); 
+        storedEventId = "Lecture-".concat(l_id).concat("-").concat(ls_id);
+    }
     String isMeetingRunning = isMeetingRunning(storedEventId);
     url = getRecordings(storedEventId);
 %>
@@ -425,7 +428,7 @@
                                 Date now = new Date();
                                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 Date expectStart = dateFormat.parse(expectStartTime);		                 
-		                        long timediff = expectStart.getTime() - now.getTime();
+		                        long timediff = expectStart.getTime() - now.getTime();		                        	                        
 		                        long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(timediff);
 		                        long eventDuration = (long)Integer.valueOf(duration);
 		                        if(diffMinutes<=15 &&diffMinutes>-eventDuration){
@@ -450,14 +453,14 @@
 		                            <button type="button" name="button" id="addAttendee" class="button" title="Click here to add Attendee" 
 		                                onclick="window.location.href='add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Attendee</button>
 		                            <button type="button" name="button" id="addMGuest" class="button" title="Click here to add Meeting Guest" 
-                                        onclick="window.location.href='add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Guest</button>
+                                        onclick="window.location.href='add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Meeting Guest</button>
                                  <!--    <button type="button" name="button" id="addMPresentation" class="button" title="Click here to add Meeting Presentation" 
                                         onclick="window.location.href='add_mpresentation.jsp?ms_id= <%-- <%= ms_id %>&m_id=<%= m_id %> --%> '">Manage Presentation</button>    -->                        
 		                        <% } else if (status==3) { %>
 		                            <button type="button" name="button" id="addStudent" class="button" title="Click here to add Student" 
 		                                onclick="window.location.href='add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Student</button>
 		                            <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Guest" 
-                                        onclick="window.location.href='add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Guest</button>  
+                                        onclick="window.location.href='add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Lecture Guest</button>  
                                  <!--   <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Presentation" 
                                         onclick="window.location.href='add_lpresentation.jsp?ls_id=  <%-- <%= ls_id %>&l_id=<%= l_id %> --%> '">Manage Presentation</button>     -->                                                        
 		                        <% } %>
@@ -558,24 +561,25 @@
                                         <th class="firstColumn" tabindex="16" title="Type">Type<span></span></th>
                                         <th title="StartingDate">Date<span></span></th>
                                         <th title="StartingTime">Time<span></span></th>
-                                        <th title="duration">Duration<span></span></th>
+                                        
                                         <th title="isCancel">Cancelled<span></span></th>
                                         <th width="200" title="description">Description<span></span></th>
                                         <% if (status==1 || status==3 || status==4) { %>
                                         <th width="65" title="Modify" class="icons" align="center">Modify</th>
                                         
                                         <% } %>
-                                        <th width="100" title="recording">Recording<span></span></th>
+                                        <th title="enableRecording">Allow Recording<span></span></th>
+                                        <th width="100" title="recording">Playback<span></span></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td class="row"><%= type %></td>
                                         <td><%= eventResult.get(0).get(2).substring(0, 10) %></td>
-                                        <td><%= eventResult.get(0).get(2).substring(11, 19) %></td>
-                                        <td><%= eventResult.get(0).get(3) %> Minutes</td>
+                                        <td><%= eventResult.get(0).get(2).substring(11, 19) %></td>                                        
                                         <td><%= isCancel %></td>
                                         <td><%= eventResult.get(0).get(5) %></td>
+                                        
                                         <% if (status==1) { %>
                                             <td class="icons" align="center">
                                                 <a href="edit_meeting.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="modify">
@@ -587,6 +591,7 @@
                                                 <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture" alt="Modify"/>
                                             </a></td>
                                         <% } %>
+                                        <td><% if (isRecordedResult.get("isRecorded")==1) out.write("Yes"); else out.write("No");%> </td>
                                         <td> <% if(url !=null && url !="") for(int j=0;j<url.split(" ").length;j++) {%>
                                              <a <%  out.print("href=" +url.split(" ")[j]);  %> style="color:blue" target="_blank">                    
                                                 <%  out.print("view recording "+ (j+1)); %>                      

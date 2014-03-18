@@ -11,7 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modify Department</title>
+<title>SenecaBBB | Modify Department</title>
 <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">

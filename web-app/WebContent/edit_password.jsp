@@ -5,7 +5,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<title>Seneca | Change Password</title>
+<title>SenecaBBB | Change Password</title>
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">

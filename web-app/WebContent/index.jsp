@@ -39,8 +39,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="pragma" content="no-cache" />
-<title>Seneca | Conferece Management System</title>
-<link rel="shortcut icon" href="http://www.cssreset.com/favicon.png" />
+<title>SenecaBBB | Conferece Management System</title>
+<link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico" />
 <link href="css/themes/base/style.css" rel="stylesheet" type="text/css" media="all">
 <link href="css/fonts.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="js/jquery-1.9.1.js"></script>

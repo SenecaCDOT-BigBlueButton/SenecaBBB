@@ -5,7 +5,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title>Seneca | Create Guest Account</title>
+	<title>SenecaBBB | Create Guest Account</title>
+	<link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
 	<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">

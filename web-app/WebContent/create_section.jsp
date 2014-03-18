@@ -9,7 +9,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <link rel="icon" href="http://www.cssreset.com/favicon.png">
+    <title>SenecaBBB | Create Section</title>
+    <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
     <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
     <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
     <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">

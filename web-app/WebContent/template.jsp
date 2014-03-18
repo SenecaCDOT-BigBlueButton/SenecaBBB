@@ -10,8 +10,8 @@
 <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seneca | Template</title>
-<link rel="icon" href="http://www.cssreset.com/favicon.png">
+<title>SenecaBBB | Template</title>
+<link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
@@ -33,7 +33,6 @@
 	if (message == null || message == "null") {
 		message="";
 	}
-	
 	User user = new User(dbaccess);
 	MyBoolean prof = new MyBoolean();
 	HashMap<String, Integer> userSettings = new HashMap<String, Integer>();

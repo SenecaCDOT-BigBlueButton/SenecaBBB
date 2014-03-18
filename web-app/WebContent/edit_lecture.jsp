@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Edit Lecture</title>
-<link rel="icon" href="http://www.cssreset.com/favicon.png">
+<link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
 <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">

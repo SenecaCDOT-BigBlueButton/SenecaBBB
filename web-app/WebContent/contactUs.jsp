@@ -8,8 +8,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Seneca | Contact Us</title>
-    <link rel="icon" href="http://www.cssreset.com/favicon.png">
+    <title>SenecaBBB | Contact Us</title>
+    <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
     <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
     <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>

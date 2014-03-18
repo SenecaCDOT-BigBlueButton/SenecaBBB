@@ -41,7 +41,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Edit System Admin</title>
-    <link rel="icon" href="http://www.cssreset.com/favicon.png">
+    <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
     <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
     <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>

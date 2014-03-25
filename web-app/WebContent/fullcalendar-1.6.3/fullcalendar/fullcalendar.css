@@ -89,7 +89,7 @@ html .fc, .fc table {
 }
 .fc-state-highlight { /* <td> today cell */ /* TODO: add .fc-today to <th> */
 	/*background: #fcf8e3;*/
-	background: #fff;
+	background: #E18680;
 }
 .fc-cell-overlay { /* semi-transparent rectangle while dragging */
 	background: #bce8f1;
@@ -203,7 +203,7 @@ html .fc, .fc table {
 .fc-state-disabled {
 /*	opacity: 0.65;
 	filter: alpha(opacity=65);*/
-	background-color: #bcbcbc;/*#E6E6E6;*/
+	background-color:#454545; /*#bcbcbc;#E6E6E6;*/
 	cursor: default;
 }
 /* Global Event Styles

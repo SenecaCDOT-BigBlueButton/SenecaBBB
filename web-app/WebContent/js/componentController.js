@@ -66,6 +66,7 @@ $(screen).ready(function() {
 					break;
 				
 				//Months that have 30 days
+				case "April":
 				case "June":
 				case "September":
 				case "November":

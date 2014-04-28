@@ -113,9 +113,11 @@ public class Validation {
         boolean flag = checkEmpty(dateTime, "Start Date Time");
         if (flag) {
             Date date = new Date();
-            dateTime = dateTime.substring(0, 19);
+            dateTime = dateTime.substring(0, 18);
             DateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date d1 = (Date) f.parse(dateTime);
+            System.out.println(dateTime);
+            System.out.println(d1);
             if (d1.compareTo(date) < 0) {
                 flag = false;
                 _errMsg = "Start Date Time must be later than current time";

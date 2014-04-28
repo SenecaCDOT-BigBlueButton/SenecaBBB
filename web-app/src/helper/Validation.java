@@ -113,7 +113,7 @@ public class Validation {
         boolean flag = checkEmpty(dateTime, "Start Date Time");
         if (flag) {
             Date date = new Date();
-            dateTime = dateTime.substring(0, 19);
+            dateTime = dateTime.substring(0, 18);
             DateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date d1 = (Date) f.parse(dateTime);
             if (d1.compareTo(date) < 0) {

@@ -90,12 +90,12 @@
         xmlhttp.send();
     }
     $(document).ready(function() { 
-        <%if (meetingSettings.get("isRecorded")==0){%>
-            $(".checkbox .box:eq(0)").next(".checkmark").toggle();
-            $(".checkbox .box:eq(0)").attr("aria-checked", "false");
-            $(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
-        <%}%>
-        $('#startTime').timepicker({ 'scrollDefaultNow': true });
+      <%--  <%if (meetingSettings.get("isRecorded")==0){%> --%> 
+        //    $(".checkbox .box:eq(0)").next(".checkmark").toggle();
+         //   $(".checkbox .box:eq(0)").attr("aria-checked", "false");
+         //   $(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
+      <%--   <%}%> --%> 
+        $('#startTime').timepicker({ 'scrollDefaultNow': true , 'timeFormat': 'H:i:s'});
     });
     /* SELECT BOX */
     $(function(){
@@ -115,7 +115,7 @@
           <div class="warningMessage"><%=message %></div>
           <div class="successMessage"><%=successMessage %></div> 
       </header>
-      <form method="get" action="persist_event.jsp" id="eventForm">
+      <form method="get" action="persist_event.jsp?" id="eventForm">
       <article>
         <header>
           <h2>Meeting Details</h2>
@@ -134,22 +134,24 @@
                 <input type="checkbox" name="eventSetting4box" checked="checked" aria-disabled="true">
               </div>
             </div>
-            -->
-            <div class="component" style="display:none">
+            <div class="component">
               <input id="dropdownRecurrence" name="dropdownRecurrence"  type="text"  value="Only once"/>   
               <input id="eventDescription" name="eventDescription"  type="text"  value="Quick Meeting"/>  
               <input id="dropdownEventType" name="dropdownEventType"  type="text"  value="Meeting"/>   
               <input id="fromquickmeeting" name="fromquickmeeting"  type="text"  value="fromquickmeeting"/>         
             </div>
+             -->
             <div class="component" >
               <label for="startTime" class="label">Start Time:</label> 
+              <input id="fromquickmeeting" name="fromquickmeeting"   type="hidden" value="fromquickmeeting"  /> 
               <input id="startTime" name="startTime"  type="text"  class="input"  tabindex="24" title="Start Time" placeholder="pick start time" autofocus/>            
             </div>
             <div class="component" >
               <label for="eventDuration" class="label">Duration:</label> 
               <input id="eventDuration" name="eventDuration"  type="text"  class="input"  tabindex="25" title="Event Duration"  placeholder="minutes" required autofocus/>            
             </div>
-            <div class="component" id="startsOn"  style="display:none;">
+            <!--  
+            <div class="component" id="startsOn" >
               <label for="dropdownMonthStarts" class="label">Date:</label>
               <select  name="dropdownYearStarts" id="dropdownYearStarts" title="Year" tabindex="23" style="width: 120px; ">
               </select>
@@ -170,6 +172,7 @@
                 <option role="option">December</option>
               </select>             
             </div>
+            -->
           </fieldset>
         </div>
       </article>

@@ -9,32 +9,35 @@
 
 <%! 
 //convert month string to month number
-public static String getMonthNumber(String month) {
-    String monthNumber = null;
-    if(month.toLowerCase().compareTo("january")==0)      
-        monthNumber = "01";
-    if(month.toLowerCase().compareTo("february")==0)      
-        monthNumber = "02";
-    if(month.toLowerCase().compareTo("march")==0)      
-        monthNumber = "03";
-    if(month.toLowerCase().compareTo("april")==0)      
-        monthNumber = "04";
-    if(month.toLowerCase().compareTo("may")==0)      
-        monthNumber = "05";
-    if(month.toLowerCase().compareTo("june")==0)      
-        monthNumber = "06";
-    if(month.toLowerCase().compareTo("july")==0)      
-        monthNumber = "07";
-    if(month.toLowerCase().compareTo("august")==0)      
-        monthNumber = "08";
-    if(month.toLowerCase().compareTo("september")==0)      
-        monthNumber = "09";
-    if(month.toLowerCase().compareTo("october")==0)      
-        monthNumber = "10";
-    if(month.toLowerCase().compareTo("november")==0)      
-        monthNumber = "11";
-    if(month.toLowerCase().compareTo("december")==0)      
-        monthNumber = "12";
+public  String getMonthNumber(String month) {
+    String monthNumber = "";
+    if(month != null){
+    	if(month.equalsIgnoreCase("january")){
+    		monthNumber = "01";
+    	}else if(month.equalsIgnoreCase("february")){
+    		monthNumber = "02";
+    	}else if(month.equalsIgnoreCase("march")){
+            monthNumber = "03";
+        }else if(month.equalsIgnoreCase("april")){
+            monthNumber = "04";
+        }else if(month.equalsIgnoreCase("may")){
+            monthNumber = "05";
+        }else if(month.equalsIgnoreCase("june")){
+            monthNumber = "06";
+        }else if(month.equalsIgnoreCase("july")){
+            monthNumber = "07";
+        }else if(month.equalsIgnoreCase("august")){
+            monthNumber = "08";
+        }else if(month.equalsIgnoreCase("september")){
+            monthNumber = "09";
+        }else if(month.equalsIgnoreCase("october")){
+            monthNumber = "10";
+        }else if(month.equalsIgnoreCase("november")){
+            monthNumber = "11";
+        }else if(month.equalsIgnoreCase("december")){
+            monthNumber = "12";
+        }
+    }
     return monthNumber;
 }
 
@@ -77,90 +80,117 @@ public static String getMonthNumber(String month) {
 	meetingSettings = usersession.getUserMeetingSettingsMask();
 	roleMask = usersession.getRoleMask();
     String fromquickmeeting = request.getParameter("fromquickmeeting");
-    String startMonthNumber=null;
-    String endMonthNumber=null;
-    if(fromquickmeeting==null){
+    String startMonthNumber="";
+    String endMonthNumber="";
+    String title = "";
+    String inidatetime ="";
+    String description ="";
+    String eventType ="";
+    String duration ="";
+    String c_id="";
+    String sc_id="";
+    String sc_semesterid="";
+    String repeatEndDate = "";
+    String recurrence ="";
+    String repeatEvery ="";
+    String endType="";
+    String numberOfOccurrences ="";
+    String weekString ="";
+    String dropdownOccursBy ="";
+    String dropdownDayoftheMonth="";
+    String selectedDayofWeek ="";
+    String spec = "";
+    title = request.getParameter("eventTitle");
+    duration = request.getParameter("eventDuration");
+    if(fromquickmeeting == null){
         endMonthNumber = getMonthNumber(request.getParameter("dropdownMonthEnds"));
-    }
-    startMonthNumber = getMonthNumber(request.getParameter("dropdownMonthStarts"));        
-    String title = request.getParameter("eventTitle");
-    String inidatetime = request.getParameter("dropdownYearStarts").concat("-").concat(startMonthNumber).concat("-").concat(request.getParameter("dropdownDayStarts")).concat(" ").concat(request.getParameter("startTime")).concat(".0");
-    //Validate inidatetime to ensure that it is later than current time
-    if (!(Validation.checkStartDateTime(inidatetime))) {
-    	if(fromquickmeeting !=null){
-    		response.sendRedirect("quickMeeting.jsp?message=" + Validation.getErrMsg());
-    	}else{
-            response.sendRedirect("create_event.jsp?message=" + Validation.getErrMsg());
-    	}
-        return;
-    }
-    String duration = request.getParameter("eventDuration");
-    String description = (request.getParameter("eventDescription")!=null)?request.getParameter("eventDescription"):"";
-    String eventType = request.getParameter("dropdownEventType");
-    String c_id=null;
-    String sc_id=null;
-    String sc_semesterid=null;
-    if(isProfessor && eventType.equals("Lecture")){
-	     c_id = request.getParameter("courseCode").split(" ")[0];
-	     sc_id = request.getParameter("courseCode").split(" ")[1];
-	     sc_semesterid =request.getParameter("courseCode").split(" ")[2];
-    }
-    if(isSuper && eventType.equals("Lecture")){
-         c_id = request.getParameter("courseCode").split(" ")[1];
-         sc_id = request.getParameter("courseCode").split(" ")[2];
-         sc_semesterid =request.getParameter("courseCode").split(" ")[3];
-    }
-    String spec = null;
-	
-    //daily weekly recurrence
-	String recurrence = request.getParameter("dropdownRecurrence"); // daily,weekly,monthly
-	String repeatEvery = request.getParameter("repeatsEvery"); // daily or weekly is chosen, repeat interval
-	String endType = request.getParameter("dropdownEnds"); // on specified date or after number of occurrences
-	String numberOfOccurrences = request.getParameter("occurrences"); // if after number of occurrences is chosen, times of repeating
-	String repeatEndDate = null;
-	if(fromquickmeeting ==null) {
-		repeatEndDate=request.getParameter("dropdownYearEnds").concat("-").concat(endMonthNumber).concat("-").concat(request.getParameter("dropdownDayEnds")); // if on specified date is chosen, specified end date
-	}
-    
-	// weekly recurrence, weekday selected	
-	String weekString = request.getParameter("weekString");
-	
-	//monthly recurrence
+        startMonthNumber = getMonthNumber(request.getParameter("dropdownMonthStarts"));  
+        eventType = request.getParameter("dropdownEventType");
+        description = request.getParameter("eventDescription");
+        inidatetime = request.getParameter("dropdownYearStarts").concat("-").concat(startMonthNumber).concat("-").concat(request.getParameter("dropdownDayStarts")).concat(" ").concat(request.getParameter("startTime")).concat(".0");
+        repeatEndDate=request.getParameter("dropdownYearEnds").concat("-").concat(endMonthNumber).concat("-").concat(request.getParameter("dropdownDayEnds")); // if on specified date is chosen, specified end date
+       
+        //daily weekly recurrence
+        recurrence = request.getParameter("dropdownRecurrence"); // daily,weekly,monthly
+        repeatEvery = request.getParameter("repeatsEvery"); // daily or weekly is chosen, repeat interval
+        endType = request.getParameter("dropdownEnds"); // on specified date or after number of occurrences
+        numberOfOccurrences = request.getParameter("occurrences"); // if after number of occurrences is chosen, times of repeating
+        
+        // weekly recurrence, weekday selected  
+        weekString = request.getParameter("weekString");
+        
+        //monthly recurrence
 
-	String dropdownOccursBy = request.getParameter("dropdownOccursBy");
-	String dropdownDayoftheMonth = request.getParameter("dropdownDayoftheMonth"); // when occurs by "day of the month"
-    String selectedDayofWeek =  request.getParameter("selectedDayofWeek"); // sunday is 0, saturday is 6
-	
-	//get proper event "spec" pattern
-	if (recurrence.equals("Only once")){
-        spec="1";       
+        dropdownOccursBy = request.getParameter("dropdownOccursBy");
+        dropdownDayoftheMonth = request.getParameter("dropdownDayoftheMonth"); // when occurs by "day of the month"
+        selectedDayofWeek =  request.getParameter("selectedDayofWeek"); // sunday is 0, saturday is 6
+        
+        if(isProfessor && eventType.equals("Lecture")){
+            c_id = request.getParameter("courseCode").split(" ")[0];
+            sc_id = request.getParameter("courseCode").split(" ")[1];
+            sc_semesterid =request.getParameter("courseCode").split(" ")[2];
+       }
+       if(isSuper && eventType.equals("Lecture")){
+            c_id = request.getParameter("courseCode").split(" ")[1];
+            sc_id = request.getParameter("courseCode").split(" ")[2];
+            sc_semesterid =request.getParameter("courseCode").split(" ")[3];
+       }
+       
+              
+       //get proper event "spec" pattern
+       if (recurrence.equals("Only once")){
+           spec="1";       
+       }
+       else if(recurrence.equals("Daily")){
+           if(endType.equals("After # of occurrence(s)")){
+               spec = "2;1;".concat(numberOfOccurrences).concat(";").concat(repeatEvery);
+           }
+           else{
+               spec = "2;2;".concat(repeatEndDate).concat(";").concat(repeatEvery);
+           }
+       }
+       else if(recurrence.equals("Weekly")){
+           if(endType.equals("After # of occurrence(s)")){
+               spec = "3;1;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(weekString);
+           }else if(endType.equals("After # of week(s)")){
+               spec = "3;2;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(weekString);
+           }
+            else{
+               spec = "3;3;".concat(repeatEndDate).concat(";").concat(repeatEvery).concat(";").concat(weekString);
+            }
+       }
+       else{
+           if(dropdownOccursBy.equals("Day of the month")){                  
+                spec = "4;1;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(dropdownDayoftheMonth);                    
+           }
+           else{
+               spec = "4;2;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(selectedDayofWeek);    
+           }
+       } 
+       
+       //Validate inidatetime to ensure that it is later than current time
+       if (!(Validation.checkStartDateTime(inidatetime))) {
+           response.sendRedirect("create_event.jsp?message=" + Validation.getErrMsg());
+           return;
+       }
+       
+    }else{
+    	Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
+    	int currentYear = localCalendar.get(Calendar.YEAR);
+    	int currentDayOfMonth = localCalendar.get(Calendar.MONTH);
+    	int currentDay = localCalendar.get(Calendar.DATE);
+    	inidatetime = String.valueOf(currentYear).concat("-")+ String.valueOf(currentDayOfMonth + 1).concat("-")+ String.valueOf(currentDay).concat(" ").concat(request.getParameter("startTime")).concat(".0");
+    	eventType = "Meeting";
+    	description ="Quick Meeting";
+    	recurrence ="Only once"; 
+    	spec="1"; 
+        //Validate inidatetime to ensure that it is later than current time
+        if (!(Validation.checkStartDateTime(inidatetime))) {
+            response.sendRedirect("quickMeeting.jsp?message=" + Validation.getErrMsg());
+            return;
+        }
     }
-    else if(recurrence.equals("Daily")){
-        if(endType.equals("After # of occurrence(s)")){
-            spec = "2;1;".concat(numberOfOccurrences).concat(";").concat(repeatEvery);
-        }
-        else{
-            spec = "2;2;".concat(repeatEndDate).concat(";").concat(repeatEvery);
-        }
-    }
-    else if(recurrence.equals("Weekly")){
-        if(endType.equals("After # of occurrence(s)")){
-            spec = "3;1;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(weekString);
-        }else if(endType.equals("After # of week(s)")){
-        	spec = "3;2;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(weekString);
-        }
-         else{
-            spec = "3;3;".concat(repeatEndDate).concat(";").concat(repeatEvery).concat(";").concat(weekString);
-         }
-    }
-    else{
-        if(dropdownOccursBy.equals("Day of the month")){                  
-             spec = "4;1;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(dropdownDayoftheMonth);                    
-        }
-        else{
-            spec = "4;2;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(selectedDayofWeek);    
-        }
-    }	
+       
 	if(eventType.equals("Meeting")){   //create a meeting event		
 	   if(meeting.createMeetingSchedule(title, inidatetime, spec, duration, description, userId)){
 		   if(fromquickmeeting !=null){

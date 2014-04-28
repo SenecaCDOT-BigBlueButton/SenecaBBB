@@ -191,14 +191,6 @@ public  String getMonthNumber(String month) {
         }
     }
        
-
-    System.out.println(title);
-    System.out.println(inidatetime);
-    System.out.println(spec);
-    System.out.println(duration);
-    System.out.println(description);
-    System.out.println(userId);
-
 	if(eventType.equals("Meeting")){   //create a meeting event		
 	   if(meeting.createMeetingSchedule(title, inidatetime, spec, duration, description, userId)){
 		   if(fromquickmeeting !=null){

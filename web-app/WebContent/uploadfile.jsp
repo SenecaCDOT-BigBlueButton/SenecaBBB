@@ -22,17 +22,17 @@
     Boolean isSuper = usersession.isSuper();
     Boolean isProfessor = usersession.isProfessor();
     if (userId.equals("")) {
-    	session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (dbaccess.getFlagStatus() == false) {
-    	elog.writeLog("[uploadfile:] " + "database connection error /n");
+        elog.writeLog("[uploadfile:] " + "database connection error /n");
         response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } 
     if (!isSuper && !isProfessor) {
-        elog.writeLog("[uploadfile:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");           
+        elog.writeLog("[uploadfile:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");
         response.sendRedirect("calendar.jsp?message=You don't have permissions to view that page.");
         return;
     }
@@ -73,6 +73,7 @@
     String filecontentUTF8="";
     String filecontentUTF16="";
     int counter=0;
+
     try {
         List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
         for (FileItem item : items) {
@@ -87,7 +88,7 @@
             } else {
                 // Process form file field (input type="file").
                 String fieldname = item.getFieldName();
-                String filename = FilenameUtils.getName(item.getName());                            
+                String filename = FilenameUtils.getName(item.getName());
                 //convert file into a String
                 filecontent = item.getString();
                 filecontentUTF8 = item.getString("UTF-8");
@@ -105,21 +106,21 @@
                    }
                    for ( int i =0; i<filecontentISO.length();i++) {
                        if(filecontentISO.charAt(i)=='\t')
-                    	   totalColumnsISO++;
+                           totalColumnsISO++;
                        if(filecontentISO.charAt(i)=='\n'){
                            i=filecontentISO.length();
                        }
                    }
                    for ( int i =0; i<filecontentUTF8.length();i++) {
                        if(filecontentUTF8.charAt(i)=='\t')
-                    	   totalColumnsUTF8++;
+                           totalColumnsUTF8++;
                        if(filecontentUTF8.charAt(i)=='\n'){
                            i=filecontentUTF8.length();
                        }
                    }
                    for ( int i =0; i<filecontentUTF16.length();i++) {
                        if(filecontentUTF16.charAt(i)=='\t')
-                    	   totalColumnsUTF16++;
+                           totalColumnsUTF16++;
                        if(filecontentUTF16.charAt(i)=='\n'){
                            i=filecontentUTF16.length();
                        }
@@ -138,9 +139,9 @@
                             i=filecontent.length();
                         }
                     }
-                	for ( int i =0; i<filecontentISO.length();i++) {
+                    for ( int i =0; i<filecontentISO.length();i++) {
                         if(filecontentISO.charAt(i)==',')
-                        	totalColumnsISO++;
+                            totalColumnsISO++;
                         if(filecontentISO.charAt(i)=='\n'){
                             i=filecontentISO.length();
                         }
@@ -155,15 +156,15 @@
 
                     for ( int i =0; i<filecontentUTF16.length();i++) {
                         if(filecontentUTF16.charAt(i)==',')
-                    	    totalColumnsUTF16++;
+                            totalColumnsUTF16++;
                         if(filecontentUTF16.charAt(i)=='\n'){
                             i=filecontentUTF16.length();
                         }
                     }
-	                filecontent = filecontent.replace('\n', ',');
-	                filecontentISO = filecontentISO.replace('\n', ',');
-	                filecontentUTF8 = filecontentUTF8.replace('\n', ',');
-	                filecontentUTF16 = filecontentUTF16.replace('\n', ',');
+                    filecontent = filecontent.replace('\n', ',');
+                    filecontentISO = filecontentISO.replace('\n', ',');
+                    filecontentUTF8 = filecontentUTF8.replace('\n', ',');
+                    filecontentUTF16 = filecontentUTF16.replace('\n', ',');
                 }
                 else{
                     message = "Sorry,we only support CSV with comma separated or XLS with tab separated file format!";
@@ -178,7 +179,7 @@
                 //get each cell content of the file and store in an ArrayList
                 
                 for ( int i =0; i<filecontentISO.length();i++) {
-                    if(filecontentISO.charAt(i) != '\t' && filecontentISO.charAt(i) != ','){                    
+                    if(filecontentISO.charAt(i) != '\t' && filecontentISO.charAt(i) != ','){
                         char temp = filecontentISO.charAt(i);
                         if(temp=='"')
                             temp=' ';
@@ -186,15 +187,15 @@
                     }
                     else {
                         if(!builder.toString().isEmpty()){
-                        	singleResultISO.add(builder.toString().trim());
+                            singleResultISO.add(builder.toString().trim());
                         }
-                        builder.delete(0,builder.length());                     
+                        builder.delete(0,builder.length());
                     }                      
                 }
                 
                 builder.delete(0,builder.length());
                 for ( int i =0; i<filecontentUTF8.length();i++) {
-                    if(filecontentUTF8.charAt(i) != '\t' && filecontentUTF8.charAt(i) != ','){                    
+                    if(filecontentUTF8.charAt(i) != '\t' && filecontentUTF8.charAt(i) != ','){
                         char temp = filecontentUTF8.charAt(i);
                         if(temp=='"')
                             temp=' ';
@@ -202,15 +203,15 @@
                     }
                     else {
                         if(!builder.toString().isEmpty()){
-                        	singleResultUTF8.add(builder.toString().trim());
+                            singleResultUTF8.add(builder.toString().trim());
                         }
-                        builder.delete(0,builder.length());                     
-                    }                      
+                        builder.delete(0,builder.length());
+                    }
                 }
                 
                 builder.delete(0,builder.length());
                 for ( int i =0; i<filecontentUTF16.length();i++) {
-                    if(filecontentUTF16.charAt(i) != '\t' && filecontentUTF16.charAt(i) != ','){                    
+                    if(filecontentUTF16.charAt(i) != '\t' && filecontentUTF16.charAt(i) != ','){
                         char temp = filecontentUTF16.charAt(i);
                         if(temp=='"')
                             temp=' ';
@@ -220,13 +221,13 @@
                         if(!builder.toString().isEmpty()){
                             singleResultUTF16.add(builder.toString().trim());
                         }
-                        builder.delete(0,builder.length());                     
-                    }                      
+                        builder.delete(0,builder.length());
+                    }
                 }
                 
                 builder.delete(0,builder.length());
                 for ( int i =0; i<filecontent.length();i++) {
-                    if(filecontent.charAt(i) != '\t' && filecontent.charAt(i) != ','){                    
+                    if(filecontent.charAt(i) != '\t' && filecontent.charAt(i) != ','){
                         char temp = filecontent.charAt(i);
                         if(temp=='"')
                             temp=' ';
@@ -236,7 +237,7 @@
                         if(!builder.toString().isEmpty()){
                             singleResult.add(builder.toString().trim());
                         }
-                        builder.delete(0,builder.length());                     
+                        builder.delete(0,builder.length());
                     }                      
                 }
             }
@@ -244,12 +245,12 @@
         
     } catch (FileUploadException e) {
         //throw new ServletException("Cannot parse multipart request.", e);
-        elog.writeLog("[fileupload:] " + e.getMessage() +" /n" + e.getStackTrace() +"/n");        
+        elog.writeLog("[fileupload:] " + e.getMessage() +" /n" + e.getStackTrace() +"/n");
     }
     
 
     //find the "Username" column number
-    for(int k=0;k< singleResult.size();k++){            
+    for(int k=0;k< singleResult.size();k++){
         if(singleResult.get(k).replace('"',' ').trim().equals("Username")){
             userNameColumn = k;
             isUsername = true;
@@ -287,54 +288,54 @@
     }
     if(!usernameFound){
         message = "Sorry,can't find student 'Username' column in your file";
-        elog.writeLog("[fileupload:] " + message + " unsupported file format" +"/n");   
+        elog.writeLog("[fileupload:] " + message + " unsupported file format" +"/n"); 
         response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + classSection);
         return;
     }
     //get student username to add 
     if(isUsername){
-	    int firstStudent =  userNameColumn + totalColumns; 
-	    while(firstStudent<singleResult.size()){
-	      studentListResult.add(singleResult.get(firstStudent).trim());
-	      firstStudent += totalColumns;
-	    }
+        int firstStudent =  userNameColumn + totalColumns; 
+        while(firstStudent<singleResult.size()){
+            studentListResult.add(singleResult.get(firstStudent).trim());
+            firstStudent += totalColumns;
+        }
     }else if(isUsernameUTF16){
         int firstStudent =  userNameColumnUTF16 + totalColumnsUTF16; 
         while(firstStudent<singleResultUTF16.size()){
-          studentListResult.add(singleResultUTF16.get(firstStudent).trim());
-          firstStudent += totalColumnsUTF16;
-        }   	
+            studentListResult.add(singleResultUTF16.get(firstStudent).trim());
+            firstStudent += totalColumnsUTF16;
+        }
     }
     else if(isUsernameUTF8){
         int firstStudent =  userNameColumnUTF8 + totalColumnsUTF8; 
         while(firstStudent<singleResultUTF8.size()){
-          studentListResult.add(singleResultUTF8.get(firstStudent).trim());
-          firstStudent += totalColumnsUTF8;
+            studentListResult.add(singleResultUTF8.get(firstStudent).trim());
+            firstStudent += totalColumnsUTF8;
         }       
     }else{
         int firstStudent =  userNameColumnISO + totalColumnsISO; 
         while(firstStudent<singleResultISO.size()){
-          studentListResult.add(singleResultISO.get(firstStudent).trim());
-          firstStudent += totalColumnsISO;
-        }       	
+            studentListResult.add(singleResultISO.get(firstStudent).trim());
+            firstStudent += totalColumnsISO;
+        }
     }
     //validate student username and add each qualified student username to the class
     
     for(int j=0;j<studentListResult.size();j++){
-       bu_id = studentListResult.get(j).trim();
-    // Start User Search
+        bu_id = studentListResult.get(j).trim();
+        // Start User Search
         int i = 0;
         boolean searchSucess = false;
         if (bu_id!=null) {
             bu_id = Validation.prepare(bu_id);
             if (!(Validation.checkBuId(bu_id))) {
                 message = Validation.getErrMsg();
-            } else {
+            }else {
                 if (!user.isLectureStudent(myBool, classSection.split("-")[0], classSection.split("-")[1],classSection.split("-")[2],bu_id)) {
                     message += user.getErrMsg("AS03"); 
                     elog.writeLog("[fileupload:] " + message  +"/n");
                     response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
+                    return;
                 }
                 // User already added
                 if (myBool.get_value()) {
@@ -369,7 +370,7 @@
                 elog.writeLog("[fileupload:] " + message  +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;  
-            } else {
+            }else {
                 counter += 1;
                 ArrayList<ArrayList<String>> scheduleResult = new ArrayList<ArrayList<String>>();
                 section.getLectureSchedule(scheduleResult,classSection.split("-")[0], classSection.split("-")[1],classSection.split("-")[2]);
@@ -378,5 +379,5 @@
             }
         }
    }
-   response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + classSection + "&successMessage=" + successMessage);   
+   response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + classSection + "&successMessage=" + successMessage);
 %>

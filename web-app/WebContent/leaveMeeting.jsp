@@ -1,3 +1,3 @@
 <script type="text/javaScript">
-window.close();
+    window.close();
 </script>

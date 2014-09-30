@@ -1,7 +1,7 @@
 <%@page import="config.Config"%>
 <footer>
     <nav id="footerMenu">
-      <ul>
+    <ul>
         <li><a href="calendar.jsp" title="Click here to go to the home page">Home</a></li>
         <li>|</li>
         <li><a href="contactUs.jsp" title="Click here to enter in contact with us">Contact Us</a></li>
@@ -9,10 +9,10 @@
         <li><a href="help.jsp" title="Click here to obtain help information">Help</a></li>
         <li>|</li>
         <li><a href="https://github.com/SenecaCDOT-BigBlueButton/SenecaBBB/issues?state=open" target="_blank" title="Click here to report issue">Report Issue</a></li>
-      </ul>
+    </ul>
     </nav>
     <div id="copyright">
         <p style="font-size:16px;">Version: <%= Config.getProperty("version") %></p>
         <p>Copyright © 2013 - Seneca College of Applied Arts and Technology</p>
     </div>
-  </footer>
+</footer>

@@ -14,22 +14,22 @@ import java.util.Properties;
  */
 @SuppressWarnings("all")
 public class Config {
-	private final String CONFILE_FILE = "config.properties";
-	static Properties properties = new Properties();
-	static{
-		Config obj = new Config();
-		obj.loadProperties();    
-	}
-
-	public void loadProperties(){
-		try{
-			properties.load(getClass().getResourceAsStream(CONFILE_FILE));
-		}catch(IOException e){
-			System.out.println(e.getMessage());
-		}
-	}
-
-	static public String getProperty(String key){
-		return properties.getProperty(key);
-	}
+    private final String CONFILE_FILE = "config.properties";
+    static Properties properties = new Properties();
+    static{
+        Config obj = new Config();
+        obj.loadProperties();
+    }
+    
+    public void loadProperties(){
+        try{
+            properties.load(getClass().getResourceAsStream(CONFILE_FILE));
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    static public String getProperty(String key){
+        return properties.getProperty(key);
+    }
 }

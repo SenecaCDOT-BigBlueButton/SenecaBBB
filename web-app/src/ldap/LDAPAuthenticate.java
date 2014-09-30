@@ -233,9 +233,9 @@ public class LDAPAuthenticate {
     public String getTitle() {
         return title;
     }
-	public boolean isExpired(){
-		return pwdIsExpired;
-	}
+    public boolean isExpired(){
+        return pwdIsExpired;
+    }
     public String getPosition() {
         //getOU()
         return position;
@@ -274,7 +274,7 @@ public class LDAPAuthenticate {
         position = userID = givenName = title = null;
     }
 
-	public String getEmailAddress() {
-		return emailAddress;
-	}
+    public String getEmailAddress() {
+        return emailAddress;
+    }
 }

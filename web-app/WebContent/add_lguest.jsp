@@ -201,7 +201,7 @@
         elog.writeLog("[add_lguest:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
-    }                                
+    }
     %>
 
     <script type="text/javascript">

@@ -67,7 +67,7 @@
         <jsp:include page="header.jsp"/>
         <jsp:include page="menu.jsp"/>
         <section>
-            <header> 
+            <header>
                 <!-- BREADCRUMB -->
                 <p>
                     <a href="calendar.jsp" tabindex="13">home</a> » 

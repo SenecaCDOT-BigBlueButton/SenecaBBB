@@ -63,7 +63,7 @@
     if(usersession.isSuper()||usersession.isProfessor()|| usersession.isDepartmentAdmin() || roleInfoResult.get(0).get(1).equals("employee")){
         flag = true;
     }
-    nickName = usersession.getNick();	
+    nickName = usersession.getNick();
 
     %>
     <script type="text/javascript">
@@ -85,7 +85,7 @@
                 <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="settings.jsp" tabindex="14">settings</a></p>
                 <h1>Settings</h1>
                 <div class="warningMessage"><%=message %></div>
-                <div class="successMessage"><%=successMessage %></div> 
+                <div class="successMessage"><%=successMessage %></div>
             </header>
             <form action="persist_user_settings.jsp" method="get">
                 <article>

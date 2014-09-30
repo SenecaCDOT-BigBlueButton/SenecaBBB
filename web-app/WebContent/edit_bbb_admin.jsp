@@ -58,10 +58,10 @@
                 <!-- BREADCRUMB -->
                 <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="system_settings.jsp" tabindex="14">system settings</a> »<a href="edit_bbb_admin.jsp" tabindex="15">edit system admin</a></p>
                 <!-- PAGE NAME -->
-                <h1>Edit System Admin</h1>            
+                <h1>Edit System Admin</h1>
                 <!-- MESSAGES -->
                 <div class="warningMessage"><%=message %></div>
-                <div class="successMessage"><%=successMessage %></div>       
+                <div class="successMessage"><%=successMessage %></div>
                 </header>
             <form name="editAdmin" id="editAdmin" method="post" action="persist_bbbadmin_setting.jsp">
                 <article>
@@ -74,7 +74,7 @@
                             <div class="component">
                                 <label for="keyname" class="label">Key Name:</label>
                                 <input type="text" readonly name="key_name" id="key_name" class="input" tabindex="2"  
-                                       value="<%= key_name %>" title="key_name" >                      
+                                       value="<%= key_name %>" title="key_name" >
                             </div>
                             <div class="component">
                                 <label for="keytitle" class="label">Key title:</label>
@@ -88,7 +88,7 @@
                                        title="Please Enter key value" >
                             </div>
                             <div class="component">
-                                <div class="buttons">                          
+                                <div class="buttons">
                                     <button type="submit" name="updatesystem" id="updatesystem" class="button" title="Click here to update">Update</button>                                                                                                                                
                                     <button type="reset" name="reset" id="reset" class="button" title="Click here to reset">Reset</button>
                                     <button type="button" name="button" id="Course"  class="button" title="Click here to cancel" 
@@ -101,7 +101,7 @@
             </form>
         </section>
         
-        <script>    
+        <script>
         // form validation, edit the regular expression pattern and error messages to meet your needs
             $(document).ready(function(){
                  $('#editAdmin').validate({

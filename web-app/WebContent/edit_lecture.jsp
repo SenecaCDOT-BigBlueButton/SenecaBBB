@@ -132,7 +132,7 @@
                 message += user.getErrMsg("EL05");
                 elog.writeLog("[edit_lecture:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;  
+                return;
             } else {
                 edited = true;
             }
@@ -149,7 +149,7 @@
                 message += user.getErrMsg("EL06");
                 elog.writeLog("[edit_lecture:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;  
+                return;
             } else {
                 edited = true;
             }
@@ -163,14 +163,14 @@
                 message += user.getErrMsg("EL07");
                 elog.writeLog("[edit_lecture:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;  
+                return;
             }
         } else {
             if (!lecture.setLectureIsCancel(ls_id, l_id, false)) {
                 message += user.getErrMsg("EL08");
                 elog.writeLog("[edit_lecture:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;  
+                return;
             } 
         }
     }

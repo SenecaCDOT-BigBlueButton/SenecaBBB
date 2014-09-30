@@ -11,7 +11,7 @@
     
     $(document).ready(function(){
         if(localStorage.Y > 0 || localStorage.X > 0){ 
-            window.scrollBy(localStorage.X,localStorage.Y);  
+            window.scrollBy(localStorage.X,localStorage.Y);
         }
         if($(".warningMessage").text() !=""){
             var message = $(".warningMessage").text();
@@ -19,7 +19,6 @@
                           layout:'top',
                           type:'error'});
             }
-    
         if($(".successMessage").text() !=""){
             var successMessage = $(".successMessage").text();
             var notiMessage = noty({text: '<div>'+ successMessage+'<img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
@@ -28,7 +27,6 @@
                           type:'success'
                          });
             }
-    
         if($(".welcomeMessage").text() !=""){
             var welcomeMessage = $(".welcomeMessage").text();
             var notiWelcomeMessage = noty({text: '<div>'+ welcomeMessage+'<img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',

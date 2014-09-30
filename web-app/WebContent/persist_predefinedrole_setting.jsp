@@ -20,7 +20,7 @@ if (!(usersession.isSuper())) {
     return;
 }
 if (dbaccess.getFlagStatus() == false) {
-    elog.writeLog("[persist_predefinedrole_setting:] " + "database connection error /n");    	     
+    elog.writeLog("[persist_predefinedrole_setting:] " + "database connection error /n");
     response.sendRedirect("index.jsp?message=Database connection error");
     return;
 } //End page validation

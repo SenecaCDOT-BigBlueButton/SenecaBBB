@@ -37,7 +37,7 @@ if (message == null || message == "null") {
 Section section = new Section(dbaccess);
 User user = new User(dbaccess);
 Lecture lecture = new Lecture(dbaccess);
-MyBoolean myBool = new MyBoolean();  
+MyBoolean myBool = new MyBoolean();
 
 // Start User Search
 int i = 0;
@@ -51,7 +51,7 @@ if (bu_id!=null) {
             message = user.getErrMsg("AS03");
             elog.writeLog("[persist_class_settings:] " + message +" /n");
             response.sendRedirect("class_settings.jsp?message=" + message+ "&class=" + selectedclass);
-            return;   
+            return;
         }
         // User already added
         if (myBool.get_value()) {
@@ -63,10 +63,10 @@ if (bu_id!=null) {
                 message = user.getErrMsg("AS04");
                 elog.writeLog("[persist_class_settings:] " + message +" /n");
                 response.sendRedirect("class_settings.jsp?message=" + message+ "&class=" + selectedclass);
-                return;   
+                return;
             }
             // User already in Database
-            if (myBool.get_value()) {   
+            if (myBool.get_value()) {
                 searchSucess = true;
             }else {
                 // Found userId in LDAP
@@ -89,7 +89,7 @@ if (searchSucess) {
         message = section.getErrMsg("AS06");
         elog.writeLog("[persist_class_settings:] " + message +" /n");
         response.sendRedirect("class_settings.jsp?message=" + message + "&class=" + selectedclass);
-        return;   
+        return;
     }else {
         successMessage = bu_id + " added to student list";
         ArrayList<ArrayList<String>> scheduleResult = new ArrayList<ArrayList<String>>();

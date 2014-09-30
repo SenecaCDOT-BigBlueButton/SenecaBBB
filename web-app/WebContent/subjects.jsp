@@ -114,12 +114,12 @@
                     <h2>Subject and Professor</h2>
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
-                <div class="content">                
+                <div class="content">
                     <div class="actionButtons">
                         <button type="button" name="button" id="viewCourse" class="button" title="Click here to view all courses" onclick="window.location.href='manage_course.jsp'">Manage Subjects</button>
                         <button type="button" name="button" id="viewProfessor" class="button" title="Click here to view all Professors" onclick="window.location.href='manage_professor.jsp'">Manage Professors</button>    
                         <button type="button" name="button" id="addSection" class="button" title="Click here to add a new section" onclick="window.location.href='create_section.jsp'">Add Section</button>                  
-                    </div>                   
+                    </div>
                 </div>
             </article>
             <article>
@@ -143,7 +143,7 @@
                                 </thead>
                                 <tbody>
                                 <% 
-                                for(int i=0; i<sectionInfo.size();i++){  
+                                for(int i=0; i<sectionInfo.size();i++){
                                     section.getProfessor(courseProfessor,sectionInfo.get(i).get(0),sectionInfo.get(i).get(1),sectionInfo.get(i).get(2));
                                 %>
                                     <tr>
@@ -151,7 +151,7 @@
                                         <td ><%= sectionInfo.get(i).get(1) %></td>
                                         <td ><%= sectionInfo.get(i).get(2) %></td>
                                         <td ><%= sectionInfo.get(i).get(3) %></td>
-                                        <td ><%= sectionInfo.get(i).get(4) %></td>   
+                                        <td ><%= sectionInfo.get(i).get(4) %></td>
                                         <td  align="center">
                                             <a onclick="savePageOffset()" 
                                                href="persist_section.jsp?courseCode=<%= sectionInfo.get(i).get(0) %>&courseSection=<%= sectionInfo.get(i).get(1) %>&semesterID=<%= sectionInfo.get(i).get(2) %>&toDel=1" 

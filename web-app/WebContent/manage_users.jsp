@@ -151,7 +151,6 @@
                 <div class="warningMessage" ><%=message %></div>
                 <div class="successMessage"><%=successMessage %></div> 
             </header>
-    
             <form>
                 <article>
                     <header>

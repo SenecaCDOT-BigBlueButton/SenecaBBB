@@ -69,7 +69,7 @@
     admin.getSystemInfo(systemInfo);
     int guestAccount = 0;
     int recordableMeeting = 0;
-        
+
     %>
     <script type="text/javascript">
         //Table
@@ -92,7 +92,7 @@
         <jsp:include page="header.jsp"/>
         <jsp:include page="menu.jsp"/>
         <section>
-            <header> 
+            <header>
                 <!-- BREADCRUMB -->
                 <p>
                     <a href="calendar.jsp" tabindex="13">home</a> » 
@@ -102,7 +102,7 @@
                 <h1>System Settings</h1>
                 <!-- WARNING MESSAGES -->
                 <div class="warningMessage"><%=message %></div>
-                <div class="successMessage"><%=successMessage %></div> 
+                <div class="successMessage"><%=successMessage %></div>
             </header>
             <form method="get" action="persist_predefinedrole_setting.jsp" name="predefinedRoleForm" id="predefinedRoleForm">
                 <article>
@@ -110,7 +110,7 @@
                         <h2>User Role Setting</h2>
                         <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                     </header>
-                    <div class="content">                
+                    <div class="content">
                         <div class="tableComponent" >
                             <table id="predefinedRoleList" border="0" cellpadding="0" cellspacing="0">
                                 <thead>
@@ -184,8 +184,8 @@
                                 </div>
                             </div>
                         </fieldset>
-                    </div>          
-                </article> 
+                    </div>
+                </article>
             </form>
         </section>
         <script>

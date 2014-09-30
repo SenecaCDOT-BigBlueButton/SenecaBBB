@@ -75,7 +75,7 @@
             message = user.getErrMsg("VES01");
             elog.writeLog("[view_event_schedule:] " + message +" /n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (myBool.get_value()) {
             status = 1;
@@ -85,7 +85,7 @@
                 message = user.getErrMsg("VES02");
                 elog.writeLog("[view_event_schedule:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (myBool.get_value()) {
                 status = 2;
@@ -107,7 +107,7 @@
             message = user.getErrMsg("VES03");
             elog.writeLog("[view_event_schedule:] " + message +" /n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (myBool.get_value()) {
             status = 3;
@@ -117,7 +117,7 @@
                 message = user.getErrMsg("VES04");
                 elog.writeLog("[view_event_schedule:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (myBool.get_value()) {
                 status = 5;
@@ -156,7 +156,7 @@
                 message = meeting.getErrMsg("VES07");
                 elog.writeLog("[view_event_schedule:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
         }
     } else {
@@ -164,20 +164,20 @@
             message = lecture.getErrMsg("VES08");
             elog.writeLog("[view_event_schedule:] " + message +" /n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!lecture.getLectureScheduleInfo(eventSResult, ls_id)) {
             message = lecture.getErrMsg("VES09");
             elog.writeLog("[view_event_schedule:] " + message +" /n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (status==3) {
             if (!section.getStudent(eventAttendee, ls_id)) {
                 message = lecture.getErrMsg("VES10");
                 elog.writeLog("[view_event_schedule:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
         }
     }

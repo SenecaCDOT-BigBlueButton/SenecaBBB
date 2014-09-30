@@ -29,14 +29,14 @@
     <script type="text/javascript">
         //Table
         $(screen).ready(function() {
-            /* Course List */	    
+            /* Course List */
             $('#courseList').dataTable({"sPaginationType": "full_numbers"});
             $('#courseList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
             $.fn.dataTableExt.sErrMode = 'throw';
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
             $(".remove").click(function(){
                 return window.confirm("Remove this item from list?");
-            });   
+            });
         });
         /* SELECT BOX */
         $(function(){
@@ -93,7 +93,7 @@
         <jsp:include page="header.jsp"/>
         <jsp:include page="menu.jsp"/>
         <section>
-            <header> 
+            <header>
                 <!-- BREADCRUMB -->
                 <p>
                     <a href="calendar.jsp" tabindex="13">home</a> » 
@@ -114,7 +114,9 @@
                     </header>
                     <div class="content"> 
                     <div class="actionButtons" style="margin-bottom:10px;">
-                        <button type="button" name="button" id="addCourse" class="button" title="Click here to add a new subject" onclick="window.location.href='create_course.jsp'">Add Subject</button>
+                        <button type="button" name="button" id="addCourse" class="button" title="Click here to add a new subject" onclick="window.location.href='create_course.jsp'">
+                            Add Subject
+                        </button>
                     </div>
                     </div>
                     <div class="content">
@@ -134,7 +136,7 @@
                                     <% for(int j=0; j<allCourse.size();j++){%>
                                         <tr>
                                             <td class="row"><%= allCourse.get(j).get(0) %></td>
-                                            <td ><%= allCourse.get(j).get(1) %></td>   
+                                            <td ><%= allCourse.get(j).get(1) %></td>
                                             <td  align="center">
                                                 <a href="create_course.jsp?c_id=<%= allCourse.get(j).get(0) %>&c_name=<%= allCourse.get(j).get(1) %>&toEdit=1" class="modify">
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="Add a course" alt="Edit"/>

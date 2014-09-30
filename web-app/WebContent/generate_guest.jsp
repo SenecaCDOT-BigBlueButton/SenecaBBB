@@ -45,12 +45,12 @@ if (dbaccess.getFlagStatus() == false) {
 //End page validation
 
 HashMap<String, Integer> map = new HashMap<String, Integer>();
-User user = new User(dbaccess);		
+User user = new User(dbaccess);
 String firstName = request.getParameter("firstName");
 String lastName = request.getParameter("lastName");
-String email = request.getParameter("email");	
+String email = request.getParameter("email");
 if (firstName == "" || lastName == "" || email == "" ) {
-    response.sendRedirect("invite_guest.jsp?message=Please fill all necessary information");	
+    response.sendRedirect("invite_guest.jsp?message=Please fill all necessary information");
     return;
 }
 else {
@@ -73,7 +73,7 @@ else {
        }
     lastName = br.toString();
     String bu_id = "guest." + firstName.toLowerCase().substring(0, 1) + lastName.replaceAll(" ","").toLowerCase();
-    String key = hash.createRandomSalt();	
+    String key = hash.createRandomSalt();
     ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
     user.getUsersLike(result, bu_id);
     int counter = 0;
@@ -106,5 +106,5 @@ else {
         }
     }
 }
-	
+
 %>

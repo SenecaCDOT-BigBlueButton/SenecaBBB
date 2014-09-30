@@ -64,7 +64,7 @@
     User user = new User(dbaccess);
     Lecture lecture = new Lecture(dbaccess);
     Section section = new Section(dbaccess);
-    MyBoolean myBool = new MyBoolean();    
+    MyBoolean myBool = new MyBoolean();
     if (!lecture.isLecture(myBool, ls_id, l_id)) {
         message = lecture.getErrMsg("AS01");
         elog.writeLog("[add_student:] " + message +"/n");
@@ -185,7 +185,7 @@
                     message = lecture.getErrMsg("AS07");
                     elog.writeLog("[add_student:] " + message +"/n");
                     response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
+                    return;
                 }
                 else{
                     successMessage=mod + " banned status was change!";
@@ -263,7 +263,7 @@
         <jsp:include page="header.jsp"/>
         <jsp:include page="menu.jsp"/>
         <section>
-            <header> 
+            <header>
                 <!-- BREADCRUMB -->
                 <p>
                     <a href="calendar.jsp" tabindex="13">home</a> » 

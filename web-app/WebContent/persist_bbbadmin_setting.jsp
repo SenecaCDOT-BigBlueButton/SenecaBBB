@@ -75,7 +75,7 @@ try{
         response.sendRedirect("system_settings.jsp?successMessage=System Notification Saved Successfully!");          
     }
 }catch(Exception e){
-    elog.writeLog("[persist_bbbadmin_setting:] " + e.getMessage()+ " /n" + e.getStackTrace()+"/n");       
+    elog.writeLog("[persist_bbbadmin_setting:] " + e.getMessage()+ " /n" + e.getStackTrace()+"/n");
 }
 
 %>

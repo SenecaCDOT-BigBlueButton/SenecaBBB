@@ -85,7 +85,7 @@
                 message = "Could not verify department status: " + deptRemove + dept.getErrMsg("D02");
                 elog.writeLog("[departments:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (!myBool.get_value()) {
                 message = "Department with that code does not exist";
@@ -147,7 +147,7 @@
         $('.dataTables_filter input').attr("placeholder", "Filter entries");
         $(".remove").click(function(){
             return window.confirm("Are you sure to remove this item?");;
-        });   
+        });
     });
     /* SELECT BOX */
     $(function(){

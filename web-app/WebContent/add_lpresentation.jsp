@@ -174,7 +174,7 @@
                 <br />
                 <!-- MESSAGES -->
                 <div class="warningMessage"><%=message %></div>
-                <div class="successMessage"><%=successMessage %></div> 
+                <div class="successMessage"><%=successMessage %></div>
             </header>
             <form name="addLPresentation" method="get" action="add_lpresentation.jsp">
                 <article>
@@ -186,7 +186,7 @@
                         <fieldset>
                             <div class="component">
                                 <input type="hidden" name="ls_id" id="ls_id" value="<%= ls_id %>">
-                                <input type="hidden" name="l_id" id="l_id" value="<%= l_id %>">  
+                                <input type="hidden" name="l_id" id="l_id" value="<%= l_id %>">
                                 <label for="searchBox" class="label">Add Presentation:</label>
                                 <input type="text" name="searchBox" id="searchBox" class="input" tabindex="37" title="Search user">                                                      
                             </div>                      

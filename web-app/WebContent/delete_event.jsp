@@ -94,7 +94,7 @@
             message = "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("DE03");
             elog.writeLog("[delete_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!myBool.get_value()) {
             elog.writeLog("[delete_event:] " + "username: " + userId +" permission denied" +"/n");
@@ -105,7 +105,7 @@
             message = "Could not verify meeting status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("DE04");
             elog.writeLog("[delete_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!myBool.get_value()) {
             elog.writeLog("[delete_event:] " + "username: " + userId +" permission denied" +"/n");
@@ -125,7 +125,7 @@
                 message = user.getErrMsg("DE05");
                 elog.writeLog("[delete_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             } else {
                 response.sendRedirect("calendar.jsp?successMessage=schedule removed");
                 return;
@@ -135,7 +135,7 @@
                 message = user.getErrMsg("DE06");
                 elog.writeLog("[delete_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             } else {
                 response.sendRedirect("calendar.jsp?successMessage=schedule removed");
                 return;
@@ -157,7 +157,7 @@
             message = lecture.getErrMsg("DE06");
             elog.writeLog("[delete_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
     }
     message = "WARNING:<br />You are about to delete this schedule<br />Schedule with past events cannot be fully erased";
@@ -184,7 +184,7 @@
         <jsp:include page="header.jsp"/>
         <jsp:include page="menu.jsp"/>
         <section>
-            <header> 
+            <header>
                 <!-- BREADCRUMB -->
                 <p><a href="calendar.jsp" tabindex="13">home</a> » <p>
                 <!-- PAGE NAME -->
@@ -192,7 +192,7 @@
                 <br />
                 <!-- MESSAGES -->
                 <div class="warningMessage"><%=message %></div>
-                <div class="successMessage"><%=successMessage %></div> 
+                <div class="successMessage"><%=successMessage %></div>
             </header>
             <form action="delete_event.jsp" method="get">
                 <article>

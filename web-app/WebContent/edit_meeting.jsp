@@ -66,7 +66,7 @@
         message = meeting.getErrMsg("EM01");
         elog.writeLog("[edit_meeting:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
-        return;   
+        return;
     }
     if (!myBool.get_value()) {
         elog.writeLog("[edit_meeting:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");       
@@ -77,7 +77,7 @@
         message = user.getErrMsg("EM02");
         elog.writeLog("[edit_meeting:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
-        return;   
+        return;
     }
     if (!myBool.get_value()) {
         elog.writeLog("[edit_meeting:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");               
@@ -133,7 +133,7 @@
                 message += user.getErrMsg("EM05");
                 elog.writeLog("[edit_meeting:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;  
+                return;
             } else {
                 edited = true;
             }
@@ -147,14 +147,14 @@
                 message += user.getErrMsg("EM06");
                 elog.writeLog("[edit_meeting:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;  
+                return;
             }
         } else {
             if (!meeting.setMeetingIsCancel(ms_id, m_id, false)) {
                 message += user.getErrMsg("EM07");
                 elog.writeLog("[edit_meeting:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;  
+                return;
             } 
         }
     }
@@ -186,15 +186,15 @@
         message = meeting.getErrMsg("EM08");
         elog.writeLog("[edit_meeting:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
-        return;   
-    }    
+        return;
+    }
     
     ArrayList<ArrayList<String>> eventSchedule = new ArrayList<ArrayList<String>>();
     if (!meeting.getMeetingScheduleInfo(eventSchedule, ms_id)) {
         message = meeting.getErrMsg("EM09");
         elog.writeLog("[edit_meeting:] " + message +" /n");
         response.sendRedirect("logout.jsp?message=" + message);
-        return;   
+        return;
     }
     HashMap<String, Integer> isRecordedResult = new HashMap<String, Integer>();
     meeting.getMeetingSetting(isRecordedResult, ms_id, m_id);
@@ -227,7 +227,7 @@
         <jsp:include page="header.jsp"/>
         <jsp:include page="menu.jsp"/>
         <section>
-            <header> 
+            <header>
                 <!-- BREADCRUMB -->
                 <p>
                     <a href="calendar.jsp" tabindex="13">home</a> » 
@@ -317,7 +317,7 @@
                 </article>
             </form>
         </section>
-        <script>    
+        <script>
        // form validation, edit the regular expression pattern and error messages to meet your needs
        
            $(document).ready(function(){

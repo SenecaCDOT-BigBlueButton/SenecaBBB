@@ -110,7 +110,7 @@
                                 </select>
                             </div>
                             <div class="component">
-                                <div class="buttons">                        
+                                <div class="buttons">
                                     <button type="submit" name="createProfessor" id="createProfessor" class="button" title="Click here to create">Create</button>                                                                                       
                                     <button type="reset" name="resetCourse" id="resetCourse" class="button" title="Click here to reset">Reset</button>
                                     <button type="button" name="button" id="cancelCourse"  class="button" title="Click here to cancel" 

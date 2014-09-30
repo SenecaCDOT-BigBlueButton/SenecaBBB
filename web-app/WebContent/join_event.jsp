@@ -48,7 +48,7 @@ if(eventType !=null && eventType.equals("Meeting")){
      meeting.isMeeting(isEvent, eventScheduleId, eventId);
      if(!isEvent.get_value()){
          response.sendRedirect("index.jsp?message=Invalid meeting schedule or meeting information!");
-         return;		 
+         return;
      }
      user.isMeetingAttendee(isAttendee, eventScheduleId, userId);
      user.isMeetingCreator(isCreator, eventScheduleId, userId);
@@ -125,8 +125,8 @@ String isMeetingRunning = isMeetingRunning(meetingID);
 Map<String,String> metadata=new HashMap<String,String>();
 
  //moderator creates the meeting if meeting is not running
-if(isMeetingRunning.equals("false") && action.equals("create")){      
-    metadata.put("title", meetingID);   
+if(isMeetingRunning.equals("false") && action.equals("create")){
+    metadata.put("title", meetingID);
     metadata.put("type", eventType);
     metadata.put("logoutURL", Config.getProperty("domain")+logOutUrl);
     joinURL = getJoinURL(username,meetingID,isRecorded, welcome, modPwd, viewerPwd, metadata, null);

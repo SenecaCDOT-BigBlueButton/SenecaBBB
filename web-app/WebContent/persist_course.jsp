@@ -50,7 +50,7 @@ section.getCourse(courseList,c_id);
 section.getSectionInfoByCourse(courseInSection, c_id);
 if(del == null ){
  if(courseList.size()==0){
-     section.createCourse(c_id, c_name);      
+     section.createCourse(c_id, c_name);
      response.sendRedirect("manage_course.jsp?successMessage=Subject created");
      return;
  }else{

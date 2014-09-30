@@ -378,6 +378,8 @@
                     rules: {
                         eventTitle: {
                             required: true,
+                            minlength: 3,
+                            maxlength: 50,
                             pattern: /^[- a-zA-Z0-9]+$/
                         },
                         eventDescription:{
@@ -406,7 +408,9 @@
                     messages: {
                         eventTitle: { 
                             pattern:"Please enter a valid Title.",
-                            required:"Title is required"
+                            required:"Title is required",
+                            minlength: "Invalid event title length",
+                            maxlength: "Invalid event title length"
                         },
                         startTime:"Please enter a valid Time Format",
                         eventDuration:"Please enter a valid Number",

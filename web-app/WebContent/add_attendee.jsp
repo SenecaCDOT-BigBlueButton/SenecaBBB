@@ -28,7 +28,7 @@
     <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
     <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="js/additional-methods.min.js"></script>
-	
+
     <%@ include file="search.jsp" %>
     <%@ include file="send_Notification.jsp" %>
     <%
@@ -85,7 +85,7 @@
     }
     if (!myBool.get_value()) {
         elog.writeLog("[add_attendee:] " +  "Permission denied /n");
-        response.sendRedirect("calendar.jsp?message=You do not permission to access that page");        
+        response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     // End page validation
@@ -103,7 +103,7 @@
             if (!user.isMeetingAttendee(myBool, ms_id, bu_id)) {
                 message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AA03");
                 elog.writeLog("[add_attendee:] " + message + "/n");
-                response.sendRedirect("logout.jsp?message=" + message);                
+                response.sendRedirect("logout.jsp?message=" + message);
                 return;   
             }
             // User already added
@@ -113,8 +113,8 @@
                 if (!user.isUser(myBool, bu_id)) {
                     message = user.getErrMsg("AA04");
                     elog.writeLog("[add_attendee:] " + message + "/n");
-                    response.sendRedirect("logout.jsp?message=" + message);                    
-                    return;   
+                    response.sendRedirect("logout.jsp?message=" + message);
+                    return;
                 }
                 // User already in Database
                 if (myBool.get_value()) {
@@ -162,11 +162,11 @@
             if (!user.getNonLdapSearch(searchResult, term1, term2)) {
                 message = user.getErrMsg("AA10");
                 elog.writeLog("[add_attendee:] " + message + "/n");
-                response.sendRedirect("logout.jsp?message=" + message);               
-                return;   
+                response.sendRedirect("logout.jsp?message=" + message);
+                return;
             }
             successMessage = searchResult.size() + " Result(s) Found";
-        }  
+        }
     } else {
         String mod = request.getParameter("mod");
         String remove = request.getParameter("remove");
@@ -179,7 +179,7 @@
                     message = meeting.getErrMsg("AA06");
                     elog.writeLog("[add_attendee:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
+                    return;
                 }else{
                     successMessage=mod+" moderator status was changed!";
                 }
@@ -193,7 +193,7 @@
                     message = user.getErrMsg("AA07");
                     elog.writeLog("[add_attendee:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
+                    return;
                 } else {
                     if (myBool.get_value()) { 
                         if (!meeting.removeMeetingAttendee(remove, ms_id)) {

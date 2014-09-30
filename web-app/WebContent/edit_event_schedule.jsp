@@ -71,13 +71,13 @@
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AA01");
             elog.writeLog("[edit_event_schedule:] " + message +" /n");
             response.sendRedirect("canlendar.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!(user.isMeetingCreator(myBool, ms_id, userId)||isSuper)) {
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AA02");
             elog.writeLog("[edit_event_schedule:] " + message +" /n");
             response.sendRedirect("canlendar.jsp?message=" + message);
-            return;   
+            return;
         }
         isMeeting = true;
     }
@@ -86,13 +86,13 @@
             message = lecture.getErrMsg("ALG01");
             elog.writeLog("[edit_event_schedule:] " + message +" /n");
             response.sendRedirect("canlendar.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!(user.isTeaching(myBool, ls_id, userId) || isSuper)) {
             message = user.getErrMsg("ALG02");
             elog.writeLog("[edit_event_schedule:] " + message +" /n");
             response.sendRedirect("canlendar.jsp?message=" + message);
-            return;   
+            return;
         }
         isLecture=true;
     }
@@ -172,7 +172,7 @@
                 repeatEvery = spec.split(";")[3];
                 endsYear = spec.split(";")[2].split("-")[0];
                 endsMonth = spec.split(";")[2].split("-")[1];
-                endsDay = spec.split(";")[2].split("-")[2];                     
+                endsDay = spec.split(";")[2].split("-")[2];
             }
         }
         //recurrence weekly
@@ -216,7 +216,7 @@
     }
     startDate= isMeeting? result.get(0).get(2).split(" ")[0]: result.get(0).get(4).split(" ")[0];
 %>
-<script type="text/javascript">   
+<script type="text/javascript">
     function searchUser(){
         var xmlhttp;
         if (window.XMLHttpRequest)
@@ -523,7 +523,7 @@
                                 <button type="button" name="Saturday" id="Saturday" <% if(weeklyString.charAt(6)=='0' || weeklyString.charAt(6)=='g'){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> title="Saturday" role="checkbox" tabindex="34">Sat</button>
                                 <input type="hidden" name="weekString" id="weekString" value="<%= weeklyString.equals("abcdefg")?"000000":weeklyString %>">
                             </div>
-             
+ 
                             <div id="dayoftheWeek" class="component" role="radiogroup">
                                 <button type="button" name="Sunday" id="Sunday" <% if(!firstOccurDayOfWeek.equals("0")){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> value="Sun" title="Sunday" role="radio"  aria-label="Sunday" tabindex="28">Sun</button>
                                 <button type="button" name="Monday" <% if(!firstOccurDayOfWeek.equals("1")){out.print("class=weekday aria-checked=false");}else{out.print("class='weekday selectedWeekday' aria-checked=true");} %> value="Mon" title="Monday" role="radio"  aria-label="" tabindex="29">Mon</button>
@@ -614,7 +614,7 @@
                     <h4></h4>
                     <fieldset>
                         <div class="buttons">
-                            <% if (ms_id!=null) { %>                    
+                            <% if (ms_id!=null) { %>
                             <button type="button" name="button" id="delete"  class="button" title="Click here to delete schedule" onclick="window.location.href='delete_event.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Delete This Schedule</button>
                             <% } else { %>
                             <button type="button" name="button" id="delete"  class="button" title="Click here to delete schedule" onclick="window.location.href='delete_event.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Delete This Schedule</button>
@@ -624,7 +624,7 @@
                 </article>
             </form>
         </section>
-        <script>    
+        <script>
             // form validation, edit the regular expression pattern and error messages to meet your needs
             $(document).ready(function(){
                 $('#eventForm').validate({
@@ -663,7 +663,9 @@
                     messages: {
                         eventTitle: { 
                             pattern:"Please enter a valid Title.",
-                            required:"Title is required"
+                            required:"Title is required",
+                            minlength: "Invalid event title length",
+                            maxlength: "Invalid event title length"
                         },
                         startTime:"Please enter a valid Time Format",
                         eventDuration:"Please enter a valid Number",

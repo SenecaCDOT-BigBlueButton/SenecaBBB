@@ -58,7 +58,7 @@ if(del == null){//get information from form to create professor
     c_id = request.getParameter("c_id");
     bu_id = request.getParameter("bu_id");
     sc_id = request.getParameter("sc_id");
-    sc_semesterid = request.getParameter("sc_semesterid");        
+    sc_semesterid = request.getParameter("sc_semesterid");
 }
 
 Section section = new Section(dbaccess);
@@ -68,10 +68,10 @@ if (!user.isUser(myBool, bu_id)) {
     message = user.getErrMsg("PP01");
     elog.writeLog("[persist_professor:] " + message +" /n");
     response.sendRedirect("logout.jsp?message=" + message);
-    return;   
+    return;
 }
 // User already in Database
-if (myBool.get_value()) {   
+if (myBool.get_value()) {
     searchSuccess = true;
 } else {
     // Found userId in LDAP
@@ -84,17 +84,17 @@ if (myBool.get_value()) {
 
 if(del == null ){  
     if(!searchSuccess){// make sure the bu_id is registered in database
-        response.sendRedirect("create_professor.jsp?message=Professor ID Not in Database"); 
+        response.sendRedirect("create_professor.jsp?message=Professor ID Not in Database");
         return;
     }
     else{
-        section.createProfessor(bu_id, c_id, sc_id,sc_semesterid);      
-        response.sendRedirect("manage_professor.jsp?successMessage=Professor created"); 
+        section.createProfessor(bu_id, c_id, sc_id,sc_semesterid);
+        response.sendRedirect("manage_professor.jsp?successMessage=Professor created");
         return;
     }
 }else{
-    section.removeProfessor(bu_id, c_id, sc_id,sc_semesterid);      
-    response.sendRedirect("manage_professor.jsp?successMessage=Professor Removed");  
+    section.removeProfessor(bu_id, c_id, sc_id,sc_semesterid);
+    response.sendRedirect("manage_professor.jsp?successMessage=Professor Removed");
 }
 
 %>

@@ -85,7 +85,7 @@ if (usersession.getUserId() != ""){
     */
         $(document).ready(function(){
             if(localStorage.Y > 0 || localStorage.X > 0){ 
-                window.scrollBy(localStorage.X,localStorage.Y);  
+                window.scrollBy(localStorage.X,localStorage.Y);
             }
             if($(".warningMessage").text() !=""){
                 var message = $(".warningMessage").text();
@@ -119,9 +119,9 @@ if (usersession.getUserId() != ""){
         if (!notification.equals("")) {
         %>
         <section>
-        	<div id="notification">     
-        	    <p><%= notification %></p>
-        	</div>
+            <div id="notification">
+                <p><%= notification %></p>
+            </div>
         </section>
         <% } %>
         <section id="login">

@@ -67,7 +67,7 @@
         <jsp:include page="header.jsp"/>
         <jsp:include page="menu.jsp"/>
         <section>
-            <header> 
+            <header>
                 <!-- BREADCRUMB -->
                 <p>
                     <a href="calendar.jsp" tabindex="13">home</a> » 
@@ -76,7 +76,6 @@
                 </p>
                 <!-- PAGE NAME -->
                 <h1>Create Section</h1>
-            
                 <!-- MESSAGES -->
                 <div class="warningMessage"><%=message %></div>
                 <div class="successMessage"><%=successMessage %></div> 
@@ -118,7 +117,7 @@
                                 <% for(int j=0;j<deptCodeList.size();j++){ %>
                                     <option><%= deptCodeList.get(j).get(0) %></option><%} %>
                                 </select>
-                            </div>                                                                     
+                            </div>
                             <div class="component">
                                 <div class="buttons">
                                     <button type="submit" name="saveSection" id="saveSection" class="button" title="Click here to save">Create</button>

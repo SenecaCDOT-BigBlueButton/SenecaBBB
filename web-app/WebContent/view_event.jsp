@@ -80,7 +80,7 @@
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE00-1");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!myBool.get_value()) {
             elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ms_id: "+ ms_id +", permission denied" +" /n"); 
@@ -91,7 +91,7 @@
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE01");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (myBool.get_value()) {
             status = 1;
@@ -101,7 +101,7 @@
                 message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE02");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (myBool.get_value()) {
                 status = 2;
@@ -112,7 +112,7 @@
                 message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE02-2");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (myBool.get_value()) {
                 status = 6;
@@ -137,7 +137,7 @@
             message = "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE00-2");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!myBool.get_value()) {
             elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ls_id: "+ ls_id +", permission denied" +" /n");                         
@@ -148,7 +148,7 @@
             message = "Could not verify meeting status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE03");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (myBool.get_value()) {
             status = 3;
@@ -158,7 +158,7 @@
                 message =  "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE04");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (myBool.get_value()) {
                 status = 4;
@@ -169,7 +169,7 @@
                 message =  "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE05");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (myBool.get_value()) {
                 status = 5;
@@ -199,19 +199,19 @@
             message = meeting.getErrMsg("VE05");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!meeting.getMeetingScheduleInfo(eventSResult, ms_id)) {
             message = meeting.getErrMsg("VE06");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!meeting.getMeetingPresentation(eventPresentation, ms_id, m_id)) {
             message = meeting.getErrMsg("VE07");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (status == 1) {
             type = "Meeting (C)";
@@ -219,19 +219,19 @@
                 message = meeting.getErrMsg("VE08");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (!meeting.getMeetingGuest(eventGuest, ms_id, m_id)) {
                 message = meeting.getErrMsg("VE09");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (!meeting.getMeetingAttendance(eventAttendance, ms_id, m_id)) {
                 message = meeting.getErrMsg("VE10");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
         } else {
             type = (status == 2) ? "Meeting (A)" : "Meeting (G)";
@@ -249,13 +249,13 @@
             message = lecture.getErrMsg("VE12");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!lecture.getLecturePresentation(eventPresentation, ls_id, l_id)) {
             message = lecture.getErrMsg("VE13");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (status == 3 || status == 4) {
             type = (status == 3) ? "Lecture (T)" : "Lecture (G)";
@@ -263,19 +263,19 @@
                 message = lecture.getErrMsg("VE14");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (!lecture.getLectureGuest(eventGuest, ls_id, l_id)) {
                 message = lecture.getErrMsg("VE15");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (!lecture.getLectureAttendance(eventAttendance, ls_id, l_id)) {
                 message = lecture.getErrMsg("VE16");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
         } else {
             type = "Lecture (S)";
@@ -328,7 +328,7 @@
         startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
         startDate = startTimeResult.get(0).get(0).split(" ")[0];
         lecture.getLectureProfessor(creatorResult, c_id, sc_id, sc_semesterid);
-        eventCreator=creatorResult.get(0).get(0); 
+        eventCreator=creatorResult.get(0).get(0);
         storedEventId = "bbbmanEvent-lecture-" + eventCreator + "-"+ ls_id + "-" + l_id;
         lecture.getLectureSetting(isRecordedResult, c_id, sc_id, sc_semesterid);
     }
@@ -338,8 +338,8 @@
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder;
     try 
-    { 
-        builder = factory.newDocumentBuilder(); 
+    {
+        builder = factory.newDocumentBuilder();
         InputSource is = new InputSource();
         is.setCharacterStream(new StringReader(recordingXML));
         Document doc = builder.parse(is);
@@ -356,16 +356,16 @@
             playBackURLs.add(playbackLink.getAttribute("href"));
         }
     }
-    catch (Exception e) 
+    catch (Exception e)
     {
         elog.writeLog("[view_event:] " + e.getMessage() +"/n");
-    } 
+    }
 
     %>
     <script type="text/javascript">
        /* TABLE */
         $(screen).ready(function() {
-            /* CURRENT EVENT */  
+            /* CURRENT EVENT */
             $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
             $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
             $('#tbGuest').dataTable({"sPaginationType": "full_numbers"});
@@ -431,7 +431,7 @@
                 <h2></h2>
                 <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
-                <div class="content">                      
+                <div class="content">
                    <div class="component" style="display:none">
                        <label for="eventType" class="label">Event Type:</label>
                        <input type="text" name="eventType" id="eventType" class="input" readonly tabindex="3"  value="<%= (m_id==null)? "Lecture":"Meeting" %>" 
@@ -442,7 +442,7 @@
                        <label for="eventScheduleId" class="label">Schedule ID:</label>
                        <input type="text" name="eventScheduleId" id="eventScheduleId" class="input" readonly tabindex="3"  value="<%= (ms_id==null)? ls_id:ms_id %>" 
                               title="event id" >
-                    </div>                          
+                    </div>
                     <div class="actionButtons">
                         <% 
                         Boolean startEvent = false;

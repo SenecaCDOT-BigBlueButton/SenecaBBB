@@ -69,7 +69,7 @@ if (bu_id!=null) {
         // User already in Database
         if (myBoolean.get_value()) {
             searchSucess = true;
-        } 
+        }
         else {
             message = "Invalid User Id";
             response.sendRedirect("calendar.jsp?message=" + message);

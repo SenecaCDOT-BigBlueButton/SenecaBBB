@@ -190,7 +190,7 @@
                             singleResultISO.add(builder.toString().trim());
                         }
                         builder.delete(0,builder.length());
-                    }                      
+                    }
                 }
                 
                 builder.delete(0,builder.length());
@@ -238,7 +238,7 @@
                             singleResult.add(builder.toString().trim());
                         }
                         builder.delete(0,builder.length());
-                    }                      
+                    }
                 }
             }
         }
@@ -268,7 +268,7 @@
     }
 
     if(!usernameFound){
-        for(int k=0;k< singleResultUTF8.size();k++){            
+        for(int k=0;k< singleResultUTF8.size();k++){
             if(singleResultUTF8.get(k).replace('"',' ').trim().equals("Username")){
                 userNameColumnUTF8 = k;
                 isUsernameUTF8 = true;
@@ -278,7 +278,7 @@
     }
 
     if(!usernameFound){
-        for(int k=0;k< singleResultISO.size();k++){            
+        for(int k=0;k< singleResultISO.size();k++){
             if(singleResultISO.get(k).replace('"',' ').trim().equals("Username")){
                 userNameColumnISO = k;
                 isUsernameISO = true;
@@ -348,7 +348,7 @@
                         return;   
                     }
                     // User already in Database
-                    if (myBool.get_value()) {   
+                    if (myBool.get_value()) {
                         searchSucess = true;
                     } else {
                         // Found userId in LDAP
@@ -369,7 +369,7 @@
                 message = section.getErrMsg("AS06");
                 elog.writeLog("[fileupload:] " + message  +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;  
+                return;
             }else {
                 counter += 1;
                 ArrayList<ArrayList<String>> scheduleResult = new ArrayList<ArrayList<String>>();

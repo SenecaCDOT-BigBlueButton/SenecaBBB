@@ -102,7 +102,7 @@
                 message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AMG03");
                 elog.writeLog("[add_mguest:] " + message +" /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             // User already added
             if (myBool.get_value()) {
@@ -115,7 +115,7 @@
                     return;   
                 }
                 // User already in Database
-                if (myBool.get_value()) {   
+                if (myBool.get_value()) {
                     searchSucess = true;
                 } else {
                     // Found userId in LDAP
@@ -140,7 +140,7 @@
             return;   
         } else {
             successMessage = bu_id + " added to meeting guest list";
-            sendNotification(dbaccess,ldap,bu_id,"meeting",ms_id,m_id,usersession.getGivenName());       	
+            sendNotification(dbaccess,ldap,bu_id,"meeting",ms_id,m_id,usersession.getGivenName());
         }
     } else if (nonldap != null && nonldap !="") {
         nonldap = Validation.prepare(nonldap);
@@ -177,9 +177,9 @@
                     message = meeting.getErrMsg("AMG06");
                     elog.writeLog("[add_mguest:] " + message +" /n");
                     response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
+                    return;
                 }
-            }  
+            }
         } else if (remove != null) {
             remove = Validation.prepare(remove);
             if (!(Validation.checkBuId(remove))) {
@@ -196,12 +196,12 @@
                             message = meeting.getErrMsg("AMG08");
                             elog.writeLog("[add_mguest:] " + message +" /n");
                             response.sendRedirect("logout.jsp?message=" + message);
-                            return;   
+                            return;
                         } else {
                             successMessage = remove + " was removed from guest list";
                         }
                     } else {
-                        message = "User to be removed not in guest list";   
+                        message = "User to be removed not in guest list";
                     }
                 }
             }  
@@ -245,7 +245,7 @@
         <jsp:include page="menu.jsp"/>
         
         <section>
-            <header> 
+            <header>
                 <!-- BREADCRUMB -->
                 <p>
                     <a href="calendar.jsp" tabindex="13">home</a> » 
@@ -269,12 +269,12 @@
                         <fieldset>
                             <div class="component">
                                 <input type="hidden" name="ms_id" id="ms_id" value="<%= ms_id %>">
-                                <input type="hidden" name="m_id" id="m_id" value="<%= m_id %>">  
+                                <input type="hidden" name="m_id" id="m_id" value="<%= m_id %>">
                                 <label for="addBox" class="label">Add User:</label>
                                 <input type="text" name="addBox" id="addBox" class="searchBox" tabindex="37" title="Search user">
                                 <button type="submit" name="search" class="search" tabindex="38" title="Search user"></button>
-                                <div id="responseDiv"></div>                                                       
-                            </div>                       
+                                <div id="responseDiv"></div>
+                            </div>
                         </fieldset>
                     </div>
                 </article>
@@ -381,7 +381,7 @@
                             <button type="button" name="button" id="returnButton"  class="button" title="Click here to return to event page" 
                                     onclick="window.location.href='view_event.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">
                                 Return to Event Page
-                            </button>	                      
+                            </button>
                         </div>
                     </div>
                 </article>

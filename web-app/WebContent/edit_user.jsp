@@ -22,7 +22,7 @@
     <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
-    <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>    
+    <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
     <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="js/additional-methods.min.js"></script>
     <script type="text/javascript" src="js/checkboxController.js"></script>
@@ -81,8 +81,8 @@
             message = Validation.getErrMsg();
             elog.writeLog("[edit_user:] " + message +" /n");
             response.sendRedirect("calendar.jsp?message=" + message);
-            return; 
-        } 
+            return;
+        }
         else {
             if (!user.isUser(myBool, bu_id)) {
                 message = user.getErrMsg("AS04");
@@ -91,7 +91,7 @@
                 return;   
             }
             // User already in Database
-            if (myBool.get_value()) {   
+            if (myBool.get_value()) {
                 searchSucess = true;
             } 
             else {
@@ -147,7 +147,11 @@
         <section>
             <header> 
                 <!-- BREADCRUMB -->
-                <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="manage_users.jsp" tabindex="14">manage users</a>» <a href="edit_user.jsp" tabindex="15">edit user</a></p>
+                <p>
+                    <a href="calendar.jsp" tabindex="13">home</a> » 
+                    <a href="manage_users.jsp" tabindex="14">manage users</a>» 
+                    <a href="edit_user.jsp" tabindex="15">edit user</a>
+                </p>
                 <!-- PAGE NAME -->
                 <h1>Edit User Information</h1>
                 <!-- WARNING MESSAGES -->
@@ -160,7 +164,7 @@
                         <h2>User's Information</h2>
                         <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                     </header>
-                    <div class="content">            
+                    <div class="content">
                         <fieldset>
                             <div class="component">
                                 <label for="bbbUserId" class="label">User ID:</label>
@@ -183,7 +187,7 @@
                                 <label for="bbbUserEmail" class="label">User Email:</label>
                                 <input name="bbbUserEmail" id="bbbUserEmail" class="input" tabindex="19" title="User Email" type="text" value="<%= bbbUserInfo.get(0).get(13) %>" required autofocus>
                             </div>
-                              <%} %>    
+                              <%} %>
                             <div class="component">
                                 <label for="bbbUserList" class="label">User Role:</label>
                                 <select name="bbbUserList" id="bbbUserList" title="Please Select a user role">
@@ -212,7 +216,7 @@
                                     <label class="text" id="bbbUserIsSuper">Is Super Admin</label>
                                     <input type="checkbox" name="bbbUserIsSuper" id="bbbUserIsSuper" checked="checked" >
                                 </div>
-                            </div>                                    
+                            </div>
                             <div class="component">
                                 <div class="buttons">
                                    <input type="submit" name="updateUser" id="updateUser" class="button" value="update" title="Click here to update" tabindex="20" >

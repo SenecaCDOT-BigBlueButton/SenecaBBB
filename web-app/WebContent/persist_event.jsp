@@ -156,7 +156,7 @@ if(fromquickmeeting == null){
         return;
     }
 }
-      
+
 if(eventType.equals("Meeting")){   //create a meeting event		
     if(meeting.createMeetingSchedule(title, inidatetime, spec, duration, description, userId)){
         if(fromquickmeeting !=null){

@@ -6,37 +6,38 @@
 <%@ include file="bbb_api.jsp"%> 
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SenecaBBB | View Event</title>
-<link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
-<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
-<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SenecaBBB | View Event</title>
+    <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
+    <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
+    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
 
-<%
+    <%
     //Start page validation
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
-    String url = null;
+    String recordingXML = "";
+    ArrayList<String> playBackURLs = new ArrayList<String>();
     String eventTitle = request.getParameter("eventName"); 
     String storedEventId="";
     if (userId.equals("")) {
-    	session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
@@ -71,7 +72,7 @@
         ms_id = Validation.prepare(ms_id);
         validFlag = Validation.checkMId(m_id) && Validation.checkMsId(ms_id);
         if (!validFlag) {
-        	elog.writeLog("[view_event:] " + Validation.getErrMsg() +"/n");
+            elog.writeLog("[view_event:] " + Validation.getErrMsg() +"/n");
             response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
             return;
         }
@@ -79,10 +80,10 @@
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE00-1");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!myBool.get_value()) {
-        	elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ms_id: "+ ms_id +", permission denied" +" /n"); 
+            elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ms_id: "+ ms_id +", permission denied" +" /n"); 
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
             return;
         }
@@ -90,7 +91,7 @@
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE01");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (myBool.get_value()) {
             status = 1;
@@ -100,7 +101,7 @@
                 message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE02");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (myBool.get_value()) {
                 status = 2;
@@ -111,7 +112,7 @@
                 message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("VE02-2");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (myBool.get_value()) {
                 status = 6;
@@ -128,7 +129,7 @@
         ls_id = Validation.prepare(ls_id);
         validFlag = Validation.checkLId(l_id) && Validation.checkLsId(ls_id);
         if (!validFlag) {
-        	elog.writeLog("[view_event:] " + Validation.getErrMsg() +"/n");
+            elog.writeLog("[view_event:] " + Validation.getErrMsg() +"/n");
             response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
             return;
         }
@@ -136,7 +137,7 @@
             message = "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE00-2");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!myBool.get_value()) {
             elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ls_id: "+ ls_id +", permission denied" +" /n");                         
@@ -147,7 +148,7 @@
             message = "Could not verify meeting status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE03");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (myBool.get_value()) {
             status = 3;
@@ -157,7 +158,7 @@
                 message =  "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE04");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (myBool.get_value()) {
                 status = 4;
@@ -168,7 +169,7 @@
                 message =  "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("VE05");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (myBool.get_value()) {
                 status = 5;
@@ -198,19 +199,19 @@
             message = meeting.getErrMsg("VE05");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!meeting.getMeetingScheduleInfo(eventSResult, ms_id)) {
             message = meeting.getErrMsg("VE06");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!meeting.getMeetingPresentation(eventPresentation, ms_id, m_id)) {
             message = meeting.getErrMsg("VE07");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (status == 1) {
             type = "Meeting (C)";
@@ -218,19 +219,19 @@
                 message = meeting.getErrMsg("VE08");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (!meeting.getMeetingGuest(eventGuest, ms_id, m_id)) {
                 message = meeting.getErrMsg("VE09");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (!meeting.getMeetingAttendance(eventAttendance, ms_id, m_id)) {
                 message = meeting.getErrMsg("VE10");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
         } else {
             type = (status == 2) ? "Meeting (A)" : "Meeting (G)";
@@ -248,13 +249,13 @@
             message = lecture.getErrMsg("VE12");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!lecture.getLecturePresentation(eventPresentation, ls_id, l_id)) {
             message = lecture.getErrMsg("VE13");
             elog.writeLog("[view_event:] " + message +"/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (status == 3 || status == 4) {
             type = (status == 3) ? "Lecture (T)" : "Lecture (G)";
@@ -262,19 +263,19 @@
                 message = lecture.getErrMsg("VE14");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (!lecture.getLectureGuest(eventGuest, ls_id, l_id)) {
                 message = lecture.getErrMsg("VE15");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             if (!lecture.getLectureAttendance(eventAttendance, ls_id, l_id)) {
                 message = lecture.getErrMsg("VE16");
                 elog.writeLog("[view_event:] " + message +"/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
         } else {
             type = "Lecture (S)";
@@ -296,25 +297,25 @@
     MyBoolean isEventAttendee = new MyBoolean();
     MyBoolean isEventGuest = new MyBoolean();
     HashMap<String, Integer> isRecordedResult = new HashMap<String, Integer>();
-    int i = 0;   
-   	if (!(m_id==null || ms_id==null)) {            
-   		user.isMeetingCreator(isEventCreator, ms_id, userId);
-   	    user.isMeetingAttendee(isEventAttendee, ms_id, userId);
-   	    user.isMeetingGuest(isEventGuest, ms_id, m_id, userId);
-   		meeting.getMeetingCreators(creatorResult, ms_id);
-   		meeting.getMeetingInitialDatetime(startTimeResult, ms_id, m_id);
-   		meeting.getMeetingDuration(durationResult, ms_id, m_id);
-   		meeting.getMeetingModPass(modPassResult, ms_id, m_id);
-   		duration = durationResult.get(0).get(0);
-   		startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
-   		startDate = startTimeResult.get(0).get(0).split(" ")[0];
-   		eventCreator=creatorResult.get(0).get(0);  	
-   		storedEventId = "Meeting-".concat(m_id).concat("-").concat(ms_id);
-   		meeting.getMeetingSetting(isRecordedResult, ms_id, m_id);
-   	}
+    int i = 0;
+    if (!(m_id==null || ms_id==null)) {
+        user.isMeetingCreator(isEventCreator, ms_id, userId);
+        user.isMeetingAttendee(isEventAttendee, ms_id, userId);
+        user.isMeetingGuest(isEventGuest, ms_id, m_id, userId);
+        meeting.getMeetingCreators(creatorResult, ms_id);
+        meeting.getMeetingInitialDatetime(startTimeResult, ms_id, m_id);
+        meeting.getMeetingDuration(durationResult, ms_id, m_id);
+        meeting.getMeetingModPass(modPassResult, ms_id, m_id);
+        duration = durationResult.get(0).get(0);
+        startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
+        startDate = startTimeResult.get(0).get(0).split(" ")[0];
+        eventCreator=creatorResult.get(0).get(0);
+        storedEventId = "bbbmanEvent-meeting-" + eventCreator + "-"+ ms_id + "-" + m_id;
+        meeting.getMeetingSetting(isRecordedResult, ms_id, m_id);
+    }
     if (!(l_id==null || ls_id==null)) {
-        user.isTeaching(isEventCreator, ls_id, userId);            
-        user.isLectureStudent(isEventAttendee, ls_id, userId);         
+        user.isTeaching(isEventCreator, ls_id, userId);
+        user.isLectureStudent(isEventAttendee, ls_id, userId);
         user.isGuestTeaching(isEventGuest, ls_id, l_id, userId);
         lecture.getLectureScheduleInfo(lectureResult,ls_id);
         lecture.getLectureInitialDatetime(startTimeResult, ls_id, l_id);
@@ -327,75 +328,94 @@
         startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
         startDate = startTimeResult.get(0).get(0).split(" ")[0];
         lecture.getLectureProfessor(creatorResult, c_id, sc_id, sc_semesterid);
-        eventCreator=creatorResult.get(0).get(0); 
-        storedEventId = "Lecture-".concat(l_id).concat("-").concat(ls_id);
+        eventCreator=creatorResult.get(0).get(0);
+        storedEventId = "bbbmanEvent-lecture-" + eventCreator + "-"+ ls_id + "-" + l_id;
         lecture.getLectureSetting(isRecordedResult, c_id, sc_id, sc_semesterid);
     }
     String isMeetingRunning = isMeetingRunning(storedEventId);
-    url = getRecordings(storedEventId);
     
-%>
-<script type="text/javascript">
-/* TABLE */
-	$(screen).ready(function() {
-	    /* CURRENT EVENT */
-	   // $('#currentEvent').dataTable({"sPaginationType": "full_numbers"});
-	   // $('#currentEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});    
-	  //  $('#currentEventS').dataTable({"sPaginationType": "full_numbers"});
-	  //  $('#currentEventS').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});      
-	    $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
-	    $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-	    $('#tbGuest').dataTable({"sPaginationType": "full_numbers"});
-	    $('#tbGuest').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-	    $('#tbAttendance').dataTable({"sPaginationType": "full_numbers"});
-	    $('#tbAttendance').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-	  //  $('#tbPresentation').dataTable({"sPaginationType": "full_numbers"});
-	  // $('#tbPresentation').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-	    $('#legend').dataTable({"sPaginationType": "full_numbers"});
-	    $('#legend').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});       
-	    $.fn.dataTableExt.sErrMode = "throw";
-	    $('.dataTables_filter input').attr("placeholder", "Filter entries");
-	});
-	/* SELECT BOX */
-	$(function(){
-	    $('select').selectmenu();
-	});
+    recordingXML = getRecordings(storedEventId);
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder;
+    try 
+    {
+        builder = factory.newDocumentBuilder();
+        InputSource is = new InputSource();
+        is.setCharacterStream(new StringReader(recordingXML));
+        Document doc = builder.parse(is);
+        NodeList nodes = doc.getElementsByTagName("recording");
+        for(int j = 0;j<nodes.getLength();j++)
+        {
+            Element recordingItem = (Element) nodes.item(i);
+            NodeList playback = recordingItem.getElementsByTagName("playback");
+            Element playbackElement = (Element)playback.item(0);
+            is.setCharacterStream(new StringReader(playbackElement.getFirstChild().getNodeValue()));
+            Document playBackDoc = builder.parse(is);
+            NodeList link = playBackDoc.getElementsByTagName("a");
+            Element playbackLink = (Element) link.item(0);
+            playBackURLs.add(playbackLink.getAttribute("href"));
+        }
+    }
+    catch (Exception e)
+    {
+        elog.writeLog("[view_event:] " + e.getMessage() +"/n");
+    }
 
-
-</script>
+    %>
+    <script type="text/javascript">
+       /* TABLE */
+        $(screen).ready(function() {
+            /* CURRENT EVENT */
+            $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
+            $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#tbGuest').dataTable({"sPaginationType": "full_numbers"});
+            $('#tbGuest').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#tbAttendance').dataTable({"sPaginationType": "full_numbers"});
+            $('#tbAttendance').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#legend').dataTable({"sPaginationType": "full_numbers"});
+            $('#legend').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $.fn.dataTableExt.sErrMode = "throw";
+            $('.dataTables_filter input').attr("placeholder", "Filter entries");
+        });
+        /* SELECT BOX */
+        $(function(){
+            $('select').selectmenu();
+        });
+    
+    </script>
 </head>
 <body>
 <div id="page">
     <jsp:include page="header.jsp"/>
     <jsp:include page="menu.jsp"/>
     <script type="text/javascript">
-	    $(document).ready(function() {
-	        //Hide some tables on load
-	        $('#legendExpand').click();
-	        $('#expandAttendee').click();
-	        $('#expandGuest').click();
-	        $('#expandAttendance').click();
-	      //  $('#expandPresentation').click();
-	        $("#help").attr({href:"help_viewEvent.jsp" ,
+        $(document).ready(function() {
+            //Hide some tables on load
+            $('#legendExpand').click();
+            $('#expandAttendee').click();
+            $('#expandGuest').click();
+            $('#expandAttendance').click();
+          //  $('#expandPresentation').click();
+            $("#help").attr({href:"help_viewEvent.jsp" ,
                              target:"_blank"});
-	        $("#EventButton").click(function(){
-	        	var alertMessage;
-	        	<% if (isCancel.equals("Yes")){%>
-	        	    alertMessage = "Event is cancelled.";	        	
-	        	<% } else if (isEventCreator.get_value()){%>	        	
-	        	    alertMessage = "Please note that you can start this event 15 minutes before the scheduled start time.";
-	        	<%}else{%>
-	                alertMessage = "Event not started yet or it has already ended.";               
-	        	<%}%>
-	        	   alert(alertMessage);
-	        });
-	        $("#endMeeting").click(function(){
-	        	$("#joinEvent").removeAttr('target');
-	        });
-	        $("#joinEventButton").click(function(){
-	                $("#joinEvent").attr('target','_blank');
-	          });
-	    });
+            $("#EventButton").click(function(){
+                var alertMessage;
+                <% if (isCancel.equals("Yes")){%>
+                    alertMessage = "Event is cancelled.";
+                <% } else if (isEventCreator.get_value()){%>
+                    alertMessage = "Please note that you can start this event 15 minutes before the scheduled start time.";
+                <%}else{%>
+                    alertMessage = "Event not started yet or it has already ended.";
+                <%}%>
+                   alert(alertMessage);
+            });
+            $("#endMeeting").click(function(){
+                $("#joinEvent").removeAttr('target');
+            });
+            $("#joinEventButton").click(function(){
+                $("#joinEvent").attr('target','_blank');
+            });
+        });
     </script>
     <section>
         <header>
@@ -405,73 +425,91 @@
             <div class="successMessage"><%=successMessage %></div> 
         </header>
         <% if(isEventCreator.get_value() || isEventAttendee.get_value() || isEventGuest.get_value()){ %>
-	        <form name="joinEvent" id="joinEvent" method="get" action="join_event.jsp?&eventId=<%= (m_id==null)? l_id:m_id %>&eventSchduleId=<%= (ms_id==null)? ls_id:ms_id %>&eventType=<%= (m_id==null)? "Lecture":"Meeting" %>">
-	            <article>
-	                <header>
-                    <h2></h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
-                   </header>
-	                <div class="content">                      
-	                        <div class="component" style="display:none">
-                                <label for="eventType" class="label">Event Type:</label>
-                                <input type="text" name="eventType" id="eventType" class="input" readonly tabindex="3"  value="<%= (m_id==null)? "Lecture":"Meeting" %>" 
-                                 title="event id" >
-                                <label for="eventId" class="label">Event ID:</label>
-                                <input type="text" name="eventId" id="eventId" class="input" readonly tabindex="3"  value="<%= (m_id==null)? l_id:m_id %>" 
-                                 title="event id" >
-                                <label for="eventScheduleId" class="label">Schedule ID:</label>
-                                <input type="text" name="eventScheduleId" id="eventScheduleId" class="input" readonly tabindex="3"  value="<%= (ms_id==null)? ls_id:ms_id %>" 
-                                 title="event id" >
-	                        </div>                          
-                            <div class="actionButtons">  
-                             <% Boolean startEvent = false;
-                                String expectStartTime = startTimeResult.get(0).get(0).substring(0,19);
-                                Date now = new Date();
-                                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                Date expectStart = dateFormat.parse(expectStartTime);		                 
-		                        long timediff = expectStart.getTime() - now.getTime();		                        	                        
-		                        long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(timediff);
-		                        long eventDuration = (long)Integer.valueOf(duration);
-		                        if(diffMinutes<=15 &&diffMinutes>-eventDuration && isCancel.equals("No")){
-		                        	startEvent = true;
-		                        }
-		                        if(startEvent && (isEventCreator.get_value()||isModerator) && isMeetingRunning.equals("false")){
-                             %>                      
-                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="create" title="Click here to create the event" >Start
-                                    <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
-                            <% }else if(isMeetingRunning.equals("true") && (isEventCreator.get_value()||isModerator)){%>
-                                    <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="joinAsMod" title="Click here to join the event" >Join
-                                    <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
-                            <%}else if(isMeetingRunning.equals("true") && !isEventCreator.get_value() && !isModerator){%>
-                                   <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="joinAsViewer" title="Click here to join the event" >Join
-                                   <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
-		                    <% } else{ %>  
-                                    <button style="background-color:grey" type="button" name="EventButton" id="EventButton" class="button" value="<%= (isEventCreator.get_value()||isModerator)? "create":"join"  %>" title="Click here to go to the event" >
-                                    <% if(isEventCreator.get_value() || isModerator){ out.print("Start");} else {out.print("Join");} if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %></button>
-                            <%} %> 
+        <form name="joinEvent" id="joinEvent" method="get" action="join_event.jsp?&eventId=<%= (m_id==null)? l_id:m_id %>&eventSchduleId=<%= (ms_id==null)? ls_id:ms_id %>&eventType=<%= (m_id==null)? "Lecture":"Meeting" %>">
+            <article>
+                <header>
+                <h2></h2>
+                <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                </header>
+                <div class="content">
+                   <div class="component" style="display:none">
+                       <label for="eventType" class="label">Event Type:</label>
+                       <input type="text" name="eventType" id="eventType" class="input" readonly tabindex="3"  value="<%= (m_id==null)? "Lecture":"Meeting" %>" 
+                              title="event id" >
+                       <label for="eventId" class="label">Event ID:</label>
+                       <input type="text" name="eventId" id="eventId" class="input" readonly tabindex="3"  value="<%= (m_id==null)? l_id:m_id %>" 
+                              title="event id" >
+                       <label for="eventScheduleId" class="label">Schedule ID:</label>
+                       <input type="text" name="eventScheduleId" id="eventScheduleId" class="input" readonly tabindex="3"  value="<%= (ms_id==null)? ls_id:ms_id %>" 
+                              title="event id" >
+                    </div>
+                    <div class="actionButtons">
+                        <% 
+                        Boolean startEvent = false;
+                        String expectStartTime = startTimeResult.get(0).get(0).substring(0,19);
+                        Date now = new Date();
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date expectStart = dateFormat.parse(expectStartTime);
+                        long timediff = expectStart.getTime() - now.getTime();
+                        long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(timediff);
+                        long eventDuration = (long)Integer.valueOf(duration);
+                        if(diffMinutes<=15 &&diffMinutes>-eventDuration && isCancel.equals("No")){
+                            startEvent = true;
+                        }
+                        if(startEvent && (isEventCreator.get_value()||isModerator) && isMeetingRunning.equals("false")){
+                        %>
+                        <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="create" title="Click here to create the event" >
+                            Start <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %>
+                        </button>
+                        
+                        <% }else if(isMeetingRunning.equals("true") && (isEventCreator.get_value()||isModerator)){%>
+                        <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="joinAsMod" title="Click here to join the event" >
+                            Join <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %>
+                        </button>
+                        
+                        <%}else if(isMeetingRunning.equals("true") && !isEventCreator.get_value() && !isModerator){%>
+                        <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="joinAsViewer" title="Click here to join the event" >
+                            Join <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %>
+                        </button>
+                        
+                        <% } else{ %>  
+                        <button style="background-color:grey" type="button" name="EventButton" id="EventButton" class="button" value="<%= (isEventCreator.get_value()||isModerator)? "create":"join"  %>" title="Click here to go to the event" >
+                        <% if(isEventCreator.get_value() || isModerator){ out.print("Start");} else {out.print("Join");} if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %>
+                        </button>
+                        <%} %> 
 
-		                        <% if (status==1) { %>
-		                            <button type="button" name="button" id="addAttendee" class="button" title="Click here to add Attendee" 
-		                                onclick="window.location.href='add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Manage Attendee</button>
-		                            <button type="button" name="button" id="addMGuest" class="button" title="Click here to add Meeting Guest" 
-                                        onclick="window.location.href='add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">Meeting Guest</button>
-                                 <!--    <button type="button" name="button" id="addMPresentation" class="button" title="Click here to add Meeting Presentation" 
-                                        onclick="window.location.href='add_mpresentation.jsp?ms_id= <%-- <%= ms_id %>&m_id=<%= m_id %> --%> '">Manage Presentation</button>    -->                        
-		                        <% } else if (status==3) { %>
-		                            <button type="button" name="button" id="addStudent" class="button" title="Click here to add Student" 
-		                                onclick="window.location.href='add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Manage Student</button>
-		                            <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Guest" 
-                                        onclick="window.location.href='add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">Lecture Guest</button>  
-                                 <!--   <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Presentation" 
-                                        onclick="window.location.href='add_lpresentation.jsp?ls_id=  <%-- <%= ls_id %>&l_id=<%= l_id %> --%> '">Manage Presentation</button>     -->                                                        
-		                        <% } %>
-		                        <% if(isEventCreator.get_value()){ %>
-                                     <button type="submit" name="endMeeting" id="endMeeting" class="button" title="Click here to end meeting" value="endevent" >Terminate Event</button>
-                                <% } %>
-		                    </div>
-	                </div>
-	            </article>
-	        </form>                                       
+                        <% if (status==1) { %>
+                        <button type="button" name="button" id="addAttendee" class="button" title="Click here to add Attendee" 
+                                onclick="window.location.href='add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">
+                            Manage Attendee
+                        </button>
+                        
+                        <button type="button" name="button" id="addMGuest" class="button" title="Click here to add Meeting Guest" 
+                                onclick="window.location.href='add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">
+                            Meeting Guest
+                        </button>
+
+                        <% } else if (status==3) { %>
+                        <button type="button" name="button" id="addStudent" class="button" title="Click here to add Student" 
+                                onclick="window.location.href='add_student.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">
+                            Manage Student
+                        </button>
+                        
+                        <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Guest" 
+                                onclick="window.location.href='add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">
+                            Lecture Guest
+                        </button>
+                        <% } 
+                        
+                        if(isEventCreator.get_value()){ %>
+                        <button type="submit" name="endMeeting" id="endMeeting" class="button" title="Click here to end meeting" value="endevent" >
+                            Terminate Event
+                        </button>
+                        <% } %>
+                    </div>
+                </div>
+            </article>
+        </form>
        <% } %>
 
         <form action="persist_user_settings.jsp" method="get">
@@ -523,24 +561,28 @@
                                     <% if (status==1 || status==2) { %>
                                         <td class="icons" align="center">
                                             <a href="view_event_schedule.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="view">
-                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event schedule" alt="View_Event"/>
-                                            </a></td>
+                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event schedule" alt="View_Event"/>
+                                            </a>
+                                        </td>
                                     <% } else if (status==3 || status==5) { %>
                                         <td class="icons" align="center">
                                             <a href="view_event_schedule.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="view">
-                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event schedule" alt="View_Event"/>
-                                            </a></td>
+                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event schedule" alt="View_Event"/>
+                                            </a>
+                                        </td>
                                     <% } %>
                                     <% if (status==1) { %>
                                         <td class="icons" align="center">
                                             <a href="edit_event_schedule.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="modify">
-                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting schedule" alt="Modify"/>
-                                        </a></td>
+                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting schedule" alt="Modify"/>
+                                            </a>
+                                        </td>
                                     <% } else if (status==3) { %>
                                         <td class="icons" align="center">
                                             <a href="edit_event_schedule.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="modify">
-                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture schedule" alt="Modify"/>
-                                        </a></td>
+                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture schedule" alt="Modify"/>
+                                            </a>
+                                        </td>
                                     <% } %>
                                     </tr>
                                 </tbody>
@@ -566,8 +608,7 @@
                                         <th title="isCancel">Cancelled<span></span></th>
                                         <th width="200" title="description">Description<span></span></th>
                                         <% if (status==1 || status==3 || status==4) { %>
-                                        <th width="65" title="Modify" class="icons" align="center">Modify</th>
-                                        
+                                        <th width="65" title="Modify" class="icons" align="center">Modify</th>                                     
                                         <% } %>
                                         <th title="enableRecording">Allow Recording<span></span></th>
                                         <th width="100" title="recording">Playback<span></span></th>
@@ -577,26 +618,31 @@
                                     <tr>
                                         <td class="row"><%= type %></td>
                                         <td><%= eventResult.get(0).get(2).substring(0, 10) %></td>
-                                        <td><%= eventResult.get(0).get(2).substring(11, 19) %></td>                                        
+                                        <td><%= eventResult.get(0).get(2).substring(11, 19) %></td>
                                         <td><%= isCancel %></td>
                                         <td><%= eventResult.get(0).get(5) %></td>
                                         
                                         <% if (status==1) { %>
                                             <td class="icons" align="center">
                                                 <a href="edit_meeting.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="modify">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting" alt="Modify"/>
-                                            </a></td>
+                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting" alt="Modify"/>
+                                                </a>
+                                            </td>
                                         <% } else if (status==3 || status==4) { %>
                                             <td class="icons" align="center">
                                                 <a href="edit_lecture.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="modify">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture" alt="Modify"/>
-                                            </a></td>
+                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture" alt="Modify"/>
+                                                </a>
+                                            </td>
                                         <% } %>
                                         <td><% if (isRecordedResult.get("isRecorded")==1) out.write("Yes"); else out.write("No");%> </td>
-                                        <td> <% if(url !=null && url !="") for(int j=0;j<url.split(" ").length;j++) {%>
-                                             <a <%  out.print("href=" +url.split(" ")[j]);  %> style="color:blue" target="_blank">                    
-                                                <%  out.print("view recording "+ (j+1)); %>                      
-                                             </a></br> <% } else  out.print("Not Available"); %> 
+                                        <td>
+                                        <% if(playBackURLs.isEmpty()) {%> Not Available <%}
+                                        else {  
+                                        	for (int k = 0; k < playBackURLs.size(); k++) {%> 
+                                            <a href="<%= playBackURLs.get(k) %>" style="color:blue" target="_blank" > view recording <%= k+1 %></a></br>
+                                            <% } %>
+                                        <%} %>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -616,7 +662,6 @@
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
                 <div class="content">
-
                     <fieldset>
                         <div id="currentEventDiv" class="tableComponent">
                             <table id="tbAttendee" border="0" cellpadding="0" cellspacing="0">
@@ -657,7 +702,6 @@
                     <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
                 <div class="content">
-
                     <fieldset>
                         <div id="currentEventDiv" class="tableComponent">
                             <table id="tbGuest" border="0" cellpadding="0" cellspacing="0">
@@ -714,40 +758,11 @@
                 </div>
             </article>
             <% } %>
-            <!--  
-            <article>
-                <header id="expandPresentation">
-                    <h2>Presentation List</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
-                </header>
-                <div class="content">
 
-                    <fieldset>
-                        <div id="currentEventDiv" class="tableComponent">
-                            <table id="tbPresentation" border="0" cellpadding="0" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th class="firstColumn" tabindex="16">Presentation Title<span></span></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                             <%--    <% for (i=0; i<eventPresentation.size(); i++) { %>     --%>
-                                    <tr>
-                                        <td class="row"><%--  <%= eventPresentation.get(i).get(0) %>  --%></td>
-                                    </tr>
-                             <%--    <% } %>   --%>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
-                    <br />
-                </div>
-            </article>
-            -->
             <article>
                 <header id="legendExpand">
-                            <h2>Legend</h2>
-                            <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
+                    <h2>Legend</h2>
+                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
                 </header>
                 <div class="content">
                     <fieldset>

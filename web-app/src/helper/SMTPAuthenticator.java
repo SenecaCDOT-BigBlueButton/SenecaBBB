@@ -5,7 +5,7 @@ import javax.mail.PasswordAuthentication;
 import config.Config;
 
 public class SMTPAuthenticator extends Authenticator {
-	
+
    public SMTPAuthenticator() {
         // TODO Auto-generated constructor stub
    }

@@ -1091,7 +1091,6 @@ footer div#copyright {
     font-size: 15px;
     font-style: normal;
     font-weight: 400;
-	margin-left:16px;
 	width:394px;
 	resize: none;
 	height:38px;
@@ -1236,10 +1235,23 @@ div.contactus a:active,div.help a:active{
 }
 
 .notyCloseButton {
-position: relative;
-float: right;
+	position: relative;
+	float: right;
 }
 
 .highlight{
 	background:red;
 }
+
+/* To hide the spinner in Chrome and Firefox, please uncomment this block
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+	-webkit-appearance: none; 
+	margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+*/

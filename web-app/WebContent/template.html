@@ -1,154 +1,156 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>SenecaBBB | Conferece Management System</title>
-<link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
-<link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
-<link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
-<link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
-<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
-<script type="text/javascript" src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
-<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.datepicker.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
-<script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-<script type="text/javascript" src="js/componentController.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SenecaBBB | Conferece Management System</title>
+    <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
+    <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
+    <link rel='stylesheet' type="text/css" href='fullcalendar-1.6.3/fullcalendar/fullcalendar.css'>
+    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src='fullcalendar-1.6.3/fullcalendar/fullcalendar.js'></script>
+    <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.datepicker.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
+    <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
+    <script type="text/javascript" src="js/componentController.js"></script>
 
-<script type="text/javascript">
-$(screen).ready(function() {
-	/* ADD ATTENDEE */
-	$('#addAttendee').dataTable({"sPaginationType": "full_numbers"});
-	$('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-	$.fn.dataTableExt.sErrMode = 'throw';
-	$('.dataTables_filter input').attr("placeholder", "Filter entries");
-
-	/* ATTENDEES LIST */
-	$('#attendeesList').dataTable({"sPaginationType": "full_numbers"});
-	$('#attendeesList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-	$.fn.dataTableExt.sErrMode = 'throw';
-	$('.dataTables_filter input').attr("placeholder", "Filter entries");
-});
-$(function(){
-	var month = new Array(12);
-	month[0]="January";
-	month[1]="February";
-	month[2]="March";
-	month[3]="April";
-	month[4]="May";
-	month[5]="June";
-	month[6]="July";
-	month[7]="August";
-	month[8]="September";
-	month[9]="October";
-	month[10]="November";
-	month[11]="December";
-	
-	var datePickerStarts = {
-		showOn: "button",
-		buttonText:"",
-		minDate: 0,
-		maxDate: "+1Y",
-		onSelect:function(dateText){
-			var startDate = new Date(dateText);
-			$("#dropdownDayStarts").val(startDate.getUTCDate());
-			$("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
-			$("#dropdownYearStarts").val(startDate.getUTCFullYear());
-			$("#dropdownDayStarts").selectmenu({'refresh': true});
-			$("#dropdownMonthStarts").selectmenu({'refresh': true});
-			$("#dropdownYearStarts").selectmenu({'refresh': true});
-		}
-	};
-	var datePickerEnds = {
-		showOn: "button",
-		buttonText:"",
-		minDate: 0,
-		maxDate: "+1Y",
-		onSelect:function(dateText){
-			var endDate = new Date(dateText);
-			$("#dropdownDayEnds").val(endDate.getUTCDate());
-			$("#dropdownMonthEnds").val(month[endDate.getUTCMonth()]);
-			$("#dropdownYearEnds").val(endDate.getUTCFullYear());
-			$("#dropdownDayEnds").selectmenu({'refresh': true});
-			$("#dropdownMonthEnds").selectmenu({'refresh': true});
-			$("#dropdownYearEnds").selectmenu({'refresh': true});
-		}
-	};
-	$("#datePickerStarts").datepicker(datePickerStarts);
-	$("#datePickerEnds").datepicker(datePickerEnds);
-});
-$(function(){
-	$('select').selectmenu();
-
-	var date = new Date();
-	var d = date.getDate();
-	var m = date.getMonth();
-	var y = date.getFullYear();
-	
-	$('#fullcalendar').fullCalendar({
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'month,agendaWeek,agendaDay'
-			},
-			editable: true,
-			events: [
-				{
-					title: 'All Day Event',
-					start: new Date(y, m, 1)
-				},
-				{
-					title: 'Long Event',
-					start: new Date(y, m, d-5),
-					end: new Date(y, m, d-2)
-				},
-				{
-					id: 999,
-					title: 'Repeating Event',
-					start: new Date(y, m, d-3, 16, 0),
-					allDay: false
-				},
-				{
-					id: 999,
-					title: 'Repeating Event',
-					start: new Date(y, m, d+4, 16, 0),
-					allDay: false
-				},
-				{
-					title: 'Meeting',
-					start: new Date(y, m, d, 10, 30),
-					allDay: false
-				},
-				{
-					title: 'Lunch',
-					start: new Date(y, m, d, 12, 0),
-					end: new Date(y, m, d, 14, 0),
-					allDay: false
-				},
-				{
-					title: 'Birthday Party',
-					start: new Date(y, m, d+1, 19, 0),
-					end: new Date(y, m, d+1, 22, 30),
-					allDay: false
-				},
-				{
-					title: 'Click for Google',
-					start: new Date(y, m, 28),
-					end: new Date(y, m, 29),
-					url: 'http://google.com/'
-				}
-			]
-		});
-});
-</script>
+    <script type="text/javascript">
+        $(screen).ready(function() {
+            /* ADD ATTENDEE */
+            $('#addAttendee').dataTable({"sPaginationType": "full_numbers"});
+            $('#addAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $.fn.dataTableExt.sErrMode = 'throw';
+            $('.dataTables_filter input').attr("placeholder", "Filter entries");
+            
+            /* ATTENDEES LIST */
+            $('#attendeesList').dataTable({"sPaginationType": "full_numbers"});
+            $('#attendeesList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $.fn.dataTableExt.sErrMode = 'throw';
+            $('.dataTables_filter input').attr("placeholder", "Filter entries");
+        });
+        $(function(){
+            var month = new Array(12);
+            month[0]="January";
+            month[1]="February";
+            month[2]="March";
+            month[3]="April";
+            month[4]="May";
+            month[5]="June";
+            month[6]="July";
+            month[7]="August";
+            month[8]="September";
+            month[9]="October";
+            month[10]="November";
+            month[11]="December";
+            
+            var datePickerStarts = {
+                showOn: "button",
+                buttonText:"",
+                minDate: 0,
+                maxDate: "+1Y",
+                onSelect:function(dateText){
+                    var startDate = new Date(dateText);
+                    $("#dropdownDayStarts").val(startDate.getUTCDate());
+                    $("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
+                    $("#dropdownYearStarts").val(startDate.getUTCFullYear());
+                    $("#dropdownDayStarts").selectmenu({'refresh': true});
+                    $("#dropdownMonthStarts").selectmenu({'refresh': true});
+                    $("#dropdownYearStarts").selectmenu({'refresh': true});
+                }
+            };
+            var datePickerEnds = {
+                showOn: "button",
+                buttonText:"",
+                minDate: 0,
+                maxDate: "+1Y",
+                onSelect:function(dateText){
+                    var endDate = new Date(dateText);
+                    $("#dropdownDayEnds").val(endDate.getUTCDate());
+                    $("#dropdownMonthEnds").val(month[endDate.getUTCMonth()]);
+                    $("#dropdownYearEnds").val(endDate.getUTCFullYear());
+                    $("#dropdownDayEnds").selectmenu({'refresh': true});
+                    $("#dropdownMonthEnds").selectmenu({'refresh': true});
+                    $("#dropdownYearEnds").selectmenu({'refresh': true});
+                }
+            };
+            $("#datePickerStarts").datepicker(datePickerStarts);
+            $("#datePickerEnds").datepicker(datePickerEnds);
+        });
+        $(function(){
+            $('select').selectmenu();
+            
+            var date = new Date();
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+            
+            $('#fullcalendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                editable: true,
+                events: [
+                    {
+                        title: 'All Day Event',
+                        start: new Date(y, m, 1)
+                    },
+                    {
+                        title: 'Long Event',
+                        start: new Date(y, m, d-5),
+                        end: new Date(y, m, d-2)
+                    },
+                    {
+                        id: 999,
+                        title: 'Repeating Event',
+                        start: new Date(y, m, d-3, 16, 0),
+                        allDay: false
+                    },
+                    {
+                        id: 999,
+                        title: 'Repeating Event',
+                        start: new Date(y, m, d+4, 16, 0),
+                        allDay: false
+                    },
+                    {
+                        title: 'Meeting',
+                        start: new Date(y, m, d, 10, 30),
+                        allDay: false
+                    },
+                    {
+                        title: 'Lunch',
+                        start: new Date(y, m, d, 12, 0),
+                        end: new Date(y, m, d, 14, 0),
+                        allDay: false
+                    },
+                    {
+                        title: 'Birthday Party',
+                        start: new Date(y, m, d+1, 19, 0),
+                        end: new Date(y, m, d+1, 22, 30),
+                        allDay: false
+                    },
+                    {
+                        title: 'Click for Google',
+                        start: new Date(y, m, 28),
+                        end: new Date(y, m, 29),
+                        url: 'http://google.com/'
+                    }
+                ]
+            });
+        });
+    </script>
 </head>
 <body>
 <div id="page">
@@ -209,7 +211,7 @@ $(function(){
         <div class="content">
           <fieldset>
           <div id="fullcalendar"></div>
-          	<div class="component">
+            <div class="component">
               <label for="eventTitle" class="label">Event Title:</label>
               <input name="eventTitle" id="eventTitle" class="input" tabindex="15" title="Event title" type="text" required autofocus>
             </div>
@@ -220,13 +222,13 @@ $(function(){
                 <option value="Lecture">Lecture</option>
               </select>
             </div>
-			<div class="component">
-				<div class="checkbox" title="Allow microphone sharing"> <span class="box" role="checkbox" aria-checked="true" tabindex="17" aria-labelledby="eventSetting1"></span>
-					<label class="checkmark"></label>
-					<label class="text" id="eventSetting1">Allow microphone sharing.</label>
-					<input type="checkbox" name="eventSetting1box" checked="checked" aria-disabled="true">
-				</div>
-			</div>
+            <div class="component">
+                <div class="checkbox" title="Allow microphone sharing"> <span class="box" role="checkbox" aria-checked="true" tabindex="17" aria-labelledby="eventSetting1"></span>
+                    <label class="checkmark"></label>
+                    <label class="text" id="eventSetting1">Allow microphone sharing.</label>
+                    <input type="checkbox" name="eventSetting1box" checked="checked" aria-disabled="true">
+                </div>
+            </div>
             <div class="component">
               <div class="checkbox" title="Allow camera sharing"> <span class="box" role="checkbox" aria-checked="true" tabindex="18" aria-labelledby="eventSetting2"></span>
                 <label class="checkmark"></label>
@@ -291,17 +293,17 @@ $(function(){
               </select>
             </div>
             
-<div class="component">
-	<label for="selectboxId" class="label">Select box label:</label>
-	<select name="selectboxName" id="selectboxId" title="Select box description" tabindex="1" role="listbox" style="width: 402px">
-		<option role="option" selected>Default selected option</option>
-		<option role="option">Regular option</option>
-	</select>
-</div>
-			<div style="display: none;" id="selectRepeatsEvery" class="component">
-				<label for="repeatsEvery" class="label">Repeats every:</label>
-				<input name="repeatsEvery" id="repeatsEvery" class="input" tabindex="25" title="Repeats every" type="number" required>
-			</div>
+            <div class="component">
+                <label for="selectboxId" class="label">Select box label:</label>
+                <select name="selectboxName" id="selectboxId" title="Select box description" tabindex="1" role="listbox" style="width: 402px">
+                    <option role="option" selected>Default selected option</option>
+                    <option role="option">Regular option</option>
+                </select>
+            </div>
+            <div style="display: none;" id="selectRepeatsEvery" class="component">
+                <label for="repeatsEvery" class="label">Repeats every:</label>
+                <input name="repeatsEvery" id="repeatsEvery" class="input" tabindex="25" title="Repeats every" type="number" required>
+            </div>
             <div class="component" id="selectOccursBy">
               <label for="dropdownOccursBy" class="label">Occurs by:</label>
               <select id="dropdownOccursBy" title="Occurs by" tabindex="26" role="listbox" style="width: 402px">
@@ -702,14 +704,14 @@ $(function(){
         </div>
       </article>
       <article>
-	<h4></h4>
-	<fieldset>
-		<div class="actionButtons">
-			<button type="submit" name="submit" id="save" class="button" title="Click here to save inserted data">Save</button>
-			<button type="button" name="button" id="cancel" class="button" title="Click here to cancel" onclick="window.location.href='calendar.jsp'">Cancel</button>
-		</div>
-	</fieldset>
-</article>
+    <h4></h4>
+    <fieldset>
+        <div class="actionButtons">
+            <button type="submit" name="submit" id="save" class="button" title="Click here to save inserted data">Save</button>
+            <button type="button" name="button" id="cancel" class="button" title="Click here to cancel" onclick="window.location.href='calendar.jsp'">Cancel</button>
+        </div>
+    </fieldset>
+    </article>
     </form>
   </section>
   <footer>

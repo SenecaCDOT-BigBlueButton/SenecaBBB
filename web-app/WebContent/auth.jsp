@@ -8,7 +8,6 @@
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 
-
 <%@ page language="java" import="java.sql.*" errorPage=""%>
 <%
     // Gets inserted user and password.
@@ -77,7 +76,7 @@
                 } else {
                     response.sendRedirect("calendar.jsp?welcomeMessage=Login successfully");
                     return;
-                }              
+                }
         }
         // User is registered in database but is non_ldap user.
         else if (hash.validatePassword(password.toCharArray(), userID)) {
@@ -100,7 +99,7 @@
                 user.getUserMeetingSetting(userMeetingSetting, userID);
                 usersession.setUserMeetingSettingsMask(userMeetingSetting);
                 user.getUserRoleSetting(userRoleMask, ur_id);
-                usersession.setRoleMask(userRoleMask);              
+                usersession.setRoleMask(userRoleMask);
                 if (prof.get_value()) {
                     usersession.setUserLevel("professor");
                 }
@@ -118,7 +117,7 @@
                 } else {
                     response.sendRedirect("calendar.jsp?welcomeMessage=Login successfully");
                     return;
-                }  
+                } 
             } 
             else {
                 message = "Invalid username and/or password.";

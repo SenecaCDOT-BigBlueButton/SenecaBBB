@@ -431,10 +431,7 @@ public String getRecordings(String meetingID) {
     char PROF_SYMBOL = '`';
     char NAME_DELIMITER = '^';
     
-    String newXMLdoc = "<recordings>";
-    //temp solution to get the playbackLink
-    String playbackLink = "";
-    
+    String newXMLdoc = "<recordings>";  
     try {
         Document doc = null;
         String url = getRecordingsURL(meetingID); 
@@ -494,8 +491,6 @@ public String getRecordings(String meetingID) {
                         playback +=", ";
                     } 
                     playback += StringEscapeUtils.escapeXml("<a href='" + urlP + "'>" + typeP + "</a>");
-                    //temp solution to get the playbackLink
-                    playbackLink += StringEscapeUtils.escapeXml(urlP+" ");
                     if(typeP.equalsIgnoreCase("slides")){
                         length = lengthP;
                     }
@@ -529,9 +524,7 @@ public String getRecordings(String meetingID) {
         return "error: "+e.getMessage();
     }
     newXMLdoc += "</recordings>";
-  //temp solution to get the playbackLink
-   // return newXMLdoc;
-    return playbackLink;
+    return newXMLdoc;
 }
 
 public String getPublishRecordingsURL(boolean publish, String recordID) {

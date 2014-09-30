@@ -33,7 +33,7 @@ $(document).ready(function(){
 	    $("aside nav #events").mouseover(
 	        function () {
 	            $(this).css({"background-color":"#9F100B"});
-	            $(this).css({"border-left":"68px solid #EEE"});
+	            $(this).css({"border-left":"120px solid #EEE"});
 	            $(this).parent(this).css({"border-right":"10px solid #9F100B"});
 	        }
 	    );
@@ -102,6 +102,7 @@ $(document).ready(function(){
 	    );
 	    
 	    /* SETTINGS - MOUSEOVER */
+	    
 	    $("aside nav #settings").mouseover(
 	        function () {
 	            $(this).css({"background-color":"#9F100B"});
@@ -116,7 +117,7 @@ $(document).ready(function(){
 	            $(this).css({"background-color":"#9F100B"});
 	            $(this).css({"border-left":"47px solid #EEE"});
 	            $(this).parent(this).css({"border-right":"10px solid #9F100B"});
-	        }
+	        }	    		
 	    );
 	    
 	    /* Quick Meeting - MOUSEOVER */
@@ -134,6 +135,10 @@ $(document).ready(function(){
 	/* MENU - CLICK EVENT */
 	$("aside nav #calendar").click(function () {
 	    $(location).attr('href', "calendar.jsp");
+	});
+	
+	$("aside nav #events").click(function () {
+	    $(location).attr('href', "view_events.jsp");
 	});
 	
 	$("aside nav #createEvent").click(function () {
@@ -166,6 +171,14 @@ $(document).ready(function(){
 	
 	$("aside nav #settings").click(function () {
 	    $(location).attr('href', "settings.jsp");
+	});
+	
+	$("aside nav #inviteGuest").click(function () {
+	    $(location).attr('href', "invite_guest.jsp");
+	});
+	
+	$("aside nav #QuickMeeting").click(function () {
+	    $(location).attr('href', "quickMeeting.jsp");
 	});
 	
 	/* MENU - CURRENT PAGE */

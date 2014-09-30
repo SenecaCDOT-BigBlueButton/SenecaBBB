@@ -161,7 +161,7 @@ public class Lecture extends Sql {
     public boolean getProfessorCourse(ArrayList<ArrayList<String>> result, String bu_id) {
         _sql = "SELECT c_id,sc_id,sc_semesterid "
                 + "FROM professor "
-                + "WHERE bu_id = '" + bu_id + "' ";              
+                + "WHERE bu_id = '" + bu_id + "' ";
         return _dbAccess.queryDB(result, _sql);
     } 
 
@@ -172,7 +172,7 @@ public class Lecture extends Sql {
      */
     public boolean getAllProfessorCourse(ArrayList<ArrayList<String>> result) {
         _sql = "SELECT bu_id,c_id,sc_id,sc_semesterid "
-                + "FROM professor ";            
+                + "FROM professor ";
         return _dbAccess.queryDB(result, _sql);
     } 
     
@@ -187,9 +187,9 @@ public class Lecture extends Sql {
     public boolean getLectureProfessor(ArrayList<ArrayList<String>> result,String c_id,String sc_id,String sc_semesterid) {
         _sql = "SELECT bu_id "
                 + "FROM professor "
-        		+ "WHERE c_id = '" + c_id + "' "
-        		+ "AND sc_id = '" + sc_id + "' "
-        		+ "AND sc_semesterid = '" + sc_semesterid + "'";            
+                + "WHERE c_id = '" + c_id + "' "
+                + "AND sc_id = '" + sc_id + "' "
+                + "AND sc_semesterid = '" + sc_semesterid + "'";
         return _dbAccess.queryDB(result, _sql);
     } 
 
@@ -342,35 +342,35 @@ public class Lecture extends Sql {
      * @return
      */
     public boolean getLecturesForUser(ArrayList<ArrayList<String>> result, String bu_id, boolean professor, boolean student) {
-    	String _professor = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id, lecture_schedule.sc_semesterid " 
-    			+ "FROM lecture "
-    			+ "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
-    			+ "INNER JOIN professor ON lecture_schedule.c_id = professor.c_id AND lecture_schedule.sc_id = professor.sc_id AND lecture_schedule.sc_semesterid = professor.sc_semesterid "
-    			+ "WHERE professor.bu_id = '" + bu_id +"') ";
-    			
-    	String _GuestProfessor = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id, lecture_schedule.sc_semesterid " 
+        String _professor = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id, lecture_schedule.sc_semesterid " 
+                + "FROM lecture "
+                + "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
+                + "INNER JOIN professor ON lecture_schedule.c_id = professor.c_id AND lecture_schedule.sc_id = professor.sc_id AND lecture_schedule.sc_semesterid = professor.sc_semesterid "
+                + "WHERE professor.bu_id = '" + bu_id +"') ";
+
+        String _GuestProfessor = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id, lecture_schedule.sc_semesterid " 
                 + "FROM lecture "
                 + "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
                 + "INNER JOIN guest_lecturer ON guest_lecturer.ls_id = lecture.ls_id AND lecture.l_id = guest_lecturer.l_id "
                 + "WHERE guest_lecturer.bu_id = '" + bu_id +"') ";
-    	
-    	String _student = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id, lecture_schedule.sc_semesterid " 
-    			+ "FROM lecture "
-    			+ "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
-    			+ "INNER JOIN student ON lecture_schedule.c_id = student.c_id AND lecture_schedule.sc_id = student.sc_id AND lecture_schedule.sc_semesterid = student.sc_semesterid "
-    			+ "WHERE student.bu_id = '" + bu_id +"') ";
-    	
-    	if (professor && student) {
-    		_sql = _professor + "UNION DISTINCT " + _GuestProfessor + "UNION DISTINCT " + _student;
-    	} else if (professor) {
-    		_sql = _professor + "UNION DISTINCT " + _GuestProfessor;
-    	} else if (student) {
-    		_sql = _student;
-    	} else {
-    		result.clear();
-    		return true;
-    	}
-    	return (_dbAccess.queryDB(result, _sql));
+        
+        String _student = "(SELECT lecture.*, lecture_schedule.c_id, lecture_schedule.sc_id, lecture_schedule.sc_semesterid " 
+                + "FROM lecture "
+                + "INNER JOIN lecture_schedule ON lecture.ls_id = lecture_schedule.ls_id "
+                + "INNER JOIN student ON lecture_schedule.c_id = student.c_id AND lecture_schedule.sc_id = student.sc_id AND lecture_schedule.sc_semesterid = student.sc_semesterid "
+                + "WHERE student.bu_id = '" + bu_id +"') ";
+        
+        if (professor && student) {
+            _sql = _professor + "UNION DISTINCT " + _GuestProfessor + "UNION DISTINCT " + _student;
+        } else if (professor) {
+            _sql = _professor + "UNION DISTINCT " + _GuestProfessor;
+        } else if (student) {
+            _sql = _student;
+        } else {
+            result.clear();
+            return true;
+        }
+        return (_dbAccess.queryDB(result, _sql));
     }
     
     /**

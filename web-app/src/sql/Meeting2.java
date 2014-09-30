@@ -426,18 +426,18 @@ public class Meeting2 extends Sql {
     }
     
     public boolean isMPresentation(MyBoolean bool, String mp_title, String ms_id, String m_id) {
-	    _sql = "SELECT 1 "
-	            + "FROM meeting_presentation "
-	            + "WHERE ms_id = '" + ms_id + "' "
-	            + "AND m_id = '" + m_id + "' "
-	            + "AND mp_title = '" + mp_title + "'";
-	    ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-	    boolean flag =_dbAccess.queryDB2(tempResult, _sql);
-	    if (flag) {
-	        bool.set_value(tempResult.isEmpty() ? false : true);
-	    }
-	    return flag;
-	}
+        _sql = "SELECT 1 "
+                + "FROM meeting_presentation "
+                + "WHERE ms_id = '" + ms_id + "' "
+                + "AND m_id = '" + m_id + "' "
+                + "AND mp_title = '" + mp_title + "'";
+        ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
+        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        if (flag) {
+            bool.set_value(tempResult.isEmpty() ? false : true);
+        }
+        return flag;
+    }
 
     public boolean defaultMeetingSetting(String ms_id, String m_id) {
         _sql = "UPDATE meeting as a "

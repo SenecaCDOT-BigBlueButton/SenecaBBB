@@ -187,11 +187,11 @@ public class Section extends Sql {
      * @return
      */
     public boolean getClasses(ArrayList<ArrayList<String>> result, String bu_id) {
-    	_sql = "SELECT c_id, sc_id, sc_semesterid, sc_setting "
-    			+ "FROM professor "
-    			+ "WHERE bu_id = '" + bu_id + "' "
-    			+ "ORDER BY c_id, sc_id, sc_semesterid";
-    	return _dbAccess.queryDB(result, _sql);
+        _sql = "SELECT c_id, sc_id, sc_semesterid, sc_setting "
+                + "FROM professor "
+                + "WHERE bu_id = '" + bu_id + "' "
+                + "ORDER BY c_id, sc_id, sc_semesterid";
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -202,10 +202,10 @@ public class Section extends Sql {
      * @return
      */
     public boolean getClasses(ArrayList<ArrayList<String>> result) {
-    	_sql = "SELECT c_id, sc_id, sc_semesterid, sc_setting, bu_id "
-    			+ "FROM professor "
-    			+ "ORDER BY c_id, sc_id, sc_semesterid";
-    	return _dbAccess.queryDB(result, _sql);
+        _sql = "SELECT c_id, sc_id, sc_semesterid, sc_setting, bu_id "
+                + "FROM professor "
+                + "ORDER BY c_id, sc_id, sc_semesterid";
+        return _dbAccess.queryDB(result, _sql);
     }
     	
     /**

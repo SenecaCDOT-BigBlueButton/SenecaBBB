@@ -241,10 +241,18 @@
         $(screen).ready(function() {
             $("#help").attr({href:"help_addAttendee.jsp" , target:"_blank"});
             /* CURRENT EVENT */   
-            $('#tbGuest').dataTable({"sPaginationType": "full_numbers"});
-            $('#tbGuest').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-            $('#tbSearch').dataTable({"sPaginationType": "full_numbers"});
-            $('#tbSearch').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#tbGuest').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[3,4]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
+            $('#tbSearch').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[3]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
             $.fn.dataTableExt.sErrMode = 'throw';
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
             $(".remove").click(function(){

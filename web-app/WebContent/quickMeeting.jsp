@@ -27,11 +27,11 @@
     <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
     <script type="text/javascript" src="js/ui/jquery.timepicker.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
-    <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
     <script type="text/javascript" src="js/componentController.js"></script>
     <script type="text/javascript" src="js/checkboxController.js"></script>
     <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="js/additional-methods.min.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
     <%@ include file="search.jsp" %>
     <%
     //Start page validation
@@ -67,30 +67,7 @@
   
     %>
 
-    <script type="text/javascript">  
-        function searchUser(){
-            var xmlhttp;
-            if (window.XMLHttpRequest)
-            {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp=new XMLHttpRequest();
-            }
-            else
-            {// code for IE6, IE5
-                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange=function()
-            {
-                if (xmlhttp.readyState==4 && xmlhttp.status==200)
-                {
-                    var json = xmlhttp.responseText;
-                    obj = JSON.parse(json);
-                    document.getElementById("responseDiv").innerHTML=xmlhttp.responseText;
-                }
-            }
-            userName = document.getElementById("searchBoxAddAttendee").value;
-            xmlhttp.open("GET","search.jsp?userName=" + userName,true);
-            xmlhttp.send();
-        }
+    <script type="text/javascript">
         $(document).ready(function() { 
             $('#startTime').timepicker({ 'scrollDefaultNow': true , 'timeFormat': 'H:i:s'});
         });
@@ -98,6 +75,34 @@
         $(function(){
             $('select').selectmenu();
         });
+        
+        function toUTC(){
+            var today = new Date();
+            var startYear = today.getFullYear();
+            var startMonth = today.getMonth()+1; //getMonth return 0-11, we need 1-12
+            var startDay = today.getDate();
+            // we need 01,02 ...09
+            if(startDay.length == 1){
+                startDay = "0" + startDay;
+            }           
+            if(startMonth.length == 1){
+                startDay = "0" + startMonth;
+            }        
+            var startTime = $("#startTime").val();           
+            var utcdayTime = moment(startYear + "-" + startMonth + "-" + startDay + " " + startTime).utc();
+            var currentUTCTime = moment.utc();
+            //check event start time, it must be later than current time
+            if(utcdayTime.isBefore(currentUTCTime)){
+                $(".warningMessage").text("Event Start Time must be later than current time!");
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                    layout:'top',
+                                    type:'error'});
+                return false;
+            }else{
+                $("#startUTCDateTime").attr("value",utcdayTime.format("YYYY-MM-DD HH:mm:SS"));
+                return true;
+            }
+        }
     </script>
 </head>
 <body>
@@ -112,7 +117,7 @@
                 <div class="warningMessage"><%=message %></div>
                 <div class="successMessage"><%=successMessage %></div> 
             </header>
-            <form method="get" action="persist_event.jsp?" id="eventForm">
+            <form method="get" action="persist_event.jsp?" id="eventForm" onsubmit="return toUTC()">
                 <article>
                     <header>
                         <h2>Meeting Details</h2>
@@ -127,6 +132,7 @@
                             <div class="component" >
                               <label for="startTime" class="label">Start Time:</label> 
                               <input id="fromquickmeeting" name="fromquickmeeting"   type="hidden" value="fromquickmeeting"  /> 
+                              <input name="startUTCDateTime" id="startUTCDateTime" hidden="hidden" />
                               <input id="startTime" name="startTime"  type="text"  class="input"  tabindex="24" title="Start Time" placeholder="pick start time" autofocus/>            
                             </div>
                             <div class="component" >

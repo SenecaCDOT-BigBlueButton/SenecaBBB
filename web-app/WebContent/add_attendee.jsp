@@ -224,11 +224,17 @@
     <script type="text/javascript">
     /* TABLE */
     $(screen).ready(function() {
-        $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
-        $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-        $('#tbSearch').dataTable({"sPaginationType": "full_numbers"});
-        $('#tbSearch').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-        $.fn.dataTableExt.sErrMode = 'throw';
+        $('#tbAttendee').dataTable({
+                "sPaginationType" : "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[3,4]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
+        $('#tbSearch').dataTable({
+            "sPaginationType": "full_numbers",
+            "aoColumnDefs": [{ "bSortable": false, "aTargets":[3]}], 
+            "bRetrieve": true, 
+            "bDestroy": true});
         $.fn.dataTableExt.sErrMode = 'throw';
         $('.dataTables_filter input').attr("placeholder", "Filter entries");
         $(".remove").click(function(){

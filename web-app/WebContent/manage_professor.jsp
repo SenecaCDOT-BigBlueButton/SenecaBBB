@@ -30,10 +30,12 @@
         //Table
         $(screen).ready(function () {
             /* Professor List */
-            $('#professorList').dataTable({"sPaginationType": "full_numbers"});
-            $('#professorList').dataTable({"aoColumnDefs": [
-                { "bSortable": false, "aTargets": [5]}
-            ], "bRetrieve": true, "bDestroy": true});
+            $('#professorList').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets": [4]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
             $.fn.dataTableExt.sErrMode = 'throw';
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
             $(".remove").click(function () {

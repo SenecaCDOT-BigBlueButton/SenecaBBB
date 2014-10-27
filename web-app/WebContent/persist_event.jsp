@@ -68,14 +68,14 @@ String spec = "";
 title = request.getParameter("eventTitle");
 duration = request.getParameter("eventDuration");
 
-if(fromquickmeeting == null){
+if(fromquickmeeting == null){  
     endMonthNumber = getMonthNumber(request.getParameter("dropdownMonthEnds"));
     startMonthNumber = getMonthNumber(request.getParameter("dropdownMonthStarts"));  
     eventType = request.getParameter("dropdownEventType");
     description = request.getParameter("eventDescription");
-    inidatetime = request.getParameter("dropdownYearStarts").concat("-").concat(startMonthNumber).concat("-").concat(request.getParameter("dropdownDayStarts")).concat(" ").concat(request.getParameter("startTime")).concat(".0");
+    inidatetime = request.getParameter("startUTCDateTime").concat(".0");
     repeatEndDate=request.getParameter("dropdownYearEnds").concat("-").concat(endMonthNumber).concat("-").concat(request.getParameter("dropdownDayEnds")); // if on specified date is chosen, specified end date
-    
+
     //daily weekly recurrence
     recurrence = request.getParameter("dropdownRecurrence"); // daily,weekly,monthly
     repeatEvery = request.getParameter("repeatsEvery"); // daily or weekly is chosen, repeat interval
@@ -126,35 +126,20 @@ if(fromquickmeeting == null){
          }
     }
     else{
-        if(dropdownOccursBy.equals("Day of the month")){                  
+        if(dropdownOccursBy.equals("Day of the month")){
              spec = "4;1;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(dropdownDayoftheMonth);                    
         }
         else{
             spec = "4;2;".concat(numberOfOccurrences).concat(";").concat(repeatEvery).concat(";").concat(selectedDayofWeek);    
         }
-    } 
-    
-    //Validate inidatetime to ensure that it is later than current time
-    if (!(Validation.checkStartDateTime(inidatetime))) {
-        response.sendRedirect("create_event.jsp?message=" + Validation.getErrMsg());
-        return;
-    }
+    }    
    
 }else{
-    Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
-    int currentYear = localCalendar.get(Calendar.YEAR);
-    int currentDayOfMonth = localCalendar.get(Calendar.MONTH);
-    int currentDay = localCalendar.get(Calendar.DATE);
-    inidatetime = String.valueOf(currentYear).concat("-")+ String.valueOf(currentDayOfMonth + 1).concat("-")+ String.valueOf(currentDay).concat(" ").concat(request.getParameter("startTime")).concat(".0");
+    inidatetime = request.getParameter("startUTCDateTime").concat(".0");
     eventType = "Meeting";
     description ="Quick Meeting";
-    recurrence ="Only once"; 
-    spec="1"; 
-    //Validate inidatetime to ensure that it is later than current time
-    if (!(Validation.checkStartDateTime(inidatetime))) {
-        response.sendRedirect("quickMeeting.jsp?message=" + Validation.getErrMsg());
-        return;
-    }
+    recurrence ="Only once";
+    spec="1";
 }
 
 if(eventType.equals("Meeting")){   //create a meeting event		
@@ -179,7 +164,6 @@ if(eventType.equals("Meeting")){   //create a meeting event
         response.sendRedirect("calendar.jsp?message=Fail to create lecture schedule");
     }
 }
-    
 %>
 
 <%! 

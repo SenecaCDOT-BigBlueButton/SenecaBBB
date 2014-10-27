@@ -75,8 +75,19 @@
         //Table
         $(screen).ready(function() {
             /* Admin Key Name List */
-            $('#bbb_adminTable').dataTable({"sPaginationType": "full_numbers"});
-            $('#bbb_adminTable').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#bbb_adminTable').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[3]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
+            
+            $('#predefinedRoleList').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[2,3]}],
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
             $.fn.dataTableExt.sErrMode = 'throw';
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
             
@@ -130,8 +141,8 @@
                                    guestAccount= roleMask.get(Settings.ur_rolemask[1]);
                                 %>
                                     <tr>
-                                        <td><input style="border:none" readonly type="text" name="userroleid" value="<%= i+1 %>"></td>                      
-                                        <td><input style="border:none" readonly type="text" name="<%= allUserRole.get(i).get(1) %>" value="<%= allUserRole.get(i).get(1) %>"></td>                           
+                                        <td><%= i+1 %><input hidden="hidden" readonly type="text" name="userroleid" value="<%= i+1 %>"></td>                      
+                                        <td><%= allUserRole.get(i).get(1) %><input hidden="hidden" readonly type="text" name="<%= allUserRole.get(i).get(1) %>" value="<%= allUserRole.get(i).get(1) %>"></td>                           
                                         <td><input type="checkbox" name="<%= "guestAccountCreate-".concat(String.valueOf(i+1)) %>" <% if(guestAccount==1) out.print("checked=checked"); else out.print(""); %>>
                                         <td><input type="checkbox" name="<%= "recordMeeting-".concat(String.valueOf(i+1)) %>" <% if (recordableMeeting==1) out.print("checked=checked"); else out.print(""); %> >     
                                     </tr>
@@ -139,11 +150,11 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="buttons">
-                            <button type="submit" name="saveSetting" id="saveSetting" class="button"  title="Click here to save">Save</button>                         
-                        </div>
                     </div>
                 </article>
+                <div class="buttons">
+                    <button type="submit" name="saveSetting" id="saveSetting" class="button"  title="Click here to save">Save</button>                         
+                </div>
             </form>
             <form name="bbbadminSettingForm" id="bbbadminSettingForm">
                 <article>

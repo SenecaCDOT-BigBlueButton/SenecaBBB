@@ -30,8 +30,12 @@
         //Table
         $(screen).ready(function() {
             /* Course List */
-            $('#courseList').dataTable({"sPaginationType": "full_numbers"});
-            $('#courseList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#courseList').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[2,3]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
             $.fn.dataTableExt.sErrMode = 'throw';
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
             $(".remove").click(function(){

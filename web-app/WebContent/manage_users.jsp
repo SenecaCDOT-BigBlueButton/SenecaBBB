@@ -29,36 +29,15 @@
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
     <%@ include file="search.jsp" %>
-    <script type="text/javascript">
-        function searchUser(){
-            var xmlhttp;
-            if (window.XMLHttpRequest)
-            {// code for IE7+, Firefox, Chrome, Opera, Safari
-              xmlhttp=new XMLHttpRequest();
-            }
-            else
-            {// code for IE6, IE5
-              xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange=function()
-            {
-              if (xmlhttp.readyState==4 && xmlhttp.status==200)
-              {
-                  var json = xmlhttp.responseText;
-                  obj = JSON.parse(json);
-                document.getElementById("responseDiv").innerHTML=xmlhttp.responseText;
-              }
-            }
-            userName = document.getElementById("searchBoxAddAttendee").value;
-            xmlhttp.open("GET","search.jsp?userName=" + userName,true);
-            xmlhttp.send();
-        }
-        
+    <script type="text/javascript">       
         //Table
         $(screen).ready(function() {
             /* USERS LIST */    
-            $('#usersList').dataTable({"sPaginationType": "full_numbers"});
-            $('#usersList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#usersList').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[6,7]}], 
+                "bRetrieve": true, 
+                "bDestroy": true});
             $.fn.dataTableExt.sErrMode = 'throw';
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
         
@@ -179,13 +158,13 @@
                                     <table id="usersList" border="0" cellpadding="0" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th width="100" class="firstColumn" tabindex="16" title="Username">ID<span></span></th>
-                                                <th width="150">Nick Name<span></span></th>
-                                                <th >Is Banned<span></span></th>
-                                                <th width="100" title="Last Name">Is Active<span></span></th>
-                                                <th width="100" title="Email">Is Ldap<span></span></th>
-                                                <th width="100" title="Created Time">Is Super<span></span></th>
-                                                <th width="100" title="View Schedule" class="icons"  align="center">Schedule</th>
+                                                <th class="firstColumn" tabindex="16" title="UserID">ID<span></span></th>
+                                                <th width="150" title="User Nick Nmae">Nick Name<span></span></th>
+                                                <th width="80" title="User Is Banned">Is Banned<span></span></th>
+                                                <th width="80" title="User Is Active">Is Active<span></span></th>
+                                                <th width="80" title="User Is LDAP User">Is Ldap<span></span></th>
+                                                <th width="80" title="User Is Super User">Is Super<span></span></th>
+                                                <th width="80" title="User Schedule" class="icons"  align="center">Schedule</th>
                                                 <th width="65" title="Edit" class="icons"  align="center">Edit</th>
                                             </tr>
                                         </thead>

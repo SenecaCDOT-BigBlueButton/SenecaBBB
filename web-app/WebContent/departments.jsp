@@ -141,12 +141,16 @@
     /* TABLE */
     $(screen).ready(function() {
         /* DEPARTMENT LIST */
-        $('#departmentList').dataTable({"sPaginationType": "full_numbers"});
-        $('#departmentList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+        $('#departmentList').dataTable({
+            "sPaginationType": "full_numbers",
+            "aoColumnDefs": [{ "bSortable": false, "aTargets":[2,3,4]}], 
+            "bRetrieve": true, 
+            "bDestroy": true
+            });
         $.fn.dataTableExt.sErrMode = 'throw';
-        $('.dataTables_filter input').attr("placeholder", "Filter entries");
+        $('.dataTables_filter input').attr("placeholder", "Filter entries");         
         $(".remove").click(function(){
-            return window.confirm("Are you sure to remove this item?");;
+            return window.confirm("Are you sure to remove this item?");
         });
     });
     /* SELECT BOX */
@@ -168,54 +172,52 @@
                 <div class="warningMessage"><%=message %></div>
                 <div class="successMessage"><%=successMessage %></div>
             </header>
-            <form action="persist_user_settings.jsp" method="get">
-                <article>
-                    <header>
-                        <h2>Department List</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
-                    </header>
-                    <div class="content">
-                        <fieldset>
-                            <div class="actionButtons">
-                                <button style="margin-bottom:15px;" type="button" name="button" id="addDepartment" class="button" title="Click here to add a new department" onclick="window.location.href='create_departments.jsp'">Add department</button>
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <div id="tableAddAttendee" class="tableComponent">
-                                <table id="departmentList" border="0" cellpadding="0" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th width="65" class="firstColumn" tabindex="16" title="Code">Code<span></span></th>
-                                            <th title="Name">Name<span></span></th>
-                                            <th width="65" title="View users" class="icons" align="center">Users</th>
-                                            <th width="65" title="Modify" class="icons" align="center">Modify</th>
-                                            <% if (usersession.isSuper()) { %>
-                                            <th width="65" title="Remove" class="icons" align="center">Remove</th>
-                                            <% } %>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <%
-                                    for (int i=0; i<deptList.size(); i++) {
-                                    %>
-                                        <tr>
-                                            <td class="row"><%= deptList.get(i).get(0) %></td>
-                                            <td><%= deptList.get(i).get(1) %></td>
-                                            <td class="icons" align="center"><a href="department_users.jsp?DeptCode=<%= deptList.get(i).get(0) %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
-                                            <% //The ampersand symbol that are in some department names needs to be escaped to %26 before merged into GET URL %>
-                                            <td class="icons" align="center"><a href="modify_department.jsp?mod_d_code=<%= deptList.get(i).get(0) %>&mod_d_name=<%= deptList.get(i).get(1).replace("&", "%26") %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
-                                            <% if (usersession.isSuper()) { %>
-                                            <td class="icons" align="center"><a href="departments.jsp?deptRemove=<%= deptList.get(i).get(0) %>" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
-                                            <% } %>
-                                        </tr>
-                                    <% } %>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </fieldset>
-                    </div>
-                </article>
-            </form>
+            <article>
+                <header>
+                    <h2>Department List</h2>
+                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                </header>
+                <div class="content">
+                    <fieldset>
+                        <div class="actionButtons">
+                            <button style="margin-bottom:15px;" type="button" name="button" id="addDepartment" class="button" title="Click here to add a new department" onclick="window.location.href='create_departments.jsp'">Add department</button>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div id="tableAddAttendee" class="tableComponent">
+                            <table id="departmentList" border="0" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th width="65" class="firstColumn" tabindex="16" title="Code">Code<span></span></th>
+                                        <th title="Name">Name<span></span></th>
+                                        <th width="65" title="View users" class="icons" align="center">Users</th>
+                                        <th width="65" title="Modify" class="icons" align="center">Modify</th>
+                                        <% if (usersession.isSuper()) { %>
+                                        <th width="65" title="Remove" class="icons" align="center">Remove</th>
+                                        <% } %>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <%
+                                for (int i=0; i<deptList.size(); i++) {
+                                %>
+                                    <tr>
+                                        <td class="row"><%= deptList.get(i).get(0) %></td>
+                                        <td><%= deptList.get(i).get(1) %></td>
+                                        <td class="icons" align="center"><a href="department_users.jsp?DeptCode=<%= deptList.get(i).get(0) %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
+                                        <% //The ampersand symbol that are in some department names needs to be escaped to %26 before merged into GET URL %>
+                                        <td class="icons" align="center"><a href="modify_department.jsp?mod_d_code=<%= deptList.get(i).get(0) %>&mod_d_name=<%= deptList.get(i).get(1).replace("&", "%26") %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
+                                        <% if (usersession.isSuper()) { %>
+                                        <td class="icons" align="center"><a href="departments.jsp?deptRemove=<%= deptList.get(i).get(0) %>" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
+                                        <% } %>
+                                    </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+            </article>
         </section>
         <jsp:include page="footer.jsp"/>
     </div>

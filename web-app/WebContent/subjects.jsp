@@ -76,8 +76,12 @@
         //Table
         $(screen).ready(function() {
             /* Subjects List*/
-            $('#subjectsList').dataTable({"sPaginationType": "full_numbers"});
-            $('#subjectsList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#subjectsList').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], 
+                "bRetrieve": true,
+                "bDestroy": true
+                });
             $.fn.dataTableExt.sErrMode = 'throw';
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
             $(".remove").click(function(){
@@ -134,10 +138,10 @@
                                 <thead>
                                     <tr>
                                         <th width="100" class="firstColumn" tabindex="16" title="Username">Subject ID<span></span></th>
-                                        <th  title="Name">Section<span></span></th>
+                                        <th  width="100" title="Name">Section<span></span></th>
                                         <th  width="100" title="E-mail">Semester<span></span></th>
                                         <th  width="120" title="User type">Department<span></span></th>
-                                        <th  width="250" title="Department">Subject Name<span></span></th>
+                                        <th  title="Department">Subject Name<span></span></th>
                                         <th  width="65" title="Remove" class="icons" align="center">Remove</th>
                                     </tr>
                                 </thead>

@@ -146,8 +146,12 @@
     <script type="text/javascript">
         /* TABLE */
         $(screen).ready(function() {
-            $('#tbPresentation').dataTable({"sPaginationType": "full_numbers"});
-            $('#tbPresentation').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#tbPresentation').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[1]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
             $.fn.dataTableExt.sErrMode = 'throw';
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
             $(".remove").click(function(){

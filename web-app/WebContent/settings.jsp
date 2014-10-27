@@ -58,7 +58,7 @@
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
     user.getRoleInfo(roleInfoResult, userId);
-    String nickName=null;
+    String nickName="";
     Boolean flag = false;
     if(usersession.isSuper()||usersession.isProfessor()|| usersession.isDepartmentAdmin() || roleInfoResult.get(0).get(1).equals("employee")){
         flag = true;

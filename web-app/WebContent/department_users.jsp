@@ -198,14 +198,9 @@
     <script type="text/javascript">
         $(screen).ready(function() {
             /* TABLE */
-            $('#tableName').dataTable({
-                "sPaginationType" : "full_numbers"
-            });
-            $('#tableName').dataTable({
-                "aoColumnDefs" : [ {
-                    "bSortable" : false,
-                    "aTargets" : [ 5 ]
-                } ],
+            $('#departmentUsersList').dataTable({
+                "sPaginationType" : "full_numbers",
+                "aoColumnDefs" : [{"bSortable" : false, "aTargets" : [ 4,5 ]}],
                 "bRetrieve" : true,
                 "bDestroy" : true
             });
@@ -266,7 +261,7 @@
                     <div class="content">
                         <fieldset>
                             <div class="tableComponent">
-                                <table id="tableName" border="0" cellpadding="0" cellspacing="0">
+                                <table id="departmentUsersList" border="0" cellpadding="0" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <!-- Department Code -->

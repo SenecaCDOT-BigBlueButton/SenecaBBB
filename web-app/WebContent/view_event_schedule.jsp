@@ -28,6 +28,8 @@
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
     <script type="text/javascript" src="js/componentController.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
+
     <%
     //Start page validation
     String userId = usersession.getUserId();
@@ -187,21 +189,33 @@
         /* TABLE */
         $(screen).ready(function() {
             /* CURRENT EVENT */
-            $('#currentEvent').dataTable({"sPaginationType": "full_numbers"});
-            $('#currentEvent').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-            $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
-            $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#currentEvent').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[5,6]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
+            
+            $('#tbAttendee').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[2]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
             $.fn.dataTableExt.sErrMode = 'throw';
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
+            $("#help").attr({href:"help_viewEventSchedule.jsp" ,target:"_blank"});
         });
         /* SELECT BOX */
         $(function(){
             $('select').selectmenu();
         });
-        $(document).ready(function() {
-            $("#help").attr({href:"help_viewEventSchedule.jsp" ,
-                            target:"_blank"});
-        });
+        //Convert UTC to user local time
+        function toUserLocalTime(utcTime){
+            var startMoment = moment.utc(utcTime).local().format("YYYY-MM-DD HH:mm:SS");
+            return startMoment;
+        }
+
         </script>
 </head>
 <body>
@@ -219,7 +233,6 @@
                 <div class="warningMessage"><%=message %></div>
                 <div class="successMessage"><%=successMessage %></div>
             </header>
-            <form action="persist_user_settings.jsp" method="get">
                 <article>
                     <header>
                         <h2>Event Schedule</h2>
@@ -252,15 +265,16 @@
                                         <tr>
                                         <% if (status==1 || status==2) { %>
                                             <td class="row"><%= eventSResult.get(0).get(1) %></td>
-                                            <td><%= eventSResult.get(0).get(2).substring(0, 19) %></td>
-                                            <td><%= eventSResult.get(0).get(4) %> Minutes</td>
+                                            <td id="eventStartDateTime"><script>document.write(toUserLocalTime("<%= eventSResult.get(0).get(2).substring(0, 19) %>"));</script></td>
+                                            <td><span id="scheduleDuration"><%= eventSResult.get(0).get(4) %></span> Minutes</td>
                                             <td><%= eventSResult.get(0).get(5) %></td>
                                         <% } else { %>
                                             <td class="row"><%= eventSResult.get(0).get(1) %></td>
                                             <td><%= eventSResult.get(0).get(2) %></td>
                                             <td><%= eventSResult.get(0).get(3) %></td>
-                                            <td><%= eventSResult.get(0).get(4).substring(0, 19) %></td>
-                                            <td><%= eventSResult.get(0).get(6) %> Minutes</td>
+                                            <td id="eventStartDateTime"><script>document.write(toUserLocalTime("<%= eventSResult.get(0).get(4).substring(0, 19) %>"));</script></td>
+                                            <td><span id="scheduleDuration"><%= eventSResult.get(0).get(6) %></span> Minutes</td>
+                                            
                                         <% } %>
                                         <% if (status==1) { %>
                                             <td class="icons" align="center">
@@ -303,11 +317,15 @@
                                             <% } %>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <% for (i=0; i<eventResult.size(); i++) { %>
+                                    <tbody id="eventlistrows">
+                                        <% for (i=0; i<eventResult.size(); i++) {%>
                                         <tr>
-                                            <td><%= eventResult.get(i).get(2).substring(0, 10) %></td>
-                                            <td><%= eventResult.get(i).get(2).substring(11, 19) %></td>
+                                            <td id="currentEventStartLocalDate-<%=i%>" class="row">
+                                               <script>document.write(toUserLocalTime("<%= eventResult.get(i).get(2).substring(0, 19) %>").substring(0,10));</script>
+                                            </td>
+                                            <td id="currentEventStartLocalTime-<%=i%>">
+                                               <script>document.write(toUserLocalTime("<%= eventResult.get(i).get(2).substring(0, 19) %>").substring(11,19));</script>
+                                            </td>
                                             <td><%= eventResult.get(i).get(3) %> Minutes</td>
                                             <td><%= (eventResult.get(i).get(4).equals("1")) ? "Yes" : "" %></td>
                                             <td><%= eventResult.get(i).get(5) %></td>
@@ -401,7 +419,6 @@
                     </div>
                 </article>
                 <% } %>
-            </form>
         </section>
         <jsp:include page="footer.jsp"/>
     </div>

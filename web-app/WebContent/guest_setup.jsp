@@ -26,7 +26,6 @@
     <script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
-    <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
     <script type="text/javascript" src="js/componentController.js"></script>
     <% 
     String message = request.getParameter("message");
@@ -77,17 +76,26 @@
         }
         function validate() {
             if (trim(document.getElementById("newPassword").value) == "") {
-                alert("Please enter a password");
+                $(".warningMessage").text("Please enter a password!");
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                    layout:'top',
+                                    type:'error'});
                 document.getElementById("newPassword").focus();
                 return false;
             }
             if (trim(document.getElementById("confirmPassword").value) == "") {
-                alert("Password confirm your new password");
+                $(".warningMessage").text("Please confirm your new password!");
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                    layout:'top',
+                                    type:'error'});
                 document.getElementById("confirmPassword").focus();
                 return false;
             }
             if (document.getElementById("newPassword").value != document.getElementById("confirmPassword").value) {
-                alert ("Passwords don't match");
+                $(".warningMessage").text("Passwords don't match!");
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                    layout:'top',
+                                    type:'error'});
                 document.getElementById("newPassword").focus();
                 return false;
             }

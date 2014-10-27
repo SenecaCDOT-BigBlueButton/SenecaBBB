@@ -1377,14 +1377,14 @@ CREATE PROCEDURE sp_update_m_time(
 	IN p_num TINYINT UNSIGNED,
 	IN p_ms_id INT UNSIGNED,
 	IN p_m_id INT UNSIGNED,
-	IN p_time TIME)
+	IN p_time DATETIME)
 BEGIN
 	#DECLARE _date DATETIME;
 	CASE p_num
 		WHEN 1 THEN
 			BEGIN
 				UPDATE meeting
-					SET m_inidatetime = concat(DATE(m_inidatetime), ' ', TIME(p_time))
+					SET m_inidatetime = p_time
 					WHERE ms_id = p_ms_id
 					AND m_id = p_m_id
 					AND m_inidatetime >= sysdate();
@@ -1397,22 +1397,22 @@ BEGIN
 						WHERE ms_id = p_ms_id
 						AND m_id = p_m_id);
 				UPDATE meeting
-					SET m_inidatetime = concat(DATE(m_inidatetime), ' ', TIME(p_time))
+					SET m_inidatetime = p_time
 						WHERE ms_id = p_ms_id
 						AND m_inidatetime >= _inidatetime
 						AND m_inidatetime >= sysdate();
 				UPDATE meeting_schedule
-					SET ms_inidatetime = concat(DATE(ms_inidatetime), ' ', TIME(p_time))
+					SET ms_inidatetime = p_time
 					WHERE ms_id = p_ms_id;
 			END;
 		WHEN 3 THEN
 			BEGIN				
 				UPDATE meeting
-					SET m_inidatetime = concat(DATE(m_inidatetime), ' ', TIME(p_time))
+					SET m_inidatetime = p_time
 					WHERE ms_id = p_ms_id
 					AND m_inidatetime >= sysdate();
 				UPDATE meeting_schedule
-					SET ms_inidatetime = concat(DATE(ms_inidatetime), ' ', TIME(p_time))
+					SET ms_inidatetime = p_time
 					WHERE ms_id = p_ms_id;
 			END;
 	END CASE;
@@ -1560,14 +1560,14 @@ CREATE PROCEDURE sp_update_l_time(
 	IN p_num TINYINT UNSIGNED,
 	IN p_ls_id INT UNSIGNED,
 	IN p_l_id INT UNSIGNED,
-	IN p_time TIME)
+	IN p_time DATETIME)
 BEGIN
 	#DECLARE _date DATETIME;
 	CASE p_num
 		WHEN 1 THEN
 			BEGIN
 				UPDATE lecture
-					SET l_inidatetime = concat(DATE(l_inidatetime), ' ', TIME(p_time))
+					SET l_inidatetime = p_time
 					WHERE ls_id = p_ls_id
 					AND l_id = p_l_id
 					AND l_inidatetime >= sysdate();
@@ -1580,22 +1580,22 @@ BEGIN
 						WHERE ls_id = p_ls_id
 						AND l_id = p_l_id);
 				UPDATE lecture
-					SET l_inidatetime = concat(DATE(l_inidatetime), ' ', TIME(p_time))
+					SET l_inidatetime = p_time
 						WHERE ls_id = p_ls_id
 						AND l_inidatetime >= _inidatetime
 						AND l_inidatetime >= sysdate();
 				UPDATE lecture_schedule
-					SET ls_inidatetime = concat(DATE(ls_inidatetime), ' ', TIME(p_time))
+					SET ls_inidatetime = p_time
 					WHERE ls_id = p_ls_id;
 			END;
 		WHEN 3 THEN
 			BEGIN				
 				UPDATE lecture
-					SET l_inidatetime = concat(DATE(l_inidatetime), ' ', TIME(p_time))
+					SET l_inidatetime = p_time
 					WHERE ls_id = p_ls_id
 					AND l_inidatetime >= sysdate();
 				UPDATE lecture_schedule
-					SET ls_inidatetime = concat(DATE(ls_inidatetime), ' ', TIME(p_time))
+					SET ls_inidatetime = p_time
 					WHERE ls_id = p_ls_id;
 			END;
 	END CASE;

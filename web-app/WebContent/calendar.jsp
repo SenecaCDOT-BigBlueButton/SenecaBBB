@@ -26,6 +26,7 @@
     <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.position.js"></script>
     <script type="text/javascript" src="js/checkboxController.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
     
     <%
     String message = request.getParameter("message");
@@ -92,7 +93,11 @@
                 // make the filter options hidden once the page has loaded
                 $('#filterOptions').click();
             });
-            
+            var allEventJson = [<%= totalEventJSON %>];
+            for(var i=0; i<allEventJson.length;i++){
+                allEventJson[i].start = moment.utc(allEventJson[i].start).toDate();
+                allEventJson[i].end = moment(allEventJson[i].start).add(allEventJson[i].end,'minutes').toDate();
+            }
             $(document).ready(function() {
                 $('#fullcalendar').fullCalendar({
                     header: {
@@ -102,7 +107,7 @@
                     },
                     editable: false,
                     allDayDefault: false,
-                    events: [<%= totalEventJSON %>]
+                    events: allEventJson
                 });
             });
         </script>
@@ -176,14 +181,10 @@
 public String meetingDBToJSON(ArrayList<ArrayList<String>> results) {
     String converted = "";
     for (int i = 0; i < results.size(); ++i) {
-        if (i > 0)
+        if (i > 0){
             converted += ",";
-        
-        String [] date = results.get(i).get(2).split(" ");
-        converted += "{id: " + results.get(i).get(0) + ",title: '" + results.get(i).get(9) + "',start: new Date(" + date[0].split("-")[0] + ", "
-                      + date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "),end: new Date(" + date[0].split("-")[0] 
-                      + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "+" + results.get(i).get(3) 
-                      + "),url:'view_event.jsp?ms_id="+results.get(i).get(0)+"&m_id="+results.get(i).get(1)+"'}";
+        }
+        converted += "{id: " + results.get(i).get(0) + ", title: '" + results.get(i).get(9) + "',start: '" + results.get(i).get(2) + "',end: '" + results.get(i).get(3) + "', url:'view_event.jsp?ms_id="+results.get(i).get(0)+"&m_id="+results.get(i).get(1)+"'}";
     }
     return converted;
 }
@@ -192,15 +193,10 @@ public String meetingDBToJSON(ArrayList<ArrayList<String>> results) {
 public String lectureDBToJSON(ArrayList<ArrayList<String>> results) {
     String converted = "";
     for (int i = 0; i < results.size(); ++i) {
-        if (i > 0)
+        if (i > 0){
             converted += ",";
-        
-        String [] date = results.get(i).get(2).split(" ");
-        converted += "{id: " + results.get(i).get(0) + ",title: '" + results.get(i).get(8) + results.get(i).get(9) + "',start: new Date(" 
-                      + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] +", " + date[1].split(":")[0] + ", " 
-                      + date[1].split(":")[1] + "),end: new Date(" + date[0].split("-")[0] + ", "+ date[0].split("-")[1] +"-1, "+ date[0].split("-")[2] 
-                      + ", " + date[1].split(":")[0] + ", " + date[1].split(":")[1] + "+" + results.get(i).get(3) + "),url:'view_event.jsp?ls_id="
-                      + results.get(i).get(0)+"&l_id="+results.get(i).get(1)+"'}";
+        }
+        converted += "{id: " + results.get(i).get(0) + ",title: '" + results.get(i).get(8) + results.get(i).get(9) + "',start: '" + results.get(i).get(2) + "',end: '" + results.get(i).get(3) + "',url:'view_event.jsp?ls_id=" + results.get(i).get(0)+"&l_id="+results.get(i).get(1)+"'}";
     }
     return converted;
 }

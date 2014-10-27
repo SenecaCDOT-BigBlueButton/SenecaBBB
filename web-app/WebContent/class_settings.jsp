@@ -148,8 +148,12 @@
 
         $(screen).ready(function() {
             /* Student List Table */
-            $('#studentListTable').dataTable({"sPaginationType": "full_numbers"});
-            $('#studentListTable').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#studentListTable').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[3]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
             $.fn.dataTableExt.sErrMode = 'throw';
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
             $(".remove").click(function(){
@@ -158,7 +162,10 @@
             $("#submitFile").click(function(){
                 var filename = $("#studentListFile").val();
                 if(filename.length<1){
-                    alert("Please choose a file to upload!");
+                    $(".warningMessage").text("Please choose a file to upload!");
+                    var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                        layout:'top',
+                                        type:'error'});
                     return false;
                 }
             });
@@ -173,7 +180,10 @@
         function checkClass(){
             var classToAdd =$("#classSel").val();
             if(classToAdd==null){
-                alert("Please choose a class to add student!");
+                $(".warningMessage").text("Please choose a class to add student!");
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                    layout:'top',
+                                    type:'error'});
                 return false;
             }
         }
@@ -185,7 +195,7 @@
         <jsp:include page="header.jsp"/>
         <jsp:include page="menu.jsp"/>
         <section>
-            <header> 
+            <header>
                 <!-- BREADCRUMB -->
                 <p>
                     <a href="calendar.jsp" tabindex="13">home</a> » 
@@ -195,7 +205,7 @@
                 <h1 style="margin-bottom:20px">Class Settings</h1>
                 <!-- MESSAGES -->
                 <div class="warningMessage"><%=message %></div>
-                <div class="successMessage"><%=successMessage %></div> 
+                <div class="successMessage"><%=successMessage %></div>
             </header>
             <% if (listofclasses.size() > 0) { %>
             <form action="uploadfile.jsp" method="post" enctype="multipart/form-data" onsubmit="return checkClass()">
@@ -207,22 +217,15 @@
                                 <select name="class" id="classSel" title="Class select box. Use the alt key in combination 
                                                 with the arrow keys to select an option." tabindex="1" role="listbox" style="width: 402px">
                                     <option role='option' selected disabled>Choose a class</option>
-                                    <% 
-                                    for (int j=0; j < listofclasses.size(); ++j) {								
+                                    <%
+                                    for (int j=0; j < listofclasses.size(); ++j) {
                                         String fullclass = listofclasses.get(j).get(1) + "-" + listofclasses.get(j).get(2)+ "-" + listofclasses.get(j).get(3) + "-" + listofclasses.get(j).get(0);
                                         out.println("<option role='option' " + (fullclass.equals(selectedclass)?"selected":"") +">" + fullclass + "</option>");
                                     }
                                     %>
                                 </select>
                             </div>
-                            <% } if(isProfessor){%>
-                            <div class="component">
-                                <div class="checkbox" title="Meetings you created."> <span class="box" role="checkbox" <%= (profSettings==1 ? "aria-checked='true'" : "aria-checked='false'") %> tabindex="17" aria-labelledby="recorded"></span>
-                                    <label class="checkmark" <% if (profSettings==1) out.print(""); else out.print("style='display:none'"); %>></label>
-                                    <label class="text" id="recorded">Recorded lectures</label>
-                                    <input type="checkbox" name="recordedBox" <% if(profSettings==1) out.print("checked='checked'"); else out.print(""); %> aria-disabled="true" />
-                                </div>
-                            </div><% } %>
+            <% }%>
                         </fieldset>
                         <fieldset>
                             <div class="component">

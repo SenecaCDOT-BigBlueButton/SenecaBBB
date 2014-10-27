@@ -28,20 +28,18 @@
     <script type="text/javascript" src="js/ui/jquery.ui.datepicker.js"></script>
     <script type="text/javascript" src="js/ui/jquery.timepicker.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
-    <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
     <script type="text/javascript" src="js/componentController.js"></script>
     <script type="text/javascript" src="js/checkboxController.js"></script>
     <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="js/additional-methods.min.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
     
     <%
     //Start page validation
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
-    Boolean isProfessor = false;
-    Boolean isSuper = false;
-    isProfessor=usersession.isProfessor();
-    isSuper =usersession.isSuper();
+    Boolean isProfessor = usersession.isProfessor();
+    Boolean isSuper = usersession.isSuper();
     if (userId.equals("")) {
         session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
         response.sendRedirect("index.jsp?message=Please log in");
@@ -73,10 +71,13 @@
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-    if(isProfessor && !isSuper)
+    if(isSuper){
+        lecture.getAllProfessorCourse(professor); 
+    }
+    else if(isProfessor){
         lecture.getProfessorCourse(professor,userId);
-    if(isSuper)
-        lecture.getAllProfessorCourse(professor);
+    }
+    
     %>
 
     <script type="text/javascript">
@@ -92,6 +93,61 @@
             $("#courseCode").selectmenu({'refresh': true});
             $('#startTime').timepicker({ 'scrollDefaultNow': true });
         });
+        function toUTC(){
+            var startYear = $("#dropdownYearStarts option:selected").text();
+            var startMonth = getMonthNumber($("#dropdownMonthStarts option:selected").text());
+            var startDay = $("#dropdownDayStarts option:selected").text();
+            if(startDay.length ==1){
+                startDay = "0" + startDay;
+            }
+            var startTime = $("#startTime").val();
+            
+            var utcdayTime = moment(startYear + "-" + startMonth + "-" + startDay + " " + startTime).utc();
+            var currentUTCTime = moment.utc();
+            if(utcdayTime.isBefore(currentUTCTime)){
+                $(".warningMessage").text("Event Start Date&Time must be later than current Date&Time!");
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                    layout:'top',
+                                    type:'error'});
+                return false;
+            }else{
+                $("#startUTCDateTime").attr("value",utcdayTime.format("YYYY-MM-DD HH:mm:SS"));
+                return true;
+            }
+        }
+        
+        function getMonthNumber(month) {
+            var monthNumber = "";
+            if(month != null && month !== undefined){
+                var selectedMon = month.toLowerCase();
+                if(selectedMon === "january"){
+                    monthNumber = "01";
+                }else if(selectedMon === "february"){
+                    monthNumber = "02";
+                }else if(selectedMon === "march"){
+                    monthNumber = "03";
+                }else if(selectedMon === "april"){
+                    monthNumber = "04";
+                }else if(selectedMon === "may"){
+                    monthNumber = "05";
+                }else if(selectedMon === "june"){
+                    monthNumber = "06";
+                }else if(selectedMon === "july"){
+                    monthNumber = "07";
+                }else if(selectedMon === "august"){
+                    monthNumber = "08";
+                }else if(selectedMon === "september"){
+                    monthNumber = "09";
+                }else if(selectedMon === "october"){
+                    monthNumber = "10";
+                }else if(selectedMon === "november"){
+                    monthNumber = "11";
+                }else if(selectedMon === "december"){
+                    monthNumber = "12";
+                }
+            }
+            return monthNumber;
+        }
     
     var weekString = "0000000";
     $(document).ready(function(){
@@ -157,7 +213,7 @@
                 <div class="warningMessage"><%=message %></div>
                 <div class="successMessage"><%=successMessage %></div>
             </header>
-            <form method="get" action="persist_event.jsp" id="eventForm">
+            <form method="get" action="persist_event.jsp" id="eventForm" onsubmit="return toUTC()">
                 <article>
                     <header>
                         <h2>Event Details</h2>
@@ -184,20 +240,23 @@
                                 <label for="courseCode" class="label">Course Information:</label>
                                 <select name="courseCode" id="courseCode" tabindex="18" title="Course Name" style="width: 402px"  autofocus>
                                     <% 
-                                    if(isProfessor && !isSuper){
+                                    if(isSuper && !professor.isEmpty()){ 
                                         for(int i=0;i<professor.size();i++){  %>
-                                    <option value="<%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)) %>" >
-                                    <%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)) %></option>
-                                    <%  }
+                                            <option value="<%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %>" >
+                                            <%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %></option>
+                                            <%  
+                                        }
                                     }
-                                    else if(isSuper && professor.size()>0){ 
-                                        for(int i=0;i<professor.size();i++){  %>
-                                    <option value="<%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %>" >
-                                    <%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %></option>
-                                    <%  }
-                                    }else{%>
-                                    <%=" <option> No subjects in system!</option>"%>
-                                    <% } %>                 
+                                    else if(isProfessor && !professor.isEmpty()){
+                                        for(int j=0;j<professor.size();j++){  %>
+                                            <option value="<%= professor.get(j).get(0).concat(" ").concat(professor.get(j).get(1)).concat(" ").concat(professor.get(j).get(2)) %>" >
+                                            <%= professor.get(j).get(0).concat(" ").concat(professor.get(j).get(1)).concat(" ").concat(professor.get(j).get(2)) %></option>
+                                            <%  
+                                        } 
+                                    }
+                                    else{%>
+                                        <option> No subjects in system!</option>
+                                    <% } %>               
                                 </select>
                             </div>
                         </fieldset>
@@ -233,6 +292,7 @@
                                     <option role="option">November</option>
                                     <option role="option">December</option>
                                 </select>
+                                <input name="startUTCDateTime" id="startUTCDateTime" hidden="hidden" />
                             </div>
                             <div class="component" >
                                 <label for="startTime" class="label">Start Time:</label> 
@@ -372,7 +432,7 @@
         <script>
             // form validation, edit the regular expression pattern and error messages to meet your needs
             $(document).ready(function(){
-                $("#help").attr({href:"help_createEvent.jsp",target:"_blank"});
+                $("#help").attr({href:"help_createEvent.jsp",target:"_blank"});               
                 $('#eventForm').validate({
                     validateOnBlur : true,
                     rules: {
@@ -450,8 +510,7 @@
                             populateMonthEnds($("#dropdownMonthStarts").val());
                             $("#dropdownDayStarts").selectmenu({'refresh': true});
                             $("#dropdownMonthStarts").selectmenu({'refresh': true});
-                            $("#dropdownYearStarts").selectmenu({'refresh': true});
-                           
+                            $("#dropdownYearStarts").selectmenu({'refresh': true});                          
                         }
                     };
                     var datePickerEnds = {
@@ -467,8 +526,7 @@
                             populateMonthEnds($("#dropdownMonthEnds").val());
                             $("#dropdownDayEnds").selectmenu({'refresh': true});
                             $("#dropdownMonthEnds").selectmenu({'refresh': true});
-                            $("#dropdownYearEnds").selectmenu({'refresh': true});
-                           
+                            $("#dropdownYearEnds").selectmenu({'refresh': true});                         
                         }
                     };
                     $("#datePickerStarts").datepicker(datePickerStarts);

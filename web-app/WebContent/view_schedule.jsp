@@ -27,23 +27,7 @@
     <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
-    <script type="text/javascript" >
-        //Table
-        $(screen).ready(function() {
-            /* Meetings List */
-            $('#meetingsList').dataTable({"sPaginationType": "full_numbers"});
-            $('#meetingsList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});    
-            /* Lectures List */
-            $('#lectureList').dataTable({"sPaginationType": "full_numbers"});
-            $('#lectureList').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-            $.fn.dataTableExt.sErrMode = 'throw';
-            $('.dataTables_filter input').attr("placeholder", "Filter entries");
-        });
-        /* SELECT BOX */
-        $(function(){
-            $('select').selectmenu();
-        });
-    </script>
+    <script type="text/javascript" src="js/moment.js"></script>
     <%
     //Start page validation
     String userId = usersession.getUserId();
@@ -93,6 +77,40 @@
     dbaccess.resetFlag();
     lect.getLecturesForUser(lectureResult, userID, true, true);
     %>
+    <script type="text/javascript" >
+        //Table
+        $(screen).ready(function() {
+            /* Meetings List */
+            $('#meetingsList').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[4]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
+            
+            /* Lectures List */
+            $('#lectureList').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[6]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
+            
+            $.fn.dataTableExt.sErrMode = 'throw';
+            $('.dataTables_filter input').attr("placeholder", "Filter entries");
+        });
+        
+        /* SELECT BOX */
+        $(function(){
+            $('select').selectmenu();
+        });
+        
+        //convert UTC to user's local time
+        function toUserLocalTime(utcTime){
+            var startMoment = moment.utc(utcTime).local().format("YYYY-MM-DD HH:mm:SS");
+            return startMoment;
+        }
+    </script>
 </head>
 <body>
     <div id="page">
@@ -126,21 +144,23 @@
                                     <table id="meetingsList" border="0" cellpadding="0" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th width="50" class="firstColumn" tabindex="16" title="ms_id">MsID<span></span></th>
-                                                <th width="40" tabindex="17" title="mid">MID<span></span></th>
-                                                <th width="80" title="Start" tabindex="18">Start<span></span></th>
-                                                <th width="60" title="Duration" tabindex="19">Duration<span></span></th>
-                                                <th width="50" title="isCancelled" tabindex="20">Cancel<span></span></th>
+                                                <th width="200" class="firstColumn" tabindex="16" title="Meeting Title">Meeting Title<span></span></th>
+                                                <th width="160" title="Start Time" tabindex="18">Schedule Time<span></span></th>
+                                                <th width="80" title="Duration" tabindex="19">Duration<span></span></th>
+                                                <th width="80" title="isCancelled" tabindex="20">Is Cancel<span></span></th>
                                                 <th title="Description" tabindex="21">Description<span></span></th>
-                                                <th width="50" title="m_modpass" tabindex="22">mpass<span></span></th>
-                                                <th width="50" title="m_userpass" tabindex="23">upass<span></span></th>
-                                                <th width="80" title="m_setting" tabindex="24">setting<span></span></th>
-                                                <th title="meeting_title" tabindex="25">Meeting Title<span></span></th>                                                                                                                 
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <% for(int i=0;i<meetingResult.size();i++){%>
-                                            <tr><% for(int j=0;j<meetingResult.get(i).size();j++){%><td <% if(j==0) out.println("class='row'"); %>><%= meetingResult.get(i).get(j) %></td><% } %></tr><%}%>
+                                            <tr>
+                                                <td class='row'><%= meetingResult.get(i).get(9) %></td>
+                                                <td><script>document.write(toUserLocalTime("<%= meetingResult.get(i).get(2).substring(0,19) %>"));</script></td>
+                                                <td><%= meetingResult.get(i).get(3) %></td>
+                                                <td><% if (meetingResult.get(i).get(4).equals("1")) out.print("Yes");else out.print(""); %></td>
+                                                <td><%= meetingResult.get(i).get(5) %></td>
+                                            </tr>
+                                            <%}%>
                                         </tbody>
                                     </table>
                                 </div>
@@ -160,22 +180,27 @@
                                     <table id="lectureList" border="0" cellpadding="0" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th width="50" class="firstColumn" tabindex="28" title="ls_id">LsID<span></span></th>
-                                                <th width="40" tabindex="29" title="lid">LID<span></span></th>
-                                                <th  title="Start" tabindex="30">Start Time<span></span></th>
-                                                <th width="80" title="Duration" tabindex="31">Duration<span></span></th>
-                                                <th width="80" title="isCancelled" tabindex="32">Cancel<span></span></th>
-                                                <th width="60" title="Description" tabindex="33">Desc<span></span></th>
-                                                <th width="80" title="l_modpass" tabindex="34">lmpass<span></span></th>
-                                                <th width="80" title="l_userpass" tabindex="35">lupass<span></span></th>
-                                                <th width="80" title="course" tabindex="36">Course<span></span></th>
+                                                <th width="160" title="course" tabindex="36">Course Name<span></span></th>
                                                 <th width="80" title="lecture_title" tabindex="37">Section<span></span></th>   
-                                                <th width="80" title="semesterId" tabindex="37">Semester<span></span></th>                                                                                                               
+                                                <th width="80" title="semesterId" tabindex="37">Semester<span></span></th>
+                                                <th width="160" title="Start" tabindex="30">Schedule Time<span></span></th>
+                                                <th width="80" title="Duration" tabindex="31">Duration<span></span></th>
+                                                <th width="80" title="isCancelled" tabindex="32">Is Cancel<span></span></th>
+                                                <th title="Description" tabindex="33">Description<span></span></th>                                                                                                               
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <% for(int i=0;i<lectureResult.size();i++){%>
-                                            <tr><% for(int j=0;j<lectureResult.get(i).size();j++){%><td <% if(j==0) out.println("class='row'"); %>><%= lectureResult.get(i).get(j) %></td><% } %></tr><%}%>
+                                            <tr>
+                                                <td class='row'><%= lectureResult.get(i).get(8) %></td>
+                                                <td><%= lectureResult.get(i).get(9) %></td>
+                                                <td><%= lectureResult.get(i).get(10) %></td>
+                                                <td><script>document.write(toUserLocalTime("<%= lectureResult.get(i).get(2).substring(0,19) %>"));</script></td>
+                                                <td><%= lectureResult.get(i).get(3) %></td>
+                                                <td><% if (lectureResult.get(i).get(4).equals("1")) out.print("Yes");else out.print(""); %></td>
+                                                <td><%= lectureResult.get(i).get(5) %></td>
+                                            </tr>
+                                            <%}%>
                                         </tbody>
                                     </table>
                                 </div>

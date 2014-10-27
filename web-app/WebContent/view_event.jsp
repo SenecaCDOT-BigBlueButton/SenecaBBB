@@ -27,6 +27,7 @@
     <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
 
     <%
     //Start page validation
@@ -84,7 +85,7 @@
         }
         if (!myBool.get_value()) {
             elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ms_id: "+ ms_id +", permission denied" +" /n"); 
-            response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
+            response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
             return;
         }
         if (!user.isMeetingCreator(myBool, ms_id, userId)) {
@@ -120,7 +121,7 @@
         }
         if (status==0) {
             elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ms_id: "+ ms_id +", permission denied" +" /n");             
-            response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
+            response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
             return;
         }
         
@@ -141,7 +142,7 @@
         }
         if (!myBool.get_value()) {
             elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ls_id: "+ ls_id +", permission denied" +" /n");                         
-            response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
+            response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
             return;
         }
         if (!user.isTeaching(myBool, ls_id, userId)) {
@@ -177,7 +178,7 @@
         }
         if (status==0) {
             elog.writeLog("[view_event:] " + " username: "+ userId + " tried to access ls_id: "+ ls_id +", permission denied" +" /n");            
-            response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
+            response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
             return;
         }
     } else {
@@ -366,14 +367,27 @@
        /* TABLE */
         $(screen).ready(function() {
             /* CURRENT EVENT */
-            $('#tbAttendee').dataTable({"sPaginationType": "full_numbers"});
-            $('#tbAttendee').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-            $('#tbGuest').dataTable({"sPaginationType": "full_numbers"});
-            $('#tbGuest').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-            $('#tbAttendance').dataTable({"sPaginationType": "full_numbers"});
-            $('#tbAttendance').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-            $('#legend').dataTable({"sPaginationType": "full_numbers"});
-            $('#legend').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#tbAttendee').dataTable({
+                "sPaginationType": "full_numbers",
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
+            $('#tbGuest').dataTable({
+                "sPaginationType": "full_numbers",
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
+            $('#tbAttendance').dataTable({
+                "sPaginationType": "full_numbers",
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
+            $('#legend').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[1]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
             $.fn.dataTableExt.sErrMode = "throw";
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
         });
@@ -398,24 +412,83 @@
           //  $('#expandPresentation').click();
             $("#help").attr({href:"help_viewEvent.jsp" ,
                              target:"_blank"});
-            $("#EventButton").click(function(){
-                var alertMessage;
-                <% if (isCancel.equals("Yes")){%>
-                    alertMessage = "Event is cancelled.";
-                <% } else if (isEventCreator.get_value()){%>
-                    alertMessage = "Please note that you can start this event 15 minutes before the scheduled start time.";
-                <%}else{%>
-                    alertMessage = "Event not started yet or it has already ended.";
-                <%}%>
-                   alert(alertMessage);
-            });
             $("#endMeeting").click(function(){
                 $("#joinEvent").removeAttr('target');
             });
+            
+            var utcStartTime = $("#eventStartDateTime").text();
+            var utcCurrentEventStartDateTime = $("#currentEventStartLocalDate").text() +" " + $("#currentEventStartLocalTime").text();
+            function toLocalTime(utcTime){
+                var startMoment = moment.utc(utcTime).local().format("YYYY-MM-DD HH:mm:SS");
+                return startMoment;
+            }           
+            $("#eventStartDateTime").text(toLocalTime(utcStartTime));
+            var localCurrentEventStartDateTime = toLocalTime(utcCurrentEventStartDateTime);
+            $("#currentEventStartLocalDate").text(localCurrentEventStartDateTime.substring(0,10));
+            $("#currentEventStartLocalTime").text(localCurrentEventStartDateTime.substring(11,19));
+            var now = moment();
+            var eventDuration = $("#scheduleDuration").text();
+            var startMoment = moment(localCurrentEventStartDateTime);
+            var earliestStartMoment = moment(startMoment).subtract(15,'minutes');
+            var latestStartMoment = moment(startMoment).add(eventDuration,'minutes').format();
+            var isEventCreator = <%= isEventCreator.get_value() %>;
+            var isEventCancelled = <%= isCancel.equals("Yes") %>;
+            var alertMessage = "";
+            if(now.isAfter(earliestStartMoment) && now.isBefore(latestStartMoment) && isEventCancelled == false){
+                $("#joinEventButton").css("background-color","#cd352b");
+                $("#joinEventButton").attr("type","submit");
+            }else if(isEventCancelled == true){
+                $("#joinEventButton").css("background-color","#5C5C5C");
+                $("#joinEventButton").attr("type","button");
+            }
+            else if(now.isBefore(earliestStartMoment)){
+                $("#joinEventButton").css("background-color","#5C5C5C");
+                $("#joinEventButton").attr("type","button");
+            }else if(now.isAfter(latestStartMoment)){
+                $("#joinEventButton").css("background-color","#5C5C5C");
+                $("#joinEventButton").attr("type","button");
+            }
             $("#joinEventButton").click(function(){
-                $("#joinEvent").attr('target','_blank');
+                var isbutton = $("#joinEventButton").attr("type");
+                if( isbutton == "button"){
+                    if(isEventCancelled == true){
+                        alertMessage = "Event is cancelled.";
+                    }
+                    else if(isEventCreator == true){
+                        if(now.isBefore(earliestStartMoment)){
+                            alertMessage = "Please note that you can start this event 15 minutes before the scheduled start time.";
+                        }
+                        if(now.isAfter(latestStartMoment)){
+                            alertMessage = "Event is expired.";
+                        }
+                    }
+                    else{
+                        alertMessage = "Event not started yet or it has already ended.";
+                    }
+                    $(".warningMessage").text(alertMessage);
+                    var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                        layout:'top',
+                                        type:'error'});
+                }
+                else{
+                    $("#joinEvent").attr('target','_blank');
+                }
+            });
+            
+            $("#EventButton").click(function(){
+                if(isEventCancelled == true){
+                    alertMessage = "Event is cancelled.";
+                }
+                else{
+                    alertMessage = "Event not started yet or it has already ended.";
+                }
+                $(".warningMessage").text(alertMessage);
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                    layout:'top',
+                                    type:'error'});
             });
         });
+
     </script>
     <section>
         <header>
@@ -445,20 +518,9 @@
                     </div>
                     <div class="actionButtons">
                         <% 
-                        Boolean startEvent = false;
-                        String expectStartTime = startTimeResult.get(0).get(0).substring(0,19);
-                        Date now = new Date();
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        Date expectStart = dateFormat.parse(expectStartTime);
-                        long timediff = expectStart.getTime() - now.getTime();
-                        long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(timediff);
-                        long eventDuration = (long)Integer.valueOf(duration);
-                        if(diffMinutes<=15 &&diffMinutes>-eventDuration && isCancel.equals("No")){
-                            startEvent = true;
-                        }
-                        if(startEvent && (isEventCreator.get_value()||isModerator) && isMeetingRunning.equals("false")){
+                        if((isEventCreator.get_value()||isModerator) && isMeetingRunning.equals("false")){
                         %>
-                        <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="create" title="Click here to create the event" >
+                        <button type="submit" name="joinEventButton" id="joinEventButton" class="button" value="create" title="Click here to create the event">
                             Start <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %>
                         </button>
                         
@@ -472,8 +534,8 @@
                             Join <% if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %>
                         </button>
                         
-                        <% } else{ %>  
-                        <button style="background-color:grey" type="button" name="EventButton" id="EventButton" class="button" value="<%= (isEventCreator.get_value()||isModerator)? "create":"join"  %>" title="Click here to go to the event" >
+                        <% } else{ %>
+                        <button style="background-color: #5C5C5C" type="button" name="EventButton" id="EventButton" class="button" value="<%= (isEventCreator.get_value()||isModerator)? "create":"join"  %>" title="Click here to go to the event" >
                         <% if(isEventCreator.get_value() || isModerator){ out.print("Start");} else {out.print("Join");} if(m_id==null){out.print(" Lecture");} else out.print(" Meeting"); %>
                         </button>
                         <%} %> 
@@ -512,300 +574,298 @@
         </form>
        <% } %>
 
-        <form action="persist_user_settings.jsp" method="get">
-            <article>
-                <header>
-                    <h2>Event Schedule</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
-                </header>
-                <div class="content">
-                    <fieldset>
-                        <div id="currentEventDiv" class="tableComponent">
-                            <table id="currentEventS" border="0" cellpadding="0" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                    <% if (status==1 || status==2 || status==6) { %>
-                                        <th class="firstColumn" tabindex="16">Title<span></span></th>
-                                        <th>Starting From<span></span></th>
-                                        <th>Duration<span></span></th>
-                                        <th>Creator<span></span></th>
-                                    <% } else { %>
-                                        <th class="firstColumn" tabindex="16">Course<span></span></th>
-                                        <th>Section<span></span></th>
-                                        <th>Semester<span></span></th>
-                                        <th>Starting From<span></span></th>
-                                        <th>Duration<span></span></th>
+        <article>
+            <header>
+                <h2>Event Schedule</h2>
+                <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+            </header>
+            <div class="content">
+                <fieldset>
+                    <div id="currentEventDiv" class="tableComponent">
+                        <table id="currentEventS" border="0" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                <% if (status==1 || status==2 || status==6) { %>
+                                    <th class="firstColumn" tabindex="16">Title<span></span></th>
+                                    <th>Starting From<span></span></th>
+                                    <th>Duration<span></span></th>
+                                    <th>Creator<span></span></th>
+                                <% } else { %>
+                                    <th class="firstColumn" tabindex="16">Course<span></span></th>
+                                    <th>Section<span></span></th>
+                                    <th>Semester<span></span></th>
+                                    <th>Starting From<span></span></th>
+                                    <th>Duration<span></span></th>
+                                <% } %>
+                                <% if (status==1 || status==2 || status==3 || status==5) { %>
+                                    <th width="65" title="Details" class="icons" align="center">Details</th>
+                                <% } %>
+                                <% if (status==1 || status==3) { %>
+                                    <th width="65" title="Modify" class="icons" align="center">Modify</th>
+                                <% } %>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <% if (status==1 || status==2 || status==6) { %>
+                                    <td class="row"><%= eventSResult.get(0).get(1) %></td>
+                                    <td id="eventStartDateTime"><%= eventSResult.get(0).get(2).substring(0, 19) %></td>
+                                    <td><span id="scheduleDuration"><%= eventSResult.get(0).get(4) %></span> Minutes</td>
+                                    <td><%= eventSResult.get(0).get(5) %></td>
+                                <% } else { %>
+                                    <td class="row"><%= eventSResult.get(0).get(1) %></td>
+                                    <td><%= eventSResult.get(0).get(2) %></td>
+                                    <td><%= eventSResult.get(0).get(3) %></td>
+                                    <td id="eventStartDateTime"><%= eventSResult.get(0).get(4).substring(0, 19) %></td>
+                                    <td><span id="scheduleDuration"><%= eventSResult.get(0).get(6) %></span> Minutes</td>
+                                <% } %>
+                                <% if (status==1 || status==2) { %>
+                                    <td class="icons" align="center">
+                                        <a href="view_event_schedule.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="view">
+                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event schedule" alt="View_Event"/>
+                                        </a>
+                                    </td>
+                                <% } else if (status==3 || status==5) { %>
+                                    <td class="icons" align="center">
+                                        <a href="view_event_schedule.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="view">
+                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event schedule" alt="View_Event"/>
+                                        </a>
+                                    </td>
+                                <% } %>
+                                <% if (status==1) { %>
+                                    <td class="icons" align="center">
+                                        <a href="edit_event_schedule.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="modify">
+                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting schedule" alt="Modify"/>
+                                        </a>
+                                    </td>
+                                <% } else if (status==3) { %>
+                                    <td class="icons" align="center">
+                                        <a href="edit_event_schedule.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="modify">
+                                            <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture schedule" alt="Modify"/>
+                                        </a>
+                                    </td>
+                                <% } %>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </article>
+        <article>
+            <header>
+                <h2>Current Event</h2>
+            </header>
+            <div class="content">
+                <fieldset>
+                    <div id="currentEventDiv" class="tableComponent">
+                        <table id="currentEvent" border="0" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="firstColumn" tabindex="16" title="Type">Type<span></span></th>
+                                    <th title="StartingDate">Date<span></span></th>
+                                    <th title="StartingTime">Time<span></span></th>
+                                    
+                                    <th title="isCancel">Cancelled<span></span></th>
+                                    <th width="200" title="description">Description<span></span></th>
+                                    <% if (status==1 || status==3 || status==4) { %>
+                                    <th width="65" title="Modify" class="icons" align="center">Modify</th>                                     
                                     <% } %>
-                                    <% if (status==1 || status==2 || status==3 || status==5) { %>
-                                        <th width="65" title="Details" class="icons" align="center">Details</th>
-                                    <% } %>
-                                    <% if (status==1 || status==3) { %>
-                                        <th width="65" title="Modify" class="icons" align="center">Modify</th>
-                                    <% } %>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                    <% if (status==1 || status==2 || status==6) { %>
-                                        <td class="row"><%= eventSResult.get(0).get(1) %></td>
-                                        <td><%= eventSResult.get(0).get(2).substring(0, 19) %></td>
-                                        <td><%= eventSResult.get(0).get(4) %> Minutes</td>
-                                        <td><%= eventSResult.get(0).get(5) %></td>
-                                    <% } else { %>
-                                        <td class="row"><%= eventSResult.get(0).get(1) %></td>
-                                        <td><%= eventSResult.get(0).get(2) %></td>
-                                        <td><%= eventSResult.get(0).get(3) %></td>
-                                        <td><%= eventSResult.get(0).get(4).substring(0, 19) %></td>
-                                        <td><%= eventSResult.get(0).get(6) %> Minutes</td>
-                                    <% } %>
-                                    <% if (status==1 || status==2) { %>
-                                        <td class="icons" align="center">
-                                            <a href="view_event_schedule.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="view">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event schedule" alt="View_Event"/>
-                                            </a>
-                                        </td>
-                                    <% } else if (status==3 || status==5) { %>
-                                        <td class="icons" align="center">
-                                            <a href="view_event_schedule.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="view">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event schedule" alt="View_Event"/>
-                                            </a>
-                                        </td>
-                                    <% } %>
+                                    <th title="enableRecording">Allow Recording<span></span></th>
+                                    <th width="100" title="recording">Playback<span></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="row"><%= type %></td>
+                                    <td id="currentEventStartLocalDate"><%= eventResult.get(0).get(2).substring(0, 10) %></td>
+                                    <td id="currentEventStartLocalTime"><%= eventResult.get(0).get(2).substring(11, 19) %></td>
+                                    <td><%= isCancel %></td>
+                                    <td><%= eventResult.get(0).get(5) %></td>
+                                    
                                     <% if (status==1) { %>
                                         <td class="icons" align="center">
-                                            <a href="edit_event_schedule.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="modify">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting schedule" alt="Modify"/>
+                                            <a href="edit_meeting.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="modify">
+                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting" alt="Modify"/>
                                             </a>
                                         </td>
-                                    <% } else if (status==3) { %>
+                                    <% } else if (status==3 || status==4) { %>
                                         <td class="icons" align="center">
-                                            <a href="edit_event_schedule.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="modify">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture schedule" alt="Modify"/>
+                                            <a href="edit_lecture.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="modify">
+                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture" alt="Modify"/>
                                             </a>
                                         </td>
                                     <% } %>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
-                </div>
-            </article>
-            <article>
-                <header>
-                    <h2>Current Event</h2>
-                </header>
-                <div class="content">
-                    <fieldset>
-                        <div id="currentEventDiv" class="tableComponent">
-                            <table id="currentEvent" border="0" cellpadding="0" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th class="firstColumn" tabindex="16" title="Type">Type<span></span></th>
-                                        <th title="StartingDate">Date<span></span></th>
-                                        <th title="StartingTime">Time<span></span></th>
-                                        
-                                        <th title="isCancel">Cancelled<span></span></th>
-                                        <th width="200" title="description">Description<span></span></th>
-                                        <% if (status==1 || status==3 || status==4) { %>
-                                        <th width="65" title="Modify" class="icons" align="center">Modify</th>                                     
+                                    <td><% if (isRecordedResult.get("isRecorded")==1) out.write("Yes"); else out.write("No");%> </td>
+                                    <td>
+                                    <% if(playBackURLs.isEmpty()) {%> Not Available <%}
+                                    else {  
+                                    	for (int k = 0; k < playBackURLs.size(); k++) {%> 
+                                        <a href="<%= playBackURLs.get(k) %>" style="color:blue" target="_blank" > view recording <%= k+1 %></a></br>
                                         <% } %>
-                                        <th title="enableRecording">Allow Recording<span></span></th>
-                                        <th width="100" title="recording">Playback<span></span></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="row"><%= type %></td>
-                                        <td><%= eventResult.get(0).get(2).substring(0, 10) %></td>
-                                        <td><%= eventResult.get(0).get(2).substring(11, 19) %></td>
-                                        <td><%= isCancel %></td>
-                                        <td><%= eventResult.get(0).get(5) %></td>
-                                        
-                                        <% if (status==1) { %>
-                                            <td class="icons" align="center">
-                                                <a href="edit_meeting.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>" class="modify">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting" alt="Modify"/>
-                                                </a>
-                                            </td>
-                                        <% } else if (status==3 || status==4) { %>
-                                            <td class="icons" align="center">
-                                                <a href="edit_lecture.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>" class="modify">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture" alt="Modify"/>
-                                                </a>
-                                            </td>
-                                        <% } %>
-                                        <td><% if (isRecordedResult.get("isRecorded")==1) out.write("Yes"); else out.write("No");%> </td>
-                                        <td>
-                                        <% if(playBackURLs.isEmpty()) {%> Not Available <%}
-                                        else {  
-                                        	for (int k = 0; k < playBackURLs.size(); k++) {%> 
-                                            <a href="<%= playBackURLs.get(k) %>" style="color:blue" target="_blank" > view recording <%= k+1 %></a></br>
-                                            <% } %>
-                                        <%} %>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
-                </div>
-            </article>
-            <% if (status==1 || status==3 || status==4) { %>
-            <article>
-                <header id="expandAttendee">
-                <% if (status==1) { %>
-                    <h2>Attendee List</h2>
-                <% } else { %>
-                    <h2>Student List</h2>
-                <% } %>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
-                </header>
-                <div class="content">
-                    <fieldset>
-                        <div id="currentEventDiv" class="tableComponent">
-                            <table id="tbAttendee" border="0" cellpadding="0" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th class="firstColumn" tabindex="16">Id<span></span></th>
-                                        <th>Nick Name<span></span></th>
-                                        <th><%= (status==1) ? "Moderator" : "Banned" %><span></span></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <% for (i=0; i<eventAttendee.size(); i++) { %>
-                                    <tr>
-                                    <% if (status==1) { %>
-                                        <td class="row"><%= eventAttendee.get(i).get(0) %></td>
-                                        <td><%= eventAttendee.get(i).get(3) %></td>
-                                        <td><%= eventAttendee.get(i).get(2).equals("1") ? "Yes" : "" %></td>
-                                    <% } else { %>
-                                        <td class="row"><%= eventAttendee.get(i).get(0) %></td>
-                                        <td><%= eventAttendee.get(i).get(5) %></td>
-                                        <td><%= eventAttendee.get(i).get(4).equals("1") ? "Yes" : "" %></td>
-                                    <% } %>
-                                    </tr>
+                                    <%} %>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </article>
+        <% if (status==1 || status==3 || status==4) { %>
+        <article>
+            <header id="expandAttendee">
+            <% if (status==1) { %>
+                <h2>Attendee List</h2>
+            <% } else { %>
+                <h2>Student List</h2>
+            <% } %>
+                <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+            </header>
+            <div class="content">
+                <fieldset>
+                    <div id="currentEventDiv" class="tableComponent">
+                        <table id="tbAttendee" border="0" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="firstColumn" tabindex="16">Id<span></span></th>
+                                    <th>Nick Name<span></span></th>
+                                    <th><%= (status==1) ? "Moderator" : "Banned" %><span></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% for (i=0; i<eventAttendee.size(); i++) { %>
+                                <tr>
+                                <% if (status==1) { %>
+                                    <td class="row"><%= eventAttendee.get(i).get(0) %></td>
+                                    <td><%= eventAttendee.get(i).get(3) %></td>
+                                    <td><%= eventAttendee.get(i).get(2).equals("1") ? "Yes" : "" %></td>
+                                <% } else { %>
+                                    <td class="row"><%= eventAttendee.get(i).get(0) %></td>
+                                    <td><%= eventAttendee.get(i).get(5) %></td>
+                                    <td><%= eventAttendee.get(i).get(4).equals("1") ? "Yes" : "" %></td>
                                 <% } %>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
-                    <br />
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                <br />
 
-                </div>
-            </article>
-            <% } %>
-            <% if (status==1 || status==3 || status==4) { %>
-            <article>
-                <header id="expandGuest">
-                    <h2>Guest List</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
-                </header>
-                <div class="content">
-                    <fieldset>
-                        <div id="currentEventDiv" class="tableComponent">
-                            <table id="tbGuest" border="0" cellpadding="0" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th class="firstColumn" tabindex="16">Id<span></span></th>
-                                        <th>Nick Name<span></span></th>
-                                        <th>Moderator<span></span></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <% for (i=0; i<eventGuest.size(); i++) { %>
-                                    <tr>
-                                        <td class="row"><%= eventGuest.get(i).get(0) %></td>
-                                        <td><%= eventGuest.get(i).get(2) %></td>
-                                        <td><%= eventGuest.get(i).get(1).equals("1") ? "Yes" : "" %></td>
-                                    </tr>
-                                <% } %>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
-                    <br />
-                </div>
-            </article>
-            <% } %>
-            <% if (status==1 || status==3 || status==4) { %>
-            <article>
-                <header id="expandAttendance">
-                    <h2>Attendance List</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
-                </header>
-                <div class="content">
-                    <fieldset>
-                        <div id="currentEventDiv" class="tableComponent">
-                            <table id="tbAttendance" border="0" cellpadding="0" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th class="firstColumn" tabindex="16">Id<span></span></th>
-                                        <th>Nick Name<span></span></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <% for (i=0; i<eventAttendance.size(); i++) { %>
-                                    <tr>
-                                        <td class="row"><%= eventAttendance.get(i).get(0) %></td>
-                                        <td><%= eventAttendance.get(i).get(2) %></td>
-                                    </tr>
-                                <% } %>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
-                </div>
-            </article>
-            <% } %>
+            </div>
+        </article>
+        <% } %>
+        <% if (status==1 || status==3 || status==4) { %>
+        <article>
+            <header id="expandGuest">
+                <h2>Guest List</h2>
+                <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+            </header>
+            <div class="content">
+                <fieldset>
+                    <div id="currentEventDiv" class="tableComponent">
+                        <table id="tbGuest" border="0" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="firstColumn" tabindex="16">Id<span></span></th>
+                                    <th>Nick Name<span></span></th>
+                                    <th>Moderator<span></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% for (i=0; i<eventGuest.size(); i++) { %>
+                                <tr>
+                                    <td class="row"><%= eventGuest.get(i).get(0) %></td>
+                                    <td><%= eventGuest.get(i).get(2) %></td>
+                                    <td><%= eventGuest.get(i).get(1).equals("1") ? "Yes" : "" %></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                <br />
+            </div>
+        </article>
+        <% } %>
+        <% if (status==1 || status==3 || status==4) { %>
+        <article>
+            <header id="expandAttendance">
+                <h2>Attendance List</h2>
+                <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+            </header>
+            <div class="content">
+                <fieldset>
+                    <div id="currentEventDiv" class="tableComponent">
+                        <table id="tbAttendance" border="0" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="firstColumn" tabindex="16">Id<span></span></th>
+                                    <th>Nick Name<span></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% for (i=0; i<eventAttendance.size(); i++) { %>
+                                <tr>
+                                    <td class="row"><%= eventAttendance.get(i).get(0) %></td>
+                                    <td><%= eventAttendance.get(i).get(2) %></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </article>
+        <% } %>
 
-            <article>
-                <header id="legendExpand">
-                    <h2>Legend</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
-                </header>
-                <div class="content">
-                    <fieldset>
-                        <div class="tableComponent">
-                            <table id="legend" border="0" cellpadding="0" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th class="firstColumn" tabindex="16" title="Type">Type<span></span></th>
-                                        <th title="legendDescription">Description<span></span></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="row">Meeting (C)</td>
-                                        <td>You created this meeting</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="row">Meeting (G)</td>
-                                        <td>You are invited as a guest to this meeting</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="row">Meeting (A)</td>
-                                        <td>You are invited to this meeting</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="row">Lecture (T)</td>
-                                        <td>You are teaching this lecture</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="row">Lecture (G)</td>
-                                        <td>You are a guest in this lecture</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="row">Lecture (S)</td>
-                                        <td>You are a student in this lecture</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
-                </div>
-            </article>
-        </form>
+        <article>
+            <header id="legendExpand">
+                <h2>Legend</h2>
+                <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
+            </header>
+            <div class="content">
+                <fieldset>
+                    <div class="tableComponent">
+                        <table id="legend" border="0" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="firstColumn" tabindex="16" title="Type">Type<span></span></th>
+                                    <th title="legendDescription">Description<span></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="row">Meeting (C)</td>
+                                    <td>You created this meeting</td>
+                                </tr>
+                                <tr>
+                                    <td class="row">Meeting (G)</td>
+                                    <td>You are invited as a guest to this meeting</td>
+                                </tr>
+                                <tr>
+                                    <td class="row">Meeting (A)</td>
+                                    <td>You are invited to this meeting</td>
+                                </tr>
+                                <tr>
+                                    <td class="row">Lecture (T)</td>
+                                    <td>You are teaching this lecture</td>
+                                </tr>
+                                <tr>
+                                    <td class="row">Lecture (G)</td>
+                                    <td>You are a guest in this lecture</td>
+                                </tr>
+                                <tr>
+                                    <td class="row">Lecture (S)</td>
+                                    <td>You are a student in this lecture</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </article>
     </section>
     <jsp:include page="footer.jsp"/>
 </div>

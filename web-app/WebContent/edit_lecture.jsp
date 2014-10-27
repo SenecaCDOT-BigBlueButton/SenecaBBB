@@ -26,10 +26,10 @@
     <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
     <script type="text/javascript" src="js/ui/jquery.timepicker.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
-    <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
     <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="js/additional-methods.min.js"></script>
     <script type="text/javascript" src="js/checkboxController.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
 
     <%
     //Start page validation
@@ -105,20 +105,15 @@
     }
     boolean edited = false;
     boolean editError = false;
-    String startTime = request.getParameter("startTime");
+    String startTime = request.getParameter("startUTCDateTime");
     if (startTime!=null) {
-        if (!Validation.checkStartTime(startTime)) {
-            message += Validation.getErrMsg();
-            editError = true;
+        if (!lecture.updateLectureTime(1, ls_id, l_id, startTime)) {
+            message += user.getErrMsg("EL04");
+            elog.writeLog("[edit_lecture:] " + message + " /n");
+            response.sendRedirect("logout.jsp?message=" + message);
+            return;  
         } else {
-            if (!lecture.updateLectureTime(1, ls_id, l_id, startTime)) {
-                message += user.getErrMsg("EL04");
-                elog.writeLog("[edit_lecture:] " + message + " /n");
-                response.sendRedirect("logout.jsp?message=" + message);
-                return;  
-            } else {
-                edited = true;
-            }
+            edited = true;
         }
     }
     
@@ -226,11 +221,39 @@
             $(".checkbox .box:eq(1)").attr("aria-checked", "false");
             $(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
             <%}%>
+            
+            //convert utc time to local time and display it
+            var utcStartDateTime = "<%= event.get(0).get(2).substring(0, 19) %>";
+            function toLocalTime(utcTime){
+                var startMoment = moment.utc(utcTime).local().format("YYYY-MM-DD HH:mm:SS");
+                return startMoment;
+            }  
+            var localCurrentEventStartDateTime = toLocalTime(utcStartDateTime);
+            $("#startDate").text(localCurrentEventStartDateTime.substring(0,10));
+            $("#startTime").val(localCurrentEventStartDateTime.substring(11,19));
         });
         /* SELECT BOX */
         $(function(){
             $('select').selectmenu();
         });
+        
+        function toUTC(){
+            var startDate = $("#startDate").text();
+            var startTime = $("#startTime").val();
+            var utcdayTime = moment(startDate + " " + startTime).utc();
+            var currentUTCTime = moment.utc();
+            if(utcdayTime.isBefore(currentUTCTime)){
+                $(".warningMessage").text("Event Start Time must be later than current time!");
+                 var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                 layout:'top',
+                 type:'error'});
+                return false;
+            }else{
+                var uctdatetimestring = utcdayTime.format("YYYY-MM-DD HH:mm:SS");
+                $("#startUTCDateTime").val(uctdatetimestring);
+                return true;
+            }
+        }
     </script>
 </head>
 
@@ -253,7 +276,7 @@
                 <div class="warningMessage"><%=message %></div>
                 <div class="successMessage"><%=successMessage %></div> 
             </header>
-            <form name="EditLecture" id="EditLecture" method="get" action="edit_lecture.jsp">
+            <form name="EditLecture" id="EditLecture" method="get" action="edit_lecture.jsp" onsubmit="return toUTC()">
                 <article>
                     <header>
                         <h2>Current Event</h2>
@@ -275,7 +298,7 @@
                                             <td class="row"><%= eventSchedule.get(0).get(1) %></td>
                                             <td><%= eventSchedule.get(0).get(2) %></td>
                                             <td><%= eventSchedule.get(0).get(3) %></td>
-                                            <td><%= event.get(0).get(2).substring(0, 10) %></td>
+                                            <td id="startDate"><%= event.get(0).get(2).substring(0, 10) %></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -294,15 +317,16 @@
                             <input type="hidden" name="l_id" id="l_id" value="<%= l_id %>">  
                             <div class="component" >
                                 <label for="startTime" class="label">Start Time:</label> 
-                                <input id="startTime" name="startTime"  type="text"  class="input"  value="<%= event.get(0).get(2).substring(11, 19) %>" tabindex="24" title="Start Time" placeholder="pick start time" autofocus/>            
+                                <input name="startUTCDateTime" id="startUTCDateTime" hidden="hidden" value=""/>
+                                <input id="startTime" name="startTime"  type="text"  class="input"  value="<%= event.get(0).get(2).substring(11, 19) %>" tabindex="24" title="Start Time" placeholder="pick start time"/> 
                             </div>
                             <div class="component" >
-                                <label for="eventDuration" class="label">Duration:</label> 
-                                <input id="eventDuration" name="eventDuration"  type="number"  class="input"  tabindex="25" title="Event Duration"  value="<%= event.get(0).get(3) %>" placeholder="minutes" required autofocus/>            
+                                <label for="eventDuration" class="label">Duration:</label>
+                                <input id="eventDuration" name="eventDuration"  type="number"  class="input"  tabindex="25" title="Event Duration"  value="<%= event.get(0).get(3) %>" placeholder="minutes" required/>
                             </div>
                             <div class="component" >
                                 <label for="description" class="label">Description:</label>
-                                <input name="description" id="description" class="input" cols="35" rows="5" title="Description" value="<%= event.get(0).get(5) %> " autofocus />     
+                                <input name="description" id="description" class="input" cols="35" rows="5" title="Description" value="<%= event.get(0).get(5) %>"/>
                             </div>
                             <div class="component">
                                 <div class="checkbox" title="Allow event recording"> <span class="box" role="checkbox" aria-checked="true" tabindex="21" aria-labelledby="eventSetting4"></span>
@@ -316,8 +340,8 @@
                                     <label class="checkmark"></label>
                                     <label class="text" id="cancelEventBox">Cancel Lecture</label>
                                     <input type="checkbox" name="cancelEventBox" checked="checked">
-                                </div>                         
-                            </div>    
+                                </div>
+                            </div>
                             <div class="component">
                                 <div class="buttons">
                                    <button type="submit" class="button" title="Click here to save">Save</button>
@@ -333,7 +357,7 @@
         </section>
         
         <script>
-        // form validation, edit the regular expression pattern and error messages to meet your needs	
+        // form validation, edit the regular expression pattern and error messages to meet your needs
             $(document).ready(function(){
                  $('#EditLecture').validate({
                      validateOnBlur : true,
@@ -349,8 +373,7 @@
                         },
                         eventDuration:{
                             required: true,
-                            range:[1,999]
-                            
+                            range:[1,999]                  
                         },
                         
                      },

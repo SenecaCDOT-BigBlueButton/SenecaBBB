@@ -50,7 +50,6 @@
                 <div class="warningMessage"><%=message %></div>
                 <div class="successMessage"><%=successMessage %></div> 
             </header>
-            <form action="persist_user_settings.jsp" method="post">
             <article>
                 <div class="content">
                     <fieldset>
@@ -87,7 +86,6 @@
                     </fieldset>
                 </div>
             </article>
-            </form>
         </section>
         <jsp:include page="footer.jsp"/>
     </div>

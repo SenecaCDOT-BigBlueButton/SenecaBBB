@@ -321,17 +321,17 @@ section header h1 {
 	padding-top: 5px;
 	cursor: default;
 }
-section form article {
+section form article,section article {
 	display: table;
 	width: 900px;
 }
-section form article header {
+section form article header, section article header{
 	display: block;
 	margin-bottom: 30px;
 	padding-bottom: 0px;
 	cursor: pointer;
 }
-section form article header h2 {
+section form article header h2,section article header h2 {
 	font-size: 18px;
 	font-style: normal;
 	font-weight: 300;
@@ -374,14 +374,14 @@ h4 {
 	padding-top: 5px;
 	border-bottom: 1px solid #454545;
 }
-section form article header img {
+section form article header img,section article header img {
 	margin: 0px;
 	padding: 0px;
 	padding-top: 5px;
 	float: left;
 	display: block;
 }
-section form article header .expandContent {
+section form article header .expandContent,section article header .expandContent {
 	-webkit-transform: rotate(-180deg);
 	-moz-transform: rotate(-180deg);
 	-o-transform: rotate(-180deg);
@@ -389,12 +389,12 @@ section form article header .expandContent {
 	transform: rotate(-180deg);
 	padding-bottom: 5px;
 }
-section form article fieldset {
+section form article fieldset,section article fieldset {
 	border: none;
 	margin: 0px;
 	padding: 0px;
 }
-section form article fieldset div.component {
+section form article fieldset div.component,section article fieldset div.component {
 	width: 620px;
 	margin-bottom: 18px;
 	clear: both;
@@ -407,14 +407,15 @@ div#calendar {
 	margin-left: 0px;
 	display: block;
 }
-section form article fieldset div.tableComponent {
+section form article fieldset div.tableComponent,section article fieldset div.tableComponent {
 	width: 620px;
 	clear: both;
 	display: block;
 	float: left;
 	position: relative;
 }
-section form article fieldset div.component label.label {
+section form article fieldset div.component label.label,
+section article fieldset div.component label.label {
 	width: 200px;
 	float: left;
 	clear: left;
@@ -437,7 +438,8 @@ label.error{
 	color:red;
 	margin-left:220px;
 }
-section form article fieldset div.component input.input, div.dataTables_filter input, .searchBox {
+section form article fieldset div.component input.input, div.dataTables_filter input, .searchBox,
+section article fieldset div.component input.input {
 	height: 38px;
 	width: 394px;
 	display: block;
@@ -470,13 +472,14 @@ input:-moz-placeholder {
 svg path {
 	fill: red;
 }
-section form article fieldset div.component img.svg {
+section form article fieldset div.component img.svg,section article fieldset div.component img.svg {
 	position: absolute;
 	top: 13px;
 	right: 10px;
 	z-index: 5;
 }
-section form article fieldset div.component input.input:focus, div.dataTables_filter input:focus {
+section form article fieldset div.component input.input:focus, div.dataTables_filter input:focus,
+section article fieldset div.component input.input:focus {
 	outline: none;
 	border: 1px solid #9F100B;
 }
@@ -592,7 +595,7 @@ section form .buttons {
 section form .actionButtons {
 	margin-left: 0px;
 }
-section form .buttons .button, section form .actionButtons .button {
+section form .buttons .button, section form .actionButtons .button,section .actionButtons .button {
 	padding: 8px 15px;
 	min-width: 85px;
 	height: 39px;
@@ -1174,6 +1177,7 @@ footer div#copyright {
 
 .buttons #saveSetting{
 	margin-left:-200px;
+	margin-top:20px;
 }
 
 #predefinedRoleList tbody tr td input{

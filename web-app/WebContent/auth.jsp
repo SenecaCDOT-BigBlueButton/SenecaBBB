@@ -64,7 +64,6 @@
                 usersession.setNick(result.get(0).get(1));
                 user.setLastLogin(userID);
                 
-                
                 // Handling system time out
                 // Redirect user to proper destination when user refreshes the page or clicks a link 
                 // On each page's validation: if (userId.equals("")), save the current request url and query string
@@ -100,6 +99,7 @@
                 usersession.setUserMeetingSettingsMask(userMeetingSetting);
                 user.getUserRoleSetting(userRoleMask, ur_id);
                 usersession.setRoleMask(userRoleMask);
+                
                 if (prof.get_value()) {
                     usersession.setUserLevel("professor");
                 }

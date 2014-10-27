@@ -34,6 +34,10 @@ mysql -u root -p
 5) Create the database 'db' then exit
 ```
 create database db;
+//Set mysql timezone to UTC, add default_time_zone to my.cnf file (Ubuntu: /etc/mysql/my.cnf)
+[mysqld]
+**other variables**
+default_time_zone='+00:00'
 ```
 
 6) Download the MySQL script files and run them (from terminal)

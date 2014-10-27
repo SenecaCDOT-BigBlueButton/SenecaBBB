@@ -44,6 +44,7 @@ if (usersession.getUserId() != ""){
     <link href="css/fonts.css" rel="stylesheet" type="text/css" media="all">
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="js/jquery.noty.packaged.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
     <script type="text/javascript">
     /*
         if (window.location.protocol == "http:") {
@@ -56,11 +57,17 @@ if (usersession.getUserId() != ""){
         }
         function validate() {
             if (trim(document.getElementById("SenecaLDAPBBBLogin").value) == "") {
-                alert("Login empty");
+                $(".warningMessage").text("Login empty!");
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                    layout:'top',
+                                    type:'error'});
                 document.getElementById("SenecaLDAPBBBLogin").focus();
                 return false;
             } else if (trim(document.getElementById("SenecaLDAPBBBLoginPass").value) == "") {
-                alert("Password empty");
+                $(".warningMessage").text("Password empty!");
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                    layout:'top',
+                                    type:'error'});
                 document.getElementById("SenecaLDAPBBBLoginPass").focus();
                 return false;
             }
@@ -102,7 +109,26 @@ if (usersession.getUserId() != ""){
                              });
             }
             
-        
+//             Date.prototype.stdTimezoneOffset = function() {
+//                 var jan = new Date(this.getFullYear(), 0, 1);
+//                 var jul = new Date(this.getFullYear(), 6, 1);
+//                 return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+//             };
+
+//             Date.prototype.dst = function() {
+//                 return this.getTimezoneOffset() < this.stdTimezoneOffset();
+//             };
+            
+//             var today = new Date();
+//             console.log("utc time : "+ moment.utc().format());
+//             console.log("local time : "+ moment().format());
+//             if (today.dst()) { 
+//                 console.log ("Daylight savings time!");
+//                 $("#SenecaLDAPBBBUsrTimezone").attr("value", today.getTimezoneOffset());
+//             }
+//             else{
+//                 $("#SenecaLDAPBBBUsrTimezone").attr("value", today.stdTimezoneOffset());
+//             }
         });
     </script>
 </head>

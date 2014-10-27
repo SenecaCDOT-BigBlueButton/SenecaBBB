@@ -58,16 +58,7 @@
     String title = request.getParameter("eventTitle");
     String eventType = request.getParameter("eventType");
     String duration = request.getParameter("eventDuration");
-    String inidatetime = request.getParameter("dropdownYearStarts").concat("-").concat(startMonthNumber).concat("-").concat(request.getParameter("dropdownDayStarts")).concat(" ").concat(request.getParameter("startTime")).concat(".0");
-    if (!(Validation.checkStartDateTime(inidatetime))){
-        if (eventType.equals("Meeting")){
-            response.sendRedirect("edit_event_schedule.jsp?ms_id=" + eventId + "&m_id=" + e_Id + "&message=" + Validation.getErrMsg());
-            return;
-        } else {
-            response.sendRedirect("edit_event_schedule.jsp?ls_id=" + eventId + "&l_id=" + e_Id + "&message=" + Validation.getErrMsg());
-            return;
-        }
-    }
+    String inidatetime = request.getParameter("startUTCDateTime").concat(".0");
     String c_id=null;
     String sc_id=null;
     String sc_semesterid=null;

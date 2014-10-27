@@ -24,6 +24,7 @@
     <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.dataTable.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
 
     <%
     //Start page validation
@@ -70,10 +71,20 @@
         /* TABLE */
         $(screen).ready(function() {
             /* CURRENT EVENT */
-            $('#tbMeetings').dataTable({"sPaginationType": "full_numbers"});
-            $('#tbMeetings').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
-            $('#tbLectures').dataTable({"sPaginationType": "full_numbers"});
-            $('#tbLectures').dataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], "bRetrieve": true, "bDestroy": true});
+            $('#tbMeetings').dataTable({
+                 "sPaginationType": "full_numbers",
+                 "aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], 
+                 "bRetrieve": true, 
+                 "bDestroy": true
+                 });
+            
+            $('#tbLectures').dataTable({
+                "sPaginationType": "full_numbers",
+                "aoColumnDefs": [{ "bSortable": false, "aTargets":[5]}], 
+                "bRetrieve": true, 
+                "bDestroy": true
+                });
+            
             $.fn.dataTableExt.sErrMode = 'throw';
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
         });
@@ -82,9 +93,11 @@
         $(function(){
             $('select').selectmenu();
         });
-        $(document).ready(function() {
-            //Hide some tables on load
-        });
+        //convert UTC to user's local time
+        function toUserLocalTime(utcTime){
+            var startMoment = moment.utc(utcTime).local().format("YYYY-MM-DD HH:mm:SS");
+            return startMoment;
+        }
     </script>
 </head>
 <body>
@@ -105,88 +118,86 @@
                 <div class="warningMessage"><%=message %></div>
                 <div class="successMessage"><%=successMessage %></div> 
             </header>
-            <form action="persist_user_settings.jsp" method="get">
-                <article>
-                    <header>
-                        <h2>Meeting List</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>     
-                    </header>
-                    <div class="content">
-                        <fieldset>
-                            <div id="currentEventDiv" class="tableComponent">
-                                <table id="tbMeetings" border="0" cellpadding="0" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th class="firstColumn" tabindex="16" title="StartingDate">Title<span></span></th>
-                                            <th title="StartingTime">Date Time<span></span></th>
-                                            <th width="85" title="duration">Duration<span></span></th>
-                                            <th width="80" title="isCancel">Cancel<span></span></th>
-                                            <th width="300" title="description">Description<span></span></th>
-                                            <th width="65" title="Details" class="icons" align="center">Details</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% for (i=0; i<meetings.size(); i++) { %>
-                                        <tr>
-                                            <td class="row"><%= meetings.get(i).get(9) %></td>
-                                            <td><%= meetings.get(i).get(2).substring(0, 19) %></td>
-                                            <td><%= meetings.get(i).get(3) %> Minutes</td>
-                                            <td><%= (meetings.get(i).get(4).equals("1")) ? "Yes" : "" %></td>
-                                            <td><%= meetings.get(i).get(5) %></td>
-                                            <td class="icons" align="center">
-                                                <a href="view_event.jsp?ms_id=<%= meetings.get(i).get(0) %>&m_id=<%= meetings.get(i).get(1) %>" class="view calendarIcon">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <% } %>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </fieldset>
-                    </div>
-                </article>
-                <article>
-                    <header>
-                        <h2>Lecture List</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>     
-                    </header>
-                    <div class="content">
-                        <fieldset>
-                            <div id="currentEventDiv" class="tableComponent">
-                                <table id="tbLectures" border="0" cellpadding="0" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th class="firstColumn" tabindex="16" title="StartingDate">Course<span></span></th>
-                                            <th title="StartingTime">Date Time<span></span></th>
-                                            <th width="85" title="duration">Duration<span></span></th>
-                                            <th width="80" title="isCancel">Cancel<span></span></th>
-                                            <th width="300" title="description">Description<span></span></th>
-                                            <th width="65" title="Details" class="icons" align="center">Details</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% for (i=0; i<lectures.size(); i++) { %>
-                                        <tr>
-                                            <td class="row"><% out.print(lectures.get(i).get(8) + lectures.get(i).get(9) + " (" + lectures.get(i).get(10) + ")"); %></td>
-                                            <td><%= lectures.get(i).get(2).substring(0, 19) %></td>
-                                            <td><%= lectures.get(i).get(3) %> Minutes</td>
-                                            <td><%= (lectures.get(i).get(4).equals("1")) ? "Yes" : "" %></td>
-                                            <td><%= lectures.get(i).get(5) %></td>
-                                            <td class="icons" align="center">
-                                                <a href="view_event.jsp?ls_id=<%= lectures.get(i).get(0) %>&l_id=<%= lectures.get(i).get(1) %>" class="view calendarIcon">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <% } %>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </fieldset>
-                    </div>
-                </article>
-            </form>
+            <article>
+                <header>
+                    <h2>Meeting List</h2>
+                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>     
+                </header>
+                <div class="content">
+                    <fieldset>
+                        <div id="currentEventDiv" class="tableComponent">
+                            <table id="tbMeetings" border="0" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="firstColumn" tabindex="16" title="StartingDate">Title<span></span></th>
+                                        <th title="StartingTime">Date Time<span></span></th>
+                                        <th width="85" title="duration">Duration<span></span></th>
+                                        <th width="80" title="isCancel">Cancel<span></span></th>
+                                        <th width="300" title="description">Description<span></span></th>
+                                        <th width="65" title="Details" class="icons" align="center">Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (i=0; i<meetings.size(); i++) { %>
+                                    <tr>
+                                        <td class="row"><%= meetings.get(i).get(9) %></td>
+                                        <td><script>document.write(toUserLocalTime("<%= meetings.get(i).get(2).substring(0, 19) %>"));</script></td>
+                                        <td><%= meetings.get(i).get(3) %> Minutes</td>
+                                        <td><%= (meetings.get(i).get(4).equals("1")) ? "Yes" : "" %></td>
+                                        <td><%= meetings.get(i).get(5) %></td>
+                                        <td class="icons" align="center">
+                                            <a href="view_event.jsp?ms_id=<%= meetings.get(i).get(0) %>&m_id=<%= meetings.get(i).get(1) %>" class="view calendarIcon">
+                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+            </article>
+            <article>
+                <header>
+                    <h2>Lecture List</h2>
+                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>     
+                </header>
+                <div class="content">
+                    <fieldset>
+                        <div id="currentEventDiv" class="tableComponent">
+                            <table id="tbLectures" border="0" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="firstColumn" tabindex="16" title="StartingDate">Course<span></span></th>
+                                        <th title="StartingTime">Date Time<span></span></th>
+                                        <th width="85" title="duration">Duration<span></span></th>
+                                        <th width="80" title="isCancel">Cancel<span></span></th>
+                                        <th width="300" title="description">Description<span></span></th>
+                                        <th width="65" title="Details" class="icons" align="center">Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (i=0; i<lectures.size(); i++) { %>
+                                    <tr>
+                                        <td class="row"><% out.print(lectures.get(i).get(8) + lectures.get(i).get(9) + " (" + lectures.get(i).get(10) + ")"); %></td>
+                                        <td><script>document.write(toUserLocalTime("<%= lectures.get(i).get(2).substring(0, 19) %>"));</script></td>
+                                        <td><%= lectures.get(i).get(3) %> Minutes</td>
+                                        <td><%= (lectures.get(i).get(4).equals("1")) ? "Yes" : "" %></td>
+                                        <td><%= lectures.get(i).get(5) %></td>
+                                        <td class="icons" align="center">
+                                            <a href="view_event.jsp?ls_id=<%= lectures.get(i).get(0) %>&l_id=<%= lectures.get(i).get(1) %>" class="view calendarIcon">
+                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+            </article>
         </section>
         <jsp:include page="footer.jsp"/>
     </div>

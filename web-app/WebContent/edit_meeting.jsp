@@ -27,8 +27,9 @@
     <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="js/additional-methods.min.js"></script>
     <script type="text/javascript" src="js/checkboxController.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
 
-    <%
+<%
     //Start page validation
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
@@ -88,50 +89,27 @@
     
     boolean edited = false;
     boolean editError = false;
-
-    String startTime = request.getParameter("startTime");
-    if (startTime!=null) {
-        if (!Validation.checkStartTime(startTime)) {
-            message += Validation.getErrMsg();
-            editError = true;
+    String startTime = request.getParameter("startUTCDateTime");
+    if (startTime != null) {
+        if (!meeting.updateMeetingTime(1, ms_id, m_id, startTime)){
+            message += user.getErrMsg("EM03");
+            elog.writeLog("[edit_meeting:] " + message + " /n");
+            response.sendRedirect("logout.jsp?message=" + message);
+            return;
         } else {
-            if (!meeting.updateMeetingTime(1, ms_id, m_id, startTime)) {
-                message += user.getErrMsg("EM03");
-                elog.writeLog("[edit_meeting:] " + message +" /n");
-                response.sendRedirect("logout.jsp?message=" + message);
-                return;  
-            } else {
-                edited = true;
-            }
+            edited = true;
         }
     }
-    
     String duration = request.getParameter("eventDuration");
-    if (duration!=null) {
+    if (duration != null) {
         if (!Validation.checkDuration(duration)) {
             message += "<br />" + Validation.getErrMsg();
             editError = true;
         } else {
-            if (!meeting.updateMeetingDuration(1, ms_id, m_id, duration)) {
+            if (!meeting
+                    .updateMeetingDuration(1, ms_id, m_id, duration)) {
                 message += user.getErrMsg("EM04");
-                elog.writeLog("[edit_meeting:] " + message +" /n");
-                response.sendRedirect("logout.jsp?message=" + message);
-                return;  
-            } else {
-                edited = true;
-            }
-        }
-    }
-    
-    String description = request.getParameter("description");
-    if (description!=null) {
-        if (!Validation.checkDescription(description)) {
-            message += "<br />" + Validation.getErrMsg();
-            editError = false;
-        } else {
-            if (!meeting.setMeetingDescription(ms_id, m_id, description)) {
-                message += user.getErrMsg("EM05");
-                elog.writeLog("[edit_meeting:] " + message +" /n");
+                elog.writeLog("[edit_meeting:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;
             } else {
@@ -139,86 +117,128 @@
             }
         }
     }
-    
+    String description = request.getParameter("description");
+    if (description != null) {
+        if (!Validation.checkDescription(description)) {
+            message += "<br />" + Validation.getErrMsg();
+            editError = false;
+        } else {
+            if (!meeting
+                    .setMeetingDescription(ms_id, m_id, description)) {
+                message += user.getErrMsg("EM05");
+                elog.writeLog("[edit_meeting:] " + message + " /n");
+                response.sendRedirect("logout.jsp?message=" + message);
+                return;
+            } else {
+                edited = true;
+            }
+        }
+    }
     if (edited) {
         String cancelEvent = request.getParameter("cancelEventBox");
-        if (cancelEvent!=null) {
+        if (cancelEvent != null) {
             if (!meeting.setMeetingIsCancel(ms_id, m_id, true)) {
                 message += user.getErrMsg("EM06");
-                elog.writeLog("[edit_meeting:] " + message +" /n");
+                elog.writeLog("[edit_meeting:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;
             }
         } else {
             if (!meeting.setMeetingIsCancel(ms_id, m_id, false)) {
                 message += user.getErrMsg("EM07");
-                elog.writeLog("[edit_meeting:] " + message +" /n");
+                elog.writeLog("[edit_meeting:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;
-            } 
+            }
         }
     }
-    if(edited){
+    if (edited) {
         String allowRecording = request.getParameter("allowRecording");
         HashMap<String, Integer> map = new HashMap<String, Integer>();
-        if(allowRecording==null){
-          map.put(Settings.meeting_setting[0], 0);
-        }else{
-          map.put(Settings.meeting_setting[0], 1);
+        if (allowRecording == null) {
+            map.put(Settings.meeting_setting[0], 0);
+        } else {
+            map.put(Settings.meeting_setting[0], 1);
         }
         map.put(Settings.meeting_setting[1], 0);
         map.put(Settings.meeting_setting[2], 0);
         map.put(Settings.meeting_setting[3], 0);
         map.put(Settings.meeting_setting[4], 0);
-        if(!meeting.setMeetingSetting(map,ms_id,m_id)){
+        if (!meeting.setMeetingSetting(map, ms_id, m_id)) {
             response.sendRedirect("logout.jsp?message=Fail to change meeting setting");
             return;
         }
     }
     if (edited && !editError) {
         successMessage = "Event Details Updated";
-        response.sendRedirect("view_event.jsp?ms_id=" + ms_id + "&m_id=" + m_id + "&successMessage=" + successMessage);
-        return;  
+        response.sendRedirect("view_event.jsp?ms_id=" + ms_id
+                + "&m_id=" + m_id + "&successMessage=" + successMessage);
+        return;
     }
-    
     ArrayList<ArrayList<String>> event = new ArrayList<ArrayList<String>>();
     if (!meeting.getMeetingInfo(event, ms_id, m_id)) {
         message = meeting.getErrMsg("EM08");
-        elog.writeLog("[edit_meeting:] " + message +" /n");
+        elog.writeLog("[edit_meeting:] " + message + " /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
-    
     ArrayList<ArrayList<String>> eventSchedule = new ArrayList<ArrayList<String>>();
     if (!meeting.getMeetingScheduleInfo(eventSchedule, ms_id)) {
         message = meeting.getErrMsg("EM09");
-        elog.writeLog("[edit_meeting:] " + message +" /n");
+        elog.writeLog("[edit_meeting:] " + message + " /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
     HashMap<String, Integer> isRecordedResult = new HashMap<String, Integer>();
     meeting.getMeetingSetting(isRecordedResult, ms_id, m_id);
     boolean check1 = event.get(0).get(4).equals("1") ? true : false;
-    
-    %>
+%>
 
-    <script type="text/javascript">
-    /* TABLE */
-    $(screen).ready(function() {
-        $('#startTime').timepicker({ 'scrollDefaultNow': true });
-        <%if (isRecordedResult.get("isRecorded")==0){%>
-        $(".checkbox .box:eq(0)").next(".checkmark").toggle();
-        $(".checkbox .box:eq(0)").attr("aria-checked", "false");
-        $(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
-        <%}%>
-
-       <%if (!check1){%>
-        $(".checkbox .box:eq(1)").next(".checkmark").toggle();
-        $(".checkbox .box:eq(1)").attr("aria-checked", "false");
-        $(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
-        <%}%>
-    });
+<script type="text/javascript">
+        /* TABLE */
+        $(screen).ready(function() {
+            $('#startTime').timepicker({ 'scrollDefaultNow': 'now' });
+            <%if (isRecordedResult.get("isRecorded")==0){%>
+            $(".checkbox .box:eq(0)").next(".checkmark").toggle();
+            $(".checkbox .box:eq(0)").attr("aria-checked", "false");
+            $(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
+            <%}%>
     
+           <%if (!check1){%>
+            $(".checkbox .box:eq(1)").next(".checkmark").toggle();
+            $(".checkbox .box:eq(1)").attr("aria-checked", "false");
+            $(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
+            <%}%>
+            
+            //convert utc time to local time and display it
+            var utcStartDateTime = "<%= event.get(0).get(2).substring(0, 19) %>";
+
+            function toLocalTime(utcTime){
+                var startMoment = moment.utc(utcTime).local().format("YYYY-MM-DD HH:mm:SS");
+                return startMoment;
+            }  
+            var localCurrentEventStartDateTime = toLocalTime(utcStartDateTime);
+            $("#startDate").text(localCurrentEventStartDateTime.substring(0,10));
+            $("#startTime").val(localCurrentEventStartDateTime.substring(11,19));
+        });
+        
+        function toUTC(){
+            var startDate = $("#startDate").text();
+            var startTime = $("#startTime").val();
+            var utcdayTime = moment(startDate + " " + startTime).utc();
+            var currentUTCTime = moment.utc();
+            if(utcdayTime.isBefore(currentUTCTime)){
+                $(".warningMessage").text("Event Start Time must be later than current time!");
+                 var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                 layout:'top',
+                 type:'error'});
+                return false;
+            }else{
+                var uctdatetimestring = utcdayTime.format("YYYY-MM-DD HH:mm:SS");
+                $("#startUTCDateTime").val(uctdatetimestring);
+                return true;
+            }
+        }
     </script>
 </head>
 
@@ -241,7 +261,7 @@
                 <div class="warningMessage"><%=message %></div>
                 <div class="successMessage"><%=successMessage %></div> 
             </header>
-            <form name="EditMeeting" id="EditMeeting" method="get" action="edit_meeting.jsp">
+            <form name="EditMeeting" id="EditMeeting" method="get" action="edit_meeting.jsp" onsubmit="return toUTC()">
                 <article>
                     <header>
                         <h2>Current Event</h2>
@@ -260,7 +280,7 @@
                                     <tbody>
                                         <tr>
                                             <td class="row"><%= eventSchedule.get(0).get(1) %></td>
-                                            <td><%= event.get(0).get(2).substring(0, 10) %></td>
+                                            <td id="startDate"><%= event.get(0).get(2).substring(0, 10) %></td>
                                             <td><%= eventSchedule.get(0).get(5) %></td>
                                         </tr>
                                     </tbody>
@@ -279,8 +299,9 @@
                             <input type="hidden" name="ms_id" id="ms_id" value="<%= ms_id %>">
                             <input type="hidden" name="m_id" id="m_id" value="<%= m_id %>">  
                             <div class="component" >
-                                <label for="startTime" class="label">Start Time:</label> 
-                                <input id="startTime" name="startTime"  type="text"  class="input"  value="<%= event.get(0).get(2).substring(11, 19) %>" tabindex="24" title="Start Time" placeholder="pick start time" autofocus/>            
+                                <label for="startTime" class="label">Start Time:</label>
+                                <input name="startUTCDateTime" id="startUTCDateTime" hidden="hidden" value=""/>
+                                <input id="startTime" name="startTime"  type="text"  class="input"  value="<%= event.get(0).get(2).substring(11, 19) %>" tabindex="24" title="Start Time" placeholder="pick start time"/>            
                             </div>
                             <div class="component" >
                                 <label for="eventDuration" class="label">Duration:</label> 
@@ -319,8 +340,7 @@
         </section>
         <script>
        // form validation, edit the regular expression pattern and error messages to meet your needs
-       
-           $(document).ready(function(){
+            $(document).ready(function(){
                 $('#EditMeeting').validate({
                     validateOnBlur : true,
                     rules: {
@@ -335,18 +355,16 @@
                        },
                        eventDuration:{
                            required: true,
-                           range:[1,999]
-                           
+                           range:[1,999]                      
                        },
                        
                     },
                     messages: {
-                        startTime:"Please enter a valid Time Format",
-                        eventDuration:"Please enter a valid Number",
+                        startTime:"Please enter a valid time format",
+                        eventDuration:"Please enter a valid number",
                         description:"Invalid characters"
                     }
-                });
-              
+                });                             
             });
         </script>
         <jsp:include page="footer.jsp"/>

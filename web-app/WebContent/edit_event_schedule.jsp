@@ -31,6 +31,7 @@
     <script type="text/javascript" src="js/componentController.js"></script>
     <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="js/additional-methods.min.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
 
     <%
     String message = request.getParameter("message");
@@ -104,8 +105,7 @@
     ArrayList<ArrayList<String>> lectureProfessor = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> descriptionResult = new ArrayList<ArrayList<String>>();
     String courseInfo = "";
-    String startDate ="";
-    String startTime ="";
+    String eventStartDateTime = "";
     String duration = "";
     String recurrence = "";
     String repeatEvery = "";
@@ -214,40 +214,18 @@
             }
         }
     }
-    startDate= isMeeting? result.get(0).get(2).split(" ")[0]: result.get(0).get(4).split(" ")[0];
+    eventStartDateTime = isMeeting?  result.get(0).get(2) : result.get(0).get(4);
+    
 %>
 <script type="text/javascript">
-    function searchUser(){
-        var xmlhttp;
-        if (window.XMLHttpRequest)
-        {// code for IE7+, Firefox, Chrome, Opera, Safari
-          xmlhttp=new XMLHttpRequest();
-        }
-        else
-        {// code for IE6, IE5
-          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange=function()
-        {
-          if (xmlhttp.readyState==4 && xmlhttp.status==200)
-          {
-              var json = xmlhttp.responseText;
-              obj = JSON.parse(json);
-            document.getElementById("responseDiv").innerHTML=xmlhttp.responseText;
-          }
-        }
-        userName = document.getElementById("searchBoxAddAttendee").value;
-        xmlhttp.open("GET","search.jsp?userName=" + userName,true);
-        xmlhttp.send();
-    }
-    $(document).ready(function() { 
+    $(document).ready(function() {
 
         $("#dropdownEventType").selectmenu({'refresh': true});
         $("#Recurrence").selectmenu({'refresh': true});
         $("#courseCode").selectmenu({'refresh': true});
         $('#startTime').timepicker({ 'scrollDefaultNow': true });
 
-
+        var toLocalDateTime = moment.utc("<%= eventStartDateTime %>").toDate();
       //Date picker
         $(function(){
             var month = new Array(12);
@@ -283,8 +261,8 @@
                     $("#dropdownMonthStarts").selectmenu({'refresh': true});
                     $("#dropdownYearStarts").selectmenu({'refresh': true});
                    
-                }
-            <% if(startDate.equals("")) out.write(""); else out.write(",defaultDate: "+"\""+ startDate+"\"");%>
+                },
+                defaultDate: moment(toLocalDateTime).format('YYYY-MM-DD')
             
             };
             var datePickerEnds = {
@@ -303,8 +281,7 @@
                     populateMonthEnds($("#dropdownMonthEnds").val());
                     $("#dropdownDayEnds").selectmenu({'refresh': true});
                     $("#dropdownMonthEnds").selectmenu({'refresh': true});
-                    $("#dropdownYearEnds").selectmenu({'refresh': true});
-                   
+                    $("#dropdownYearEnds").selectmenu({'refresh': true});                 
                 }
             <% if(endsYear.equals("")|| endsMonth.equals("") || endsDay.equals("")) out.write(""); else out.write(",defaultDate:"+"\""+ endsYear+"-"+endsMonth+"-"+endsDay+"\"");%>
             
@@ -315,8 +292,6 @@
 
     });
 
-</script>
-<script type="text/javascript">
     $(document).ready(function() {
        //get the populate weekString from an event spec in database
         var weekString = $('#weekString').val();
@@ -372,6 +347,61 @@
       
     });
     
+    function getMonthNumber(month) {
+        var monthNumber = "";
+        if(month != null && month !== undefined){
+            var selectedMon = month.toLowerCase();
+            if(selectedMon === "january"){
+                monthNumber = "01";
+            }else if(selectedMon === "february"){
+                monthNumber = "02";
+            }else if(selectedMon === "march"){
+                monthNumber = "03";
+            }else if(selectedMon === "april"){
+                monthNumber = "04";
+            }else if(selectedMon === "may"){
+                monthNumber = "05";
+            }else if(selectedMon === "june"){
+                monthNumber = "06";
+            }else if(selectedMon === "july"){
+                monthNumber = "07";
+            }else if(selectedMon === "august"){
+                monthNumber = "08";
+            }else if(selectedMon === "september"){
+                monthNumber = "09";
+            }else if(selectedMon === "october"){
+                monthNumber = "10";
+            }else if(selectedMon === "november"){
+                monthNumber = "11";
+            }else if(selectedMon === "december"){
+                monthNumber = "12";
+            }
+        }
+        return monthNumber;
+    }
+    
+    function toUTC(){
+        var startYear = $("#dropdownYearStarts option:selected").text();
+        var startMonth = getMonthNumber($("#dropdownMonthStarts option:selected").text());
+        var startDay = $("#dropdownDayStarts option:selected").text();
+        if(startDay.length == 1){
+            startDay = "0" + startDay;
+        }
+        var startTime = $("#startTime").val();
+        var utcdayTime = moment(startYear + "-" + startMonth + "-" + startDay + " " + startTime).utc();
+        var currentUTCTime = moment.utc();
+        if(utcdayTime.isBefore(currentUTCTime)){
+            $(".warningMessage").text("Event Start Date&Time must be later than current Date&Time!");
+            var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                layout:'top',
+                                type:'error'});
+            return false;
+        }else{
+            $("#startUTCDateTime").attr("value",utcdayTime.format("YYYY-MM-DD HH:mm:SS"));
+            return true;
+        }
+    }
+    
 </script>
 <body>
     <div id="page">
@@ -385,7 +415,7 @@
                 <div class="warningMessage"><%=message %></div>
                 <div class="successMessage"><%=successMessage %></div> 
             </header>
-            <form method="get" action="update_event_schedule.jsp" id="eventForm">
+            <form method="get" action="update_event_schedule.jsp" id="eventForm" onsubmit="return toUTC()">
                 <article>
                     <header>
                         <h2>Event Details</h2>
@@ -445,14 +475,15 @@
                                     <option role="option">November</option>
                                     <option role="option">December</option>
                                 </select>
+                                <input type="text" name="startUTCDateTime" id="startUTCDateTime" hidden="hidden" value=""/>
                             </div>
                             <div class="component" >
                                 <label for="startTime" class="label">Start Time:</label> 
-                                <input id="startTime" name="startTime"  type="text"  class="input"  tabindex="24" title="Start Time" value="<%= isMeeting? result.get(0).get(2).split(" ")[1].substring(0,8): result.get(0).get(4).split(" ")[1].substring(0,8) %>" autofocus/>            
+                                <input id="startTime" name="startTime"  type="text"  class="input"  tabindex="24" title="Start Time" value=""/>                                        
                             </div>
                             <div class="component" >
                                 <label for="eventDuration" class="label">Event Duration:</label> 
-                                <input id="eventDuration" name="eventDuration"  type="text"  class="input"  tabindex="25" title="Event Duration"  value="<%=  isMeeting? result.get(0).get(4): result.get(0).get(6)%>" required autofocus/>            
+                                <input id="eventDuration" name="eventDuration"  type="text"  class="input"  tabindex="25" title="Event Duration"  value="<%=  isMeeting? result.get(0).get(4): result.get(0).get(6)%>" required />            
                             </div>
 
                             <div class="component">
@@ -593,7 +624,7 @@
                             </div>
                             <div class="component" >
                                 <label for="eventDescription" class="label">Description:</label>
-                                <input name="eventDescription" id="eventDescription" class="input" cols="35" rows="5" title="Description" value="<%= eventDescription %>" autofocus>     
+                                <input name="eventDescription" id="eventDescription" class="input" cols="35" rows="5" title="Description" value="<%= eventDescription %>">     
                             </div>
                         </fieldset>
                     </div>
@@ -698,14 +729,15 @@
                 $("#dropdownMonthEnds").selectmenu({'refresh': true});
                 $("#dropdownYearEnds").selectmenu({'refresh': true});
                 <%}%>
-                var startDate = new Date(<%= Integer.parseInt(startDate.split("-")[0]) %>,<%= Integer.parseInt(startDate.split("-")[1])-1 %>,<%= Integer.parseInt(startDate.split("-")[2]) %>);
-                    $("#dropdownDayStarts").val(startDate.getUTCDate());
-                    $("#dropdownMonthStarts").val(month[startDate.getUTCMonth()]);
-                    $("#dropdownYearStarts").val(startDate.getUTCFullYear());
-                    $("#dropdownDayStarts").selectmenu({'refresh': true});
-                    $("#dropdownMonthStarts").selectmenu({'refresh': true});
-                    $("#dropdownYearStarts").selectmenu({'refresh': true});
-                });
+                var startDate = moment.utc("<%= eventStartDateTime %>").toDate();
+                $("#dropdownDayStarts").val(moment(startDate).format('DD'));
+                $("#dropdownMonthStarts").val(month[moment(startDate).format('MM')-1]);
+                $("#dropdownYearStarts").val(moment(startDate).format('YYYY'));
+                $("#startTime").val(moment(startDate).format('HH:mm:ss'));
+                $("#dropdownDayStarts").selectmenu({'refresh': true});
+                $("#dropdownMonthStarts").selectmenu({'refresh': true});
+                $("#dropdownYearStarts").selectmenu({'refresh': true});
+            });
         </script>
         <jsp:include page="footer.jsp"/>
     </div>

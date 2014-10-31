@@ -158,6 +158,9 @@
            $(document).ready(function(){
                 $("#help").attr({href:"help_createEvent.jsp" ,
                                  target:"_blank"});
+                jQuery.validator.addMethod("timeFormat", function(value, element) {
+                    return this.optional(element) ||  /^\s*(?:(?!24:00:00).)*\s*$/.test(value);
+                });
                 $('#eventForm').validate({
                     validateOnBlur : true,
                     rules: {
@@ -167,12 +170,12 @@
                        },
                        startTime:{
                            required: true,
-                           pattern: /^\s*[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\s*$/
+                           pattern: /^\s*[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\s*$/,
+                           timeFormat:true
                        },
                        eventDuration:{
                            required: true,
-                           range:[1,999]
-                           
+                           range:[1,999]                           
                        }
                     },
                     messages: {
@@ -180,7 +183,11 @@
                             pattern:"Please enter a valid Title.",
                             required:"Meeting Title is required"
                         },
-                        startTime:"Please enter a valid Time Format: 00:00:00",
+                        startTime:{
+                            pattern:"Please enter a valid Time Format",
+                            required:"Start time is required",
+                            timeFormat:"Accept 00:00:00 ~ 23:59:59 only"
+                        },
                         eventDuration:"Number Only",
                     }
                 });

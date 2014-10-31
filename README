@@ -20,6 +20,23 @@ sudo gedit /etc/mysql/my.cnf
 - port = 3309 (change all instances of port)
 - bind-address = local VM ip
 
+###Set mysql timezone to UTC, add default_time_zone
+[mysqld]
+**other variables**
+default_time_zone='+00:00'
+
+###Double check mysql timezone setting:
+mysql> SELECT @@global.time_zone,@@session.time_zone;
+	+--------------------+---------------------+
+	| @@global.time_zone | @@session.time_zone |
+	+--------------------+---------------------+
+	| +00:00             | +00:00              |
+	+--------------------+---------------------+
+
+###Populate mysql.time_zone_name table to mysql server, if the following query return empty,
+###follow instructions to populate that table: http://dev.mysql.com/doc/refman/5.5/en/time-zone-support.html
+  
+select * from mysql.time_zone_name;
 
 3) Restart the mysql service
 ```
@@ -34,10 +51,6 @@ mysql -u root -p
 5) Create the database 'db' then exit
 ```
 create database db;
-//Set mysql timezone to UTC, add default_time_zone to my.cnf file (Ubuntu: /etc/mysql/my.cnf)
-[mysqld]
-**other variables**
-default_time_zone='+00:00'
 ```
 
 6) Download the MySQL script files and run them (from terminal)

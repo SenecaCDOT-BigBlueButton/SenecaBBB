@@ -444,7 +444,7 @@ requires jQuery 1.7+
 		var drCur = 0;
 		var drLen = dr.length;
 
-		for (var i=start; i <= end; i += settings.step*60) {
+		for (var i=start; i < end; i += settings.step*60) {
 			var timeInt = i;
 			var timeString = _int2time(timeInt, settings.timeFormat);
 

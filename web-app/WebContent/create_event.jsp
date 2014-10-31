@@ -432,7 +432,11 @@
         <script>
             // form validation, edit the regular expression pattern and error messages to meet your needs
             $(document).ready(function(){
-                $("#help").attr({href:"help_createEvent.jsp",target:"_blank"});               
+                $("#help").attr({href:"help_createEvent.jsp",target:"_blank"});
+                jQuery.validator.addMethod("timeFormat", function(value, element) {
+                    return this.optional(element) || /^\s*(?:(?!24:00:00).)*\s*$/.test(value);
+                });
+                
                 $('#eventForm').validate({
                     validateOnBlur : true,
                     rules: {
@@ -449,7 +453,8 @@
                         },
                         startTime:{
                             required: true,
-                            pattern: /^\s*[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\s*$/
+                            pattern: /^\s*[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\s*$/,
+                            timeFormat:true
                         },
                         eventDuration:{
                             required: true,
@@ -472,7 +477,12 @@
                             minlength: "Invalid event title length",
                             maxlength: "Invalid event title length"
                         },
-                        startTime:"Please enter a valid Time Format",
+                        startTime:{
+                            pattern:"Please enter a valid Time Format",
+                            required:"Start time is required",
+                            timeFormat:"Accept 00:00:00 ~ 23:59:59 only"
+                        },
+                            
                         eventDuration:"Please enter a valid Number",
                         repeatsEvery:"Please enter a valid Number",
                         occurrences:"Please enter a valid Number",

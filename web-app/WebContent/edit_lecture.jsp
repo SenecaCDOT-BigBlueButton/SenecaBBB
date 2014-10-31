@@ -358,6 +358,9 @@
         
         <script>
         // form validation, edit the regular expression pattern and error messages to meet your needs
+            jQuery.validator.addMethod("timeFormat", function(value, element) {
+                return this.optional(element) || /^\s*(?:(?!24:00:00).)*\s*$/.test(value);
+            });
             $(document).ready(function(){
                  $('#EditLecture').validate({
                      validateOnBlur : true,
@@ -369,7 +372,8 @@
                         },
                         startTime:{
                             required: true,
-                            pattern: /^\s*[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\s*$/
+                            pattern: /^\s*[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\s*$/,
+                            timeFormat:true
                         },
                         eventDuration:{
                             required: true,
@@ -378,7 +382,11 @@
                         
                      },
                      messages: {
-                         startTime:"Please enter a valid Time Format",
+                         startTime:{
+                             pattern:"Please enter a valid Time Format",
+                             required:"Start time is required",
+                             timeFormat:"Accept 00:00:00 ~ 23:59:59 only"
+                         },
                          eventDuration:"Please enter a valid Number",
                          description:"Invalid characters"
                      }

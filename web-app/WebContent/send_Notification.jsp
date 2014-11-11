@@ -26,9 +26,9 @@ public boolean sendNotification(DBAccess dbaccess, LDAPAuthenticate ldap, String
             String attendeeEmail;
             String domain = Config.getProperty("domain");
             String emailSubject ="BigBlueButton Event Notification";
-            String eventStartTime=null;  
-            String eventTitle = null;
-            String emailText = null;
+            String eventStartTime="";  
+            String eventTitle = "";
+            String emailText = "";
             user.isnonLDAP(isNonLdap, bu_id);
             String accountText = isNonLdap.get_value()?"Guest id: "+bu_id : "Seneca College user account";
             if(event != null && event.equals("meeting")){
@@ -47,9 +47,9 @@ public boolean sendNotification(DBAccess dbaccess, LDAPAuthenticate ldap, String
                                  + "<p>You are invited by <strong>" + sender + "</strong> to join a meeting in Seneca BigBlueButton web conferencing system.</p>"                                    
                                  + "<p> Please use your "+  accountText + " to login and to join the meeting at: " + domain + "</p>"
                                  + "<p> Meeting Title: <strong>"+ eventTitle + " </strong></p>"
-                                 + "<p> Meeting Initial Date and Time: <strong>"+ eventStartTime + " </strong></p>"
+                                 + "<p> Meeting Initial Date and Time (UTC): <strong>"+ eventStartTime + " </strong></p>"
                                  + "<p>This is an automated message, please don't reply.</p>"
-                                 +"<p><p></p><p></p>Thank you,<p></p>"; 
+                                 +"<p><p></p><p></p>Thank you,<p></p>";
             }else if(event != null && event.equals("lecture")){
                 Lecture2 lecture = new Lecture2(dbaccess);
                 lecture.getLectureScheduleInfo(scheduleResult, ms_id);

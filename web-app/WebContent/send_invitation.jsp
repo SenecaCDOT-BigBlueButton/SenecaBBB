@@ -127,14 +127,17 @@ if(eventType !=null && eventType.equals("Meeting")){
     response.sendRedirect("calendar.jsp?message=Invalid Event Information!");
     return;
 }
+
+//Encrypt meetingID and Viewer Password before send to guest
 final String strToEncrypt = meetingID +"-"+ viewerPwd ;
-final String strPssword = Config.getProperty("securitykey");
-EncryptDecrypt.setKey(strPssword);
-EncryptDecrypt.encrypt(strToEncrypt.trim());
-final String strToDecrypt = EncryptDecrypt.getEncryptedString();
-EncryptDecrypt.decrypt(strToDecrypt.trim());
-session.setAttribute("meetingId", EncryptDecrypt.getEncryptedString());
-session.setAttribute("meetingTime", eventStartTime);
+final String securitykey = Config.getProperty("securitykey");
+EncryptDecrypt encrypt = new EncryptDecrypt();
+encrypt.setKey(securitykey);
+encrypt.encrypt(strToEncrypt.trim());
+session.setAttribute("meetingId", encrypt.getEncryptedString());
+eventStartTime = eventStartTime.substring(0,19);
+//session.setAttribute("meetingTime", eventStartTime);
+
 %>
 
 <!DOCTYPE html>
@@ -157,6 +160,7 @@ session.setAttribute("meetingTime", eventStartTime);
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
     <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="js/additional-methods.min.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
 </head>
 <body>
     <div id="page">
@@ -171,21 +175,21 @@ session.setAttribute("meetingTime", eventStartTime);
                 <h1>Send Event URL</h1>
                 <!-- WARNING MESSAGES -->
                 <div class="warningMessage"><%= message %></div>
-                <div class="successMessage"><%=successMessage %></div> 
+                <div class="successMessage"><%= successMessage %></div> 
             </header>
-            <form name="guestaccuntinfo" id="guestaccuntinfo"  method="get" action="email.jsp">
+            <form name="guestaccuntinfo" id="guestaccuntinfo"  method="get" action="email.jsp" onsubmit="return toLocal()">
                 <article>
                     <header>
                         <h2>Guests Information</h2>
                     </header>
                     <fieldset>
                         <div class="component">
-                            <p>Please enter valid emails separated by comma! A BigBlueButton conference Url would be sent to your guests!
+                            <p>Please enter valid emails separated by commas! A BigBlueButton Web Conference Url and event scheduled date time would be sent to your guests!
                             </p>
                         </div>
                         <div class="component">
-                            <label for="email" class="label">Guest emails:</label>
                             <input type="text" name="guestemail" id="guestemail" class="input guestemails" tabindex="17" title="Email">
+                            <input type="text" name="meetingTime" id="meetingTime" hidden=hidden value="<%= eventStartTime %>">                       
                         </div>
                     </fieldset>
                 </article>
@@ -197,25 +201,51 @@ session.setAttribute("meetingTime", eventStartTime);
                     </fieldset>
                 </article>
             </form>
+
         </section>
-        <script>    
-           // form validation, edit the regular expression pattern and error messages to meet your needs
-//            $(document).ready(function(){
-//                 $('#guestaccuntinfo').validate({
-//                     validateOnBlur : true,
-//                     rules: {
-//                         email:{
-//                             required: true
-//                         }
-//                     },
-//                     messages: {
-//                         email:{
-//                             required: "Please enter guest email address",
-//                             email: "Please enter a valid email address"
-//                         }
-//                     }
-//                 });
-//             });
+        <script>
+          //convert UTC to user local time before form submitted
+            function toLocalTime(utcTime){
+                var startMoment = moment.utc(utcTime).local().format();
+                return startMoment;
+            }   
+            function toLocal(){
+                var utcStartTime = $("#meetingTime").val();
+                $("#meetingTime").val(toLocalTime(utcStartTime));
+                return true;
+            }
+            
+            // form validation, edit the regular expression pattern and error messages to meet your needs
+            $(document).ready(function(){                
+                //add method to validate multiple emails in textbox
+                jQuery.validator.addMethod("multiple_emails", function (value, element) {                    
+                    if (this.optional(element)) {
+                        return true;
+                    }
+                    var emails = value.split(','),
+                    valid = true;      
+                    for (var i = 0, limit = emails.length; i < limit; i++) {
+                        value = emails[i];
+                        valid = valid && jQuery.validator.methods.email.call(this, value, element);
+                    }
+                    return valid;
+                });
+                $('#guestaccuntinfo').validate({
+                    validateOnBlur : true,
+                    rules: {
+                        guestemail:{
+                            required: true,
+                            multiple_emails: true
+                        }
+                    },
+                    messages: {
+                        guestemail:{
+                            required: "Please enter guest email address",
+                            multiple_emails: "Invalid email format"
+                        }
+                    }
+                });
+            });
         </script>
         <jsp:include page="footer.jsp"/>
     </div>

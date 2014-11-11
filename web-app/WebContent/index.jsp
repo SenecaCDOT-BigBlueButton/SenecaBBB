@@ -72,24 +72,7 @@ if (usersession.getUserId() != ""){
                 return false;
             }
         }
-    /*
-        function showNotification()
-        {
-            var xmlhttp;   
-            if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp=new XMLHttpRequest();
-            }else{// code for IE6, IE5
-                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange=function(){
-              if (xmlhttp.readyState==4 && xmlhttp.status==200){
-                   document.getElementById("notification").innerHTML=xmlhttp.responseText;
-              }
-            }
-            xmlhttp.open("POST","getNotification.jsp",true);
-            xmlhttp.send();
-        }
-    */
+
         $(document).ready(function(){
             if(localStorage.Y > 0 || localStorage.X > 0){ 
                 window.scrollBy(localStorage.X,localStorage.Y);
@@ -107,28 +90,7 @@ if (usersession.getUserId() != ""){
                               layout:'top',
                               type:'success'
                              });
-            }
-            
-//             Date.prototype.stdTimezoneOffset = function() {
-//                 var jan = new Date(this.getFullYear(), 0, 1);
-//                 var jul = new Date(this.getFullYear(), 6, 1);
-//                 return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
-//             };
-
-//             Date.prototype.dst = function() {
-//                 return this.getTimezoneOffset() < this.stdTimezoneOffset();
-//             };
-            
-//             var today = new Date();
-//             console.log("utc time : "+ moment.utc().format());
-//             console.log("local time : "+ moment().format());
-//             if (today.dst()) { 
-//                 console.log ("Daylight savings time!");
-//                 $("#SenecaLDAPBBBUsrTimezone").attr("value", today.getTimezoneOffset());
-//             }
-//             else{
-//                 $("#SenecaLDAPBBBUsrTimezone").attr("value", today.stdTimezoneOffset());
-//             }
+            }           
         });
     </script>
 </head>

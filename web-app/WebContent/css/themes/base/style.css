@@ -77,11 +77,6 @@ option:hover {
 	display: table;/*-webkit-filter: invert();*/
 }
 
-
-p {
-	margin: 0px;
-	padding: 0px;
-}
 a {
 	text-decoration: none;
 	color: inherit;
@@ -457,7 +452,7 @@ section article fieldset div.component input.input {
 
 section form article fieldset div.component p {
     height: 50px;
-    width: 450px;
+    width: 500px;
     display: block;
     font-size: 18px;
     font-family: "ITCAvantGardeStd BkCn";
@@ -468,6 +463,36 @@ section form article fieldset div.component p {
     float: right;
     padding-left: 8px;
     padding-bottom: 20px;
+    z-index: 4;
+}
+
+section form article fieldset div.component input.guestemails{
+    height: 38px;
+    width: 500px;
+    display: block;
+    font-size: 15px;
+    font-family: "ITCAvantGardeStd BkCn";
+    font-style: normal;
+    font-weight: 400;
+    color: #838383;
+    outline: none;
+    float: right;
+    padding-left: 8px;
+    z-index: 4;
+}
+
+section form article fieldset div.component input.guestlogin {
+    height: 38px;
+    width: 150px;
+    display: block;
+    font-size: 15px;
+    font-family: "ITCAvantGardeStd BkCn";
+    font-style: normal;
+    font-weight: 400;
+    color: #838383;
+    outline: none;
+    float: left;
+    padding-left: 8px;
     z-index: 4;
 }
 .searchBox {
@@ -628,6 +653,25 @@ section form .buttons .button, section form .actionButtons .button,section .acti
 	-o-transition: all 0.1s;
 	transition: all 0.1s;
 }
+
+.guestloginbutton {
+    padding: 4px 10px;
+    min-width: 85px;
+    height: 39px;
+    margin-left: 10px;
+    margin-right: 18px;
+    font-size: 16px;
+    color: #FFFFFF;
+    border-style: none;
+    cursor: pointer;
+    background-color: #CD352B;
+    -webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    -ms-transition: all 0.1s;
+    -o-transition: all 0.1s;
+    transition: all 0.1s;
+}
+
 /* DatePicker Component */
 div.datePicker {
 	width: 39px;

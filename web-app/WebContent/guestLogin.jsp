@@ -1,9 +1,3 @@
-<%@page import="db.DBConnection"%>
-<%@page import="db.DBAccess" %>
-<%@page import="sql.Admin" %>
-<%@page import="java.util.ArrayList" %>
-<jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
-<jsp:useBean id="ldap" scope="session" class="ldap.LDAPAuthenticate" />
 <%
 String message = request.getParameter("message");
 String successMessage = request.getParameter("successMessage");
@@ -14,9 +8,7 @@ if (message == null || message == "null") {
 if (successMessage == null) {
     successMessage="";
 }
-
 session.setAttribute("guestmeetingId", meetingId);
-System.out.println("guest login"+ meetingId);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +29,7 @@ System.out.println("guest login"+ meetingId);
             var restOfUrl = window.location.href.substr(5);
             window.location = "https:" + restOfUrl;
         }
-    */    
+    */
         function trim(s) {
             return s.replace(/^\s*/, "").replace(/\s*$/, "");
         }
@@ -49,13 +41,6 @@ System.out.println("guest login"+ meetingId);
                                     type:'error'});
                 document.getElementById("SenecaLDAPBBBLogin").focus();
                 return false;
-            } else if (trim(document.getElementById("SenecaLDAPBBBLoginPass").value) == "") {
-                $(".warningMessage").text("Password empty!");
-                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
-                                    layout:'top',
-                                    type:'error'});
-                document.getElementById("SenecaLDAPBBBLoginPass").focus();
-                return false;
             }
         }
 
@@ -65,7 +50,7 @@ System.out.println("guest login"+ meetingId);
                 var notierrMessage = noty({text: '<div>'+ message+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
                               layout:'top',
                               type:'error'});
-                }
+            }
         
             if($(".successMessage").text() !=""){
                 var successMessage = $(".successMessage").text();
@@ -89,28 +74,32 @@ System.out.println("guest login"+ meetingId);
                 <div class="warningMessage"><%= message %></div>
                 <div class="successMessage"><%= successMessage %></div>
                 <br /><br />
-            </header>           
+            </header>
+            <article>
+                <fieldset>
+                    <div class="component">
+                        <h2>Welcome to Seneca BigBlueButton Web Conference System!</h2>
+                        <p>BigBlueButton is an open source web conferencing system for on-line learning. BigBlueButton enables you to share documents
+                        (PDF and any office document), webcams, chat, audio and your desktop. It can also record sessions for later playback.</p>
+                        <p>You can join the conference at scheduled date time. 
+                           If you have any difficulties to join the conference, please contact your conference moderator!</p>
+                        <p>If you are student or faculty of Seneca College, you can login our BigBlueButton Conference System 
+                          using your Seneca Id and Password at <a href="https://bbbman.senecacollege.ca">https://bbbman.senecacollege.ca </a></p>
+                        </div>
+                </fieldset>
+            </article>          
             <form id="login" name="formLogin" action="guest_join_event.jsp" onSubmit="return validate();" method="get">
                 <article >
                     <fieldset>
-                        <div>
-                            <p style="text-align :center; font-size:20px; margin-bottom:30px">Welcome to Seneca College BigBlueButton Web Conference System!</p>
-                        </div>
                         <div class="component">
-                            <input type="text" name="SenecaGuestLogin" id="SenecaGuestLogin" class="input" tabindex="2" title="Please enter your name"  placeholder="Enter Your Name" required autofocus >
-                        </div>
-                    </fieldset>
-                </article>
-                <article>
-                    <fieldset>
-                        <div class="buttons">
-                            <button type="submit" name="submit" id="save" class="button" title="Click here to login">Join</button>
+                            <input type="text" name="SenecaGuestLogin" id="SenecaGuestLogin" class="input guestlogin" tabindex="2" title="Please enter your name"  placeholder="Enter Your Name" required autofocus >
+                            <button type="submit" name="submit" id="save" class="guestloginbutton" title="Click here to login">Join</button>                          
                         </div>
                     </fieldset>
                 </article>
           </form>
         </section>
-        <jsp:include page="footer.jsp"/>
+        <jsp:include page="footer_plain.jsp"/>
     </div>
 </body>
 </html>

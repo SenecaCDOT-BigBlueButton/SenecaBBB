@@ -498,7 +498,7 @@
             <div class="successMessage"><%=successMessage %></div> 
         </header>
         <% if(isEventCreator.get_value() || isEventAttendee.get_value() || isEventGuest.get_value()){ %>
-        <form name="joinEvent" id="joinEvent" method="get" action="join_event.jsp?&eventId=<%= (m_id==null)? l_id:m_id %>&eventSchduleId=<%= (ms_id==null)? ls_id:ms_id %>&eventType=<%= (m_id==null)? "Lecture":"Meeting" %>">
+        <form name="joinEvent" id="joinEvent" method="get" action="join_event.jsp?&eventId=<%= (m_id==null)? l_id:m_id %>&eventScheduleId=<%= (ms_id==null)? ls_id:ms_id %>&eventType=<%= (m_id==null)? "Lecture":"Meeting" %>">
             <article>
                 <header>
                 <h2></h2>
@@ -550,6 +550,11 @@
                                 onclick="window.location.href='add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>'">
                             Meeting Guest
                         </button>
+                        
+                        <button type="button" name="sendGuestUrl" id="sendGuestUrl" class="button" title="Click here to send event Url" 
+                                onclick="window.location.href='send_invitation.jsp?eventId=<%= m_id %>&eventScheduleId=<%= ms_id %>&eventType=Meeting'">
+                            URL Invitation
+                        </button>
 
                         <% } else if (status==3) { %>
                         <button type="button" name="button" id="addStudent" class="button" title="Click here to add Student" 
@@ -560,6 +565,11 @@
                         <button type="button" name="button" id="addLGuest" class="button" title="Click here to add Lecture Guest" 
                                 onclick="window.location.href='add_lguest.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>'">
                             Lecture Guest
+                        </button>
+                        
+                        <button type="button" name="sendGuestUrl" id="sendGuestUrl" class="button" title="Click here to send event Url" 
+                                onclick="window.location.href='send_invitation.jsp?eventId=<%= l_id %>&eventScheduleId=<%= ls_id %>&eventType=Lecture'">
+                            URL Invitation
                         </button>
                         <% } 
                         
@@ -871,3 +881,4 @@
 </div>
 </body>
 </html>
+

@@ -53,3 +53,6 @@ emailsignature=<p><img src="http://bbbman.senecacollege.ca/SenecaBBB/images/logo
 #-----------AUTHENTICATION-------------------
 ldapurl=
 ldapo=
+
+#--------Encryption Password---------------
+securitykey=

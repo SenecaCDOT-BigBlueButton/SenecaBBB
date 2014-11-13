@@ -49,7 +49,7 @@ String eventTime = request.getParameter("meetingTime");
 Email sendToGuest = new Email();
 if(!guestemail.equals("")){
     meetingId = session.getAttribute("meetingId").toString();
-    viewerJoinURL = Config.getProperty("domain")+"SenecaBBB/guestLogin.jsp?meetingId=" + meetingId;
+    viewerJoinURL = Config.getProperty("domain")+"/guestLogin.jsp?meetingId=" + meetingId;
     subject = "BigBlueButton Meeting Invitation"; 
     messageText = "<p>Dear Guest User:</p><p>You are invited to join an event in BigBlueButton web conferencing system." 
                    + "<p>Please visit the following link to join the conference:</p>"+ viewerJoinURL 

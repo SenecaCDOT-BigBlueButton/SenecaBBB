@@ -1,6 +1,4 @@
 <%@page import="db.DBConnection"%>
-<%@page import="hash.PasswordHash"%>
-<%@page import="sql.User"%>
 <%@page import="java.util.*"%>
 <%@page import= "helper.Settings" %>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
@@ -11,10 +9,10 @@
 String message = request.getParameter("message");
 String successMessage = request.getParameter("successMessage");
 if (message == null || message == "null") {
-    message="";
+    message = "";
 }
 if (successMessage == null) {
-    successMessage="";
+    successMessage = "";
 }
 
 session.invalidate();

@@ -43,7 +43,6 @@
         successMessage="";
     }
     User user = new User(dbaccess);
-    
     %>
 </head>
 <body>

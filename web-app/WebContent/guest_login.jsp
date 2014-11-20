@@ -3,10 +3,10 @@ String message = request.getParameter("message");
 String successMessage = request.getParameter("successMessage");
 String meetingId = request.getParameter("meetingId");
 if (message == null || message == "null") {
-    message="";
+    message = "";
 }
 if (successMessage == null) {
-    successMessage="";
+    successMessage = "";
 }
 session.setAttribute("guestmeetingId", meetingId);
 %>

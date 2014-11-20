@@ -32,22 +32,22 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
-    
+
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
-    if (m_id==null || ms_id==null) {
+    if (m_id == null || ms_id == null) {
         elog.writeLog("[add_mpresenation:] " + "null m_id or ms_id /n");
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
@@ -55,18 +55,18 @@
     m_id = Validation.prepare(m_id);
     ms_id = Validation.prepare(ms_id);
     if (!(Validation.checkMId(m_id) && Validation.checkMsId(ms_id))) {
-        elog.writeLog("[add_mpresenation:] " +Validation.getErrMsg()+ "/n");
+        elog.writeLog("[add_mpresenation:] " + Validation.getErrMsg() + "/n");
         response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
         return;
     }
     User user = new User(dbaccess);
     Meeting meeting = new Meeting(dbaccess);
-    MyBoolean myBool = new MyBoolean();    
+    MyBoolean myBool = new MyBoolean();
     if (!meeting.isMeeting(myBool, ms_id, m_id)) {
         message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AMP01");
         elog.writeLog("[add_mpresenation:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
-        return;   
+        return;
     }
     if (!myBool.get_value()) {
         elog.writeLog("[add_mpresenation:] " + "permission denied" + "/n");
@@ -85,11 +85,11 @@
         return;
     }
     // End page validation
-    
+
     int i = 0;
     String mp_title = request.getParameter("searchBox");
     String mp_filename = request.getParameter("presentationFile");
-    if (mp_title!=null) {
+    if (mp_title != null) {
         mp_title = Validation.prepare(mp_title);
         if (!(Validation.checkPresentationTitle(mp_title))) {
             message = Validation.getErrMsg();
@@ -115,9 +115,9 @@
             }
         }
     }
-    
+
     String remove = request.getParameter("remove");
-    if (remove!= null) {
+    if (remove != null) {
         remove = Validation.prepare(remove);
         if (!(Validation.checkPresentationTitle(remove))) {
             message = Validation.getErrMsg();
@@ -132,15 +132,14 @@
             }
         }
     }
-    
-    ArrayList<ArrayList<String>> eventPresentation = new ArrayList<ArrayList<String>>();
+
+    ArrayList<HashMap<String, String>> eventPresentation = new ArrayList<HashMap<String, String>>();
     if (!meeting.getMeetingPresentation(eventPresentation, ms_id, m_id)) {
         message = meeting.getErrMsg("AMP05");
         elog.writeLog("[add_mpresenation:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
-     
     %>
 
     <script type="text/javascript">
@@ -225,9 +224,9 @@
                                     <tbody>
                                     <% for (i=0; i<eventPresentation.size(); i++) { %>
                                         <tr>
-                                            <td class="row"><%= eventPresentation.get(i).get(0) %></td>
+                                            <td class="row"><%= eventPresentation.get(i).get("mp_title") %></td>
                                             <td class="icons" align="center">
-                                                <a href="add_mpresentation.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&remove=<%= eventPresentation.get(i).get(0) %>" class="remove">
+                                                <a href="add_mpresentation.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&remove=<%= eventPresentation.get(i).get("mp_title") %>" class="remove">
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                                 </a>
                                             </td>

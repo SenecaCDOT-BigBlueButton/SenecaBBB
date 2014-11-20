@@ -45,10 +45,10 @@
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
     User user = new User(dbaccess);
     Meeting meeting = new Meeting(dbaccess);
@@ -68,7 +68,9 @@
     String ms_id = request.getParameter("ms_id");
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
-    if (!(m_id==null || ms_id==null)) {
+    Boolean isMeeting = false;
+    Boolean isLecture = false;
+    if ( m_id != null && ms_id != null) {
         m_id = Validation.prepare(m_id);
         ms_id = Validation.prepare(ms_id);
         validFlag = Validation.checkMId(m_id) && Validation.checkMsId(ms_id);
@@ -124,8 +126,9 @@
             response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
             return;
         }
-        
-    } else if (!(l_id==null || ls_id==null)) {
+        isMeeting = true;
+    } 
+    else if (l_id != null && ls_id != null) {
         l_id = Validation.prepare(l_id);
         ls_id = Validation.prepare(ls_id);
         validFlag = Validation.checkLId(l_id) && Validation.checkLsId(ls_id);
@@ -181,18 +184,20 @@
             response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
             return;
         }
-    } else {
+        isLecture = true;
+    } 
+    else {
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
     }   
     // End page validation
-    ArrayList<ArrayList<String>> eventResult = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> eventSResult = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> eventAttendee = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> eventGuest = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> eventAttendance = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> eventPresentation = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> eventModerator = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String,String>> eventResult = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> eventSResult = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> eventAttendee = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> eventGuest = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> eventAttendance = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> eventPresentation = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> eventModerator = new ArrayList<HashMap<String,String>>();
     Boolean isModerator = false;
     String type = "";
     if (status == 1 || status == 2 || status == 6) {
@@ -234,12 +239,14 @@
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;
             }
-        } else {
+        }
+        else {
             type = (status == 2) ? "Meeting (A)" : "Meeting (G)";
             meeting.getMeetingAttendee(eventModerator,ms_id);
-            isModerator = eventModerator.get(0).get(2).equals("1")?true:false;
+            isModerator = eventModerator.get(0).get("ma_ismod").equals("1")?true:false;
         }
-    } else {
+    } 
+    else {
         if (!lecture.getLectureInfo(eventResult, ls_id, l_id)) {
             message = lecture.getErrMsg("VE11");
             elog.writeLog("[view_event:] " + message +"/n");
@@ -278,17 +285,33 @@
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;
             }
-        } else {
+        } 
+        else {
             type = "Lecture (S)";
         }
     }
         
-    String isCancel = (eventResult.get(0).get(4).equals("1")) ? "Yes" : "No";
-    ArrayList<ArrayList<String>> creatorResult = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> lectureResult = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> startTimeResult = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> durationResult = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> modPassResult = new ArrayList<ArrayList<String>>();
+    String isCancel = "";
+    String currentEventStartDate = "";
+    String currentEventStartTime = "";
+    String eventDescription = ""; 
+    if(isMeeting){
+        isCancel = (eventResult.get(0).get("m_iscancel").equals("1")) ? "Yes" : "No";
+        currentEventStartDate = eventResult.get(0).get("m_inidatetime").substring(0, 10);
+        currentEventStartTime = eventResult.get(0).get("m_inidatetime").substring(11, 19);
+        eventDescription = eventResult.get(0).get("m_description");
+    }
+    else if(isLecture){
+        isCancel = (eventResult.get(0).get("l_iscancel").equals("1")) ? "Yes" : "No";
+        currentEventStartDate = eventResult.get(0).get("l_inidatetime").substring(0, 10);
+        currentEventStartTime = eventResult.get(0).get("l_inidatetime").substring(11, 19);
+        eventDescription = eventResult.get(0).get("l_description");
+    }
+    ArrayList<HashMap<String,String>> creatorResult = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> lectureResult = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> startTimeResult = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> durationResult = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> modPassResult = new ArrayList<HashMap<String,String>>();
     String startDate="";
     String startTime="";
     String eventCreator="null";
@@ -299,7 +322,7 @@
     MyBoolean isEventGuest = new MyBoolean();
     HashMap<String, Integer> isRecordedResult = new HashMap<String, Integer>();
     int i = 0;
-    if (!(m_id==null || ms_id==null)) {
+    if ( m_id !=null && ms_id != null) {
         user.isMeetingCreator(isEventCreator, ms_id, userId);
         user.isMeetingAttendee(isEventAttendee, ms_id, userId);
         user.isMeetingGuest(isEventGuest, ms_id, m_id, userId);
@@ -307,14 +330,14 @@
         meeting.getMeetingInitialDatetime(startTimeResult, ms_id, m_id);
         meeting.getMeetingDuration(durationResult, ms_id, m_id);
         meeting.getMeetingModPass(modPassResult, ms_id, m_id);
-        duration = durationResult.get(0).get(0);
-        startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
-        startDate = startTimeResult.get(0).get(0).split(" ")[0];
-        eventCreator=creatorResult.get(0).get(0);
+        duration = durationResult.get(0).get("m_duration");
+        startTime = startTimeResult.get(0).get("m_inidatetime").split(" ")[1].substring(0, 8);
+        startDate = startTimeResult.get(0).get("m_inidatetime").split(" ")[0];
+        eventCreator=creatorResult.get(0).get("bu_id");
         storedEventId = "bbbmanEvent-meeting-" + eventCreator + "-"+ ms_id + "-" + m_id;
         meeting.getMeetingSetting(isRecordedResult, ms_id, m_id);
     }
-    if (!(l_id==null || ls_id==null)) {
+    if ( l_id !=null && ls_id != null) {
         user.isTeaching(isEventCreator, ls_id, userId);
         user.isLectureStudent(isEventAttendee, ls_id, userId);
         user.isGuestTeaching(isEventGuest, ls_id, l_id, userId);
@@ -322,14 +345,14 @@
         lecture.getLectureInitialDatetime(startTimeResult, ls_id, l_id);
         lecture.getLectureDuration(durationResult, ls_id, l_id);
         lecture.getLectureModPass(modPassResult, ls_id, l_id);
-        c_id=lectureResult.get(0).get(1);
-        sc_id=lectureResult.get(0).get(2);
-        sc_semesterid=lectureResult.get(0).get(3);
-        duration = durationResult.get(0).get(0);
-        startTime = startTimeResult.get(0).get(0).split(" ")[1].substring(0, 8);
-        startDate = startTimeResult.get(0).get(0).split(" ")[0];
+        c_id=lectureResult.get(0).get("c_id");
+        sc_id=lectureResult.get(0).get("sc_id");
+        sc_semesterid=lectureResult.get(0).get("sc_semesterid");
+        duration = durationResult.get(0).get("l_duration");
+        startTime = startTimeResult.get(0).get("l_inidatetime").split(" ")[1].substring(0, 8);
+        startDate = startTimeResult.get(0).get("l_inidatetime").split(" ")[0];
         lecture.getLectureProfessor(creatorResult, c_id, sc_id, sc_semesterid);
-        eventCreator=creatorResult.get(0).get(0);
+        eventCreator=creatorResult.get(0).get("bu_id");
         storedEventId = "bbbmanEvent-lecture-" + eventCreator + "-"+ ls_id + "-" + l_id;
         lecture.getLectureSetting(isRecordedResult, c_id, sc_id, sc_semesterid);
     }
@@ -338,15 +361,13 @@
     recordingXML = getRecordings(storedEventId);
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder;
-    try 
-    {
+    try {
         builder = factory.newDocumentBuilder();
         InputSource is = new InputSource();
         is.setCharacterStream(new StringReader(recordingXML));
         Document doc = builder.parse(is);
         NodeList nodes = doc.getElementsByTagName("recording");
-        for(int j = 0;j<nodes.getLength();j++)
-        {
+        for(int j = 0;j<nodes.getLength();j++){
             Element recordingItem = (Element) nodes.item(i);
             NodeList playback = recordingItem.getElementsByTagName("playback");
             Element playbackElement = (Element)playback.item(0);
@@ -357,11 +378,9 @@
             playBackURLs.add(playbackLink.getAttribute("href"));
         }
     }
-    catch (Exception e)
-    {
+    catch (Exception e){
         elog.writeLog("[view_event:] " + e.getMessage() +"/n");
     }
-
     %>
     <script type="text/javascript">
        /* TABLE */
@@ -618,16 +637,16 @@
                             <tbody>
                                 <tr>
                                 <% if (status==1 || status==2 || status==6) { %>
-                                    <td class="row"><%= eventSResult.get(0).get(1) %></td>
-                                    <td id="eventStartDateTime"><%= eventSResult.get(0).get(2).substring(0, 19) %></td>
-                                    <td><span id="scheduleDuration"><%= eventSResult.get(0).get(4) %></span> Minutes</td>
-                                    <td><%= eventSResult.get(0).get(5) %></td>
+                                    <td class="row"><%= eventSResult.get(0).get("ms_title") %></td>
+                                    <td id="eventStartDateTime"><%= eventSResult.get(0).get("ms_inidatetime").substring(0, 19) %></td>
+                                    <td><span id="scheduleDuration"><%= eventSResult.get(0).get("ms_duration") %></span> Minutes</td>
+                                    <td><%= eventSResult.get(0).get("bu_id") %></td>
                                 <% } else { %>
-                                    <td class="row"><%= eventSResult.get(0).get(1) %></td>
-                                    <td><%= eventSResult.get(0).get(2) %></td>
-                                    <td><%= eventSResult.get(0).get(3) %></td>
-                                    <td id="eventStartDateTime"><%= eventSResult.get(0).get(4).substring(0, 19) %></td>
-                                    <td><span id="scheduleDuration"><%= eventSResult.get(0).get(6) %></span> Minutes</td>
+                                    <td class="row"><%= eventSResult.get(0).get("c_id") %></td>
+                                    <td><%= eventSResult.get(0).get("sc_id") %></td>
+                                    <td><%= eventSResult.get(0).get("sc_semesterid") %></td>
+                                    <td id="eventStartDateTime"><%= eventSResult.get(0).get("ls_inidatetime").substring(0, 19) %></td>
+                                    <td><span id="scheduleDuration"><%= eventSResult.get(0).get("ls_duration") %></span> Minutes</td>
                                 <% } %>
                                 <% if (status==1 || status==2) { %>
                                     <td class="icons" align="center">
@@ -688,10 +707,10 @@
                             <tbody>
                                 <tr>
                                     <td class="row"><%= type %></td>
-                                    <td id="currentEventStartLocalDate"><%= eventResult.get(0).get(2).substring(0, 10) %></td>
-                                    <td id="currentEventStartLocalTime"><%= eventResult.get(0).get(2).substring(11, 19) %></td>
+                                    <td id="currentEventStartLocalDate"><%= currentEventStartDate %></td>
+                                    <td id="currentEventStartLocalTime"><%= currentEventStartTime %></td>
                                     <td><%= isCancel %></td>
-                                    <td><%= eventResult.get(0).get(5) %></td>
+                                    <td><%= eventDescription %></td>
                                     
                                     <% if (status==1) { %>
                                         <td class="icons" align="center">
@@ -747,13 +766,13 @@
                             <% for (i=0; i<eventAttendee.size(); i++) { %>
                                 <tr>
                                 <% if (status==1) { %>
-                                    <td class="row"><%= eventAttendee.get(i).get(0) %></td>
-                                    <td><%= eventAttendee.get(i).get(3) %></td>
-                                    <td><%= eventAttendee.get(i).get(2).equals("1") ? "Yes" : "" %></td>
+                                    <td class="row"><%= eventAttendee.get(i).get("bu_id") %></td>
+                                    <td><%= eventAttendee.get(i).get("bu_nick") %></td>
+                                    <td><%= eventAttendee.get(i).get("ma_ismod").equals("1") ? "Yes" : "" %></td>
                                 <% } else { %>
-                                    <td class="row"><%= eventAttendee.get(i).get(0) %></td>
-                                    <td><%= eventAttendee.get(i).get(5) %></td>
-                                    <td><%= eventAttendee.get(i).get(4).equals("1") ? "Yes" : "" %></td>
+                                    <td class="row"><%= eventAttendee.get(i).get("bu_id") %></td>
+                                    <td><%= eventAttendee.get(i).get("bu_nick") %></td>
+                                    <td><%= eventAttendee.get(i).get("s_isbanned").equals("1") ? "Yes" : "" %></td>
                                 <% } %>
                                 </tr>
                             <% } %>
@@ -784,13 +803,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <% for (i=0; i<eventGuest.size(); i++) { %>
+                            <% if(status == 1) {
+                                for (i=0; i<eventGuest.size(); i++) { %>
                                 <tr>
-                                    <td class="row"><%= eventGuest.get(i).get(0) %></td>
-                                    <td><%= eventGuest.get(i).get(2) %></td>
-                                    <td><%= eventGuest.get(i).get(1).equals("1") ? "Yes" : "" %></td>
+                                    <td class="row"><%= eventGuest.get(i).get("bu_id") %></td>
+                                    <td><%= eventGuest.get(i).get("bu_nick") %></td>
+                                    <td><%= eventGuest.get(i).get("mg_ismod").equals("1") ? "Yes" : "" %></td>
                                 </tr>
-                            <% } %>
+                            <% }
+                            }
+                            if(status == 3){ 
+                                for (i=0; i<eventGuest.size(); i++) { %>
+                                <tr>
+                                    <td class="row"><%= eventGuest.get(i).get("bu_id") %></td>
+                                    <td><%= eventGuest.get(i).get("bu_nick") %></td>
+                                    <td><%= eventGuest.get(i).get("gl_ismod").equals("1") ? "Yes" : "" %></td>
+                                </tr>
+                            <% }}  %>
                             </tbody>
                         </table>
                     </div>
@@ -818,8 +847,8 @@
                             <tbody>
                             <% for (i=0; i<eventAttendance.size(); i++) { %>
                                 <tr>
-                                    <td class="row"><%= eventAttendance.get(i).get(0) %></td>
-                                    <td><%= eventAttendance.get(i).get(2) %></td>
+                                    <td class="row"><%= eventAttendance.get(i).get("bu_id") %></td>
+                                    <td><%= eventAttendance.get(i).get("bu_nick") %></td>
                                 </tr>
                             <% } %>
                             </tbody>

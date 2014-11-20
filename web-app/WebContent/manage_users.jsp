@@ -52,12 +52,12 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!usersession.isSuper()) {
-        elog.writeLog("[manage_users:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");               
+        elog.writeLog("[manage_users:] " + " username: " + userId + " tried to access this page, permission denied" + " /n");
         response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
@@ -66,16 +66,16 @@
         response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
-    
+
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
-   
+
     User user = new User(dbaccess);
     MyBoolean prof = new MyBoolean();
     HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
@@ -83,28 +83,27 @@
     HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
-    roleMask = usersession.getRoleMask();    
-    ArrayList<ArrayList<String>>  allUserInfo= new ArrayList<ArrayList<String> >();
+    roleMask = usersession.getRoleMask();
+    ArrayList<HashMap<String, String>> allUserInfo = new ArrayList<HashMap<String, String>>();
     user.getUserInfo(allUserInfo);
-    
+
     // Start User Search
     String bu_id = request.getParameter("searchBox");
     MyBoolean myBool = new MyBoolean();
-    if (bu_id!=null) {
+    if (bu_id != null) {
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
             message = Validation.getErrMsg();
-        }
-        else {
+        } else {
             user.isUser(myBool, bu_id);
             if (myBool.get_value()) {
-                message = "User "+ bu_id +" already in database";
+                message = "User " + bu_id + " already in database";
                 response.sendRedirect("manage_users.jsp?message=" + message);
-                return;   
-            }else {
+                return;
+            } else {
                 // Found userId in LDAP
                 if (findUser(dbaccess, ldap, bu_id)) {
-                    response.sendRedirect("manage_users.jsp?successMessage=User "+ bu_id +" added in database successfully!");
+                    response.sendRedirect("manage_users.jsp?successMessage=User " + bu_id + " added in database successfully!");
                     return;
                 } else {
                     message = "User Not Found";
@@ -113,7 +112,6 @@
         }
     }
     // End User Search
-
     %>
 </head>
 <body>
@@ -171,19 +169,19 @@
                                         <tbody>
                                         <% for(int i=0;i<allUserInfo.size();i++){ %>
                                             <tr>
-                                                <td class="row"><%= allUserInfo.get(i).get(0) %></td>
-                                                <td><%= allUserInfo.get(i).get(1) %></td>
-                                                <td><%= allUserInfo.get(i).get(2) %></td>
-                                                <td><%= allUserInfo.get(i).get(3) %></td>
-                                                <td><%= allUserInfo.get(i).get(6) %></td>
-                                                <td><%= allUserInfo.get(i).get(7) %></td>
+                                                <td class="row"><%= allUserInfo.get(i).get("bu_id") %></td>
+                                                <td><%= allUserInfo.get(i).get("bu_nick") %></td>
+                                                <td><%= allUserInfo.get(i).get("bu_isbanned") %></td>
+                                                <td><%= allUserInfo.get(i).get("bu_isactive") %></td>
+                                                <td><%= allUserInfo.get(i).get("bu_isldap") %></td>
+                                                <td><%= allUserInfo.get(i).get("bu_issuper") %></td>
                                                 <td class="icons" align="center">
-                                                    <a  class="schedule"  href='view_schedule.jsp?id=<%= allUserInfo.get(i).get(0) %>' >
+                                                    <a  class="schedule"  href='view_schedule.jsp?id=<%= allUserInfo.get(i).get("bu_id") %>' >
                                                         <img alt="Search" src="images/iconPlaceholder.svg" width="17" height="17" title="User Schedule" />
                                                     </a>
                                                 </td>
                                                 <td class="icons" align="center">
-                                                    <a class="modify" href= <%= "edit_user.jsp?id=" +  allUserInfo.get(i).get(0)  +"&action=edit" %>>
+                                                    <a class="modify" href= <%= "edit_user.jsp?id=" +  allUserInfo.get(i).get("bu_id")  +"&action=edit" %>>
                                                         <img alt="Edit" src="images/iconPlaceholder.svg" width="17" height="17" title="Edit User" />
                                                     </a>
                                                 </td>

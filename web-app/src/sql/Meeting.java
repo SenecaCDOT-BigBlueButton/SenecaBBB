@@ -41,12 +41,12 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingInfo(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
+    public boolean getMeetingInfo(ArrayList<HashMap<String, String>> result, String ms_id, String m_id) {
         _sql = "SELECT meeting.* "
                 + "FROM meeting "
                 + "WHERE meeting.ms_id = '" + ms_id + "' "
                 + "AND meeting.m_id = '" + m_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -57,11 +57,11 @@ public class Meeting extends Sql {
      * @param result
      * @return
      */
-    public boolean getMeetingInfo(ArrayList<ArrayList<String>> result, String ms_id) {
+    public boolean getMeetingInfo(ArrayList<HashMap<String, String>> result, String ms_id) {
         _sql = "SELECT meeting.* "
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -70,10 +70,10 @@ public class Meeting extends Sql {
      * @param result
      * @return
      */
-    public boolean getMeetingScheduleInfo(ArrayList<ArrayList<String>> result) {
+    public boolean getMeetingScheduleInfo(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM meeting_schedule";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -83,11 +83,11 @@ public class Meeting extends Sql {
      * @param ms_id
      * @return
      */
-    public boolean getMeetingScheduleInfo(ArrayList<ArrayList<String>> result, String ms_id) {
+    public boolean getMeetingScheduleInfo(ArrayList<HashMap<String, String>> result, String ms_id) {
         _sql = "SELECT * "
                 + "FROM meeting_schedule "
                 + "WHERE ms_id = '" + ms_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -97,11 +97,11 @@ public class Meeting extends Sql {
      * @param ms_id
      * @return
      */
-    public boolean getMeetingCreators(ArrayList<ArrayList<String>> result, String ms_id) {
+    public boolean getMeetingCreators(ArrayList<HashMap<String, String>> result, String ms_id) {
         _sql = "SELECT bu_id "
                 + "FROM meeting_schedule "
                 + "WHERE ms_id = '" + ms_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -111,13 +111,13 @@ public class Meeting extends Sql {
      * @param bu_id
      * @return
      */
-    public boolean getLatestCreatedSchduleForUser(ArrayList<ArrayList<String>> result, String bu_id) {
+    public boolean getLatestCreatedSchduleForUser(ArrayList<HashMap<String, String>> result, String bu_id) {
         _sql = "SELECT ms_id "
                 + "FROM meeting_schedule "
                 + "WHERE bu_id = '" + bu_id + "' "
                 + "ORDER BY ms_id DESC "
                 + "LIMIT 1";;
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -130,7 +130,7 @@ public class Meeting extends Sql {
      * @param attended
      * @return
      */
-    public boolean getMeetingsForUser(ArrayList<ArrayList<String>> result, String bu_id, boolean creator, boolean attendee) {
+    public boolean getMeetingsForUser(ArrayList<HashMap<String, String>> result, String bu_id, boolean creator, boolean attendee) {
         String _creator = "(SELECT meeting.*, meeting_schedule.ms_title " 
                 + "FROM meeting "
                 + "INNER JOIN meeting_schedule ON meeting.ms_id = meeting_schedule.ms_id "
@@ -158,7 +158,20 @@ public class Meeting extends Sql {
             result.clear();
             return true;
         }
-        return (_dbAccess.queryDB(result, _sql));// && _dbAccess.queryDB(result, _sql2) && _dbAccess.queryDB(result, _sql3);
+        return (_dbAccess.queryDB2(result, _sql));// && _dbAccess.queryDB2(result, _sql2) && _dbAccess.queryDB2(result, _sql3);
+    }
+    
+    /**
+     * (0)m_description
+     * @param result
+     * @param ms_id
+     * @return
+     */
+    public boolean getMeetingDescription(ArrayList<HashMap<String, String>> result, String ms_id) {
+        _sql = "SELECT m_description "
+                + "FROM meeting "
+                + "WHERE ms_id = '" + ms_id + "' ";
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -168,27 +181,14 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingDescription(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
+    public boolean getMeetingDescription(ArrayList<HashMap<String, String>> result, String ms_id, String m_id) {
         _sql = "SELECT m_description "
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
-    
-    /**
-     * (0)m_description
-     * @param result
-     * @param ms_id
-     * @return
-     */
-    public boolean getMeetingDescription(ArrayList<ArrayList<String>> result, String ms_id) {
-        _sql = "SELECT m_description "
-                + "FROM meeting "
-                + "WHERE ms_id = '" + ms_id + "' ";
-        return _dbAccess.queryDB(result, _sql);
-    }
     
     /**
      * (0)m_inidatetime
@@ -197,12 +197,12 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingInitialDatetime(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
+    public boolean getMeetingInitialDatetime(ArrayList<HashMap<String, String>> result, String ms_id, String m_id) {
         _sql = "SELECT m_inidatetime "
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -212,12 +212,12 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingDuration(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
+    public boolean getMeetingDuration(ArrayList<HashMap<String, String>> result, String ms_id, String m_id) {
         _sql = "SELECT m_duration "
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     } 
     
     /**
@@ -227,12 +227,12 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getIsMeetingCancelled(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
+    public boolean getIsMeetingCancelled(ArrayList<HashMap<String, String>> result, String ms_id, String m_id) {
         _sql = "SELECT m_iscancel "
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -242,12 +242,12 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingModPass(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
+    public boolean getMeetingModPass(ArrayList<HashMap<String, String>> result, String ms_id, String m_id) {
         _sql = "SELECT m_modpass "
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -257,12 +257,12 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingUserPass(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
+    public boolean getMeetingUserPass(ArrayList<HashMap<String, String>> result, String ms_id, String m_id) {
         _sql = "SELECT m_userpass "
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -273,12 +273,12 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingPresentation(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
+    public boolean getMeetingPresentation(ArrayList<HashMap<String, String>> result, String ms_id, String m_id) {
         _sql = "SELECT * "
                 + "FROM meeting_presentation "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -286,12 +286,12 @@ public class Meeting extends Sql {
      * @param result
      * @return
      */
-    public boolean getMeetingAttendee(ArrayList<ArrayList<String>> result) {
+    public boolean getMeetingAttendee(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT ma.*, bu.bu_nick "
                 + "FROM meeting_attendee ma "
                 + "JOIN bbb_user bu "
                 + "ON ma.bu_id = bu.bu_id";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -300,13 +300,13 @@ public class Meeting extends Sql {
      * @param ms_id
      * @return
      */
-    public boolean getMeetingAttendee(ArrayList<ArrayList<String>> result, String ms_id) {
+    public boolean getMeetingAttendee(ArrayList<HashMap<String, String>> result, String ms_id) {
         _sql = "SELECT ma.*, bu.bu_nick "
                 + "FROM meeting_attendee ma "
                 + "JOIN bbb_user bu "
                 + "ON ma.bu_id = bu.bu_id "
                 + "WHERE ma.ms_id = '" + ms_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -316,14 +316,14 @@ public class Meeting extends Sql {
      * @param bu_id
      * @return
      */
-    public boolean getMeetingAttendee(ArrayList<ArrayList<String>> result, String ms_id, String bu_id) {
+    public boolean getMeetingAttendee(ArrayList<HashMap<String, String>> result, String ms_id, String bu_id) {
         _sql = "SELECT ma.*, bu.bu_nick "
                 + "FROM meeting_attendee ma "
                 + "JOIN bbb_user bu "
                 + "WHERE ma.bu_id = bu.bu_id "
                 + "AND ma.ms_id = '" + ms_id + "' "
                 + "AND ma.bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -332,14 +332,14 @@ public class Meeting extends Sql {
      * @param ms_id
      * @return
      */
-    public boolean getMeetingAttendance(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
+    public boolean getMeetingAttendance(ArrayList<HashMap<String, String>> result, String ms_id, String m_id) {
         _sql = "SELECT ma.bu_id, ma.mac_isattend, bu.bu_nick "
                 + "FROM meeting_attendance ma "
                 + "JOIN bbb_user bu "
                 + "ON bu.bu_id = ma.bu_id "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -349,13 +349,13 @@ public class Meeting extends Sql {
      * @param bu_id
      * @return
      */
-    public boolean getMeetingAttendance(ArrayList<ArrayList<String>> result, String ms_id, String m_id, String bu_id) {
+    public boolean getMeetingAttendance(ArrayList<HashMap<String, String>> result, String ms_id, String m_id, String bu_id) {
         _sql = "SELECT * "
                 + "FROM meeting_attendance "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -365,14 +365,14 @@ public class Meeting extends Sql {
      * @param m_id
      * @return
      */
-    public boolean getMeetingGuest(ArrayList<ArrayList<String>> result, String ms_id, String m_id) {
-        _sql = "SELECT mg.bu_id, mg.mg_ismod, bu.bu_id "
+    public boolean getMeetingGuest(ArrayList<HashMap<String, String>> result, String ms_id, String m_id) {
+        _sql = "SELECT mg.bu_id, mg.mg_ismod, bu.bu_nick "
                 + "FROM meeting_guest mg "
                 + "JOIN bbb_user bu "
                 + "ON bu.bu_id = mg.bu_id "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -383,13 +383,13 @@ public class Meeting extends Sql {
      * @param bu_id
      * @return
      */
-    public boolean getMeetingGuest(ArrayList<ArrayList<String>> result, String ms_id, String m_id, String bu_id) {
+    public boolean getMeetingGuest(ArrayList<HashMap<String, String>> result, String ms_id, String m_id, String bu_id) {
         _sql = "SELECT bu_id, mg_ismod "
                 + "FROM meeting_guest "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     public boolean getMeetingSetting(HashMap<String, Integer> result, String ms_id, String m_id) {
@@ -397,10 +397,10 @@ public class Meeting extends Sql {
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
-        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
+        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
         if (flag) {
-            int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+            int value = Integer.valueOf(tempResult.get(0).get("m_setting")).intValue();
             result.clear();
             result.put(Settings.meeting_setting[0], (value & (1<<6)) == 0 ? 0:1);
             result.put(Settings.meeting_setting[1], (value & (1<<5)) == 0 ? 0:1);
@@ -417,8 +417,8 @@ public class Meeting extends Sql {
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "' "
                 + "LIMIT 1";
-        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
-        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
+        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -431,8 +431,8 @@ public class Meeting extends Sql {
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "' "
                 + "AND mp_title = '" + mp_title + "'";
-        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
-        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
+        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }

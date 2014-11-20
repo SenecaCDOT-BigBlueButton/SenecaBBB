@@ -30,100 +30,100 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
     User user = new User(dbaccess);
     Meeting meeting = new Meeting(dbaccess);
     Lecture lecture = new Lecture(dbaccess);
-    boolean validFlag; 
+    boolean validFlag;
     MyBoolean myBool = new MyBoolean();
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
-    if (!(m_id==null || ms_id==null)) {
+    if (m_id != null && ms_id != null) {
         m_id = Validation.prepare(m_id);
         ms_id = Validation.prepare(ms_id);
         validFlag = Validation.checkMId(m_id) && Validation.checkMsId(ms_id);
         if (!validFlag) {
-            elog.writeLog("[delete_event:] " + Validation.getErrMsg() +"/n");
+            elog.writeLog("[delete_event:] " + Validation.getErrMsg() + "/n");
             response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
             return;
         }
         if (!meeting.isMeeting(myBool, ms_id, m_id)) {
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("DE01");
-            elog.writeLog("[delete_event:] " + message +"/n");
+            elog.writeLog("[delete_event:] " + message + "/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!myBool.get_value()) {
-            elog.writeLog("[delete_event:] " + "username: " + userId +" permission denied" +"/n");
+            elog.writeLog("[delete_event:] " + "username: " + userId + " permission denied" + "/n");
             response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
             return;
         }
         if (!user.isMeetingCreator(myBool, ms_id, userId)) {
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("DE02");
-            elog.writeLog("[delete_event:] " + message +"/n");
+            elog.writeLog("[delete_event:] " + message + "/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         }
         if (!myBool.get_value()) {
-            elog.writeLog("[delete_event:] " + "username: " + userId +" permission denied" +"/n");
+            elog.writeLog("[delete_event:] " + "username: " + userId + " permission denied" + "/n");
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         }
-    } else if (!(l_id==null || ls_id==null)) {
+    } else if (l_id != null && ls_id != null) {
         l_id = Validation.prepare(l_id);
         ls_id = Validation.prepare(ls_id);
         validFlag = Validation.checkLId(l_id) && Validation.checkLsId(ls_id);
         if (!validFlag) {
-            elog.writeLog("[delete_event:] " + Validation.getErrMsg() +"/n");
+            elog.writeLog("[delete_event:] " + Validation.getErrMsg() + "/n");
             response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
             return;
         }
         if (!lecture.isLecture(myBool, ls_id, l_id)) {
             message = "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("DE03");
-            elog.writeLog("[delete_event:] " + message +"/n");
+            elog.writeLog("[delete_event:] " + message + "/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;
         }
         if (!myBool.get_value()) {
-            elog.writeLog("[delete_event:] " + "username: " + userId +" permission denied" +"/n");
+            elog.writeLog("[delete_event:] " + "username: " + userId + " permission denied" + "/n");
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
             return;
         }
         if (!user.isTeaching(myBool, ls_id, userId)) {
             message = "Could not verify meeting status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("DE04");
-            elog.writeLog("[delete_event:] " + message +"/n");
+            elog.writeLog("[delete_event:] " + message + "/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;
         }
         if (!myBool.get_value()) {
-            elog.writeLog("[delete_event:] " + "username: " + userId +" permission denied" +"/n");
+            elog.writeLog("[delete_event:] " + "username: " + userId + " permission denied" + "/n");
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         }
     } else {
-        elog.writeLog("[delete_event:] " + "try to delete event without providing valid m_id,ms_id or l_id, ls_id " +"/n");
+        elog.writeLog("[delete_event:] " + "try to delete event without providing valid m_id,ms_id or l_id, ls_id " + "/n");
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
     }
     // End page validation
-    
+
     String remove = request.getParameter("remove");
     if (remove != null) {
-        if (ms_id!=null) {
+        if (ms_id != null) {
             if (!meeting.removeMeetingSchedule(ms_id)) {
                 message = user.getErrMsg("DE05");
-                elog.writeLog("[delete_event:] " + message +"/n");
+                elog.writeLog("[delete_event:] " + message + "/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;
             } else {
@@ -133,7 +133,7 @@
         } else {
             if (!lecture.removeLectureSchedule(ls_id)) {
                 message = user.getErrMsg("DE06");
-                elog.writeLog("[delete_event:] " + message +"/n");
+                elog.writeLog("[delete_event:] " + message + "/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;
             } else {
@@ -142,20 +142,22 @@
             }
         }
     }
-    
-    ArrayList<ArrayList<String>> eventSResult = new ArrayList<ArrayList<String>>();
+
+    ArrayList<HashMap<String, String>> meetingScheduleResult = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> lectureScheduleResult = new ArrayList<HashMap<String, String>>();
+
     String type = "";
-    if (ms_id!=null) {
-        if (!meeting.getMeetingScheduleInfo(eventSResult, ms_id)) {
+    if (ms_id != null) {
+        if (!meeting.getMeetingScheduleInfo(meetingScheduleResult,ms_id)) {
             message = meeting.getErrMsg("DE05");
-            elog.writeLog("[delete_event:] " + message +"/n");
+            elog.writeLog("[delete_event:] " + message + "/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;
         }
     } else {
-        if (!lecture.getLectureScheduleInfo(eventSResult, ls_id)) {
+        if (!lecture.getLectureScheduleInfo(lectureScheduleResult,ls_id)) {
             message = lecture.getErrMsg("DE06");
-            elog.writeLog("[delete_event:] " + message +"/n");
+            elog.writeLog("[delete_event:] " + message + "/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;
         }
@@ -231,17 +233,17 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <% if (ms_id!=null) { %>
-                                            <td class="row"><%= eventSResult.get(0).get(1) %></td>
-                                            <td><%= eventSResult.get(0).get(2).substring(0, 19) %></td>
-                                            <td><%= eventSResult.get(0).get(4) %> Minutes</td>
-                                            <td><%= eventSResult.get(0).get(5) %></td>
+                                            <% if (ms_id != null) { %>
+                                            <td class="row"><%= meetingScheduleResult.get(0).get("ms_title") %></td>
+                                            <td><%= meetingScheduleResult.get(0).get("ms_inidatetime").substring(0, 19) %></td>
+                                            <td><%= meetingScheduleResult.get(0).get("ms_duration") %> Minutes</td>
+                                            <td><%= meetingScheduleResult.get(0).get("bu_id") %></td>
                                             <% } else { %>
-                                            <td class="row"><%= eventSResult.get(0).get(1) %></td>
-                                            <td><%= eventSResult.get(0).get(2) %></td>
-                                            <td><%= eventSResult.get(0).get(3) %></td>
-                                            <td><%= eventSResult.get(0).get(4).substring(0, 19) %></td>
-                                            <td><%= eventSResult.get(0).get(6) %> Minutes</td>
+                                            <td class="row"><%= lectureScheduleResult.get(0).get("c_id") %></td>
+                                            <td><%= lectureScheduleResult.get(0).get("sc_id") %></td>
+                                            <td><%= lectureScheduleResult.get(0).get("sc_semesterid") %></td>
+                                            <td><%= lectureScheduleResult.get(0).get("ls_inidatetime").substring(0, 19) %></td>
+                                            <td><%= lectureScheduleResult.get(0).get("ls_duration") %> Minutes</td>
                                             <% } %>
                                         </tr>
                                     </tbody>

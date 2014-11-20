@@ -32,12 +32,12 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!usersession.isSuper()) {
-        elog.writeLog("[edit_user:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");       
+        elog.writeLog("[edit_user:] " + " username: " + userId + " tried to access this page, permission denied" + " /n");
         response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
@@ -46,16 +46,16 @@
         response.sendRedirect("index.jsp?message=Database connection error");
         return;
     } //End page validation
-    
+
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
-    
+
     User user = new User(dbaccess);
     MyBoolean prof = new MyBoolean();
     HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
@@ -64,71 +64,67 @@
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-    ArrayList<ArrayList<String>> bbbUserInfo = new ArrayList<ArrayList<String> >();
-    ArrayList<ArrayList<String>> userRoleList = new ArrayList<ArrayList<String> >();
+    ArrayList<HashMap<String, String>> bbbUserInfo = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> userRoleList = new ArrayList<HashMap<String, String>>();
 
-    
     // Start User Validatation
     int i = 0;
     boolean searchSucess = false;
     MyBoolean myBool = new MyBoolean();
-    
+
     String bu_id = request.getParameter("id");
     MyBoolean isNonLdap = new MyBoolean();
-    if (bu_id!=null) {
+    if (bu_id != null) {
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
             message = Validation.getErrMsg();
-            elog.writeLog("[edit_user:] " + message +" /n");
+            elog.writeLog("[edit_user:] " + message + " /n");
             response.sendRedirect("calendar.jsp?message=" + message);
             return;
-        }
-        else {
+        } else {
             if (!user.isUser(myBool, bu_id)) {
                 message = user.getErrMsg("AS04");
-                elog.writeLog("[edit_user:] " + message +" /n");
+                elog.writeLog("[edit_user:] " + message + " /n");
                 response.sendRedirect("calendar.jsp?message=" + message);
-                return;   
+                return;
             }
             // User already in Database
             if (myBool.get_value()) {
                 searchSucess = true;
-            } 
-            else {
+            } else {
                 message = "Invalid User Id";
-                elog.writeLog("[edit_user:] " + message +" /n");
+                elog.writeLog("[edit_user:] " + message + " /n");
                 response.sendRedirect("calendar.jsp?message=" + message);
                 return;
             }
         }
     }
     // End User Validatation
-   
+
     //get all information for this user
-    if(searchSucess){
+    if (searchSucess) {
         user.isnonLDAP(isNonLdap, bu_id);
         user.getUserInfo(bbbUserInfo, bu_id);
         user.getRoleInfo(userRoleList);
-    }else{
-        elog.writeLog("[edit_user:] " + "invalid user id" +" /n");
+    } else {
+        elog.writeLog("[edit_user:] " + "invalid user id" + " /n");
         response.sendRedirect("calendar.jsp?message=Invalid User Id");
         return;
     }
-        
     %>
     <script type="text/javascript">
         $(document).ready(function() {
-            <%if (bbbUserInfo.get(0).get(2).equals("0")) {%>
+            <%if (bbbUserInfo.get(0).get("bu_isbanned").equals("0")) {%>
                 $(".checkbox .box:eq(0)").next(".checkmark").toggle();
                 $(".checkbox .box:eq(0)").attr("aria-checked", "false");
                 $(".checkbox .box:eq(0)").siblings().last().prop("checked", false);
             <%}%>
-            <%if (bbbUserInfo.get(0).get(3).equals("0")) {%>
+            <%if (bbbUserInfo.get(0).get("bu_isactive").equals("0")) {%>
                 $(".checkbox .box:eq(1)").next(".checkmark").toggle();
                 $(".checkbox .box:eq(1)").attr("aria-checked", "false");
                 $(".checkbox .box:eq(1)").siblings().last().prop("checked", false);
             <%}%>
-            <%if (bbbUserInfo.get(0).get(7).equals("0")) {%>
+            <%if (bbbUserInfo.get(0).get("bu_issuper").equals("0")) {%>
                 $(".checkbox .box:eq(2)").next(".checkmark").toggle();
                 $(".checkbox .box:eq(2)").attr("aria-checked", "false");
                 $(".checkbox .box:eq(2)").siblings().last().prop("checked", false);
@@ -172,27 +168,27 @@
                             </div>
                             <div class="component">
                                 <label for="bbbUserNickname" class="label">Nick Name:</label>
-                                <input name="bbbUserNickname" id="bbbUserNickname" class="input" tabindex="16" title="Nick Name" type="text" value="<%= bbbUserInfo.get(0).get(1) %>" required autofocus>
+                                <input name="bbbUserNickname" id="bbbUserNickname" class="input" tabindex="16" title="Nick Name" type="text" value="<%= bbbUserInfo.get(0).get("bu_nick") %>" required autofocus>
                             </div>
                             <%  if (isNonLdap.get_value()){ %> 
                             <div class="component">
                                 <label for="bbbUserName" class="label">First Name:</label>
-                                <input name="bbbUserName" id="bbbUserName" class="input" tabindex="17" title="User Name" type="text" value="<%= bbbUserInfo.get(0).get(11) %>" required autofocus>
+                                <input name="bbbUserName" id="bbbUserName" class="input" tabindex="17" title="User Name" type="text" value="<%= bbbUserInfo.get(0).get("nu_name") %>" required autofocus>
                             </div>
                             <div class="component">
                                 <label for="bbbUserLastName" class="label">Last Name:</label>
-                                <input name="bbbUserLastName" id="bbbUserLastName" class="input" tabindex="18" title="Last Name" type="text" value="<%= bbbUserInfo.get(0).get(12) %>" required autofocus>
+                                <input name="bbbUserLastName" id="bbbUserLastName" class="input" tabindex="18" title="Last Name" type="text" value="<%= bbbUserInfo.get(0).get("nu_lastname") %>" required autofocus>
                             </div>                       
                             <div class="component">
                                 <label for="bbbUserEmail" class="label">User Email:</label>
-                                <input name="bbbUserEmail" id="bbbUserEmail" class="input" tabindex="19" title="User Email" type="text" value="<%= bbbUserInfo.get(0).get(13) %>" required autofocus>
+                                <input name="bbbUserEmail" id="bbbUserEmail" class="input" tabindex="19" title="User Email" type="text" value="<%= bbbUserInfo.get(0).get("nu_email") %>" required autofocus>
                             </div>
                               <%} %>
                             <div class="component">
                                 <label for="bbbUserList" class="label">User Role:</label>
                                 <select name="bbbUserList" id="bbbUserList" title="Please Select a user role">
                                 <% for(i=0;i<userRoleList.size();i++){ %>
-                                    <option <% if(bbbUserInfo.get(0).get(8).equals(Integer.toString(i+1))){out.print("selected=selected");} %>><%= userRoleList.get(i).get(0).concat("-").concat(userRoleList.get(i).get(1)) %></option>
+                                    <option <% if(bbbUserInfo.get(0).get("ur_id").equals(Integer.toString(i+1))){out.print("selected=selected");} %>><%= userRoleList.get(i).get("ur_id").concat("-").concat(userRoleList.get(i).get("pr_name")) %></option>
                                 <% } %>
                                 </select>
                             </div>

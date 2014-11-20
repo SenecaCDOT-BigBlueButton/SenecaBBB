@@ -42,10 +42,10 @@
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
     
     User user = new User(dbaccess);
@@ -53,18 +53,17 @@
     HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
     HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
     HashMap<String, Integer> roleMask = new HashMap<String, Integer>();	
-    ArrayList<ArrayList<String>> roleInfoResult = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String,String>> roleInfoResult = new ArrayList<HashMap<String,String>>();
     userSettings = usersession.getUserSettingsMask();	
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
     user.getRoleInfo(roleInfoResult, userId);
-    String nickName="";
+    String nickName = "";
     Boolean flag = false;
-    if(usersession.isSuper()||usersession.isProfessor()|| usersession.isDepartmentAdmin() || roleInfoResult.get(0).get(1).equals("employee")){
+    if(usersession.isSuper()||usersession.isProfessor()|| usersession.isDepartmentAdmin() || roleInfoResult.get(0).get("pr_name").equals("employee")){
         flag = true;
     }
     nickName = usersession.getNick();
-
     %>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -84,8 +83,8 @@
             <header>
                 <p><a href="calendar.jsp" tabindex="13">home</a> » <a href="settings.jsp" tabindex="14">settings</a></p>
                 <h1>Settings</h1>
-                <div class="warningMessage"><%=message %></div>
-                <div class="successMessage"><%=successMessage %></div>
+                <div class="warningMessage"><%= message %></div>
+                <div class="successMessage"><%= successMessage %></div>
             </header>
             <form action="persist_user_settings.jsp" method="get">
                 <article>

@@ -34,22 +34,22 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
-    
+
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
-    if (m_id==null || ms_id==null) {
+    if (m_id == null || ms_id == null) {
         elog.writeLog("[add_mguest:] " + "null m_id or ms_id /n");
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
@@ -57,50 +57,50 @@
     m_id = Validation.prepare(m_id);
     ms_id = Validation.prepare(ms_id);
     if (!(Validation.checkMId(m_id) && Validation.checkMsId(ms_id))) {
-        elog.writeLog("[add_mguest:] " + Validation.getErrMsg()+" /n");
+        elog.writeLog("[add_mguest:] " + Validation.getErrMsg() + " /n");
         response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
         return;
     }
     User user = new User(dbaccess);
     Meeting meeting = new Meeting(dbaccess);
-    MyBoolean myBool = new MyBoolean();    
+    MyBoolean myBool = new MyBoolean();
     if (!meeting.isMeeting(myBool, ms_id, m_id)) {
         message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AMG01");
-        elog.writeLog("[add_mguest:] " + message +" /n");
+        elog.writeLog("[add_mguest:] " + message + " /n");
         response.sendRedirect("logout.jsp?message=" + message);
-        return;   
+        return;
     }
     if (!myBool.get_value()) {
-        elog.writeLog("[add_mguest:] " + "permission denied"+" /n");
+        elog.writeLog("[add_mguest:] " + "permission denied" + " /n");
         response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     if (!user.isMeetingCreator(myBool, ms_id, userId)) {
         message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AMG02");
-        elog.writeLog("[add_mguest:] " + message +" /n");
+        elog.writeLog("[add_mguest:] " + message + " /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
     if (!myBool.get_value()) {
-        elog.writeLog("[add_mguest:] " + "permission denied"+" /n");
+        elog.writeLog("[add_mguest:] " + "permission denied" + " /n");
         response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     // End page validation
-    
+
     // Start User Search
     int i = 0;
     boolean searchSucess = false;
     String bu_id = request.getParameter("addBox");
     String nonldap = request.getParameter("searchBox");
-    if (bu_id!=null && bu_id!="") {
+    if (bu_id != null && bu_id != "") {
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
             message = Validation.getErrMsg();
         } else {
             if (!user.isMeetingGuest(myBool, ms_id, m_id, bu_id)) {
                 message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AMG03");
-                elog.writeLog("[add_mguest:] " + message +" /n");
+                elog.writeLog("[add_mguest:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;
             }
@@ -110,9 +110,9 @@
             } else {
                 if (!user.isUser(myBool, bu_id)) {
                     message = user.getErrMsg("AMG04");
-                    elog.writeLog("[add_mguest:] " + message +" /n");
+                    elog.writeLog("[add_mguest:] " + message + " /n");
                     response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
+                    return;
                 }
                 // User already in Database
                 if (myBool.get_value()) {
@@ -129,20 +129,20 @@
         }
     }
     // End User Search
-    
-    ArrayList<ArrayList<String>> searchResult = new ArrayList<ArrayList<String>>();
-    
+
+    ArrayList<HashMap<String, String>> searchResult = new ArrayList<HashMap<String, String>>();
+
     if (searchSucess) {
         if (!meeting.createMeetingGuest(bu_id, ms_id, m_id, false)) {
             message = meeting.getErrMsg("AMG05");
-            elog.writeLog("[add_mguest:] " + message +" /n");
+            elog.writeLog("[add_mguest:] " + message + " /n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         } else {
             successMessage = bu_id + " added to meeting guest list";
-            sendNotification(dbaccess,ldap,bu_id,"meeting",ms_id,m_id,usersession.getGivenName());
+            sendNotification(dbaccess, ldap, bu_id, "meeting", ms_id, m_id, usersession.getGivenName());
         }
-    } else if (nonldap != null && nonldap !="") {
+    } else if (nonldap != null && nonldap != "") {
         nonldap = Validation.prepare(nonldap);
         if (!(Validation.checkBuId(nonldap))) {
             message = Validation.getErrMsg();
@@ -159,12 +159,12 @@
             }
             if (!user.getNonLdapSearch(searchResult, term1, term2)) {
                 message = user.getErrMsg("AMG10");
-                elog.writeLog("[add_mguest:] " + message +" /n");
+                elog.writeLog("[add_mguest:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             successMessage = searchResult.size() + " Result(s) Found";
-        }  
+        }
     } else {
         String mod = request.getParameter("mod");
         String remove = request.getParameter("remove");
@@ -175,7 +175,7 @@
             } else {
                 if (!meeting.setMeetingGuestIsMod(mod, ms_id, m_id)) {
                     message = meeting.getErrMsg("AMG06");
-                    elog.writeLog("[add_mguest:] " + message +" /n");
+                    elog.writeLog("[add_mguest:] " + message + " /n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;
                 }
@@ -187,14 +187,14 @@
             } else {
                 if (!user.isMeetingGuest(myBool, ms_id, m_id, remove)) {
                     message = user.getErrMsg("AMG07");
-                    elog.writeLog("[add_mguest:] " + message +" /n");
+                    elog.writeLog("[add_mguest:] " + message + " /n");
                     response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
+                    return;
                 } else {
-                    if (myBool.get_value()) { 
-                        if (!meeting.removeMeetingGuest(remove, ms_id, m_id)) {
+                    if (myBool.get_value()) {
+                        if (!meeting.removeMeetingGuest(remove, ms_id,m_id)) {
                             message = meeting.getErrMsg("AMG08");
-                            elog.writeLog("[add_mguest:] " + message +" /n");
+                            elog.writeLog("[add_mguest:] " + message + " /n");
                             response.sendRedirect("logout.jsp?message=" + message);
                             return;
                         } else {
@@ -204,14 +204,14 @@
                         message = "User to be removed not in guest list";
                     }
                 }
-            }  
+            }
         }
     }
-    
-    ArrayList<ArrayList<String>> eventGuest = new ArrayList<ArrayList<String>>();
+
+    ArrayList<HashMap<String, String>> eventGuest = new ArrayList<HashMap<String, String>>();
     if (!meeting.getMeetingGuest(eventGuest, ms_id, m_id)) {
         message = meeting.getErrMsg("AMG08");
-        elog.writeLog("[add_mguest:] " + message +" /n");
+        elog.writeLog("[add_mguest:] " + message + " /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
@@ -323,11 +323,11 @@
                                     <tbody>
                                     <% for (i=0; i<searchResult.size(); i++) { %>
                                         <tr>
-                                            <td class="row"><%= searchResult.get(i).get(0) %></td>
-                                            <td><%= searchResult.get(i).get(1) %></td>
-                                            <td><%= searchResult.get(i).get(2) %></td>
+                                            <td class="row"><%= searchResult.get(i).get("bu_id") %></td>
+                                            <td><%= searchResult.get(i).get("nu_name") %></td>
+                                            <td><%= searchResult.get(i).get("nu_lastname") %></td>
                                             <td class="icons" align="center">
-                                                <a href="add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&addBox=<%= searchResult.get(i).get(0) %>" class="add">
+                                                <a href="add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&addBox=<%= searchResult.get(i).get("bu_id") %>" class="add">
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="Add user" alt="Add"/>
                                                 </a>
                                             </td>
@@ -361,16 +361,16 @@
                                     <tbody>
                                     <% for (i=0; i<eventGuest.size(); i++) { %>
                                         <tr>
-                                            <td class="row"><%= eventGuest.get(i).get(0) %></td>
-                                            <td><%= eventGuest.get(i).get(2) %></td>
-                                            <td><%= eventGuest.get(i).get(1).equals("1") ? "Yes" : "" %></td>
+                                            <td class="row"><%= eventGuest.get(i).get("bu_id") %></td>
+                                            <td><%= eventGuest.get(i).get("bu_nick") %></td>
+                                            <td><%= eventGuest.get(i).get("mg_ismod").equals("1") ? "Yes" : "" %></td>
                                             <td class="icons" align="center">
-                                                <a href="add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&mod=<%= eventGuest.get(i).get(0) %>" class="modify">
+                                                <a href="add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&mod=<%= eventGuest.get(i).get("bu_id") %>" class="modify">
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
                                                 </a>
                                             </td>
                                             <td class="icons" align="center">
-                                                <a href="add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&remove=<%= eventGuest.get(i).get(0) %>" class="remove">
+                                                <a href="add_mguest.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&remove=<%= eventGuest.get(i).get("bu_id") %>" class="remove">
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                                 </a>
                                             </td>

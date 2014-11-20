@@ -64,7 +64,7 @@
     Section section = new Section(dbaccess);
     Meeting meeting = new Meeting(dbaccess);
     Lecture lecture = new Lecture(dbaccess);
-    ArrayList<ArrayList<String>> professor = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String,String>> professor = new ArrayList<HashMap<String,String>>();
     HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
     HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
     HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
@@ -77,7 +77,6 @@
     else if(isProfessor){
         lecture.getProfessorCourse(professor,userId);
     }
-    
     %>
 
     <script type="text/javascript">
@@ -242,15 +241,15 @@
                                     <% 
                                     if(isSuper && !professor.isEmpty()){ 
                                         for(int i=0;i<professor.size();i++){  %>
-                                            <option value="<%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %>" >
-                                            <%= professor.get(i).get(0).concat(" ").concat(professor.get(i).get(1)).concat(" ").concat(professor.get(i).get(2)).concat(" ").concat(professor.get(i).get(3)) %></option>
+                                            <option value="<%= professor.get(i).get("bu_id").concat(" ").concat(professor.get(i).get("c_id")).concat(" ").concat(professor.get(i).get("sc_id")).concat(" ").concat(professor.get(i).get("sc_semesterid")) %>" >
+                                            <%= professor.get(i).get("bu_id").concat(" ").concat(professor.get(i).get("c_id")).concat(" ").concat(professor.get(i).get("sc_id")).concat(" ").concat(professor.get(i).get("sc_semesterid")) %></option>
                                             <%  
                                         }
                                     }
                                     else if(isProfessor && !professor.isEmpty()){
                                         for(int j=0;j<professor.size();j++){  %>
-                                            <option value="<%= professor.get(j).get(0).concat(" ").concat(professor.get(j).get(1)).concat(" ").concat(professor.get(j).get(2)) %>" >
-                                            <%= professor.get(j).get(0).concat(" ").concat(professor.get(j).get(1)).concat(" ").concat(professor.get(j).get(2)) %></option>
+                                            <option value="<%= professor.get(j).get("c_id").concat(" ").concat(professor.get(j).get("sc_id")).concat(" ").concat(professor.get(j).get("sc_semesterid")) %>" >
+                                            <%= professor.get(j).get("c_id").concat(" ").concat(professor.get(j).get("sc_id")).concat(" ").concat(professor.get(j).get("sc_semesterid")) %></option>
                                             <%  
                                         } 
                                     }

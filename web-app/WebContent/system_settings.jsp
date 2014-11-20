@@ -49,17 +49,17 @@
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
    
     User user = new User(dbaccess);
     Admin admin = new Admin(dbaccess);
     ArrayList<ArrayList<String>> timeout = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> systemInfo = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> allUserRole = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String, String>> systemInfo = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String,String>> allUserRole = new ArrayList<HashMap<String, String>>();
     MyBoolean prof = new MyBoolean();
     HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
     HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
@@ -69,7 +69,6 @@
     admin.getSystemInfo(systemInfo);
     int guestAccount = 0;
     int recordableMeeting = 0;
-
     %>
     <script type="text/javascript">
         //Table
@@ -112,8 +111,8 @@
                 <!-- PAGE NAME -->
                 <h1>System Settings</h1>
                 <!-- WARNING MESSAGES -->
-                <div class="warningMessage"><%=message %></div>
-                <div class="successMessage"><%=successMessage %></div>
+                <div class="warningMessage"><%= message %></div>
+                <div class="successMessage"><%= successMessage %></div>
             </header>
             <form method="get" action="persist_predefinedrole_setting.jsp" name="predefinedRoleForm" id="predefinedRoleForm">
                 <article>
@@ -137,12 +136,12 @@
                                 for(int i=0;i<allUserRole.size();i++) {
                                    roleMask.clear();
                                    user.getUserRoleSetting(roleMask,i+1);
-                                   recordableMeeting= roleMask.get(Settings.ur_rolemask[0]);
-                                   guestAccount= roleMask.get(Settings.ur_rolemask[1]);
+                                   recordableMeeting = roleMask.get(Settings.ur_rolemask[0]);
+                                   guestAccount = roleMask.get(Settings.ur_rolemask[1]);
                                 %>
                                     <tr>
                                         <td><%= i+1 %><input hidden="hidden" readonly type="text" name="userroleid" value="<%= i+1 %>"></td>                      
-                                        <td><%= allUserRole.get(i).get(1) %><input hidden="hidden" readonly type="text" name="<%= allUserRole.get(i).get(1) %>" value="<%= allUserRole.get(i).get(1) %>"></td>                           
+                                        <td><%= allUserRole.get(i).get("pr_name") %><input hidden="hidden" readonly type="text" name="<%= allUserRole.get(i).get("pr_name") %>" value="<%= allUserRole.get(i).get("pr_name") %>"></td>                           
                                         <td><input type="checkbox" name="<%= "guestAccountCreate-".concat(String.valueOf(i+1)) %>" <% if(guestAccount==1) out.print("checked=checked"); else out.print(""); %>>
                                         <td><input type="checkbox" name="<%= "recordMeeting-".concat(String.valueOf(i+1)) %>" <% if (recordableMeeting==1) out.print("checked=checked"); else out.print(""); %> >     
                                     </tr>
@@ -178,12 +177,12 @@
                                         <tbody>
                                         <%for(int j=0;j<systemInfo.size();j++) {%>
                                             <tr>
-                                            <td class="row"><%= systemInfo.get(j).get(0) %></td>
-                                            <td><%= systemInfo.get(j).get(1)%></td>
-                                            <td><%= systemInfo.get(j).get(2)%></td>
+                                            <td class="row"><%= systemInfo.get(j).get("key_name") %></td>
+                                            <td><%= systemInfo.get(j).get("key_title")%></td>
+                                            <td><%= systemInfo.get(j).get("key_value")%></td>
                                             <td class="icons" align="center" >
-                                                <a <% if(systemInfo.get(j).get(0).indexOf("next")>=0 || systemInfo.get(j).get(0).indexOf("default")>=0) out.print("style='display:none'"); %> 
-                                                  href="edit_bbb_admin.jsp?key_name=<%= systemInfo.get(j).get(0) %>&key_title=<%= systemInfo.get(j).get(1) %>&key_value=<%= systemInfo.get(j).get(2) %>" 
+                                                <a <% if(systemInfo.get(j).get("key_name").indexOf("next")>=0 || systemInfo.get(j).get("key_name").indexOf("default")>=0) out.print("style='display:none'"); %> 
+                                                  href="edit_bbb_admin.jsp?key_name=<%= systemInfo.get(j).get("key_name") %>&key_title=<%= systemInfo.get(j).get("key_title") %>&key_value=<%= systemInfo.get(j).get("key_value") %>" 
                                                           class="modify">
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="modify bbb_admin" alt="Edit"/>
                                                 </a>

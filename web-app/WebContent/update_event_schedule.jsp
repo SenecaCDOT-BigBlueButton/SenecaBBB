@@ -29,10 +29,10 @@
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null"){
-        message="";
+        message = "";
     }
     if (successMessage == null){
-        successMessage="";
+        successMessage = "";
     }
     User user = new User(dbaccess);
     Meeting meeting = new Meeting(dbaccess);
@@ -123,30 +123,28 @@
     }
     if(eventType.equals("Meeting")){   //update a meeting schedule      
         if( meeting.updateMeetingSchedule(eventId, inidatetime, spec, eventDescription)){
-            if(meeting.updateMeetingDuration(3, eventId, "1", duration)){
-                response.sendRedirect("calendar.jsp?successMessage=Meeting updated successfully");
-                return;
-            }else{
-                response.sendRedirect("calendar.jsp?message=Update fail");
-                return;
-            }
+    if(meeting.updateMeetingDuration(3, eventId, "1", duration)){
+        response.sendRedirect("calendar.jsp?successMessage=Meeting updated successfully");
+        return;
+    }else{
+        response.sendRedirect("calendar.jsp?message=Update fail");
+        return;
+    }
         }      
     }
     else{ //update a lecture schedule
         if(lecture.updateLectureSchedule(eventId, inidatetime, spec, eventDescription)){
-            if(lecture.updateLectureDuration(3, eventId, "1", duration)){
-                response.sendRedirect("calendar.jsp?successMessage=Lecture updated successfully");
-                return;
-            }else{
-                response.sendRedirect("calendar.jsp?message=Update fail");
-            } 
+    if(lecture.updateLectureDuration(3, eventId, "1", duration)){
+        response.sendRedirect("calendar.jsp?successMessage=Lecture updated successfully");
+        return;
+    }else{
+        response.sendRedirect("calendar.jsp?message=Update fail");
+    } 
         }
     }
-    
 %>
 
-<%! 
-//convert month string to month number
+<%!//convert month string to month number
 public static String getMonthNumber(String month) {
     String monthNumber = null;
     if(month.toLowerCase().compareTo("january")==0)
@@ -174,7 +172,5 @@ public static String getMonthNumber(String month) {
     if(month.toLowerCase().compareTo("december")==0)
         monthNumber = "12";
     return monthNumber;
-}
-
-%>
+}%>
 

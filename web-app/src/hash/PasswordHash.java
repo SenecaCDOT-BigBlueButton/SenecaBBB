@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -93,14 +94,14 @@ public class PasswordHash {
         byte[] salt = null;
         String hash = "";
         User user = new User(dbaccess);
-        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+        ArrayList<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         try {
             user.getSaltAndHash(result, userID);
             if (!result.isEmpty()) {
-                ArrayList<String> userInfo = result.get(0);
+                HashMap<String, String> userInfo = result.get(0);
                 // Gets salt and hash from database
-                salt = userInfo.get(0).toString().getBytes();
-                hash = userInfo.get(1).toString();
+                salt = userInfo.get("nu_salt").toString().getBytes();
+                hash = userInfo.get("nu_hash").toString();
                 // Creates a hash using the typed password and the real salt
                 // returned from database for the entered user.
                 tempHash = createHash(password, salt);

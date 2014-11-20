@@ -32,21 +32,21 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
-    if (l_id==null || ls_id==null) {
+    if (l_id == null || ls_id == null) {
         elog.writeLog("[add_lpresentation:] " + "null l_id or ls_id /n");
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
@@ -54,87 +54,87 @@
     l_id = Validation.prepare(l_id);
     ls_id = Validation.prepare(ls_id);
     if (!(Validation.checkLId(l_id) && Validation.checkLsId(ls_id))) {
-        elog.writeLog("[add_lpresentation:] " + Validation.getErrMsg() +" /n");
+        elog.writeLog("[add_lpresentation:] " + Validation.getErrMsg() + " /n");
         response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
         return;
     }
     User user = new User(dbaccess);
     Lecture lecture = new Lecture(dbaccess);
-    MyBoolean myBool = new MyBoolean();    
+    MyBoolean myBool = new MyBoolean();
     if (!lecture.isLecture(myBool, ls_id, l_id)) {
         message = "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + lecture.getErrMsg("ALP01");
-        elog.writeLog("[add_lpresentation:] " + message +" /n");
+        elog.writeLog("[add_lpresentation:] " + message + " /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
     if (!myBool.get_value()) {
-        elog.writeLog("[add_lpresentation:] " + "permission denied" +" /n");
+        elog.writeLog("[add_lpresentation:] " + "permission denied" + " /n");
         response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     if (!user.isTeaching(myBool, ls_id, userId)) {
         message = "Could not verify lecture status (ls_id: " + ls_id + ", l_id: " + l_id + ")" + user.getErrMsg("ALP02");
-        elog.writeLog("[add_lpresentation:] " + message +" /n");
+        elog.writeLog("[add_lpresentation:] " + message + " /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
     if (!myBool.get_value()) {
-        elog.writeLog("[add_lpresentation:] " + "permission denied" +" /n");
+        elog.writeLog("[add_lpresentation:] " + "permission denied" + " /n");
         response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
     // End page validation
-    
+
     int i = 0;
     String lp_title = request.getParameter("searchBox");
-    if (lp_title!=null) {
+    if (lp_title != null) {
         lp_title = Validation.prepare(lp_title);
         if (!(Validation.checkPresentationTitle(lp_title))) {
             message = Validation.getErrMsg();
         } else {
             if (!lecture.isLPresentation(myBool, lp_title, ls_id, l_id)) {
                 message = lecture.getErrMsg("ALP03");
-                elog.writeLog("[add_lpresentation:] " + message +" /n");
+                elog.writeLog("[add_lpresentation:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             // presentation already added
             if (myBool.get_value()) {
                 message = "Presentation with that name already exists";
             } else {
-                if (!lecture.createLecturePresentation(lp_title, ls_id, l_id)) {
+                if (!lecture.createLecturePresentation(lp_title, ls_id,l_id)) {
                     message = lecture.getErrMsg("ALP04");
-                    elog.writeLog("[add_lpresentation:] " + message +" /n");
+                    elog.writeLog("[add_lpresentation:] " + message + " /n");
                     response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
+                    return;
                 } else {
                     successMessage = lp_title + " added to presentation list";
                 }
             }
         }
     }
-    
+
     String remove = request.getParameter("remove");
-    if (remove!= null) {
+    if (remove != null) {
         remove = Validation.prepare(remove);
         if (!(Validation.checkPresentationTitle(remove))) {
             message = Validation.getErrMsg();
         } else {
             if (!lecture.removeLecturePresentation(remove, ls_id, l_id)) {
                 message = lecture.getErrMsg("ALP05");
-                elog.writeLog("[add_lpresentation:] " + message +" /n");
+                elog.writeLog("[add_lpresentation:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             } else {
                 successMessage = remove + " was removed from presentation list";
             }
         }
     }
-    
-    ArrayList<ArrayList<String>> eventPresentation = new ArrayList<ArrayList<String>>();
+
+    ArrayList<HashMap<String, String>> eventPresentation = new ArrayList<HashMap<String, String>>();
     if (!lecture.getLecturePresentation(eventPresentation, ls_id, l_id)) {
         message = lecture.getErrMsg("ALP05");
-        elog.writeLog("[add_lpresentation:] " + message +" /n");
+        elog.writeLog("[add_lpresentation:] " + message + " /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
@@ -221,9 +221,9 @@
                                     <tbody>
                                     <% for (i=0; i<eventPresentation.size(); i++) { %>
                                         <tr>
-                                            <td class="row"><%= eventPresentation.get(i).get(0) %></td>
+                                            <td class="row"><%= eventPresentation.get(i).get("lp_title") %></td>
                                             <td class="icons" align="center">
-                                                <a href="add_lpresentation.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&remove=<%= eventPresentation.get(i).get(0) %>" class="remove">
+                                                <a href="add_lpresentation.jsp?ls_id=<%= ls_id %>&l_id=<%= l_id %>&remove=<%= eventPresentation.get(i).get("lp_title") %>" class="remove">
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                                 </a>
                                             </td>

@@ -3,6 +3,8 @@ package sql;
 import helper.MyBoolean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import db.DBAccess;
 
 /**
@@ -35,10 +37,10 @@ public class Department extends Sql {
      * @param result
      * @return
      */
-    public boolean getDepartment(ArrayList<ArrayList<String>> result) {
+    public boolean getDepartment(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM department";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -48,14 +50,14 @@ public class Department extends Sql {
      * @param d_code
      * @return
      */
-    public boolean getDepartment(ArrayList<ArrayList<String>> result, String bu_id) {
+    public boolean getDepartment(ArrayList<HashMap<String, String>> result, String bu_id) {
         _sql = "SELECT DISTINCT d.d_code, d.d_name "
                 + "FROM department d "
                 + "JOIN user_department ud "
                 + "ON d.d_code = ud.d_code "
                 + "WHERE bu_id = '" + bu_id +"' "
                 + "AND ud_isadmin = 1";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -64,10 +66,10 @@ public class Department extends Sql {
      * @param result
      * @return
      */
-    public boolean getDepartmentUser(ArrayList<ArrayList<String>> result) {
+    public boolean getDepartmentUser(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM user_department";
-        return _dbAccess.queryDB(result, _sql);   
+        return _dbAccess.queryDB2(result, _sql);   
     }
     
     /**
@@ -78,13 +80,13 @@ public class Department extends Sql {
      * @param d_code
      * @return
      */
-    public boolean getDepartmentUser(ArrayList<ArrayList<String>> result, String d_code) {
+    public boolean getDepartmentUser(ArrayList<HashMap<String, String>> result, String d_code) {
         _sql = "SELECT ud.*, bu.bu_nick "
                 + "FROM user_department ud "
                 + "JOIN bbb_user bu "
                 + "ON ud.bu_id = bu.bu_id "
                 + "WHERE ud.d_code = '" + d_code + "'";
-        return _dbAccess.queryDB(result, _sql);   
+        return _dbAccess.queryDB2(result, _sql);   
     }
     
     /**
@@ -95,12 +97,12 @@ public class Department extends Sql {
      * @param d_code
      * @return
      */
-    public boolean getDepartmentUser(ArrayList<ArrayList<String>> result, String bu_id, String d_code) {
+    public boolean getDepartmentUser(ArrayList<HashMap<String, String>> result, String bu_id, String d_code) {
         _sql = "SELECT * "
                 + "FROM user_department "
                 + "WHERE bu_id = '" + bu_id + "' "
                 + "AND d_code = '" + d_code + "'";
-        return _dbAccess.queryDB(result, _sql);   
+        return _dbAccess.queryDB2(result, _sql);   
     }
     
     public boolean isDepartment(MyBoolean bool, String d_code) {
@@ -108,8 +110,8 @@ public class Department extends Sql {
                 + "FROM department "
                 + "WHERE d_code = '" + d_code + "' "
                 + "LIMIT 1";
-        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
-        boolean flag =_dbAccess.queryDB(tempResult, _sql);
+        ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
+        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }

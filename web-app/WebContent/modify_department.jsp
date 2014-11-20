@@ -25,7 +25,7 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
@@ -68,14 +68,14 @@
         return;
     }
     if (!usersession.isSuper()) {
-        if (!user.isDepartmentAdmin(myBool, usersession.getUserId(), d_code)) {
+        if (!user.isDepartmentAdmin(myBool, usersession.getUserId(),d_code)) {
             message = "Could not verify department admin status for: " + usersession.getUserId() + dept.getErrMsg("MD02");
             elog.writeLog("[modify_department:] " + message + " /n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;
         }
         if (!myBool.get_value()) {
-            elog.writeLog("[modify_department:] " + " username: " + userId + " tried to access this page, permission denied" + " /n");
+            elog.writeLog("[modify_department:] " + " username: "+ userId + " tried to access this page, permission denied" + " /n");
             response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
             return;
         }

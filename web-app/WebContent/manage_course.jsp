@@ -52,12 +52,12 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!(usersession.isDepartmentAdmin() || usersession.isSuper())) {
-        elog.writeLog("[manage_course:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");        
+        elog.writeLog("[manage_course:] " + " username: " + userId + " tried to access this page, permission denied" + " /n");
         response.sendRedirect("calendar.jsp?message=You don't have permission to access that page");
         return;
     }
@@ -67,19 +67,18 @@
         return;
     } //End page validation
 
-
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
- 
+
     User user = new User(dbaccess);
     Section section = new Section(dbaccess);
-    ArrayList<ArrayList<String>> allCourse = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String, String>> allCourse = new ArrayList<HashMap<String, String>>();
     MyBoolean prof = new MyBoolean();
     HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
     HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
@@ -88,7 +87,6 @@
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
     section.getCourse(allCourse);
-    
     %>
 
 </head>
@@ -139,15 +137,15 @@
                                     <tbody>
                                     <% for(int j=0; j<allCourse.size();j++){%>
                                         <tr>
-                                            <td class="row"><%= allCourse.get(j).get(0) %></td>
-                                            <td ><%= allCourse.get(j).get(1) %></td>
+                                            <td class="row"><%= allCourse.get(j).get("c_id") %></td>
+                                            <td ><%= allCourse.get(j).get("c_name") %></td>
                                             <td  align="center">
-                                                <a href="create_course.jsp?c_id=<%= allCourse.get(j).get(0) %>&c_name=<%= allCourse.get(j).get(1) %>&toEdit=1" class="modify">
+                                                <a href="create_course.jsp?c_id=<%= allCourse.get(j).get("c_id") %>&c_name=<%= allCourse.get(j).get("c_name") %>&toEdit=1" class="modify">
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="Add a course" alt="Edit"/>
                                                 </a>
                                             </td>
                                             <td  align="center">
-                                                <a href="create_course.jsp?c_id=<%= allCourse.get(j).get(0) %>&c_name=<%= allCourse.get(j).get(1) %>&toDel=1" class="remove">
+                                                <a href="create_course.jsp?c_id=<%= allCourse.get(j).get("c_id") %>&c_name=<%= allCourse.get(j).get("c_name") %>&toDel=1" class="remove">
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove course" alt="Remove"/>
                                                 </a>
                                             </td>

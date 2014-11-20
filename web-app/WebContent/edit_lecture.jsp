@@ -36,21 +36,21 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
-    if (l_id==null || ls_id==null) {
+    if (l_id == null || ls_id == null) {
         elog.writeLog("[edit_lecture:] " + "null l_id or ls_id /n");
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
@@ -64,7 +64,7 @@
     }
     User user = new User(dbaccess);
     Lecture lecture = new Lecture(dbaccess);
-    MyBoolean myBool = new MyBoolean();    
+    MyBoolean myBool = new MyBoolean();
     if (!lecture.isLecture(myBool, ls_id, l_id)) {
         message = lecture.getErrMsg("EL01");
         elog.writeLog("[edit_lecture:] " + message + " /n");
@@ -72,7 +72,7 @@
         return;
     }
     if (!myBool.get_value()) {
-        elog.writeLog("[edit_lecture:] " + "username: " + userId + "tried to access this page,permission denied"+" /n");
+        elog.writeLog("[edit_lecture:] " + "username: " + userId + "tried to access this page,permission denied" + " /n");
         response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
@@ -90,13 +90,13 @@
             return;
         }
         if (!myBool.get_value()) {
-            elog.writeLog("[edit_lecture:] " + "username: " + userId + "tried to access this page,permission denied"+" /n");            
+            elog.writeLog("[edit_lecture:] " + "username: " + userId + "tried to access this page,permission denied" + " /n");
             response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
             return;
         }
     }
     // End page validation
-    ArrayList<ArrayList<String>> eventSchedule = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String, String>> eventSchedule = new ArrayList<HashMap<String, String>>();
     if (!lecture.getLectureScheduleInfo(eventSchedule, ls_id)) {
         message = lecture.getErrMsg("EL10");
         elog.writeLog("[edit_lecture:] " + message + " /n");
@@ -106,19 +106,19 @@
     boolean edited = false;
     boolean editError = false;
     String startTime = request.getParameter("startUTCDateTime");
-    if (startTime!=null) {
+    if (startTime != null) {
         if (!lecture.updateLectureTime(1, ls_id, l_id, startTime)) {
             message += user.getErrMsg("EL04");
             elog.writeLog("[edit_lecture:] " + message + " /n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;  
+            return;
         } else {
             edited = true;
         }
     }
-    
+
     String duration = request.getParameter("eventDuration");
-    if (duration!=null) {
+    if (duration != null) {
         if (!Validation.checkDuration(duration)) {
             message += "<br />" + Validation.getErrMsg();
             editError = true;
@@ -133,9 +133,9 @@
             }
         }
     }
-    
+
     String description = request.getParameter("description");
-    if (description!=null) {
+    if (description != null) {
         if (!Validation.checkDescription(description)) {
             message += "<br />" + Validation.getErrMsg();
             editError = false;
@@ -150,10 +150,10 @@
             }
         }
     }
-    
+
     if (edited) {
         String cancelEvent = request.getParameter("cancelEventBox");
-        if (cancelEvent!=null) {
+        if (cancelEvent != null) {
             if (!lecture.setLectureIsCancel(ls_id, l_id, true)) {
                 message += user.getErrMsg("EL07");
                 elog.writeLog("[edit_lecture:] " + message + " /n");
@@ -166,35 +166,35 @@
                 elog.writeLog("[edit_lecture:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;
-            } 
+            }
         }
     }
 
-    if(edited){
+    if (edited) {
         String allowRecording = request.getParameter("allowRecording");
         HashMap<String, Integer> map = new HashMap<String, Integer>();
-        if(allowRecording==null){
-          map.put(Settings.meeting_setting[0], 0);
-        }else{
-          map.put(Settings.meeting_setting[0], 1);
+        if (allowRecording == null) {
+            map.put(Settings.meeting_setting[0], 0);
+        } else {
+            map.put(Settings.meeting_setting[0], 1);
         }
         map.put(Settings.meeting_setting[1], 0);
         map.put(Settings.meeting_setting[2], 0);
         map.put(Settings.meeting_setting[3], 0);
         map.put(Settings.meeting_setting[4], 0);
-        if(!lecture.setLectureSetting(map, eventSchedule.get(0).get(1), eventSchedule.get(0).get(2), eventSchedule.get(0).get(3))){
+        if (!lecture.setLectureSetting(map,eventSchedule.get(0).get("c_id"), eventSchedule.get(0).get("sc_id"),eventSchedule.get(0).get("sc_semesterid"))) {
             response.sendRedirect("logout.jsp?message=Fail to change lecture setting");
             return;
         }
     }
-    
+
     if (edited && !editError) {
         successMessage = "Event Details Updated";
         response.sendRedirect("view_event.jsp?ls_id=" + ls_id + "&l_id=" + l_id + "&successMessage=" + successMessage);
-        return;  
+        return;
     }
-    
-    ArrayList<ArrayList<String>> event = new ArrayList<ArrayList<String>>();
+
+    ArrayList<HashMap<String, String>> event = new ArrayList<HashMap<String, String>>();
     if (!lecture.getLectureInfo(event, ls_id, l_id)) {
         message = lecture.getErrMsg("EL09");
         elog.writeLog("[edit_lecture:] " + message + " /n");
@@ -202,8 +202,8 @@
         return;
     }
     HashMap<String, Integer> isRecordedResult = new HashMap<String, Integer>();
-    lecture.getLectureSetting(isRecordedResult, eventSchedule.get(0).get(1), eventSchedule.get(0).get(2), eventSchedule.get(0).get(3));
-    boolean check1 = event.get(0).get(4).equals("1") ? true : false;
+    lecture.getLectureSetting(isRecordedResult, eventSchedule.get(0).get("c_id"), eventSchedule.get(0).get("sc_id"),eventSchedule.get(0).get("sc_semesterid"));
+    boolean check1 = event.get(0).get("l_iscancel").equals("1") ? true : false;
     %>
 
     <script type="text/javascript">
@@ -223,7 +223,7 @@
             <%}%>
             
             //convert utc time to local time and display it
-            var utcStartDateTime = "<%= event.get(0).get(2).substring(0, 19) %>";
+            var utcStartDateTime = "<%= event.get(0).get("l_inidatetime").substring(0, 19) %>";
             function toLocalTime(utcTime){
                 var startMoment = moment.utc(utcTime).local().format("YYYY-MM-DD HH:mm:SS");
                 return startMoment;
@@ -295,10 +295,10 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="row"><%= eventSchedule.get(0).get(1) %></td>
-                                            <td><%= eventSchedule.get(0).get(2) %></td>
-                                            <td><%= eventSchedule.get(0).get(3) %></td>
-                                            <td id="startDate"><%= event.get(0).get(2).substring(0, 10) %></td>
+                                            <td class="row"><%= eventSchedule.get(0).get("c_id") %></td>
+                                            <td><%= eventSchedule.get(0).get("sc_id") %></td>
+                                            <td><%= eventSchedule.get(0).get("sc_semesterid") %></td>
+                                            <td id="startDate"><%= event.get(0).get("l_inidatetime").substring(0, 10) %></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -318,15 +318,15 @@
                             <div class="component" >
                                 <label for="startTime" class="label">Start Time:</label> 
                                 <input name="startUTCDateTime" id="startUTCDateTime" hidden="hidden" value=""/>
-                                <input id="startTime" name="startTime"  type="text"  class="input"  value="<%= event.get(0).get(2).substring(11, 19) %>" tabindex="24" title="Start Time" placeholder="pick start time"/> 
+                                <input id="startTime" name="startTime"  type="text"  class="input"  value="<%= event.get(0).get("l_inidatetime").substring(11, 19) %>" tabindex="24" title="Start Time" placeholder="pick start time"/> 
                             </div>
                             <div class="component" >
                                 <label for="eventDuration" class="label">Duration:</label>
-                                <input id="eventDuration" name="eventDuration"  type="number"  class="input"  tabindex="25" title="Event Duration"  value="<%= event.get(0).get(3) %>" placeholder="minutes" required/>
+                                <input id="eventDuration" name="eventDuration"  type="number"  class="input"  tabindex="25" title="Event Duration"  value="<%= event.get(0).get("l_duration") %>" placeholder="minutes" required/>
                             </div>
                             <div class="component" >
                                 <label for="description" class="label">Description:</label>
-                                <input name="description" id="description" class="input" cols="35" rows="5" title="Description" value="<%= event.get(0).get(5) %>"/>
+                                <input name="description" id="description" class="input" cols="35" rows="5" title="Description" value="<%= event.get(0).get("l_description") %>"/>
                             </div>
                             <div class="component">
                                 <div class="checkbox" title="Allow event recording"> <span class="box" role="checkbox" aria-checked="true" tabindex="21" aria-labelledby="eventSetting4"></span>

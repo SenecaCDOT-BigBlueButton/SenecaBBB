@@ -1,9 +1,3 @@
-<%@page import="sql.User"%>
-<%@page import="sql.Meeting"%>
-<%@page import="sql.Lecture"%>
-<%@page import="java.util.ArrayList" %>
-<jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
-<jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <!DOCTYPE html>
 <html lang="en">
 <head>

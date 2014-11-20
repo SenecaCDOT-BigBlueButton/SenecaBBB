@@ -1,5 +1,4 @@
 <%@page import="db.DBConnection"%>
-<%@page import="sql.User"%>
 <%@page import="java.util.*"%>
 <%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
@@ -15,12 +14,12 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl", request.getRequestURI() + (request.getQueryString()!=null?"?" + request.getQueryString():""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if(!(usersession.isSuper())) {
-        elog.writeLog("[edit_bbb_admin:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");
+        elog.writeLog("[edit_bbb_admin:] " + " username: "+ userId + " tried to access this page, permission denied" + " /n");
         response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
         return;
     }//End page validation
@@ -28,13 +27,12 @@
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
 
-    User user = new User(dbaccess);
     String key_name = request.getParameter("key_name");
     String key_value = request.getParameter("key_value");
     String key_title = request.getParameter("key_title");

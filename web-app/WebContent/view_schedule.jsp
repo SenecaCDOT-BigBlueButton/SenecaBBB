@@ -33,12 +33,12 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl", request.getRequestURI() + (request.getQueryString()!=null?"?" + request.getQueryString():""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if (!usersession.isSuper()) {
-        elog.writeLog("[view_schedule:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");
+        elog.writeLog("[view_schedule:] " + " username: "+ userId + " tried to access this page, permission denied" + " /n");
         response.sendRedirect("calendar.jsp?message=You don't have permission to access that page!");
         return;
     }
@@ -51,12 +51,12 @@
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
-   
+           
     User user = new User(dbaccess);
     MyBoolean prof = new MyBoolean();
     HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
@@ -68,8 +68,8 @@
     
     //get all events schedule for specified userID
     String userID = request.getParameter("id");   
-    ArrayList<ArrayList<String>> meetingResult = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> lectureResult = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String,String>> meetingResult = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> lectureResult = new ArrayList<HashMap<String,String>>();
     Meeting meet = new Meeting(dbaccess);
     dbaccess.resetFlag();  
     meet.getMeetingsForUser(meetingResult, userID, true, true);
@@ -154,11 +154,11 @@
                                         <tbody>
                                             <% for(int i=0;i<meetingResult.size();i++){%>
                                             <tr>
-                                                <td class='row'><%= meetingResult.get(i).get(9) %></td>
-                                                <td><script>document.write(toUserLocalTime("<%= meetingResult.get(i).get(2).substring(0,19) %>"));</script></td>
-                                                <td><%= meetingResult.get(i).get(3) %></td>
-                                                <td><% if (meetingResult.get(i).get(4).equals("1")) out.print("Yes");else out.print(""); %></td>
-                                                <td><%= meetingResult.get(i).get(5) %></td>
+                                                <td class='row'><%= meetingResult.get(i).get("ms_title") %></td>
+                                                <td><script>document.write(toUserLocalTime("<%= meetingResult.get(i).get("m_inidatetime").substring(0,19) %>"));</script></td>
+                                                <td><%= meetingResult.get(i).get("m_duration") %></td>
+                                                <td><% if (meetingResult.get(i).get("m_iscancel").equals("1")) out.print("Yes");else out.print(""); %></td>
+                                                <td><%= meetingResult.get(i).get("m_description") %></td>
                                             </tr>
                                             <%}%>
                                         </tbody>
@@ -192,13 +192,13 @@
                                         <tbody>
                                             <% for(int i=0;i<lectureResult.size();i++){%>
                                             <tr>
-                                                <td class='row'><%= lectureResult.get(i).get(8) %></td>
-                                                <td><%= lectureResult.get(i).get(9) %></td>
-                                                <td><%= lectureResult.get(i).get(10) %></td>
-                                                <td><script>document.write(toUserLocalTime("<%= lectureResult.get(i).get(2).substring(0,19) %>"));</script></td>
-                                                <td><%= lectureResult.get(i).get(3) %></td>
-                                                <td><% if (lectureResult.get(i).get(4).equals("1")) out.print("Yes");else out.print(""); %></td>
-                                                <td><%= lectureResult.get(i).get(5) %></td>
+                                                <td class='row'><%= lectureResult.get(i).get("c_id") %></td>
+                                                <td><%= lectureResult.get(i).get("sc_id") %></td>
+                                                <td><%= lectureResult.get(i).get("sc_semesterid") %></td>
+                                                <td><script>document.write(toUserLocalTime("<%= lectureResult.get(i).get("l_inidatetime").substring(0,19) %>"));</script></td>
+                                                <td><%= lectureResult.get(i).get("l_duration") %></td>
+                                                <td><% if (lectureResult.get(i).get("l_iscancel").equals("1")) out.print("Yes");else out.print(""); %></td>
+                                                <td><%= lectureResult.get(i).get("l_description") %></td>
                                             </tr>
                                             <%}%>
                                         </tbody>

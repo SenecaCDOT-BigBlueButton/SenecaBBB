@@ -32,61 +32,61 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
-    if(!usersession.isSuper() && !usersession.isDepartmentAdmin()) {
-        elog.writeLog("[department_users:] " + "username: " + userId + "tried to access this page,permission denied"+" /n");
+    if (!usersession.isSuper() && !usersession.isDepartmentAdmin()) {
+        elog.writeLog("[department_users:] " + "username: " + userId + "tried to access this page,permission denied" + " /n");
         response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
         return;
     }//End page validation
-    
-    boolean validFlag; 
+
+    boolean validFlag;
     User user = new User(dbaccess);
     Department dept = new Department(dbaccess);
     MyBoolean myBool = new MyBoolean();
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
     String adminStatus = "";
     String d_code = request.getParameter("DeptCode");
-    if (d_code==null) {
-        elog.writeLog("[department_users:] " + " invalid department code "+"/n");
+    if (d_code == null) {
+        elog.writeLog("[department_users:] " + " invalid department code " + "/n");
         response.sendRedirect("departments.jsp?message=Please do not mess with the URL");
         return;
     }
     d_code = Validation.prepare(d_code);
     if (!Validation.checkDeptCode(d_code)) {
-        elog.writeLog("[department_users:] " + Validation.getErrMsg() +"/n");
+        elog.writeLog("[department_users:] " + Validation.getErrMsg() + "/n");
         response.sendRedirect("departments.jsp?message=" + Validation.getErrMsg());
         return;
     }
     if (!dept.isDepartment(myBool, d_code)) {
-        message = "Could not verify department status: "  + d_code + dept.getErrMsg("DU01");
-        elog.writeLog("[department_users:] " + message +"/n");
+        message = "Could not verify department status: " + d_code + dept.getErrMsg("DU01");
+        elog.writeLog("[department_users:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
     if (!myBool.get_value()) {
-        elog.writeLog("[department_users:] " + " invalid department code "+"/n");
+        elog.writeLog("[department_users:] " + " invalid department code " + "/n");
         response.sendRedirect("departments.jsp?message=Department with that code does not exist");
         return;
     }
     if (!usersession.isSuper()) {
-        if (!user.isDepartmentAdmin(myBool, usersession.getUserId(), d_code)) {
+        if (!user.isDepartmentAdmin(myBool, usersession.getUserId(),d_code)) {
             message = "Could not verify department admin status for: " + usersession.getUserId() + dept.getErrMsg("DU02");
-            elog.writeLog("[department_users:] " + message +"/n");
+            elog.writeLog("[department_users:] " + message + "/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;
         }
         if (!myBool.get_value()) {
-            elog.writeLog("[department_users:] " + "username: " + userId + "tried to access this page,permission denied"+" /n");           
+            elog.writeLog("[department_users:] " + "username: " + userId + "tried to access this page,permission denied" + " /n");
             response.sendRedirect("departments.jsp?message=You do not have permission to access that page");
             return;
         }
@@ -96,36 +96,35 @@
     // Start User Search
     boolean searchSucess = false;
     String bu_id = request.getParameter("searchBox");
-    if (bu_id!=null) {
+    if (bu_id != null) {
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
             message = Validation.getErrMsg();
-        }else {
+        } else {
             if (!user.isDepartmentUser(myBool, bu_id, d_code)) {
                 message = user.getErrMsg("DU03");
-                elog.writeLog("[department_users:] " + message +"/n");
+                elog.writeLog("[department_users:] " + message + "/n");
                 response.sendRedirect("logout.jsp?message=" + message);
                 return;
             }
             // User already added
-            if (myBool.get_value()){
+            if (myBool.get_value()) {
                 message = "User already added";
-            }
-            else{
+            } else {
                 if (!user.isUser(myBool, bu_id)) {
                     message = user.getErrMsg("DU04");
-                    elog.writeLog("[department_users:] " + message +"/n");
+                    elog.writeLog("[department_users:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;
                 }
                 // User already in Database
                 if (myBool.get_value()) {
                     searchSucess = true;
-                }else{
+                } else {
                     // Found userId in LDAP
-                    if (findUser(dbaccess, ldap, bu_id)){
+                    if (findUser(dbaccess, ldap, bu_id)) {
                         searchSucess = true;
-                    } else{
+                    } else {
                         message = "User Not Found";
                     }
                 }
@@ -137,7 +136,7 @@
     if (searchSucess) {
         if (!dept.createDepartmentUser(bu_id, d_code, false)) {
             message = dept.getErrMsg("DU05");
-            elog.writeLog("[department_users:] " + message +"/n");
+            elog.writeLog("[department_users:] " + message + "/n");
             response.sendRedirect("logout.jsp?message=" + message);
             return;
         } else {
@@ -153,11 +152,11 @@
             } else {
                 if (!dept.setDepartmentAdmin(mod, d_code)) {
                     message = dept.getErrMsg("DU06");
-                    elog.writeLog("[department_users:] " + message +"/n");
+                    elog.writeLog("[department_users:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;
-                }else{
-                    successMessage="Admin status was updated for user "+ mod+" from "+d_code;
+                } else {
+                    successMessage = "Admin status was updated for user " + mod + " from " + d_code;
                 }
             }
         } else if (remove != null) {
@@ -167,7 +166,7 @@
             } else {
                 if (!user.isDepartmentAdmin(myBool, remove, d_code)) {
                     message = dept.getErrMsg("DU07");
-                    elog.writeLog("[department_users:] " + message +"/n");
+                    elog.writeLog("[department_users:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;
                 }
@@ -176,25 +175,25 @@
                 } else {
                     if (!dept.removeDepartmentUser(remove, d_code)) {
                         message = dept.getErrMsg("DU08");
-                        elog.writeLog("[department_users:] " + message +"/n");
+                        elog.writeLog("[department_users:] " + message + "/n");
                         response.sendRedirect("logout.jsp?message=" + message);
                         return;
-                    }else{
-                        successMessage="User "+ mod+" from "+d_code+" was removed.";
+                    } else {
+                        successMessage = "User " + mod + " from " + d_code + " was removed.";
                     }
                 }
             }
         }
     }
 
-    ArrayList<ArrayList<String>> deptUserList = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String, String>> deptUserList = new ArrayList<HashMap<String, String>>();
     if (!dept.getDepartmentUser(deptUserList, d_code)) {
         message = "Could not verify department user list" + dept.getErrMsg("DU03");
-        elog.writeLog("[department_users:] " + message +"/n");
+        elog.writeLog("[department_users:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
-%>
+    %>
     <script type="text/javascript">
         $(screen).ready(function() {
             /* TABLE */
@@ -285,19 +284,19 @@
                                         for (int i=0; i<deptUserList.size(); i++) {
                                     %>
                                         <tr>
-                                            <td class="row"><%= deptUserList.get(i).get(1) %></td>
-                                            <td><%= deptUserList.get(i).get(0) %></td>
-                                            <td><%= deptUserList.get(i).get(3) %></td>
-                                            <td><%= adminStatus = (deptUserList.get(i).get(2).equals("1")) ? "Yes" : "" %></td>
+                                            <td class="row"><%= deptUserList.get(i).get("d_code") %></td>
+                                            <td><%= deptUserList.get(i).get("bu_id") %></td>
+                                            <td><%= deptUserList.get(i).get("bu_nick") %></td>
+                                            <td><%= adminStatus = (deptUserList.get(i).get("ud_isadmin").equals("1")) ? "Yes" : "" %></td>
                                             <% if (usersession.isSuper()) { %>
                                             <td class="icons" align="center">
-                                                <a onclick="savePageOffset()" href="department_users.jsp?DeptCode=<%= deptUserList.get(i).get(1) %>&mod=<%= deptUserList.get(i).get(0) %>" class="modify" >
+                                                <a onclick="savePageOffset()" href="department_users.jsp?DeptCode=<%= deptUserList.get(i).get("d_code") %>&mod=<%= deptUserList.get(i).get("bu_id") %>" class="modify" >
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
                                                 </a>
                                             </td>
                                             <% }  %>
                                             <td class="icons" align="center">
-                                                <a onclick="savePageOffset()" href="department_users.jsp?DeptCode=<%= deptUserList.get(i).get(1) %>&remove=<%= deptUserList.get(i).get(0) %>" class="remove">
+                                                <a onclick="savePageOffset()" href="department_users.jsp?DeptCode=<%= deptUserList.get(i).get("d_code") %>&remove=<%= deptUserList.get(i).get("bu_id") %>" class="remove">
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                                 </a>
                                             </td>

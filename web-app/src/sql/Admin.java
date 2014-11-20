@@ -23,7 +23,7 @@ import java.util.HashMap;
  *
  */
 public class Admin extends Sql {
-	
+
     public Admin(DBAccess source) {
         super(source);
     }
@@ -34,10 +34,10 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getPreDefinedRole(ArrayList<ArrayList<String>> result){
+    public Boolean getPreDefinedRole(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT * "
                 + "FROM predefined_role ";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -47,10 +47,10 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getAllUserRoleInfo(ArrayList<ArrayList<String>> result){
+    public Boolean getAllUserRoleInfo(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT * "
                 + "FROM user_role ";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -60,10 +60,10 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getSystemInfo(ArrayList<ArrayList<String>> result){
+    public Boolean getSystemInfo(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT * "
                 + "FROM bbb_admin ";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -73,11 +73,11 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getSystemInfoByKeyName(ArrayList<ArrayList<String>> result,String key_name){
+    public Boolean getSystemInfoByKeyName(ArrayList<HashMap<String, String>> result,String key_name){
         _sql = "SELECT * "
                 + "FROM bbb_admin "
                 + "WHERE key_name='" + key_name + "'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -87,11 +87,11 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getTimeOut(ArrayList<ArrayList<String>> result){
+    public Boolean getTimeOut(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='timeout'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -101,11 +101,11 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getWelcomeMsg(ArrayList<ArrayList<String>> result){
+    public Boolean getWelcomeMsg(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='welcome_msg'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -115,11 +115,11 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getRecordingMsg(ArrayList<ArrayList<String>> result){
+    public Boolean getRecordingMsg(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='recording_msg'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -129,11 +129,11 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getDefaultClass(ArrayList<ArrayList<String>> result){
+    public Boolean getDefaultClass(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='default_class'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -143,11 +143,11 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getDefaultClassHr(ArrayList<ArrayList<String>> result){
+    public Boolean getDefaultClassHr(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='default_class_hr'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     /**
      * Get default meeting setting on system<p>
@@ -156,11 +156,11 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getDefaultMeeting(ArrayList<ArrayList<String>> result){
+    public Boolean getDefaultMeeting(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='default_meeting'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -170,11 +170,11 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getDefaultMeetingHr(ArrayList<ArrayList<String>> result){
+    public Boolean getDefaultMeetingHr(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='default_meeting_hr'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -184,11 +184,11 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getDefaultUser(ArrayList<ArrayList<String>> result){
+    public Boolean getDefaultUser(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='default_user'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
     /**
@@ -198,37 +198,35 @@ public class Admin extends Sql {
      * @param result
      * @return
      */
-    public Boolean getDefaultUserHr(ArrayList<ArrayList<String>> result){
+    public Boolean getDefaultUserHr(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='default_user_hr'";
-        return _dbAccess.queryDB(result, _sql);
+        return _dbAccess.queryDB2(result, _sql);
     }
     
-    
     /**
-     * Get default user setting in readable format on system<p>
-     * Fields:<p>
-     * (0)key_name (1)key_title (2)key_value 
-     * @param result
-     * @return
-     */
-    public Boolean getNotification(ArrayList<ArrayList<String>> result){
+    * Get default user setting in readable format on system<p>
+    * Fields:<p>
+    * (0)key_name (1)key_title (2)key_value
+    * @param result
+    * @return
+    */
+    public Boolean getNotification(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT key_value "
-                + "FROM bbb_admin "
-                + "WHERE key_name='notification'";
-        return _dbAccess.queryDB(result, _sql);
+            + "FROM bbb_admin "
+            + "WHERE key_name='notification'";
+        return _dbAccess.queryDB2(result, _sql);
     }
-    
     /**
-     * (0)key_name (1)key_value
-     * @param message
-     * @return
-     */
+    * (0)key_name (1)key_value
+    * @param message
+    * @return
+    */
     public boolean setNotification(String message) {
         _sql = "UPDATE bbb_admin "
-                + "SET key_value = '" + message + "' "
-                + "WHERE key_name = 'notification'";
+            + "SET key_value = '" + message + "' "
+            + "WHERE key_name = 'notification'";
         return _dbAccess.updateDB(_sql);
     }
     

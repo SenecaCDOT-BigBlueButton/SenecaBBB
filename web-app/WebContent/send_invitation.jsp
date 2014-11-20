@@ -2,142 +2,139 @@
 <%@page import="java.util.*"%>
 <%@page import="helper.*"%>
 <%@page import="config.*"%>
-<%@page import="java.util.Timer"%>
-<%@page import="java.util.TimerTask"%>
 <%@page import="hash.EncryptDecrypt"%>
 <%@ include file="bbb_api.jsp"%> 
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <%
-//Start page validation
-String userId = usersession.getUserId();
-GetExceptionLog elog = new GetExceptionLog();
-HashMap<String, Integer> roleMask = usersession.getRoleMask();
-if (userId.equals("")) {
-    session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
-    response.sendRedirect("index.jsp?message=Please log in");
-    return;
-}
-if(!(usersession.isSuper()||usersession.getUserLevel().equals("employee")||roleMask.get("guestAccountCreation") == 0)) {
-    elog.writeLog("[send_invitation:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");        
-    response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
-    return;
-}
-if (dbaccess.getFlagStatus() == false) {
-    elog.writeLog("[send_invitation:] " + "database connection error /n");
-    response.sendRedirect("index.jsp?message=Database connection error");
-    return;
-}//End page validation
-
-String message = request.getParameter("message");
-String successMessage = request.getParameter("successMessage");
-if (message == null || message == "null") {
-    message="";
-}
-if (successMessage == null) {
-    successMessage="";
-}
-
-Meeting meeting = new Meeting(dbaccess);
-Lecture lecture = new Lecture(dbaccess);
-User user = new User(dbaccess);
-ArrayList<ArrayList<String>> nickNameResult = new ArrayList<ArrayList<String>>();
-ArrayList<ArrayList<String>> modPassResult = new ArrayList<ArrayList<String>>();
-ArrayList<ArrayList<String>> viewerPassResult = new ArrayList<ArrayList<String>>();
-ArrayList<ArrayList<String>> eventTitleResult = new ArrayList<ArrayList<String>>();
-ArrayList<ArrayList<String>> creatorResult = new ArrayList<ArrayList<String>>();
-ArrayList<ArrayList<String>> mResult = new ArrayList<ArrayList<String>>();
-HashMap<String, Integer> isRecordedResult = new HashMap<String, Integer>();
-ArrayList<ArrayList<String>> eventInfo = new ArrayList<ArrayList<String>>();
-String modPwd="";
-String viewerPwd="";
-String username="";
-String meetingID="";
-String eventCreator="";
-String c_id,sc_id,sc_semesterid;
-String eventStartTime = "";
-String eventType = request.getParameter("eventType");
-String eventId = request.getParameter("eventId");
-String eventScheduleId = request.getParameter("eventScheduleId");
-user.getNickName(nickNameResult, userId);
-username = nickNameResult.get(0).get(0);
-String isRecorded="false";
-MyBoolean isCreator = new MyBoolean();
-MyBoolean isEvent = new MyBoolean();
-if(eventType !=null && eventType.equals("Meeting")){
-     meeting.isMeeting(isEvent, eventScheduleId, eventId);
-     if(!isEvent.get_value()){
-         response.sendRedirect("index.jsp?message=Invalid meeting schedule or meeting information!");
-         return;
-     }
-     user.isMeetingCreator(isCreator, eventScheduleId, userId);
-     if(!isCreator.get_value()){
-         response.sendRedirect("index.jsp?message=You are not the meeting creator or attendee!");
-         return;
-     }
-     meeting.getMeetingModPass(modPassResult, eventScheduleId, eventId);
-     meeting.getMeetingUserPass(viewerPassResult, eventScheduleId, eventId);
-     meeting.getMeetingScheduleInfo(eventTitleResult, eventScheduleId);
-     meeting.getMeetingSetting(isRecordedResult, eventScheduleId, eventId);
-     meeting.getMeetingInfo(eventInfo,eventScheduleId,eventId);
-     eventStartTime = eventInfo.get(0).get(2);
-     if(isRecordedResult.get("isRecorded")==1){
-         isRecorded="true";
-     }else{
-         isRecorded="false";
-     }
-     modPwd=modPassResult.get(0).get(0);
-     viewerPwd=viewerPassResult.get(0).get(0);
-     meeting.getMeetingCreators(creatorResult, eventScheduleId);
-     eventCreator=creatorResult.get(0).get(0);
-     meetingID = "bbbmanEvent-meeting-" + eventCreator + "-" + eventScheduleId + "-" + eventId;
-
-}else if (eventType !=null && eventType.equals("Lecture")){
-    lecture.isLecture(isEvent,eventScheduleId, eventId);
-    if(!isEvent.get_value()){
-        response.sendRedirect("index.jsp?message=Invalid lecture schedule or lecture information!");
+    //Start page validation
+    String userId = usersession.getUserId();
+    GetExceptionLog elog = new GetExceptionLog();
+    HashMap<String, Integer> roleMask = usersession.getRoleMask();
+    if (userId.equals("")) {
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString()!=null?"?" + request.getQueryString():""));
+        response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
-    lecture.getLectureModPass(modPassResult, eventScheduleId, eventId);
-    lecture.getLectureUserPass(viewerPassResult, eventScheduleId, eventId);
-    lecture.getLectureScheduleInfo(eventTitleResult, eventScheduleId);
-    c_id=eventTitleResult.get(0).get(1);
-    sc_id=eventTitleResult.get(0).get(2);
-    sc_semesterid=eventTitleResult.get(0).get(3);
-    lecture.getLectureSetting(isRecordedResult, c_id, sc_id, sc_semesterid);
-    user.isTeaching(isCreator, eventScheduleId, userId);
-    if(!isCreator.get_value()){
-        response.sendRedirect("index.jsp?message=You are not the teacher or student of the lecture!");
+    if(!(usersession.isSuper()||usersession.getUserLevel().equals("employee")||roleMask.get("guestAccountCreation") == 0)) {
+        elog.writeLog("[send_invitation:] " + " username: "+ userId + " tried to access this page, permission denied" + " /n");        
+        response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
         return;
     }
-    if(isRecordedResult.get("isRecorded")==1){
-        isRecorded="true";
+    if (dbaccess.getFlagStatus() == false) {
+        elog.writeLog("[send_invitation:] " + "database connection error /n");
+        response.sendRedirect("index.jsp?message=Database connection error");
+        return;
+    }//End page validation
+    
+    String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
+        message = "";
+    }
+    if (successMessage == null) {
+        successMessage = "";
+    }
+    
+    Meeting meeting = new Meeting(dbaccess);
+    Lecture lecture = new Lecture(dbaccess);
+    User user = new User(dbaccess);
+    ArrayList<HashMap<String,String>> nickNameResult = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> modPassResult = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> viewerPassResult = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> eventTitleResult = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> creatorResult = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> mResult = new ArrayList<HashMap<String,String>>();
+    HashMap<String, Integer> isRecordedResult = new HashMap<String, Integer>();
+    ArrayList<HashMap<String,String>> eventInfo = new ArrayList<HashMap<String,String>>();
+    String modPwd = "";
+    String viewerPwd = "";
+    String username = "";
+    String meetingID = "";
+    String eventCreator = "";
+    String c_id,sc_id,sc_semesterid;
+    String eventStartTime = "";
+    String eventType = request.getParameter("eventType");
+    String eventId = request.getParameter("eventId");
+    String eventScheduleId = request.getParameter("eventScheduleId");
+    user.getNickName(nickNameResult, userId);
+    username = nickNameResult.get(0).get("bu_nick");
+    String isRecorded = "false";
+    MyBoolean isCreator = new MyBoolean();
+    MyBoolean isEvent = new MyBoolean();
+    if(eventType !=null && eventType.equals("Meeting")){
+         meeting.isMeeting(isEvent, eventScheduleId, eventId);
+         if(!isEvent.get_value()){
+             response.sendRedirect("index.jsp?message=Invalid meeting schedule or meeting information!");
+             return;
+         }
+         user.isMeetingCreator(isCreator, eventScheduleId, userId);
+         if(!isCreator.get_value()){
+             response.sendRedirect("index.jsp?message=You are not the meeting creator or attendee!");
+             return;
+         }
+         meeting.getMeetingModPass(modPassResult, eventScheduleId, eventId);
+         meeting.getMeetingUserPass(viewerPassResult, eventScheduleId, eventId);
+         meeting.getMeetingScheduleInfo(eventTitleResult, eventScheduleId);
+         meeting.getMeetingSetting(isRecordedResult, eventScheduleId, eventId);
+         meeting.getMeetingInfo(eventInfo,eventScheduleId,eventId);
+         eventStartTime = eventInfo.get(0).get("m_inidatetime");
+         if(isRecordedResult.get("isRecorded")==1){
+             isRecorded = "true";
+         }else{
+             isRecorded = "false";
+         }
+         modPwd = modPassResult.get(0).get("m_modpass");
+         viewerPwd = viewerPassResult.get(0).get("m_userpass");
+         meeting.getMeetingCreators(creatorResult, eventScheduleId);
+         eventCreator = creatorResult.get(0).get("bu_id");
+         meetingID = "bbbmanEvent-meeting-" + eventCreator + "-" + eventScheduleId + "-" + eventId;
+    
+    }else if (eventType !=null && eventType.equals("Lecture")){
+        lecture.isLecture(isEvent,eventScheduleId, eventId);
+        if(!isEvent.get_value()){
+            response.sendRedirect("index.jsp?message=Invalid lecture schedule or lecture information!");
+            return;
+        }
+        lecture.getLectureModPass(modPassResult, eventScheduleId, eventId);
+        lecture.getLectureUserPass(viewerPassResult, eventScheduleId, eventId);
+        lecture.getLectureScheduleInfo(eventTitleResult, eventScheduleId);
+        c_id = eventTitleResult.get(0).get("c_id");
+        sc_id = eventTitleResult.get(0).get("sc_id");
+        sc_semesterid = eventTitleResult.get(0).get("sc_semesterid");
+        lecture.getLectureSetting(isRecordedResult, c_id, sc_id, sc_semesterid);
+        user.isTeaching(isCreator, eventScheduleId, userId);
+        if(!isCreator.get_value()){
+            response.sendRedirect("index.jsp?message=You are not the teacher or student of the lecture!");
+            return;
+        }
+        if(isRecordedResult.get("isRecorded")==1){
+            isRecorded = "true";
+        }else{
+            isRecorded = "false";
+        }
+        lecture.getLectureInfo(eventInfo, eventScheduleId, eventId);
+        eventStartTime = eventInfo.get(0).get("l_inidatetime");
+        modPwd = modPassResult.get(0).get("l_modpass");
+        viewerPwd = viewerPassResult.get(0).get("l_userpass");
+        lecture.getLectureProfessor(creatorResult, c_id, sc_id, sc_semesterid);
+        eventCreator = creatorResult.get(0).get("bu_id"); 
+        meetingID = "bbbmanEvent-lecture-" + eventCreator + "-" + eventScheduleId + "-" + eventId;
+    
     }else{
-        isRecorded="false";
+        response.sendRedirect("calendar.jsp?message=Invalid Event Information!");
+        return;
     }
-    lecture.getLectureInfo(eventInfo, eventScheduleId, eventId);
-    eventStartTime = eventInfo.get(0).get(2);
-    modPwd=modPassResult.get(0).get(0);
-    viewerPwd=viewerPassResult.get(0).get(0);
-    lecture.getLectureProfessor(creatorResult, c_id, sc_id, sc_semesterid);
-    eventCreator=creatorResult.get(0).get(0); 
-    meetingID = "bbbmanEvent-lecture-" + eventCreator + "-" + eventScheduleId + "-" + eventId;
-
-}else{
-    response.sendRedirect("calendar.jsp?message=Invalid Event Information!");
-    return;
-}
-
-//Encrypt meetingID and Viewer Password before send to guest
-final String strToEncrypt = meetingID +"-"+ viewerPwd ;
-final String securitykey = Config.getProperty("securitykey");
-EncryptDecrypt encrypt = new EncryptDecrypt();
-encrypt.setKey(securitykey);
-encrypt.encrypt(strToEncrypt.trim());
-session.setAttribute("meetingId", encrypt.getEncryptedString());
-eventStartTime = eventStartTime.substring(0,19);
-//session.setAttribute("meetingTime", eventStartTime);
-
+    
+    //Encrypt meetingID and Viewer Password before send to guest
+    final String strToEncrypt = meetingID + "-" + viewerPwd;
+    final String securitykey = Config.getProperty("securitykey");
+    EncryptDecrypt encrypt = new EncryptDecrypt();
+    encrypt.setKey(securitykey);
+    encrypt.encrypt(strToEncrypt.trim());
+    session.setAttribute("meetingId", encrypt.getEncryptedString());
+    eventStartTime = eventStartTime.substring(0,19);
+    //session.setAttribute("meetingTime", eventStartTime);
 %>
 
 <!DOCTYPE html>

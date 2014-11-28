@@ -37,7 +37,7 @@ public class Admin extends Sql {
     public Boolean getPreDefinedRole(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT * "
                 + "FROM predefined_role ";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -50,7 +50,7 @@ public class Admin extends Sql {
     public Boolean getAllUserRoleInfo(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT * "
                 + "FROM user_role ";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -63,7 +63,7 @@ public class Admin extends Sql {
     public Boolean getSystemInfo(ArrayList<HashMap<String, String>> result){
         _sql = "SELECT * "
                 + "FROM bbb_admin ";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -77,7 +77,7 @@ public class Admin extends Sql {
         _sql = "SELECT * "
                 + "FROM bbb_admin "
                 + "WHERE key_name='" + key_name + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -91,7 +91,7 @@ public class Admin extends Sql {
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='timeout'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -105,7 +105,7 @@ public class Admin extends Sql {
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='welcome_msg'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -119,7 +119,7 @@ public class Admin extends Sql {
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='recording_msg'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -133,7 +133,7 @@ public class Admin extends Sql {
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='default_class'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -147,7 +147,7 @@ public class Admin extends Sql {
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='default_class_hr'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     /**
      * Get default meeting setting on system<p>
@@ -160,7 +160,7 @@ public class Admin extends Sql {
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='default_meeting'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -174,7 +174,7 @@ public class Admin extends Sql {
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='default_meeting_hr'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -188,7 +188,7 @@ public class Admin extends Sql {
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='default_user'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -202,7 +202,7 @@ public class Admin extends Sql {
         _sql = "SELECT key_value "
                 + "FROM bbb_admin "
                 + "WHERE key_name='default_user_hr'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -216,7 +216,7 @@ public class Admin extends Sql {
         _sql = "SELECT key_value "
             + "FROM bbb_admin "
             + "WHERE key_name='notification'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     /**
     * (0)key_name (1)key_value

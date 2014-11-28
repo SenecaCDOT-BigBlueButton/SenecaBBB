@@ -40,7 +40,7 @@ public class Department extends Sql {
     public boolean getDepartment(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM department";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -57,7 +57,7 @@ public class Department extends Sql {
                 + "ON d.d_code = ud.d_code "
                 + "WHERE bu_id = '" + bu_id +"' "
                 + "AND ud_isadmin = 1";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -69,7 +69,7 @@ public class Department extends Sql {
     public boolean getDepartmentUser(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM user_department";
-        return _dbAccess.queryDB2(result, _sql);   
+        return _dbAccess.queryDB(result, _sql);   
     }
     
     /**
@@ -86,7 +86,7 @@ public class Department extends Sql {
                 + "JOIN bbb_user bu "
                 + "ON ud.bu_id = bu.bu_id "
                 + "WHERE ud.d_code = '" + d_code + "'";
-        return _dbAccess.queryDB2(result, _sql);   
+        return _dbAccess.queryDB(result, _sql);   
     }
     
     /**
@@ -102,7 +102,7 @@ public class Department extends Sql {
                 + "FROM user_department "
                 + "WHERE bu_id = '" + bu_id + "' "
                 + "AND d_code = '" + d_code + "'";
-        return _dbAccess.queryDB2(result, _sql);   
+        return _dbAccess.queryDB(result, _sql);   
     }
     
     public boolean isDepartment(MyBoolean bool, String d_code) {
@@ -111,7 +111,7 @@ public class Department extends Sql {
                 + "WHERE d_code = '" + d_code + "' "
                 + "LIMIT 1";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }

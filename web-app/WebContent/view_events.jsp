@@ -43,13 +43,9 @@
     if (successMessage == null) {
         successMessage = "";
     }
-    User user = new User(dbaccess);
+    
     Meeting meeting = new Meeting(dbaccess);
     Lecture lecture = new Lecture(dbaccess);
-    Section section = new Section(dbaccess);
-    int i;
-    boolean validFlag;
-    MyBoolean myBool = new MyBoolean();
     // End page validation
 
     ArrayList<HashMap<String, String>> meetings = new ArrayList<HashMap<String, String>>();
@@ -60,12 +56,14 @@
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
+    
     if (!lecture.getLecturesForUser(lectures, userId, true, true)) {
         message = lecture.getErrMsg("VEVENTS02");
         elog.writeLog("[view_events:] " + message + " /n");
         response.sendRedirect("logout.jsp?message=" + message);
         return;
     }
+    
     %>
     <script type="text/javascript">
         /* TABLE */
@@ -138,7 +136,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% for (i=0; i<meetings.size(); i++) { %>
+                                    <% for (int i = 0; i < meetings.size(); i++) { %>
                                     <tr>
                                         <td class="row"><%= meetings.get(i).get("ms_title") %></td>
                                         <td><script>document.write(toUserLocalTime("<%= meetings.get(i).get("m_inidatetime").substring(0, 19) %>"));</script></td>
@@ -178,15 +176,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% for (i=0; i<lectures.size(); i++) { %>
+                                    <% for (int j = 0; j < lectures.size(); j++) { %>
                                     <tr>
-                                        <td class="row"><% out.print(lectures.get(i).get("c_id") + lectures.get(i).get("sc_id") + " (" + lectures.get(i).get("sc_semesterid") + ")"); %></td>
-                                        <td><script>document.write(toUserLocalTime("<%= lectures.get(i).get("l_inidatetime").substring(0, 19) %>"));</script></td>
-                                        <td><%= lectures.get(i).get("l_duration") %> Minutes</td>
-                                        <td><%= (lectures.get(i).get("l_iscancel").equals("1")) ? "Yes" : "" %></td>
-                                        <td><%= lectures.get(i).get("l_description") %></td>
+                                        <td class="row"><% out.print(lectures.get(j).get("c_id") + lectures.get(j).get("sc_id") + " (" + lectures.get(j).get("sc_semesterid") + ")"); %></td>
+                                        <td><script>document.write(toUserLocalTime("<%= lectures.get(j).get("l_inidatetime").substring(0, 19) %>"));</script></td>
+                                        <td><%= lectures.get(j).get("l_duration") %> Minutes</td>
+                                        <td><%= (lectures.get(j).get("l_iscancel").equals("1")) ? "Yes" : "" %></td>
+                                        <td><%= lectures.get(j).get("l_description") %></td>
                                         <td class="icons" align="center">
-                                            <a href="view_event.jsp?ls_id=<%= lectures.get(i).get("ls_id") %>&l_id=<%= lectures.get(i).get("l_id") %>" class="view calendarIcon">
+                                            <a href="view_event.jsp?ls_id=<%= lectures.get(j).get("ls_id") %>&l_id=<%= lectures.get(j).get("l_id") %>" class="view calendarIcon">
                                                 <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
                                             </a>
                                         </td>

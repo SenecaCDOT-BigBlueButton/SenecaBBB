@@ -98,7 +98,7 @@ public class DBAccess {
      * @param query
      * @return
      */
-    public boolean queryDB2(ArrayList<HashMap<String, String>> result, String query) {
+    public boolean queryDB(ArrayList<HashMap<String, String>> result, String query) {
         result.clear();
         if(_flag) { //statement do no execute if there is previous error
             _flag = openConnection();
@@ -110,7 +110,7 @@ public class DBAccess {
                 try {
                     _stmt = _conn.prepareStatement(query);
                     _rs = _stmt.executeQuery();
-                    int colCount = _rs.getMetaData().getColumnCount();
+                    int colCount = _rs.getMetaData().getColumnCount();                    
                     while (_rs.next()) {
                         HashMap<String, String> row = new HashMap<String, String>();
                         for (int i=1; i<=colCount; i++) {

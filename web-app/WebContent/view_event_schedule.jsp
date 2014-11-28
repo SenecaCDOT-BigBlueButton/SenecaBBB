@@ -342,11 +342,13 @@
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
                                                 </a>
                                             </td>
+                                            <% if (status == 1) { %>
                                             <td class="icons" align="center">
                                                 <a href="edit_meeting.jsp?ms_id=<%= ms_id %>&m_id=<%= meetingResult.get(i).get("m_id") %>" class="modify">
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting" alt="Modify"/>
                                                 </a>
                                             </td>
+                                            <% } %>
                                         </tr>
                                     <% } 
                                     } else if(isLectureEvent){ 
@@ -366,11 +368,13 @@
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
                                                 </a>
                                             </td>
+                                            <% if (status == 3) { %>
                                             <td class="icons" align="center">
                                                 <a href="edit_lecture.jsp?ls_id=<%= ls_id %>&l_id=<%= lectureResult.get(j).get("l_id") %>" class="modify">
                                                     <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture" alt="Modify"/>
                                                 </a>
                                             </td>
+                                            <% } %>
                                         </tr>
                                         <% } }%>
                                     </tbody>

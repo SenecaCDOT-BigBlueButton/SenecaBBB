@@ -46,7 +46,7 @@ public class Meeting extends Sql {
                 + "FROM meeting "
                 + "WHERE meeting.ms_id = '" + ms_id + "' "
                 + "AND meeting.m_id = '" + m_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -61,7 +61,7 @@ public class Meeting extends Sql {
         _sql = "SELECT meeting.* "
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -73,7 +73,7 @@ public class Meeting extends Sql {
     public boolean getMeetingScheduleInfo(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM meeting_schedule";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -87,7 +87,7 @@ public class Meeting extends Sql {
         _sql = "SELECT * "
                 + "FROM meeting_schedule "
                 + "WHERE ms_id = '" + ms_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -101,7 +101,7 @@ public class Meeting extends Sql {
         _sql = "SELECT bu_id "
                 + "FROM meeting_schedule "
                 + "WHERE ms_id = '" + ms_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -117,7 +117,7 @@ public class Meeting extends Sql {
                 + "WHERE bu_id = '" + bu_id + "' "
                 + "ORDER BY ms_id DESC "
                 + "LIMIT 1";;
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -158,7 +158,7 @@ public class Meeting extends Sql {
             result.clear();
             return true;
         }
-        return (_dbAccess.queryDB2(result, _sql));// && _dbAccess.queryDB2(result, _sql2) && _dbAccess.queryDB2(result, _sql3);
+        return (_dbAccess.queryDB(result, _sql));// && _dbAccess.queryDB2(result, _sql2) && _dbAccess.queryDB2(result, _sql3);
     }
     
     /**
@@ -171,7 +171,7 @@ public class Meeting extends Sql {
         _sql = "SELECT m_description "
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' ";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -186,7 +186,7 @@ public class Meeting extends Sql {
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     
@@ -202,7 +202,7 @@ public class Meeting extends Sql {
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -217,7 +217,7 @@ public class Meeting extends Sql {
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     } 
     
     /**
@@ -232,7 +232,7 @@ public class Meeting extends Sql {
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -247,7 +247,7 @@ public class Meeting extends Sql {
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -262,7 +262,7 @@ public class Meeting extends Sql {
                 + "FROM meeting "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -278,7 +278,7 @@ public class Meeting extends Sql {
                 + "FROM meeting_presentation "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -291,7 +291,7 @@ public class Meeting extends Sql {
                 + "FROM meeting_attendee ma "
                 + "JOIN bbb_user bu "
                 + "ON ma.bu_id = bu.bu_id";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -306,7 +306,7 @@ public class Meeting extends Sql {
                 + "JOIN bbb_user bu "
                 + "ON ma.bu_id = bu.bu_id "
                 + "WHERE ma.ms_id = '" + ms_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -323,7 +323,7 @@ public class Meeting extends Sql {
                 + "WHERE ma.bu_id = bu.bu_id "
                 + "AND ma.ms_id = '" + ms_id + "' "
                 + "AND ma.bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -339,7 +339,7 @@ public class Meeting extends Sql {
                 + "ON bu.bu_id = ma.bu_id "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -355,7 +355,7 @@ public class Meeting extends Sql {
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -372,7 +372,7 @@ public class Meeting extends Sql {
                 + "ON bu.bu_id = mg.bu_id "
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -389,7 +389,7 @@ public class Meeting extends Sql {
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     public boolean getMeetingSetting(HashMap<String, Integer> result, String ms_id, String m_id) {
@@ -398,7 +398,7 @@ public class Meeting extends Sql {
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND m_id = '" + m_id + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get("m_setting")).intValue();
             result.clear();
@@ -418,7 +418,7 @@ public class Meeting extends Sql {
                 + "AND m_id = '" + m_id + "' "
                 + "LIMIT 1";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -432,7 +432,7 @@ public class Meeting extends Sql {
                 + "AND m_id = '" + m_id + "' "
                 + "AND mp_title = '" + mp_title + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }

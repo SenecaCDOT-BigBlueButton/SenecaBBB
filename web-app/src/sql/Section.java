@@ -52,7 +52,7 @@ public class Section extends Sql {
                 + "WHERE section.c_id = '" + c_id + "' "
                 + "AND section.sc_id = '" + sc_id + "' "
                 + "AND section.sc_semesterid = '" + sc_semesterid + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -70,7 +70,7 @@ public class Section extends Sql {
                 + "ON section.c_id = course.c_id "
                 + "INNER JOIN department "
                 + "ON section.d_code = department.d_code";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -92,7 +92,7 @@ public class Section extends Sql {
                 + "ON section.d_code = department.d_code "
                 + "WHERE section.c_id = '" + c_id + "' "
                 + "AND section.sc_semesterid = '" + sc_semesterid + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -107,7 +107,7 @@ public class Section extends Sql {
         _sql = "SELECT * "
                 + "FROM section "
                 + "WHERE c_id = '" + c_id + "' ";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -119,7 +119,7 @@ public class Section extends Sql {
         _sql = "SELECT * "
                 + "FROM course "
                 + "WHERE c_id = '" + c_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     
@@ -131,7 +131,7 @@ public class Section extends Sql {
     public boolean getCourse(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM course";            
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -143,7 +143,7 @@ public class Section extends Sql {
     public boolean getProfessor(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM professor";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -157,7 +157,7 @@ public class Section extends Sql {
         _sql = "SELECT * "
                 + "FROM professor "
                 + "WHERE bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -176,7 +176,7 @@ public class Section extends Sql {
                 + "WHERE c_id = '" + c_id + "' "
                 + "AND sc_id = '" + sc_id + "' "
                 + "AND sc_semesterid = '" + sc_semesterid + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -191,7 +191,7 @@ public class Section extends Sql {
                 + "FROM professor "
                 + "WHERE bu_id = '" + bu_id + "' "
                 + "ORDER BY c_id, sc_id, sc_semesterid";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -205,7 +205,7 @@ public class Section extends Sql {
         _sql = "SELECT c_id, sc_id, sc_semesterid, sc_setting, bu_id "
                 + "FROM professor "
                 + "ORDER BY c_id, sc_id, sc_semesterid";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -224,7 +224,7 @@ public class Section extends Sql {
                 + "WHERE c_id = '" + c_id + "' "
                 + "AND sc_id = '" + sc_id + "' "
                 + "AND sc_semesterid = '" + sc_semesterid + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -245,7 +245,7 @@ public class Section extends Sql {
                 + "AND sc_semesterid = '" + sc_semesterid + "' "
                 + "AND bu_id = '" + bu_id + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get("sc_setting")).intValue();
             result.clear();
@@ -266,7 +266,7 @@ public class Section extends Sql {
     public boolean getStudent(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM student";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -285,7 +285,7 @@ public class Section extends Sql {
                 + "JOIN bbb_user bu "
                 + "ON bu.bu_id = s.bu_id "
                 + "WHERE ls.ls_id = '" + ls_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -304,7 +304,7 @@ public class Section extends Sql {
                 + "WHERE c_id = '" + c_id + "' "
                 + "AND sc_id = '" + sc_id + "' "
                 + "AND sc_semesterid = '" + sc_semesterid + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     public boolean setBannedFromSection(

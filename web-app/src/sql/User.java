@@ -47,7 +47,7 @@ public class User extends Sql {
         _sql = "SELECT non_ldap_user.nu_hash "
                 + "FROM non_ldap_user "
                 + "WHERE bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -61,7 +61,7 @@ public class User extends Sql {
         _sql = "SELECT non_ldap_user.nu_salt "
                 + "FROM non_ldap_user "
                 + "WHERE bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -74,7 +74,7 @@ public class User extends Sql {
         _sql = "SELECT non_ldap_user.nu_salt, non_ldap_user.nu_hash "
                 + "FROM non_ldap_user "
                 + "WHERE bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -95,7 +95,7 @@ public class User extends Sql {
                 + "INNER JOIN user_role "
                 + "ON bbb_user.ur_id = user_role.ur_id "
                 + "ORDER BY bbb_user.bu_id";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -120,7 +120,7 @@ public class User extends Sql {
                 + "ON bbb_user.ur_id = user_role.ur_id "
                 + "ORDER BY bbb_user.bu_id "
                 + "LIMIT " + start + "," + size;
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -142,7 +142,7 @@ public class User extends Sql {
                 + "INNER JOIN user_role "
                 + "ON bbb_user.ur_id = user_role.ur_id "
                 + "WHERE bbb_user.bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -156,7 +156,7 @@ public class User extends Sql {
         _sql = "SELECT nu_email "
                 + "FROM non_ldap_user "
                 + "Where bu_id= '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -170,7 +170,7 @@ public class User extends Sql {
         _sql = "SELECT nu_name "
                 + "FROM non_ldap_user "
                 + "WHERE bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -184,7 +184,7 @@ public class User extends Sql {
         _sql = "SELECT nu_lastname "
                 + "FROM non_ldap_user "
                 + "WHERE bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -198,7 +198,7 @@ public class User extends Sql {
         _sql = "SELECT bu_nick "
                 + "FROM bbb_user "
                 + "WHERE bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -214,7 +214,7 @@ public class User extends Sql {
                 + "INNER JOIN bbb_user "
                 + "ON user_role.ur_id = bbb_user.ur_id "
                 + "WHERE bbb_user.bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -227,7 +227,7 @@ public class User extends Sql {
         _sql = "SELECT user_role.ur_id, user_role.pr_name "
                 + "FROM user_role "
                 + "ORDER BY ur_id";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -242,7 +242,7 @@ public class User extends Sql {
                 + "INNER JOIN user_department "
                 + "ON department.d_code = user_department.d_code "
                 + "WHERE user_department.bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -255,7 +255,7 @@ public class User extends Sql {
         _sql = "SELECT bu_lastlogin "
                 + "FROM bbb_user "
                 + "WHERE bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -268,7 +268,7 @@ public class User extends Sql {
         _sql = "SELECT bu_isactive "
                 + "FROM bbb_user "
                 + "WHERE bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -288,7 +288,7 @@ public class User extends Sql {
                 + "AND c_id = '" + c_id + "' "
                 + "AND sc_id = '" + sc_id + "' "
                 + "AND sc_semesterid = '" + sc_semesterid + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -301,7 +301,7 @@ public class User extends Sql {
         _sql = "SELECT bu_isbanned "
                 + "FROM bbb_user "
                 + "WHERE bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -314,7 +314,7 @@ public class User extends Sql {
         _sql = "SELECT bu_comment "
                 + "FROM bbb_user "
                 + "WHERE bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -327,7 +327,7 @@ public class User extends Sql {
         _sql = "SELECT bu_issuper "
                 + "FROM bbb_user "
                 + "WHERE bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -342,7 +342,7 @@ public class User extends Sql {
                 + "FROM non_ldap_user "
                 + "WHERE nu_name LIKE '" + nu_name + "%' "
                 + "OR nu_lastname LIKE '" + nu_lastname + "%'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     /**
@@ -353,7 +353,7 @@ public class User extends Sql {
         _sql = "SELECT bu_id "
                 + "FROM bbb_user "
                 + "WHERE bu_id LIKE '" + bu_id + "%' ";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     public boolean getUserSetting(HashMap<String, Integer> result, String bu_id) {
@@ -361,7 +361,7 @@ public class User extends Sql {
                 + "FROM bbb_user "
                 + "WHERE bu_id = '" + bu_id + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get("bu_setting")).intValue();
             result.clear();
@@ -377,7 +377,7 @@ public class User extends Sql {
                 + "FROM bbb_admin "
         		+ "WHERE key_name = 'default_user_hr'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get("key_value")).intValue();
             result.clear();
@@ -393,7 +393,7 @@ public class User extends Sql {
                 + "FROM bbb_user "
                 + "WHERE bu_id = '" + bu_id + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get("m_setting")).intValue();
             result.clear();
@@ -411,7 +411,7 @@ public class User extends Sql {
                 + "FROM bbb_admin "
                 + "WHERE key_name = 'default_meeting_hr'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get("key_value")).intValue();
             result.clear();
@@ -433,7 +433,7 @@ public class User extends Sql {
                 + "AND sc_id = '" + sc_id + "' "
                 + "AND sc_semesterid = '" + sc_semesterid + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get("sc_setting")).intValue();
             result.clear();
@@ -451,7 +451,7 @@ public class User extends Sql {
                 + "FROM bbb_admin "
                 + "WHERE key_name = 'default_class_hr'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get("key_value")).intValue();
             result.clear();
@@ -469,7 +469,7 @@ public class User extends Sql {
                 + "FROM user_role "
                 + "WHERE ur_id = " + ur_id;
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get("ur_rolemask")).intValue();
             result.clear();
@@ -485,7 +485,7 @@ public class User extends Sql {
                 + "FROM predefined_role "
                 + "WHERE pr_name = '" + pr_name + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get("pr_defaultmask")).intValue();
             result.clear();
@@ -513,7 +513,7 @@ public class User extends Sql {
                 + "AND bu_id = '" + bu_id + "' "
                 + "LIMIT 1";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -526,7 +526,7 @@ public class User extends Sql {
                 + "WHERE ms_id = '" + ms_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -540,7 +540,7 @@ public class User extends Sql {
                 + "AND m_id = '" + m_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -557,7 +557,7 @@ public class User extends Sql {
                 + "WHERE ls.ls_id = '" + ls_id + "'"
                 + "AND p.bu_id = '" + bu_id + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -571,7 +571,7 @@ public class User extends Sql {
                 + "AND gl.ls_id = '" + ls_id + "' "
                 + "AND gl.l_id = '" + l_id + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -588,7 +588,7 @@ public class User extends Sql {
                 + "WHERE ls.ls_id = '" + ls_id + "'"
                 + "AND s.bu_id = '" + bu_id + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -603,7 +603,7 @@ public class User extends Sql {
                 + " AND sc_semesterid = '" + sc_semesterid + "'"
                 + " AND bu_id = '" + bu_id + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -617,7 +617,7 @@ public class User extends Sql {
                 + "WHERE bu_id = '" + bu_id + "' "
                 + "LIMIT 1";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -631,7 +631,7 @@ public class User extends Sql {
                 + "AND d_code = '" + d_code + "' "
                 + "LIMIT 1";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -645,7 +645,7 @@ public class User extends Sql {
                 + "AND ud_isadmin = 1 "
                 + "LIMIT 1";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -660,7 +660,7 @@ public class User extends Sql {
                 + "AND ud_isadmin = 1 "
                 + "LIMIT 1";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -673,7 +673,7 @@ public class User extends Sql {
                 + "WHERE bu_id = '" + bu_id + "' "
                 + "LIMIT 1";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -686,7 +686,7 @@ public class User extends Sql {
                 + "WHERE bu_id = '" + bu_id + "' "
                 + "LIMIT 1";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }

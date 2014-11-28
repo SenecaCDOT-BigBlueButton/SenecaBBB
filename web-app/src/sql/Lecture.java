@@ -47,7 +47,7 @@ public class Lecture extends Sql {
                 + "FROM lecture "
                 + "WHERE lecture.ls_id = '" + ls_id + "' "
                 + "AND lecture.l_id = '" + l_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -63,7 +63,7 @@ public class Lecture extends Sql {
         _sql = "SELECT lecture.* "
                 + "FROM lecture "
                 + "WHERE ls_id = '" + ls_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -76,7 +76,7 @@ public class Lecture extends Sql {
     public boolean getLectureScheduleInfo(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM lecture_schedule";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -91,7 +91,7 @@ public class Lecture extends Sql {
         _sql = "SELECT * "
                 + "FROM lecture_schedule "
                 + "WHERE ls_id = '" + ls_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -106,7 +106,7 @@ public class Lecture extends Sql {
                 + "FROM lecture "
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     
@@ -120,7 +120,7 @@ public class Lecture extends Sql {
         _sql = "SELECT l_description "
                 + "FROM lecture "
                 + "WHERE ls_id = '" + ls_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     /**
      * (0)l_inidatetime
@@ -134,7 +134,7 @@ public class Lecture extends Sql {
                 + "FROM lecture "
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -149,7 +149,7 @@ public class Lecture extends Sql {
                 + "FROM lecture "
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     } 
     
     /**
@@ -162,7 +162,7 @@ public class Lecture extends Sql {
         _sql = "SELECT c_id,sc_id,sc_semesterid "
                 + "FROM professor "
                 + "WHERE bu_id = '" + bu_id + "' ";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     } 
 
     /**
@@ -173,7 +173,7 @@ public class Lecture extends Sql {
     public boolean getAllProfessorCourse(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT bu_id,c_id,sc_id,sc_semesterid "
                 + "FROM professor ";            
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     } 
     
     /**
@@ -190,7 +190,7 @@ public class Lecture extends Sql {
                 + "WHERE c_id = '" + c_id + "' "
                 + "AND sc_id = '" + sc_id + "' "
                 + "AND sc_semesterid = '" + sc_semesterid + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     } 
 
     /**
@@ -205,7 +205,7 @@ public class Lecture extends Sql {
                 + "FROM lecture "
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -220,7 +220,7 @@ public class Lecture extends Sql {
                 + "FROM lecture "
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -235,7 +235,7 @@ public class Lecture extends Sql {
                 + "FROM lecture "
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -253,7 +253,7 @@ public class Lecture extends Sql {
                 + "AND sc_id = '" + sc_id + "' "
                 + "AND sc_semesterid = '" + sc_semesterid + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             int value = Integer.valueOf(tempResult.get(0).get("sc_setting")).intValue();
             result.clear();
@@ -279,7 +279,7 @@ public class Lecture extends Sql {
                 + "FROM lecture_presentation "
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -295,7 +295,7 @@ public class Lecture extends Sql {
                 + "ON la.bu_id = bu.bu_id "
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -311,7 +311,7 @@ public class Lecture extends Sql {
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = " + l_id + " "
                 + "AND bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -328,7 +328,7 @@ public class Lecture extends Sql {
                 + "ON gl.bu_id = bu.bu_id "
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
 
     /**
@@ -370,7 +370,7 @@ public class Lecture extends Sql {
             result.clear();
             return true;
         }
-        return (_dbAccess.queryDB2(result, _sql));
+        return (_dbAccess.queryDB(result, _sql));
     }
     
     /**
@@ -387,7 +387,7 @@ public class Lecture extends Sql {
                 + "WHERE ls_id = '" + ls_id + "' "
                 + "AND l_id = '" + l_id + "' "
                 + "AND bu_id = '" + bu_id + "'";
-        return _dbAccess.queryDB2(result, _sql);
+        return _dbAccess.queryDB(result, _sql);
     }
     
     public boolean isLecture(MyBoolean bool, String ls_id, String l_id) {
@@ -397,7 +397,7 @@ public class Lecture extends Sql {
                 + "AND l_id = '" + l_id + "' "
                 + "LIMIT 1";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }
@@ -411,7 +411,7 @@ public class Lecture extends Sql {
                 + "AND l_id = '" + l_id + "' "
                 + "AND lp_title = '" + lp_title + "'";
         ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
-        boolean flag =_dbAccess.queryDB2(tempResult, _sql);
+        boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
             bool.set_value(tempResult.isEmpty() ? false : true);
         }

@@ -142,7 +142,7 @@
         /* DEPARTMENT LIST */
         $('#departmentList').dataTable({
             "sPaginationType": "full_numbers",
-            "aoColumnDefs": [{ "bSortable": false, "aTargets":[2,3,4]}], 
+            "aoColumnDefs": [{ "bSortable": false, "aTargets":[2,3]}], 
             "bRetrieve": true, 
             "bDestroy": true
             });

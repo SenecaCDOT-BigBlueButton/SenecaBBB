@@ -12,6 +12,16 @@ html, body {
 	font-weight: 400;
 	background-color: #E6E6E6;
 }
+body div section div p {
+    color:#000000;
+    font-size: 16px;
+}
+
+body div section div ol li {
+    margin-top: 5px;
+    list-style-type: square;
+}
+
 #notification{
     background: none repeat scroll 0 0 #CD352B;
     border: 2px solid #CD352B;
@@ -1262,13 +1272,13 @@ div.contactus p{
 }
 
 div.contactus a:link, div.help a:link{
-     color:#FF0000;    
+     color:#FF9D9D;    
 }
 div.contactus a:visited, div.help a:visited{
-     color:#00FF00;    
+     color:#339966;    
 }
 div.contactus a:hover,div.help a:hover{
-     color:#FF00FF;    
+     color:#DB94FF;    
 }
 div.contactus a:active,div.help a:active{
      color:#0000FF;    

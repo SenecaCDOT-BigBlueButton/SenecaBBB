@@ -36,22 +36,22 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
-    
+
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
     String m_id = request.getParameter("m_id");
     String ms_id = request.getParameter("ms_id");
-    if (m_id==null || ms_id==null) {
+    if (m_id == null || ms_id == null) {
         elog.writeLog("[add_attendee:] " + "null m_id or ms_id /n");
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
@@ -59,12 +59,12 @@
     m_id = Validation.prepare(m_id);
     ms_id = Validation.prepare(ms_id);
     if (!(Validation.checkMId(m_id) && Validation.checkMsId(ms_id))) {
-        elog.writeLog("[add_attendee:] " + Validation.getErrMsg()+ "/n");
+        elog.writeLog("[add_attendee:] " + Validation.getErrMsg() + "/n");
         response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
         return;
     }
-    User2 user = new User2(dbaccess);
-    Meeting2 meeting = new Meeting2(dbaccess);
+    User user = new User(dbaccess);
+    Meeting meeting = new Meeting(dbaccess);
     MyBoolean myBool = new MyBoolean();
     if (!meeting.isMeeting(myBool, ms_id, m_id)) {
         message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AA01");
@@ -73,7 +73,7 @@
         return;
     }
     if (!myBool.get_value()) {
-        elog.writeLog("[add_attendee:] " +  "Permission denied /n");
+        elog.writeLog("[add_attendee:] " + "Permission denied /n");
         response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
@@ -84,7 +84,7 @@
         return;
     }
     if (!myBool.get_value()) {
-        elog.writeLog("[add_attendee:] " +  "Permission denied /n");
+        elog.writeLog("[add_attendee:] " + "Permission denied /n");
         response.sendRedirect("calendar.jsp?message=You do not permission to access that page");
         return;
     }
@@ -95,7 +95,7 @@
     boolean searchSucess = false;
     String bu_id = request.getParameter("addBox");
     String nonldap = request.getParameter("searchBox");
-    if (bu_id!=null && bu_id !="") {
+    if (bu_id != null && bu_id != "") {
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
             message = Validation.getErrMsg();
@@ -104,7 +104,7 @@
                 message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AA03");
                 elog.writeLog("[add_attendee:] " + message + "/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             // User already added
             if (myBool.get_value()) {
@@ -131,9 +131,9 @@
         }
     }
     // End User Search
-    
+
     ArrayList<HashMap<String, String>> searchResult = new ArrayList<HashMap<String, String>>();
-    
+
     if (searchSucess) {
         if (!meeting.createMeetingAttendee(bu_id, ms_id, false)) {
             message = meeting.getErrMsg("AA05");
@@ -142,9 +142,9 @@
             return;
         } else {
             successMessage = bu_id + " added to meeting attendee list successfully";
-            sendNotification(dbaccess,ldap,bu_id,"meeting",ms_id,m_id,usersession.getGivenName()); 
+            sendNotification(dbaccess, ldap, bu_id, "meeting", ms_id,m_id, usersession.getGivenName());
         }
-    } else if (nonldap != null && nonldap !="") {
+    } else if (nonldap != null && nonldap != "") {
         nonldap = Validation.prepare(nonldap);
         if (!(Validation.checkBuId(nonldap))) {
             message = Validation.getErrMsg();
@@ -180,8 +180,8 @@
                     elog.writeLog("[add_attendee:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;
-                }else{
-                    successMessage=mod+" moderator status was changed!";
+                } else {
+                    successMessage = mod + " moderator status was changed!";
                 }
             }
         } else if (remove != null) {
@@ -195,7 +195,7 @@
                     response.sendRedirect("logout.jsp?message=" + message);
                     return;
                 } else {
-                    if (myBool.get_value()) { 
+                    if (myBool.get_value()) {
                         if (!meeting.removeMeetingAttendee(remove, ms_id)) {
                             message = meeting.getErrMsg("AA08");
                             elog.writeLog("[add_attendee:] " + message + "/n");
@@ -211,13 +211,13 @@
             }
         }
     }
-    
+
     ArrayList<HashMap<String, String>> eventAttendee = new ArrayList<HashMap<String, String>>();
     if (!meeting.getMeetingAttendee(eventAttendee, ms_id)) {
         message = meeting.getErrMsg("AA09");
         elog.writeLog("[add_attendee:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
-        return; 
+        return;
     }
     %>
 

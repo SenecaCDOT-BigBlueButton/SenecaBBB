@@ -2,6 +2,7 @@
 <%@page import="sql.Meeting"%>
 <%@page import="sql.Lecture"%>
 <%@page import="java.util.ArrayList" %>
+<%@page import="java.util.HashMap" %>
 <%@page import="helper.*"%>
 <jsp:useBean id="dbaccess" class="db.DBAccess" scope="session" />
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
@@ -54,7 +55,7 @@
         check4 = request.getParameter("filterOption4box") != null;
     }
     
-    ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
     Meeting meet = new Meeting(dbaccess);
     dbaccess.resetFlag();
     if (!meet.getMeetingsForUser(result, usersession.getUserId(), check1, check3)) {
@@ -81,7 +82,6 @@
     {
         totalEventJSON = meetingJSON + lectureJSON;
     }
-    
     %>
 </head>
 <body>
@@ -178,25 +178,25 @@
 </html>
 
 <%!
-public String meetingDBToJSON(ArrayList<ArrayList<String>> results) {
+public String meetingDBToJSON(ArrayList<HashMap<String,String>> results) {
     String converted = "";
     for (int i = 0; i < results.size(); ++i) {
         if (i > 0){
             converted += ",";
         }
-        converted += "{id: " + results.get(i).get(0) + ", title: '" + results.get(i).get(9) + "',start: '" + results.get(i).get(2) + "',end: '" + results.get(i).get(3) + "', url:'view_event.jsp?ms_id="+results.get(i).get(0)+"&m_id="+results.get(i).get(1)+"'}";
+        converted += "{id: " + results.get(i).get("ms_id") + ", title: '" + results.get(i).get("ms_title") + "',start: '" + results.get(i).get("m_inidatetime") + "',end: '" + results.get(i).get("m_duration") + "', url:'view_event.jsp?ms_id="+results.get(i).get("ms_id")+"&m_id="+results.get(i).get("m_id")+"'}";
     }
     return converted;
 }
 
 //     (0)ls_id (1)l_id (2)l_inidatetime (3)l_duration (4)l_iscancel (5)l_description (6)l_modpass (7)l_userpass (8)c_name (9)sc_id
-public String lectureDBToJSON(ArrayList<ArrayList<String>> results) {
+public String lectureDBToJSON(ArrayList<HashMap<String,String>> results) {
     String converted = "";
     for (int i = 0; i < results.size(); ++i) {
         if (i > 0){
             converted += ",";
         }
-        converted += "{id: " + results.get(i).get(0) + ",title: '" + results.get(i).get(8) + results.get(i).get(9) + "',start: '" + results.get(i).get(2) + "',end: '" + results.get(i).get(3) + "',url:'view_event.jsp?ls_id=" + results.get(i).get(0)+"&l_id="+results.get(i).get(1)+"'}";
+        converted += "{id: " + results.get(i).get("ls_id") + ",title: '" + results.get(i).get("c_id") + results.get(i).get("sc_id") + "',start: '" + results.get(i).get("l_inidatetime") + "',end: '" + results.get(i).get("l_duration") + "',url:'view_event.jsp?ls_id=" + results.get(i).get("ls_id")+"&l_id="+results.get(i).get("l_id")+"'}";
     }
     return converted;
 }

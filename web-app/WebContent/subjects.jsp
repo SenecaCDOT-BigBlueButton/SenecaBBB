@@ -50,17 +50,17 @@
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
     
     User user = new User(dbaccess);
     Section section = new Section(dbaccess);
-    ArrayList<ArrayList<String>> allCourse = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> sectionInfo = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> courseProfessor = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String,String>> allCourse = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> sectionInfo = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> courseProfessor = new ArrayList<HashMap<String,String>>();
     MyBoolean prof = new MyBoolean();
     HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
     HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
@@ -149,17 +149,17 @@
                                 <tbody>
                                 <% 
                                 for(int i=0; i<sectionInfo.size();i++){
-                                    section.getProfessor(courseProfessor,sectionInfo.get(i).get(0),sectionInfo.get(i).get(1),sectionInfo.get(i).get(2));
+                                    section.getProfessor(courseProfessor,sectionInfo.get(i).get("c_id"),sectionInfo.get(i).get("sc_id"),sectionInfo.get(i).get("sc_semesterid"));
                                 %>
                                     <tr>
-                                        <td class="row"><%= sectionInfo.get(i).get(0) %></td>
-                                        <td ><%= sectionInfo.get(i).get(1) %></td>
-                                        <td ><%= sectionInfo.get(i).get(2) %></td>
-                                        <td ><%= sectionInfo.get(i).get(3) %></td>
-                                        <td ><%= sectionInfo.get(i).get(4) %></td>
+                                        <td class="row"><%= sectionInfo.get(i).get("c_id") %></td>
+                                        <td ><%= sectionInfo.get(i).get("sc_id") %></td>
+                                        <td ><%= sectionInfo.get(i).get("sc_semesterid") %></td>
+                                        <td ><%= sectionInfo.get(i).get("c_name") %></td>
+                                        <td ><%= sectionInfo.get(i).get("d_name") %></td>
                                         <td  align="center">
                                             <a onclick="savePageOffset()" 
-                                               href="persist_section.jsp?courseCode=<%= sectionInfo.get(i).get(0) %>&courseSection=<%= sectionInfo.get(i).get(1) %>&semesterID=<%= sectionInfo.get(i).get(2) %>&toDel=1" 
+                                               href="persist_section.jsp?courseCode=<%= sectionInfo.get(i).get("c_id") %>&courseSection=<%= sectionInfo.get(i).get("sc_id") %>&semesterID=<%= sectionInfo.get(i).get("sc_semesterid") %>&toDel=1" 
                                                class="remove">
                                                 <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove Subject" alt="Remove"/>
                                             </a>

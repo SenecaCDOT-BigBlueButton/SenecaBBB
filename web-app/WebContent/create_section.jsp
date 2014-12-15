@@ -56,8 +56,8 @@
     Section section = new Section(dbaccess);
     Department department = new Department(dbaccess);
     
-    ArrayList<ArrayList<String>> courseCodeList = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> deptCodeList = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String,String>> courseCodeList = new ArrayList<HashMap<String,String>>();
+    ArrayList<HashMap<String,String>> deptCodeList = new ArrayList<HashMap<String,String>>();
     section.getCourse(courseCodeList);
     department.getDepartment(deptCodeList);
     %>
@@ -92,7 +92,7 @@
                                 <label for="courseCode" class="label">Course ID:</label>
                                 <select  name="courseCode" id="courseCode"  style="width: 402px;" tabindex="2" title="Please Select course code" >
                                     <% for(int i=0;i<courseCodeList.size();i++){ %>
-                                    <option><%= courseCodeList.get(i).get(0) %></option><%} %>
+                                    <option><%= courseCodeList.get(i).get("c_id") %></option><%} %>
                                 </select>
                             </div>
                             <div class="component">
@@ -115,7 +115,7 @@
                                 <label for="deptCode" class="label">Department ID:</label>
                                 <select  name="deptCode" id="deptCode"  style="width: 402px;" tabindex="2" title="Please Select dept code" >
                                 <% for(int j=0;j<deptCodeList.size();j++){ %>
-                                    <option><%= deptCodeList.get(j).get(0) %></option><%} %>
+                                    <option><%= deptCodeList.get(j).get("d_code") %></option><%} %>
                                 </select>
                             </div>
                             <div class="component">

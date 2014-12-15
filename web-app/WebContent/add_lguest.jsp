@@ -33,21 +33,21 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
     String l_id = request.getParameter("l_id");
     String ls_id = request.getParameter("ls_id");
-    if (l_id==null || ls_id==null) {
+    if (l_id == null || ls_id == null) {
         elog.writeLog("[add_lguest:] " + "null l_id or ls_id /n");
         response.sendRedirect("calendar.jsp?message=Please do not mess with the URL");
         return;
@@ -59,14 +59,14 @@
         response.sendRedirect("calendar.jsp?message=" + Validation.getErrMsg());
         return;
     }
-    User2 user = new User2(dbaccess);
-    Lecture2 lecture = new Lecture2(dbaccess);
-    MyBoolean myBool = new MyBoolean();    
+    User user = new User(dbaccess);
+    Lecture lecture = new Lecture(dbaccess);
+    MyBoolean myBool = new MyBoolean();
     if (!lecture.isLecture(myBool, ls_id, l_id)) {
         message = lecture.getErrMsg("ALG01");
         elog.writeLog("[add_lguest:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
-        return;   
+        return;
     }
     if (!myBool.get_value()) {
         elog.writeLog("[add_lguest:] " + "Permission denied" + "/n");
@@ -77,7 +77,7 @@
         message = user.getErrMsg("ALG02");
         elog.writeLog("[add_lguest:] " + message + "/n");
         response.sendRedirect("logout.jsp?message=" + message);
-        return;   
+        return;
     }
     if (!myBool.get_value()) {
         elog.writeLog("[add_lguest:] " + "Permission denied" + "/n");
@@ -85,13 +85,13 @@
         return;
     }
     // End page validation
-    
+
     // Start User Search
     int i = 0;
     boolean searchSucess = false;
     String bu_id = request.getParameter("addBox");
     String nonldap = request.getParameter("searchBox");
-    if (bu_id!=null && bu_id !="") {
+    if (bu_id != null && bu_id != "") {
         bu_id = Validation.prepare(bu_id);
         if (!(Validation.checkBuId(bu_id))) {
             message = Validation.getErrMsg();
@@ -100,7 +100,7 @@
                 message = user.getErrMsg("ALG03");
                 elog.writeLog("[add_lguest:] " + message + "/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             // User already added
             if (myBool.get_value()) {
@@ -110,10 +110,10 @@
                     message = user.getErrMsg("ALG04");
                     elog.writeLog("[add_lguest:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
+                    return;
                 }
                 // User already in Database
-                if (myBool.get_value()) {   
+                if (myBool.get_value()) {
                     searchSucess = true;
                 } else {
                     // Found userId in LDAP
@@ -127,20 +127,20 @@
         }
     }
     // End User Search
-    
+
     ArrayList<HashMap<String, String>> searchResult = new ArrayList<HashMap<String, String>>();
-    
+
     if (searchSucess) {
         if (!lecture.createLectureGuest(bu_id, ls_id, l_id, false)) {
             message = lecture.getErrMsg("ALG05");
             elog.writeLog("[add_lguest:] " + message + "/n");
             response.sendRedirect("logout.jsp?message=" + message);
-            return;   
+            return;
         } else {
             successMessage = bu_id + " added to lecture guest list";
-            sendNotification(dbaccess,ldap,bu_id,"lecture",ls_id,l_id,usersession.getGivenName());
+            sendNotification(dbaccess, ldap, bu_id, "lecture", ls_id,l_id, usersession.getGivenName());
         }
-    } else if (nonldap != null && nonldap !="") {
+    } else if (nonldap != null && nonldap != "") {
         nonldap = Validation.prepare(nonldap);
         if (!(Validation.checkBuId(nonldap))) {
             message = Validation.getErrMsg();
@@ -159,10 +159,10 @@
                 message = user.getErrMsg("ALG10");
                 elog.writeLog("[add_lguest:] " + message + "/n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             }
             successMessage = searchResult.size() + " Result(s) Found";
-        }  
+        }
     } else {
         String mod = request.getParameter("mod");
         String remove = request.getParameter("remove");
@@ -175,7 +175,7 @@
                     message = lecture.getErrMsg("ALG06");
                     elog.writeLog("[add_lguest:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
+                    return;
                 }
             }
         } else if (remove != null) {
@@ -187,14 +187,14 @@
                     message = lecture.getErrMsg("ALG07");
                     elog.writeLog("[add_lguest:] " + message + "/n");
                     response.sendRedirect("logout.jsp?message=" + message);
-                    return;   
+                    return;
                 } else {
                     successMessage = remove + " was removed from guest list";
                 }
             }
         }
     }
-    
+
     ArrayList<HashMap<String, String>> eventGuest = new ArrayList<HashMap<String, String>>();
     if (!lecture.getLectureGuest(eventGuest, ls_id, l_id)) {
         message = lecture.getErrMsg("ALG08");

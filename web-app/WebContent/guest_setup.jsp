@@ -27,42 +27,41 @@
     <script type="text/javascript" src="js/ui/jquery.ui.selectmenu.js"></script>
     <script type="text/javascript" src="js/ui/jquery.ui.stepper.js"></script>
     <script type="text/javascript" src="js/componentController.js"></script>
-    <% 
+    <%
     String message = request.getParameter("message");
     GetExceptionLog elog = new GetExceptionLog();
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
 
     String key = request.getParameter("key");
     String bu_id = request.getParameter("user");
     if (key == null || bu_id == null) {
-        elog.writeLog("[guest_setup:] " + " invalid username or key " +" /n");
+        elog.writeLog("[guest_setup:] " + " invalid username or key " + " /n");
         response.sendRedirect("index.jsp?message=Invalid username or key");
         return;
     }
 
     String success = request.getParameter("success");
     if (success == null) {
-        success="";
-    }
-    else
+        success = "";
+    } else {
         successMessage = "Log in with username " + bu_id;
+    }
     boolean badParams = false;
     User user = new User(dbaccess);
-    ArrayList<ArrayList<String>> keyArray = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String, String>> keyArray = new ArrayList<HashMap<String, String>>();
     ArrayList<String> retrievedKey = new ArrayList<String>();
     user.getSalt(keyArray, bu_id);
     if (keyArray.size() == 0) {
         message = "Invalid username or key";
         badParams = true;
-    }
-    else {
-        if (!keyArray.get(0).get(0).equals(key)) {
+    } else {
+        if (!keyArray.get(0).get("nu_salt").equals(key)) {
             message = "Invalid username or key";
             badParams = true;
         }
@@ -114,7 +113,7 @@
                   <div class="warningMessage"><%=message %></div>
                   <div class="successMessage"><%=successMessage %></div>
             </header>
-            <form action="persist_password.jsp" method="get" onSubmit="return validate()" <%if (badParams)out.write("hidden=\"hidden\""); %>>
+            <form action="persist_password.jsp" method="get" onSubmit="return validate()" <%if (badParams) out.write("hidden=\"hidden\""); %>>
                 <article>
                     <header>
                         <h2>Edit Password</h2>

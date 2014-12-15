@@ -98,7 +98,7 @@ public class DBAccess {
      * @param query
      * @return
      */
-    public boolean queryDB2(ArrayList<HashMap<String, String>> result, String query) {
+    public boolean queryDB(ArrayList<HashMap<String, String>> result, String query) {
         result.clear();
         if(_flag) { //statement do no execute if there is previous error
             _flag = openConnection();
@@ -110,7 +110,7 @@ public class DBAccess {
                 try {
                     _stmt = _conn.prepareStatement(query);
                     _rs = _stmt.executeQuery();
-                    int colCount = _rs.getMetaData().getColumnCount();
+                    int colCount = _rs.getMetaData().getColumnCount();                    
                     while (_rs.next()) {
                         HashMap<String, String> row = new HashMap<String, String>();
                         for (int i=1; i<=colCount; i++) {
@@ -141,40 +141,40 @@ public class DBAccess {
      * @param query
      * @return
      */
-    public boolean queryDB(ArrayList<ArrayList<String>> result, String query) {
-        result.clear();
-        if(_flag) { //statement do no execute if there is previous error
-            _flag = openConnection();
-            if (!_flag) { //check connection error
-                _errCode = _db.getErrCode();
-                _errLog = _db.getErrLog();
-            }
-            else {
-                try {
-                    _stmt = _conn.prepareStatement(query);
-                    _rs = _stmt.executeQuery();
-                    int colCount = _rs.getMetaData().getColumnCount();
-                    while (_rs.next()) {
-                        ArrayList<String> row = new ArrayList<String>();
-                        for (int i=1; i<=colCount; i++) {
-                            row.add(_rs.getString(i));
-                        }
-                        result.add(row);
-                    }
-                }
-                catch (SQLException e) {
-                    _errCode = Integer.toString(e.getErrorCode());
-                    _errLog = e.getMessage();
-                    _flag = false;
-                    elog.writeLog("[queryDB:] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());                    
-                }
-                finally {
-                    _flag = closeConnection() && _flag; 
-                }
-            }
-        }
-        return _flag;
-    }
+//    public boolean queryDB(ArrayList<ArrayList<String>> result, String query) {
+//        result.clear();
+//        if(_flag) { //statement do no execute if there is previous error
+//            _flag = openConnection();
+//            if (!_flag) { //check connection error
+//                _errCode = _db.getErrCode();
+//                _errLog = _db.getErrLog();
+//            }
+//            else {
+//                try {
+//                    _stmt = _conn.prepareStatement(query);
+//                    _rs = _stmt.executeQuery();
+//                    int colCount = _rs.getMetaData().getColumnCount();
+//                    while (_rs.next()) {
+//                        ArrayList<String> row = new ArrayList<String>();
+//                        for (int i=1; i<=colCount; i++) {
+//                            row.add(_rs.getString(i));
+//                        }
+//                        result.add(row);
+//                    }
+//                }
+//                catch (SQLException e) {
+//                    _errCode = Integer.toString(e.getErrorCode());
+//                    _errLog = e.getMessage();
+//                    _flag = false;
+//                    elog.writeLog("[queryDB:] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());                    
+//                }
+//                finally {
+//                    _flag = closeConnection() && _flag; 
+//                }
+//            }
+//        }
+//        return _flag;
+//    }
     
     /**
      * Execute SQL Data Manipulation Language (DML) statement, 

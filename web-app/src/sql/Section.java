@@ -42,7 +42,7 @@ public class Section extends Sql {
      * @param sc_semesterid
      * @return
      */
-    public boolean getSectionInfo(ArrayList<ArrayList<String>> result, String c_id, String sc_id, String sc_semesterid) {
+    public boolean getSectionInfo(ArrayList<HashMap<String, String>> result, String c_id, String sc_id, String sc_semesterid) {
         _sql = "SELECT section.*, course.c_name, department.d_name "
                 + "FROM section "
                 + "INNER JOIN course "
@@ -63,7 +63,7 @@ public class Section extends Sql {
      * @param result
      * @return
      */
-    public boolean getSectionInfo(ArrayList<ArrayList<String>> result) {
+    public boolean getSectionInfo(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT section.*, course.c_name, department.d_name "
                 + "FROM section "
                 + "INNER JOIN course "
@@ -83,7 +83,7 @@ public class Section extends Sql {
      * @param sc_semesterid
      * @return
      */
-    public boolean getSectionInfo(ArrayList<ArrayList<String>> result, String c_id, String sc_semesterid) {
+    public boolean getSectionInfo(ArrayList<HashMap<String, String>> result, String c_id, String sc_semesterid) {
         _sql = "SELECT section.*, course.c_name, department.d_name "
                 + "FROM section "
                 + "INNER JOIN course "
@@ -103,7 +103,7 @@ public class Section extends Sql {
      * @param c_id
      * @return
      */
-    public boolean getSectionInfoByCourse(ArrayList<ArrayList<String>> result, String c_id) {
+    public boolean getSectionInfoByCourse(ArrayList<HashMap<String, String>> result, String c_id) {
         _sql = "SELECT * "
                 + "FROM section "
                 + "WHERE c_id = '" + c_id + "' ";
@@ -115,7 +115,7 @@ public class Section extends Sql {
      * @param result
      * @return
      */
-    public boolean getCourse(ArrayList<ArrayList<String>> result,String c_id) {
+    public boolean getCourse(ArrayList<HashMap<String, String>> result,String c_id) {
         _sql = "SELECT * "
                 + "FROM course "
                 + "WHERE c_id = '" + c_id + "'";
@@ -128,7 +128,7 @@ public class Section extends Sql {
      * @param result
      * @return
      */
-    public boolean getCourse(ArrayList<ArrayList<String>> result) {
+    public boolean getCourse(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM course";            
         return _dbAccess.queryDB(result, _sql);
@@ -140,7 +140,7 @@ public class Section extends Sql {
      * @param result
      * @return
      */
-    public boolean getProfessor(ArrayList<ArrayList<String>> result) {
+    public boolean getProfessor(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM professor";
         return _dbAccess.queryDB(result, _sql);
@@ -153,10 +153,10 @@ public class Section extends Sql {
      * @param bu_id
      * @return
      */
-    public boolean getProfessor(ArrayList<ArrayList<String>> result,String bu_id) {
+    public boolean getProfessor(ArrayList<HashMap<String, String>> result,String bu_id) {
         _sql = "SELECT * "
                 + "FROM professor "
-        		+ "WHERE bu_id = '" + bu_id + "'";
+                + "WHERE bu_id = '" + bu_id + "'";
         return _dbAccess.queryDB(result, _sql);
     }
     
@@ -169,7 +169,7 @@ public class Section extends Sql {
      * @param sc_semesterid
      * @return
      */
-    public boolean getProfessor(ArrayList<ArrayList<String>> result, 
+    public boolean getProfessor(ArrayList<HashMap<String, String>> result, 
             String c_id, String sc_id, String sc_semesterid) {
         _sql = "SELECT * "
                 + "FROM professor "
@@ -186,7 +186,7 @@ public class Section extends Sql {
      * @param bu_id
      * @return
      */
-    public boolean getClasses(ArrayList<ArrayList<String>> result, String bu_id) {
+    public boolean getClasses(ArrayList<HashMap<String, String>> result, String bu_id) {
         _sql = "SELECT c_id, sc_id, sc_semesterid, sc_setting "
                 + "FROM professor "
                 + "WHERE bu_id = '" + bu_id + "' "
@@ -201,13 +201,13 @@ public class Section extends Sql {
      * @param bu_id
      * @return
      */
-    public boolean getClasses(ArrayList<ArrayList<String>> result) {
+    public boolean getClasses(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT c_id, sc_id, sc_semesterid, sc_setting, bu_id "
                 + "FROM professor "
                 + "ORDER BY c_id, sc_id, sc_semesterid";
         return _dbAccess.queryDB(result, _sql);
     }
-    	
+    
     /**
      * get lecture schedule for a particular section<p>
      * (0)c_id (1)sc_id (2)sc_semesterid (3)sc_setting
@@ -217,7 +217,7 @@ public class Section extends Sql {
      * @param sc_semesterid
      * @return
      */
-    public boolean getLectureSchedule(ArrayList<ArrayList<String>> result, 
+    public boolean getLectureSchedule(ArrayList<HashMap<String, String>> result, 
             String c_id, String sc_id, String sc_semesterid) {
         _sql = "SELECT * "
                 + "FROM lecture_schedule "
@@ -244,10 +244,10 @@ public class Section extends Sql {
                 + "AND sc_id = '" + sc_id + "' "
                 + "AND sc_semesterid = '" + sc_semesterid + "' "
                 + "AND bu_id = '" + bu_id + "'";
-        ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+        ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String, String>>();
         boolean flag =_dbAccess.queryDB(tempResult, _sql);
         if (flag) {
-            int value = Integer.valueOf(tempResult.get(0).get(0)).intValue();
+            int value = Integer.valueOf(tempResult.get(0).get("sc_setting")).intValue();
             result.clear();
             result.put(Settings.section_setting[0], (value & (1<<6)) == 0 ? 0:1);
             result.put(Settings.section_setting[1], (value & (1<<5)) == 0 ? 0:1);
@@ -263,7 +263,7 @@ public class Section extends Sql {
      * @param result
      * @return
      */
-    public boolean getStudent(ArrayList<ArrayList<String>> result) {
+    public boolean getStudent(ArrayList<HashMap<String, String>> result) {
         _sql = "SELECT * "
                 + "FROM student";
         return _dbAccess.queryDB(result, _sql);
@@ -275,7 +275,7 @@ public class Section extends Sql {
      * @param result
      * @return
      */
-    public boolean getStudent(ArrayList<ArrayList<String>> result, String ls_id) {
+    public boolean getStudent(ArrayList<HashMap<String, String>> result, String ls_id) {
         _sql = "SELECT s.*, bu.bu_nick "
                 + "FROM student s "
                 + "JOIN lecture_schedule ls "
@@ -297,7 +297,7 @@ public class Section extends Sql {
      * @param sc_semesterid
      * @return
      */
-    public boolean getStudent(ArrayList<ArrayList<String>> result, 
+    public boolean getStudent(ArrayList<HashMap<String, String>> result, 
             String c_id, String sc_id, String sc_semesterid) {
         _sql = "SELECT * "
                 + "FROM student "

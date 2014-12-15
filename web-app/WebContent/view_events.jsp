@@ -31,41 +31,39 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
-    User user = new User(dbaccess);
+    
     Meeting meeting = new Meeting(dbaccess);
     Lecture lecture = new Lecture(dbaccess);
-    Section section = new Section(dbaccess);
-    int i;
-    boolean validFlag; 
-    MyBoolean myBool = new MyBoolean();
     // End page validation
-    
-    ArrayList<ArrayList<String>> meetings = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> lectures = new ArrayList<ArrayList<String>>();
+
+    ArrayList<HashMap<String, String>> meetings = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> lectures = new ArrayList<HashMap<String, String>>();
     if (!meeting.getMeetingsForUser(meetings, userId, true, true)) {
         message = meeting.getErrMsg("VEVENTS01");
-        elog.writeLog("[view_events:] " + message +" /n");
+        elog.writeLog("[view_events:] " + message + " /n");
         response.sendRedirect("logout.jsp?message=" + message);
-        return;   
+        return;
     }
+    
     if (!lecture.getLecturesForUser(lectures, userId, true, true)) {
         message = lecture.getErrMsg("VEVENTS02");
-        elog.writeLog("[view_events:] " + message +" /n");
+        elog.writeLog("[view_events:] " + message + " /n");
         response.sendRedirect("logout.jsp?message=" + message);
-        return;   
+        return;
     }
+    
     %>
     <script type="text/javascript">
         /* TABLE */
@@ -138,15 +136,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% for (i=0; i<meetings.size(); i++) { %>
+                                    <% for (int i = 0; i < meetings.size(); i++) { %>
                                     <tr>
-                                        <td class="row"><%= meetings.get(i).get(9) %></td>
-                                        <td><script>document.write(toUserLocalTime("<%= meetings.get(i).get(2).substring(0, 19) %>"));</script></td>
-                                        <td><%= meetings.get(i).get(3) %> Minutes</td>
-                                        <td><%= (meetings.get(i).get(4).equals("1")) ? "Yes" : "" %></td>
-                                        <td><%= meetings.get(i).get(5) %></td>
+                                        <td class="row"><%= meetings.get(i).get("ms_title") %></td>
+                                        <td><script>document.write(toUserLocalTime("<%= meetings.get(i).get("m_inidatetime").substring(0, 19) %>"));</script></td>
+                                        <td><%= meetings.get(i).get("m_duration") %> Minutes</td>
+                                        <td><%= (meetings.get(i).get("m_iscancel").equals("1")) ? "Yes" : "" %></td>
+                                        <td><%= meetings.get(i).get("m_description") %></td>
                                         <td class="icons" align="center">
-                                            <a href="view_event.jsp?ms_id=<%= meetings.get(i).get(0) %>&m_id=<%= meetings.get(i).get(1) %>" class="view calendarIcon">
+                                            <a href="view_event.jsp?ms_id=<%= meetings.get(i).get("ms_id") %>&m_id=<%= meetings.get(i).get("m_id") %>" class="view calendarIcon">
                                                 <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
                                             </a>
                                         </td>
@@ -178,15 +176,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% for (i=0; i<lectures.size(); i++) { %>
+                                    <% for (int j = 0; j < lectures.size(); j++) { %>
                                     <tr>
-                                        <td class="row"><% out.print(lectures.get(i).get(8) + lectures.get(i).get(9) + " (" + lectures.get(i).get(10) + ")"); %></td>
-                                        <td><script>document.write(toUserLocalTime("<%= lectures.get(i).get(2).substring(0, 19) %>"));</script></td>
-                                        <td><%= lectures.get(i).get(3) %> Minutes</td>
-                                        <td><%= (lectures.get(i).get(4).equals("1")) ? "Yes" : "" %></td>
-                                        <td><%= lectures.get(i).get(5) %></td>
+                                        <td class="row"><% out.print(lectures.get(j).get("c_id") + lectures.get(j).get("sc_id") + " (" + lectures.get(j).get("sc_semesterid") + ")"); %></td>
+                                        <td><script>document.write(toUserLocalTime("<%= lectures.get(j).get("l_inidatetime").substring(0, 19) %>"));</script></td>
+                                        <td><%= lectures.get(j).get("l_duration") %> Minutes</td>
+                                        <td><%= (lectures.get(j).get("l_iscancel").equals("1")) ? "Yes" : "" %></td>
+                                        <td><%= lectures.get(j).get("l_description") %></td>
                                         <td class="icons" align="center">
-                                            <a href="view_event.jsp?ls_id=<%= lectures.get(i).get(0) %>&l_id=<%= lectures.get(i).get(1) %>" class="view calendarIcon">
+                                            <a href="view_event.jsp?ls_id=<%= lectures.get(j).get("ls_id") %>&l_id=<%= lectures.get(j).get("l_id") %>" class="view calendarIcon">
                                                 <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
                                             </a>
                                         </td>

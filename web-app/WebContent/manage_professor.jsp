@@ -53,7 +53,7 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?error=Please log in");
         return;
     }
@@ -67,8 +67,7 @@
         response.sendRedirect("index.jsp?error=Database connection error");
         return;
     } //End page validation
-    
-    
+
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
@@ -79,7 +78,7 @@
     }
     User user = new User(dbaccess);
     Section section = new Section(dbaccess);
-    ArrayList<ArrayList<String>> allProfessors = new ArrayList<ArrayList<String>>();
+    ArrayList<HashMap<String, String>> allProfessors = new ArrayList<HashMap<String, String>>();
     MyBoolean prof = new MyBoolean();
     HashMap<String, Integer> userSettings = new HashMap<String, Integer>();
     HashMap<String, Integer> meetingSettings = new HashMap<String, Integer>();
@@ -106,8 +105,8 @@
             <!-- PAGE NAME -->
             <h1>Professors List</h1>
             <!-- WARNING MESSAGES -->
-            <div class="warningMessage"><%=message %></div>
-            <div class="successMessage"><%=successMessage %></div>
+            <div class="warningMessage"><%= message %></div>
+            <div class="successMessage"><%= successMessage %></div>
         </header>
         <form>
             <article>
@@ -140,12 +139,12 @@
                                 <tbody>
                                 <% for (int j = 0; j < allProfessors.size(); j++) {%>
                                     <tr>
-                                        <td class="row"><%= allProfessors.get(j).get(0) %></td>
-                                        <td><%= allProfessors.get(j).get(1) %></td>
-                                        <td><%= allProfessors.get(j).get(2) %></td>
-                                        <td><%= allProfessors.get(j).get(3) %></td>
+                                        <td class="row"><%= allProfessors.get(j).get("bu_id") %></td>
+                                        <td><%= allProfessors.get(j).get("c_id") %></td>
+                                        <td><%= allProfessors.get(j).get("sc_id") %></td>
+                                        <td><%= allProfessors.get(j).get("sc_semesterid") %></td>
                                         <td align="center">
-                                            <a href="persist_professor.jsp?bu_id=<%= allProfessors.get(j).get(0) %>&c_id=<%= allProfessors.get(j).get(1) %>&sc_id=<%= allProfessors.get(j).get(2) %>&sc_semesterid=<%= allProfessors.get(j).get(3) %>&toDel=1"
+                                            <a href="persist_professor.jsp?bu_id=<%= allProfessors.get(j).get("bu_id") %>&c_id=<%= allProfessors.get(j).get("c_id") %>&sc_id=<%= allProfessors.get(j).get("sc_id") %>&sc_semesterid=<%= allProfessors.get(j).get("sc_semesterid") %>&toDel=1"
                                                class="remove">
                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove Professor" alt="Remove"/>
                                             </a>

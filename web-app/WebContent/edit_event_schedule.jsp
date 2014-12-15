@@ -33,15 +33,15 @@
     <script type="text/javascript" src="js/additional-methods.min.js"></script>
     <script type="text/javascript" src="js/moment.js"></script>
 
-    <%
+<%
     String message = request.getParameter("message");
     GetExceptionLog elog = new GetExceptionLog();
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
     String ms_id = request.getParameter("ms_id");
     String ls_id = request.getParameter("ls_id");
@@ -51,100 +51,103 @@
     Boolean isLecture = false;
     Boolean isProfessor = false;
     Boolean isSuper = false;
-    isProfessor=usersession.isProfessor();
-    isSuper =usersession.isSuper();
+    isProfessor = usersession.isProfessor();
+    isSuper = usersession.isSuper();
     Section section = new Section(dbaccess);
     String userId = usersession.getUserId();
     Meeting meeting = new Meeting(dbaccess);
-    Lecture lecture = new Lecture(dbaccess); 
+    Lecture lecture = new Lecture(dbaccess);
     User user = new User(dbaccess);
-    MyBoolean myBool = new MyBoolean(); 
-    
+    MyBoolean myBool = new MyBoolean();
+
     //Start page validation
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl", request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?error=Please log in");
         return;
     }
     //only event creator and super admin have permission to edit event schedule
-    if(!(ms_id==null||ms_id.equals(""))){
+    if (!(ms_id == null || ms_id.equals(""))) {
         if (!meeting.isMeeting(myBool, ms_id, m_id)) {
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + meeting.getErrMsg("AA01");
-            elog.writeLog("[edit_event_schedule:] " + message +" /n");
+            elog.writeLog("[edit_event_schedule:] " + message + " /n");
             response.sendRedirect("canlendar.jsp?message=" + message);
             return;
         }
-        if (!(user.isMeetingCreator(myBool, ms_id, userId)||isSuper)) {
+        if (!(user.isMeetingCreator(myBool, ms_id, userId) || isSuper)) {
             message = "Could not verify meeting status (ms_id: " + ms_id + ", m_id: " + m_id + ")" + user.getErrMsg("AA02");
-            elog.writeLog("[edit_event_schedule:] " + message +" /n");
+            elog.writeLog("[edit_event_schedule:] " + message + " /n");
             response.sendRedirect("canlendar.jsp?message=" + message);
             return;
         }
         isMeeting = true;
     }
-    if(!(ls_id==null||ls_id.equals(""))){
+    if (!(ls_id == null || ls_id.equals(""))) {
         if (!lecture.isLecture(myBool, ls_id, l_id)) {
             message = lecture.getErrMsg("ALG01");
-            elog.writeLog("[edit_event_schedule:] " + message +" /n");
+            elog.writeLog("[edit_event_schedule:] " + message + " /n");
             response.sendRedirect("canlendar.jsp?message=" + message);
             return;
         }
         if (!(user.isTeaching(myBool, ls_id, userId) || isSuper)) {
             message = user.getErrMsg("ALG02");
-            elog.writeLog("[edit_event_schedule:] " + message +" /n");
+            elog.writeLog("[edit_event_schedule:] " + message + " /n");
             response.sendRedirect("canlendar.jsp?message=" + message);
             return;
         }
-        isLecture=true;
+        isLecture = true;
     }
-    
 
     //End page validation
-    
-    ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>(); 
-    ArrayList<ArrayList<String>> lectureProfessor = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> descriptionResult = new ArrayList<ArrayList<String>>();
+
+    ArrayList<HashMap<String, String>> meetingResult = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> lectureResult = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> lectureProfessor = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> mDescriptionResult = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> lDescriptionResult = new ArrayList<HashMap<String, String>>();
+
     String courseInfo = "";
     String eventStartDateTime = "";
     String duration = "";
     String recurrence = "";
     String repeatEvery = "";
-    String endsYear ="";
-    String endsMonth ="";
-    String endsDay ="";
-    String occurences ="";
-    String endDate ="";
-    String weeklyString ="abcdefg";
+    String endsYear = "";
+    String endsMonth = "";
+    String endsDay = "";
+    String occurences = "";
+    String endDate = "";
+    String weeklyString = "abcdefg";
     String dayOfMonth = "";
     String firstOccurDayOfWeek = "";
-    String allProfessorforLecture ="";
-    String eventDescription ="";
+    String allProfessorforLecture = "";
+    String eventDescription = "";
 
-    if(isMeeting){
-        try{
-           meeting.getMeetingScheduleInfo(result, ms_id);  	
-           meeting.getMeetingDescription(descriptionResult, ms_id);
-        }catch(Exception e){
-           elog.writeLog("[edit_event_schedule:] " + e.getMessage() +"-"+ e.getStackTrace()+" /n");
+    if (isMeeting) {
+        try {
+            meeting.getMeetingScheduleInfo(meetingResult, ms_id);
+            meeting.getMeetingDescription(mDescriptionResult, ms_id);
+        } catch (Exception e) {
+            elog.writeLog("[edit_event_schedule:] " + e.getMessage() + "-" + e.getStackTrace() + " /n");
         }
     }
-    if(isLecture){
+    if (isLecture) {
         //show the professor name,course,section, and semester information to super admin in course information field 
         //if the user is professor, only show course,section, and semester information
-        try{
-            lecture.getLectureScheduleInfo(result, ls_id);   
-            lecture.getLectureDescription(descriptionResult, ls_id);
-            lecture.getLectureProfessor(lectureProfessor, result.get(0).get(1), result.get(0).get(2), result.get(0).get(3));
-            for(int j=0;j<lectureProfessor.size();j++){       	
-                allProfessorforLecture=allProfessorforLecture.concat(lectureProfessor.get(j).get(0)).concat(" ");
+        try {
+            lecture.getLectureScheduleInfo(lectureResult, ls_id);
+            lecture.getLectureDescription(lDescriptionResult, ls_id);
+            lecture.getLectureProfessor(lectureProfessor, lectureResult.get(0).get("c_id"),
+                    lectureResult.get(0).get("sc_id"), lectureResult.get(0).get("sc_semesterid"));
+            for (int j = 0; j < lectureProfessor.size(); j++) {
+                allProfessorforLecture = allProfessorforLecture.concat(lectureProfessor.get(j).get("bu_id")).concat(" ");
             }
-            if(isSuper){
-                courseInfo = allProfessorforLecture.concat(result.get(0).get(1)).concat(" ").concat(result.get(0).get(2)).concat(" ").concat(result.get(0).get(3));
-            }else{
-                courseInfo = result.get(0).get(1).concat(" ").concat(result.get(0).get(2)).concat(" ").concat(result.get(0).get(3));
+            if (isSuper) {
+                courseInfo = allProfessorforLecture.concat(lectureResult.get(0).get("c_id")).concat(" ").concat(lectureResult.get(0).get("sc_id")).concat(" ").concat(lectureResult.get(0).get("sc_semesterid"));
+            } else {
+                courseInfo = lectureResult.get(0).get("c_id").concat(" ").concat(lectureResult.get(0).get("sc_id")).concat(" ").concat(lectureResult.get(0).get("sc_semesterid"));
             }
-        }catch(Exception e){
-            elog.writeLog("[edit_event_schedule:] " + e.getMessage() +"-"+ e.getStackTrace()+" /n");
+        } catch (Exception e) {
+            elog.writeLog("[edit_event_schedule:] " + e.getMessage() + "-" + e.getStackTrace() + " /n");
         }
     }
 
@@ -155,20 +158,20 @@
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
     roleMask = usersession.getRoleMask();
-    eventDescription = descriptionResult.get(0).get(0);
+    eventDescription = isMeeting ? mDescriptionResult.get(0).get("m_description") : lDescriptionResult.get(0).get("l_description");
     //working on ls_spec or ms_spec
     String spec = null;
-    spec = isMeeting? result.get(0).get(3): result.get(0).get(5);
-    if(!spec.equals("1")){
+    spec = isMeeting ? meetingResult.get(0).get("ms_spec") : lectureResult.get(0).get("ls_spec");
+    if (!spec.equals("1")) {
         //recurrence daily
-        if(spec.split(";")[0].equals("2")){
+        if (spec.split(";")[0].equals("2")) {
             //repeat for a number of times
-            if(spec.split(";")[1].equals("1")){
+            if (spec.split(";")[1].equals("1")) {
                 repeatEvery = spec.split(";")[3];
                 occurences = spec.split(";")[2];
             }
             //repeat until a certain date
-            if(spec.split(";")[1].equals("2")){
+            if (spec.split(";")[1].equals("2")) {
                 repeatEvery = spec.split(";")[3];
                 endsYear = spec.split(";")[2].split("-")[0];
                 endsMonth = spec.split(";")[2].split("-")[1];
@@ -176,46 +179,45 @@
             }
         }
         //recurrence weekly
-        if(spec.split(";")[0].equals("3")){
+        if (spec.split(";")[0].equals("3")) {
             //repeat for a number of times
-            if(spec.split(";")[1].equals("1")){
+            if (spec.split(";")[1].equals("1")) {
                 repeatEvery = spec.split(";")[3];
                 occurences = spec.split(";")[2];
                 weeklyString = spec.split(";")[4];
             }
             //repeat for a number of weeks
-            if(spec.split(";")[1].equals("2")){
+            if (spec.split(";")[1].equals("2")) {
                 repeatEvery = spec.split(";")[3];
                 occurences = spec.split(";")[2];
                 weeklyString = spec.split(";")[4];
             }
             //repeat until end date is reached
-            if(spec.split(";")[1].equals("3")){
+            if (spec.split(";")[1].equals("3")) {
                 repeatEvery = spec.split(";")[3];
                 weeklyString = spec.split(";")[4];
                 endsYear = spec.split(";")[2].split("-")[0];
                 endsMonth = spec.split(";")[2].split("-")[1];
-                endsDay = spec.split(";")[2].split("-")[2];  
+                endsDay = spec.split(";")[2].split("-")[2];
             }
         }
         //recurrence monthly
-        if(spec.split(";")[0].equals("4")){
+        if (spec.split(";")[0].equals("4")) {
             //repeat on same day each month
-            if(spec.split(";")[1].equals("1")){
+            if (spec.split(";")[1].equals("1")) {
                 repeatEvery = spec.split(";")[3];
                 occurences = spec.split(";")[2];
                 dayOfMonth = spec.split(";")[4];
             }
             //repeat the first occurrence of day-of-week in a month
-            if(spec.split(";")[1].equals("2")){
+            if (spec.split(";")[1].equals("2")) {
                 repeatEvery = spec.split(";")[3];
                 occurences = spec.split(";")[2];
-                firstOccurDayOfWeek= spec.split(";")[4];
+                firstOccurDayOfWeek = spec.split(";")[4];
             }
         }
     }
-    eventStartDateTime = isMeeting?  result.get(0).get(2) : result.get(0).get(4);
-    
+    eventStartDateTime = isMeeting ? meetingResult.get(0).get("ms_inidatetime") : lectureResult.get(0).get("ls_inidatetime");
 %>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -430,7 +432,7 @@
                             <% if(isMeeting){ %>
                             <div class="component">
                                 <label for="eventTitle" class="label">Event Title:</label>
-                                <input name="eventTitle" id="eventTitle" class="input" tabindex="15" title="Event title" type="text" value="<%= result.get(0).get(1) %>" autofocus>
+                                <input name="eventTitle" id="eventTitle" class="input" tabindex="15" title="Event title" type="text" value="<%= meetingResult.get(0).get("ms_title") %>" autofocus>
                             </div><%} %>
                             <div class="component">
                                 <label for="eventType" class="label">Event type:</label>
@@ -483,7 +485,7 @@
                             </div>
                             <div class="component" >
                                 <label for="eventDuration" class="label">Event Duration:</label> 
-                                <input id="eventDuration" name="eventDuration"  type="text"  class="input"  tabindex="25" title="Event Duration"  value="<%=  isMeeting? result.get(0).get(4): result.get(0).get(6)%>" required />            
+                                <input id="eventDuration" name="eventDuration"  type="text"  class="input"  tabindex="25" title="Event Duration"  value="<%=  isMeeting? meetingResult.get(0).get("ms_duration"): lectureResult.get(0).get("ls_duration")%>" required />            
                             </div>
 
                             <div class="component">

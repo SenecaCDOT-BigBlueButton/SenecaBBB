@@ -38,7 +38,7 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
@@ -47,14 +47,14 @@
         response.sendRedirect("index.jsp?error=Database connection error");
         return;
     } //End page validation
-    
+
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
 
     User user = new User(dbaccess);
@@ -64,7 +64,6 @@
     HashMap<String, Integer> roleMask = new HashMap<String, Integer>();
     userSettings = usersession.getUserSettingsMask();
     meetingSettings = usersession.getUserMeetingSettingsMask();
-  
     %>
 
     <script type="text/javascript">

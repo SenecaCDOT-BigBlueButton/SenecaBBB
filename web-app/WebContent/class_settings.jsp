@@ -36,7 +36,7 @@
     Boolean isProfessor = usersession.isProfessor();
     Boolean isSuper = usersession.isSuper();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
@@ -44,9 +44,9 @@
         elog.writeLog("[class_settings:] " + "database connection error /n");
         response.sendRedirect("index.jsp?message=Database connection error");
         return;
-    } 
+    }
     if (!isSuper && !isProfessor) {
-        elog.writeLog("[class_settings:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");
+        elog.writeLog("[class_settings:] " + " username: " + userId + " tried to access this page, permission denied" + " /n");
         response.sendRedirect("calendar.jsp?message=You don't have permissions to view that page.");
         return;
     }
@@ -55,10 +55,10 @@
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
 
     String c_id = "";
@@ -74,49 +74,49 @@
     MyBoolean myBool = new MyBoolean();
     selectedclass = request.getParameter("class");
     int profSettings = 0;
-    HashMap<String, Integer> scSettingResult = new HashMap<String, Integer>(0);
-    ArrayList<ArrayList<String>> profList = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> stuList = new ArrayList<ArrayList<String>>();
-    
-    if(selectedclass==null){
-        message="Please choose a class to add students";
-    }else if(selectedclass.split("-").length == 4){
+    HashMap<String, Integer> scSettingResult = new HashMap<String, Integer>();
+    ArrayList<HashMap<String, String>> profList = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> stuList = new ArrayList<HashMap<String, String>>();
+
+    if (selectedclass == null) {
+        message = "Please choose a class to add students";
+    } else if (selectedclass.split("-").length == 4) {
         c_id = selectedclass.split("-")[0];
         sc_id = selectedclass.split("-")[1];
         sc_semesterid = selectedclass.split("-")[2];
         professorid = selectedclass.split("-")[3];
-        if(section.getSectionSetting(scSettingResult, c_id, sc_id, sc_semesterid, professorid)){
+        if (section.getSectionSetting(scSettingResult, c_id, sc_id,sc_semesterid, professorid)) {
             profSettings = scSettingResult.get("isRecorded");
         }
-        if (section.getStudent(stuList,  c_id, sc_id, sc_semesterid)) {
-            if(stuList.size()==0 && message == "")
-                message="No Student in this section!";
-        }else{
-            message="Can't get information from the given section!";
+        if (section.getStudent(stuList, c_id, sc_id, sc_semesterid)) {
+            if (stuList.size() == 0 && message == "")
+                message = "No Student in this section!";
+        } else {
+            message = "Can't get information from the given section!";
         }
-    }else{
-        message="Wrong section information";
-        elog.writeLog("[class_settings:] " + message +"/n");
+    } else {
+        message = "Wrong section information";
+        elog.writeLog("[class_settings:] " + message + "/n");
         response.sendRedirect("class_settings.jsp");
     }
 
-    ArrayList<ArrayList<String>> listofclasses = new ArrayList<ArrayList<String>>();
-    ArrayList<ArrayList<String>> nickNameResult = new ArrayList<ArrayList<String>>();
-    if(isSuper){
+    ArrayList<HashMap<String, String>> listofclasses = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> nickNameResult = new ArrayList<HashMap<String, String>>();
+    if (isSuper) {
         section.getProfessor(listofclasses); // get every class
-    }else if(isProfessor){
+    } else if (isProfessor) {
         section.getProfessor(listofclasses, userId);//get classes for current professor
-    }else{
-        elog.writeLog("[class_settings:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");
+    } else {
+        elog.writeLog("[class_settings:] " + " username: " + userId + " tried to access this page, permission denied" + " /n");
         response.sendRedirect("calendar.jsp?message=You don't have permissions to view that page.");
         return;
     }
-    
-    if (listofclasses.size() <= 0){
+
+    if (listofclasses.size() <= 0) {
         response.sendRedirect("calendar.jsp?message=Sorry,there are no classes in system.");
         return;
     }
-    
+
     //to remove a student from section
     if (removeStudentId != null) {
         removeStudentId = Validation.prepare(removeStudentId);
@@ -124,14 +124,14 @@
             message = Validation.getErrMsg();
         } else {
             ArrayList<ArrayList<String>> tempInfo = new ArrayList<ArrayList<String>>();
-            if (!section.removeStudent(removeStudentId,c_id, sc_id, sc_semesterid)) {
+            if (!section.removeStudent(removeStudentId, c_id, sc_id,sc_semesterid)) {
                 message = lecture.getErrMsg("AS11");
-                elog.writeLog("[class_settings:] " + message +" /n");
+                elog.writeLog("[class_settings:] " + message + " /n");
                 response.sendRedirect("logout.jsp?message=" + message);
-                return;   
+                return;
             } else {
                 successMessage = removeStudentId + " was removed from student list";
-                response.sendRedirect("class_settings.jsp?class="+ selectedclass + "&successMessage=" + successMessage);
+                response.sendRedirect("class_settings.jsp?class=" + selectedclass + "&successMessage=" + successMessage);
             }
         }
     }
@@ -219,7 +219,7 @@
                                     <option role='option' selected disabled>Choose a class</option>
                                     <%
                                     for (int j=0; j < listofclasses.size(); ++j) {
-                                        String fullclass = listofclasses.get(j).get(1) + "-" + listofclasses.get(j).get(2)+ "-" + listofclasses.get(j).get(3) + "-" + listofclasses.get(j).get(0);
+                                        String fullclass = listofclasses.get(j).get("c_id") + "-" + listofclasses.get(j).get("sc_id")+ "-" + listofclasses.get(j).get("sc_semesterid") + "-" + listofclasses.get(j).get("bu_id");
                                         out.println("<option role='option' " + (fullclass.equals(selectedclass)?"selected":"") +">" + fullclass + "</option>");
                                     }
                                     %>
@@ -283,11 +283,11 @@
                                         <%}else 
                                         for(int k=0;k<stuList.size();k++){%>
                                         <tr>
-                                            <td class="row"><%= stuList.get(k).get(0)%></td>
-                                            <td><% if(user.getNickName(nickNameResult, stuList.get(k).get(0))) out.print(nickNameResult.get(0).get(0)); %></td>
-                                            <td><%= stuList.get(k).get(4)%></td>
+                                            <td class="row"><%= stuList.get(k).get("bu_id")%></td>
+                                            <td><% if(user.getNickName(nickNameResult, stuList.get(k).get("bu_id"))) out.print(nickNameResult.get(0).get("bu_nick")); %></td>
+                                            <td><%= stuList.get(k).get("s_isbanned")%></td>
                                             <td class="icons" align="center">
-                                            <a onclick="savePageOffset()" href="<%= "class_settings.jsp?class="+ selectedclass + "&removeStudent=" + stuList.get(k).get(0) %>" class="remove">
+                                            <a onclick="savePageOffset()" href="<%= "class_settings.jsp?class="+ selectedclass + "&removeStudent=" + stuList.get(k).get("bu_id") %>" class="remove">
                                                 <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                             </a>
                                             </td>

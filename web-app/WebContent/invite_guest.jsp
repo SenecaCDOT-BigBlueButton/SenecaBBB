@@ -30,12 +30,12 @@
     GetExceptionLog elog = new GetExceptionLog();
     HashMap<String, Integer> roleMask = usersession.getRoleMask();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl", request.getRequestURI() + (request.getQueryString()!=null?"?" + request.getQueryString():""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
     if(!(usersession.isSuper()||usersession.getUserLevel().equals("employee")||roleMask.get("guestAccountCreation") == 0)) {
-        elog.writeLog("[invite_guest:] " + " username: "+ userId + " tried to access this page, permission denied" +" /n");	       
+        elog.writeLog("[invite_guest:] " + " username: "+ userId + " tried to access this page, permission denied" + " /n");	       
         response.sendRedirect("calendar.jsp?message=You do not have permission to access that page");
         return;
     }
@@ -48,10 +48,10 @@
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
 
     String firstName = request.getParameter("firstName");
@@ -70,7 +70,7 @@
                 <h1>Create Guest Account</h1>
                 <!-- WARNING MESSAGES -->
                 <div class="warningMessage"><%= message %></div>
-                <div class="successMessage"><%=successMessage %></div> 
+                <div class="successMessage"><%= successMessage %></div> 
             </header>
             <form name="guestaccuntinfo" id="guestaccuntinfo"  method="get" action="generate_guest.jsp">
                 <article>

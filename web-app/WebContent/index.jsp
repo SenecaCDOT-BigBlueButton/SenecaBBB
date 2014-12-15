@@ -2,35 +2,36 @@
 <%@page import="db.DBAccess" %>
 <%@page import="sql.Admin" %>
 <%@page import="java.util.ArrayList" %>
+<%@page import="java.util.HashMap" %>
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
 <jsp:useBean id="ldap" scope="session" class="ldap.LDAPAuthenticate" />
 <%
-String message = request.getParameter("message");
-String successMessage = request.getParameter("successMessage");
-if (message == null || message == "null") {
-    message="";
-}
-if (successMessage == null) {
-    successMessage="";
-}
-String guestMessage = "";
-String bu_id = "";
-String guestCreated = request.getParameter("guestCreated");
-if (guestCreated == null)
-    guestCreated = "false";
-if (guestCreated.equals("true")){
-    bu_id = request.getParameter("bu_id");
-    if (bu_id == null) {
-        bu_id = "";
-    } 
-    else{ 
-        successMessage = "Log in with username " + bu_id + "and the password you just set";
+    String message = request.getParameter("message");
+    String successMessage = request.getParameter("successMessage");
+    if (message == null || message == "null") {
+        message = "";
     }
-}
-if (usersession.getUserId() != ""){
-    response.sendRedirect("calendar.jsp");
-    return;
-}
+    if (successMessage == null) {
+        successMessage = "";
+    }
+    String guestMessage = "";
+    String bu_id = "";
+    String guestCreated = request.getParameter("guestCreated");
+    if (guestCreated == null)
+        guestCreated = "false";
+    if (guestCreated.equals("true")){
+        bu_id = request.getParameter("bu_id");
+        if (bu_id == null) {
+            bu_id = "";
+        } 
+        else{ 
+            successMessage = "Log in with username " + bu_id + "and the password you just set";
+        }
+    }
+    if (usersession.getUserId() != ""){
+        response.sendRedirect("calendar.jsp");
+        return;
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +45,6 @@ if (usersession.getUserId() != ""){
     <link href="css/fonts.css" rel="stylesheet" type="text/css" media="all">
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="js/jquery.noty.packaged.js"></script>
-    <script type="text/javascript" src="js/moment.js"></script>
     <script type="text/javascript">
     /*
         if (window.location.protocol == "http:") {
@@ -99,7 +99,7 @@ if (usersession.getUserId() != ""){
     <!-- Login form. -->
     <div id="page">
         <jsp:include page="header_plain.jsp"/>
-        <% 
+        <%
         DBAccess dbaccess = new DBAccess(); 
         Admin admin = new Admin(dbaccess);
         String notification="";
@@ -115,8 +115,8 @@ if (usersession.getUserId() != ""){
         <section id="login">
             <header>
                   <!-- MESSAGES -->
-                <div class="warningMessage"><%=message %></div>
-                <div class="successMessage"><%=successMessage %></div>
+                <div class="warningMessage"><%= message %></div>
+                <div class="successMessage"><%= successMessage %></div>
                 <br /><br />
             </header>
             <form id="login" name="formLogin" action="auth.jsp" onSubmit="return validate();" method="post">
@@ -148,11 +148,11 @@ if (usersession.getUserId() != ""){
 
 <%!
 public String getNotification(DBAccess dbaccess,Admin admin) {
-    ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
-    String msg="";
+    ArrayList<HashMap<String,String>> result = new ArrayList<HashMap<String,String>>();
+    String msg = "";
     if(admin.getNotification(result)){
         if(result.size()>0){
-            msg = result.get(0).get(0);
+            msg = result.get(0).get("key_value");
         }
     }
     return msg;

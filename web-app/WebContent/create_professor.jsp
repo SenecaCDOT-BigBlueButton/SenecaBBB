@@ -15,44 +15,44 @@
     String userId = usersession.getUserId();
     GetExceptionLog elog = new GetExceptionLog();
     if (userId.equals("")) {
-        session.setAttribute("redirecturl", request.getRequestURI()+(request.getQueryString()!=null?"?"+request.getQueryString():""));
+        session.setAttribute("redirecturl",request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
         response.sendRedirect("index.jsp?message=Please log in");
         return;
     }
-    if(!(usersession.isSuper()||usersession.isDepartmentAdmin())) {
-        elog.writeLog("[create_professor:] " + "username: " + userId + "tried to access this page,permission denied"+" /n");
+    if (!(usersession.isSuper() || usersession.isDepartmentAdmin())) {
+        elog.writeLog("[create_professor:] " + "username: " + userId + "tried to access this page,permission denied" + " /n");
         response.sendRedirect("subjects.jsp?message=You do not have permission to access that page");
         return;
     }//End page validation
-    
+
     String message = request.getParameter("message");
     String successMessage = request.getParameter("successMessage");
     if (message == null || message == "null") {
-        message="";
+        message = "";
     }
     if (successMessage == null) {
-        successMessage="";
+        successMessage = "";
     }
-    
+
     User user = new User(dbaccess);
     String c_id = request.getParameter("c_id");
     String sc_id = request.getParameter("sc_id");
     String toDel = request.getParameter("toDel");
     String bu_id = request.getParameter("bu_id");
     String sc_semesterid = request.getParameter("sc_semesterid");
-    if(c_id==null)
-        c_id ="";
-    if(sc_id==null)
-        sc_id ="";
-    if(toDel==null)
-        toDel ="";
-    if(sc_semesterid==null)
-        sc_semesterid ="";
-    if(bu_id==null)
-        bu_id ="";
-    
-    Section section=new Section(dbaccess);
-    ArrayList<ArrayList<String>> allSection = new  ArrayList<ArrayList<String>>();
+    if (c_id == null)
+        c_id = "";
+    if (sc_id == null)
+        sc_id = "";
+    if (toDel == null)
+        toDel = "";
+    if (sc_semesterid == null)
+        sc_semesterid = "";
+    if (bu_id == null)
+        bu_id = "";
+
+    Section section = new Section(dbaccess);
+    ArrayList<HashMap<String, String>> allSection = new ArrayList<HashMap<String, String>>();
     section.getSectionInfo(allSection);
     %>
     <title>SenecaBBB | Create Professor</title>
@@ -106,7 +106,7 @@
                                 <label for="sectionList" class="label">Section List:</label>
                                 <select name="sectionList" id="sectionList" title="Please Select a section">
                                 <% for(int i=0;i<allSection.size();i++){ %>
-                                    <option><%= allSection.get(i).get(0).concat(" ").concat(allSection.get(i).get(1)).concat(" ").concat(allSection.get(i).get(2)).concat(" ").concat(allSection.get(i).get(3)) %>  </option><%} %>
+                                    <option><%= allSection.get(i).get("c_id").concat(" ").concat(allSection.get(i).get("sc_id")).concat(" ").concat(allSection.get(i).get("sc_semesterid")).concat(" ").concat(allSection.get(i).get("d_code")) %>  </option><%} %>
                                 </select>
                             </div>
                             <div class="component">

@@ -646,7 +646,8 @@ section form .buttons {
 section form .actionButtons {
 	margin-left: 0px;
 }
-section form .buttons .button, section form .actionButtons .button,section .actionButtons .button {
+section form .buttons .button, section form .actionButtons .button,section .actionButtons .button, 
+.manageAttendeeBtn {
 	padding: 8px 15px;
 	min-width: 85px;
 	height: 39px;

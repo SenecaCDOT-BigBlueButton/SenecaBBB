@@ -36,7 +36,7 @@
     }
     String message = request.getParameter("message");
     if (message == null) {
-        message="";
+        message = "";
     }
     //End page validation
     %>

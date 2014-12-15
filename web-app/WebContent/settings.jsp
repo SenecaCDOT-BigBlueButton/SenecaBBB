@@ -102,7 +102,7 @@
                             <% } if (!usersession.isLDAP()) { %>
                             <div class="component">
                                 <div class="buttons">
-                                    <button type="button" name="button" id="changePassword" class="button" title="Click here to change your password" onclick="window.location.href='edit_password.jsp'">Change your password</button>
+                                    <button type="button" name="button" id="changePassword" class="button" title="Click here to change your password" onclick="window.location.href='edit_password.jsp'">Change Password</button>
                                 </div>
                             </div>
                             <%}%>

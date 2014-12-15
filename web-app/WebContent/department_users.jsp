@@ -178,8 +178,8 @@
                         elog.writeLog("[department_users:] " + message + "/n");
                         response.sendRedirect("logout.jsp?message=" + message);
                         return;
-                    } else {
-                        successMessage = "User " + mod + " from " + d_code + " was removed.";
+                    }else{
+                        successMessage="User "+ remove +" from "+d_code+" was removed.";
                     }
                 }
             }

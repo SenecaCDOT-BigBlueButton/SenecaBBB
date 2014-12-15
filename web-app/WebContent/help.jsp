@@ -19,8 +19,16 @@
         <section>
             <header>
                 <p><a href="calendar.jsp" tabindex="13">home</a> »<a href="help.jsp" tabindex="13">support</a> </p>
-                <h1>Support</h1>               
+                <h1>Support</h1>
             </header>
+            <div class="help">
+                <h2>BBBMan User Guide and Manual</h2>
+                <ul>
+                    <li>
+                        <p>--Please visit <a href="help/help.html" target="_blank">Seneca BigBlueButton Conference Management System Help</a> to get detail instructions</p>
+                    </li>
+                </ul>
+            </div>            
             <div class="help">
                 <h2>Common Issues</h2>
                 <ol>
@@ -31,12 +39,6 @@
                     <li><strong>Forgot Password</strong>
                         <p>--For Seneca College students and employees, please visit <a href="https://inside.senecacollege.ca/its/index.html">HELP DESK </a>to reset your password.</p>
                         <p>--For Guest user, please contact your event initiators.</p>  
-                    </li>
-                    <li><strong>Create Meetings/Lectures</strong>
-                        <p>--Login with your username and password</p>
-                        <p>--Click on Create Event</p> 
-                        <p>--Complete the information and specify any future time for your events</p>
-                        <p>--Click on the Save button</p> 
                     </li>
                     <li><strong>BigBlueButton FAQ</strong>
                         <P>--Please visit <a href="http://code.google.com/p/bigbluebutton/wiki/FAQ">BigBlueButton Frequently Asked Questions</a> to find your answers</p>                         

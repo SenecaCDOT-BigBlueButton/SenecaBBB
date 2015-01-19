@@ -143,7 +143,7 @@
                 change: function (e, object) {
                     window.location.href = "class_settings.jsp?class="+object.value;
                 }
-            });
+            })
         });
 
         $(screen).ready(function() {
@@ -153,40 +153,61 @@
                 "aoColumnDefs": [{ "bSortable": false, "aTargets":[3]}], 
                 "bRetrieve": true, 
                 "bDestroy": true
-                });
+            });
+            
             $.fn.dataTableExt.sErrMode = 'throw';
+            
             $('.dataTables_filter input').attr("placeholder", "Filter entries");
+            
             $(".remove").click(function(){
                 return window.confirm("Remove this student from list?");
             });
-            $("#submitFile").click(function(){
-                var filename = $("#studentListFile").val();
-                if(filename.length<1){
-                    $(".warningMessage").text("Please choose a file to upload!");
-                    var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
-                                        layout:'top',
-                                        type:'error'});
-                    return false;
+            
+            $('#uploadFile').on('submit', function(e) {
+                $.noty.closeAll();
+                if (!(validateFile() && validateClass())) {
+                    e.preventDefault();
                 }
             });
+            
+            $('#addStudent').on('submit', function(e) {
+                $.noty.closeAll();
+                if (!validateClass()) {
+                    e.preventDefault();
+                }
+            });
+           
         });
+        
+        function validateClass() {
+            var classToAdd =$('#classSel').val();
+            if (classToAdd == null) {
+                $('.warningMessage').text('Please choose a class to add student!');
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                 layout: 'top',
+                                 type: 'error'});
+                return false;
+            }
+            return true;
+        }
+        
+        function validateFile() {
+            var filename = $('#studentListFile').val();
+            if (filename.length < 1) {
+                $('.warningMessage').text('Please choose a file to upload!');
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                                  layout: 'top',
+                                  type: 'error'});
+                return false;
+            }
+            return true;
+        }
         
         /* Select Box */
         $(function(){
             $('select').selectmenu();
         });
         
-        /*Alert user to choose a class before adding students from file or search student to add*/
-        function checkClass(){
-            var classToAdd =$("#classSel").val();
-            if(classToAdd==null){
-                $(".warningMessage").text("Please choose a class to add student!");
-                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
-                                    layout:'top',
-                                    type:'error'});
-                return false;
-            }
-        }
     </script>
 </head>
 
@@ -208,7 +229,7 @@
                 <div class="successMessage"><%=successMessage %></div>
             </header>
             <% if (listofclasses.size() > 0) { %>
-            <form action="uploadfile.jsp" method="post" enctype="multipart/form-data" onsubmit="return checkClass()">
+            <form id="uploadFile" action="uploadfile.jsp" method="post" enctype="multipart/form-data" >
                 <article>
                     <div class="content">
                         <fieldset>
@@ -237,7 +258,7 @@
                     </div>
                 </article>
             </form>
-            <form name="addStudent" method="get" action="persist_class_settings.jsp" onsubmit="return checkClass()">
+            <form id="addStudent" name="addStudent" method="get" action="persist_class_settings.jsp" >
                 <article>
                     <header>
                         <h2>Add Student</h2>

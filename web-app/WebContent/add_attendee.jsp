@@ -271,7 +271,7 @@
                 <article>
                     <header>
                       <h2>Add User To Attendee List</h2>
-                      <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
+                      <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
                     </header>
                     <div class="content">
                         <fieldset>
@@ -289,7 +289,7 @@
                 <article>
                     <header id="expanSearch">
                         <h2>Search For Guest User</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                     </header>
                     <div class="content">
                         <fieldset>
@@ -306,7 +306,7 @@
                 <article>
                     <header id="expanSearch">
                         <h2>Search Results</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                     </header>
                     <div class="content">
                         <fieldset>
@@ -328,7 +328,7 @@
                                             <td><%= searchResult.get(i).get("nu_lastname") %></td>
                                             <td class="icons" align="center">
                                                 <a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&addBox=<%= searchResult.get(i).get("bu_id") %>" class="add">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Add user" alt="Add"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Add user" alt="Add"/>
                                                 </a>
                                             </td>
                                         </tr>
@@ -343,7 +343,7 @@
                 <article>
                     <header id="expandAttendee">
                         <h2>Meeting Attendee List</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                     </header>
                     <div class="content">
                         <fieldset>
@@ -366,11 +366,11 @@
                                             <td><%= eventAttendee.get(i).get("ma_ismod").equals("1") ? "Yes" : "" %></td>
                                             <td class="icons" align="center">
                                                 <a onclick="savePageOffset()" href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&mod=<%= eventAttendee.get(i).get("bu_id") %>" class="modify">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
+                                                <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
                                             </a></td>
                                             <td class="icons" align="center">
                                                 <a href="add_attendee.jsp?ms_id=<%= ms_id %>&m_id=<%= m_id %>&remove=<%= eventAttendee.get(i).get("bu_id") %>" class="remove">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                                 </a>
                                             </td>
                                         </tr>

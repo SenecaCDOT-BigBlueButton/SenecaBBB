@@ -119,7 +119,7 @@
             <article>
                 <header>
                     <h2>Meeting List</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>     
+                    <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>     
                 </header>
                 <div class="content">
                     <fieldset>
@@ -145,7 +145,7 @@
                                         <td><%= meetings.get(i).get("m_description") %></td>
                                         <td class="icons" align="center">
                                             <a href="view_event.jsp?ms_id=<%= meetings.get(i).get("ms_id") %>&m_id=<%= meetings.get(i).get("m_id") %>" class="view calendarIcon">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
+                                                <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
                                             </a>
                                         </td>
                                     </tr>
@@ -159,7 +159,7 @@
             <article>
                 <header>
                     <h2>Lecture List</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>     
+                    <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>     
                 </header>
                 <div class="content">
                     <fieldset>
@@ -185,7 +185,7 @@
                                         <td><%= lectures.get(j).get("l_description") %></td>
                                         <td class="icons" align="center">
                                             <a href="view_event.jsp?ls_id=<%= lectures.get(j).get("ls_id") %>&l_id=<%= lectures.get(j).get("l_id") %>" class="view calendarIcon">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
+                                                <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
                                             </a>
                                         </td>
                                     </tr>

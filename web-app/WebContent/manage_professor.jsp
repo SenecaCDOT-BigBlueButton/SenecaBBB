@@ -112,7 +112,7 @@
             <article>
                 <header>
                     <h2>Professors</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg"
+                    <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg"
                          title="Click here to collapse/expand content"/>
                 </header>
                 <div class="content">
@@ -146,7 +146,7 @@
                                         <td align="center">
                                             <a href="persist_professor.jsp?bu_id=<%= allProfessors.get(j).get("bu_id") %>&c_id=<%= allProfessors.get(j).get("c_id") %>&sc_id=<%= allProfessors.get(j).get("sc_id") %>&sc_semesterid=<%= allProfessors.get(j).get("sc_semesterid") %>&toDel=1"
                                                class="remove">
-                                               <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove Professor" alt="Remove"/>
+                                               <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Remove Professor" alt="Remove"/>
                                             </a>
                                         </td>
                                     </tr>

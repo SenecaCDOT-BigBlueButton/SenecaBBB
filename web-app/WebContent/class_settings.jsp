@@ -262,7 +262,7 @@
                 <article>
                     <header>
                         <h2>Add Student</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
                     </header>
                     <div class="content">
                         <fieldset>
@@ -279,7 +279,7 @@
                 <article>
                     <header id="expandGuest">
                         <h2>Student List</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                     </header>
                     <div class="content">
                         <fieldset>
@@ -309,7 +309,7 @@
                                             <td><%= stuList.get(k).get("s_isbanned")%></td>
                                             <td class="icons" align="center">
                                             <a onclick="savePageOffset()" href="<%= "class_settings.jsp?class="+ selectedclass + "&removeStudent=" + stuList.get(k).get("bu_id") %>" class="remove">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
+                                                <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                             </a>
                                             </td>
                                         </tr>

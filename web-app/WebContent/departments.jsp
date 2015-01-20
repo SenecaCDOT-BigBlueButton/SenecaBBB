@@ -174,7 +174,7 @@
             <article>
                 <header>
                     <h2>Department List</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                    <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
                 <div class="content">
                     <fieldset>
@@ -203,11 +203,11 @@
                                     <tr>
                                         <td class="row"><%= deptList.get(i).get("d_code") %></td>
                                         <td><%= deptList.get(i).get("d_name") %></td>
-                                        <td class="icons" align="center"><a href="department_users.jsp?DeptCode=<%= deptList.get(i).get("d_code") %>" class="users"><img src="images/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
+                                        <td class="icons" align="center"><a href="department_users.jsp?DeptCode=<%= deptList.get(i).get("d_code") %>" class="users"><img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="View all users associated with this department" alt="Users"/></a></td>
                                         <% //The ampersand symbol that are in some department names needs to be escaped to %26 before merged into GET URL %>
-                                        <td class="icons" align="center"><a href="modify_department.jsp?mod_d_code=<%= deptList.get(i).get("d_code") %>&mod_d_name=<%= deptList.get(i).get("d_name").replace("&", "%26") %>" class="modify"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
+                                        <td class="icons" align="center"><a href="modify_department.jsp?mod_d_code=<%= deptList.get(i).get("d_code") %>&mod_d_name=<%= deptList.get(i).get("d_name").replace("&", "%26") %>" class="modify"><img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Modify department name" alt="Modify"/></a></td>
                                         <% if (usersession.isSuper()) { %>
-                                        <td class="icons" align="center"><a href="departments.jsp?deptRemove=<%= deptList.get(i).get("d_code") %>" class="remove"><img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
+                                        <td class="icons" align="center"><a href="departments.jsp?deptRemove=<%= deptList.get(i).get("d_code") %>" class="remove"><img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Remove department" alt="Remove"/></a></td>
                                         <% } %>
                                     </tr>
                                 <% } %>

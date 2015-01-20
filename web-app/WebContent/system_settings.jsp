@@ -118,7 +118,7 @@
                 <article>
                     <header>
                         <h2>User Role Setting</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                     </header>
                     <div class="content">
                         <div class="tableComponent" >
@@ -159,7 +159,7 @@
                 <article>
                     <header>
                         <h2>BBB Admin Settings</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                     </header>
                     <div class="content">
                         <fieldset>
@@ -184,7 +184,7 @@
                                                 <a <% if(systemInfo.get(j).get("key_name").indexOf("next")>=0 || systemInfo.get(j).get("key_name").indexOf("default")>=0) out.print("style='display:none'"); %> 
                                                   href="edit_bbb_admin.jsp?key_name=<%= systemInfo.get(j).get("key_name") %>&key_title=<%= systemInfo.get(j).get("key_title") %>&key_value=<%= systemInfo.get(j).get("key_value") %>" 
                                                           class="modify">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="modify bbb_admin" alt="Edit"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="modify bbb_admin" alt="Edit"/>
                                                 </a>
                                             </td>
                                             </tr>

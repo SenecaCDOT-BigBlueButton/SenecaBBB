@@ -18,4 +18,19 @@
         <location>/internal_server_error.jsp</location>
     </error-page>
     
+    <context-param>
+        <param-name>ImagesDirectory</param-name>
+        <param-value>images</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>JavaScriptDirectory</param-name>
+        <param-value>js</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>CSSDirectory</param-name>
+        <param-value>css</param-value>
+    </context-param>
+    
 </web-app>

@@ -237,7 +237,7 @@
                 <article>
                     <header>
                       <h2>Add User</h2>
-                      <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
+                      <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
                     </header>
                     <div class="content">
                         <fieldset>
@@ -254,7 +254,7 @@
                     <header>
                         <h2>Users</h2>
                         <img class="expandContent" width="9" height="6"
-                             src="images/arrowDown.svg"
+                             src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg"
                              title="Click here to collapse/expand content" />
                     </header>
                     <div class="content">
@@ -291,13 +291,13 @@
                                             <% if (usersession.isSuper()) { %>
                                             <td class="icons" align="center">
                                                 <a onclick="savePageOffset()" href="department_users.jsp?DeptCode=<%= deptUserList.get(i).get("d_code") %>&mod=<%= deptUserList.get(i).get("bu_id") %>" class="modify" >
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Modify Mod Status" alt="Modify"/>
                                                 </a>
                                             </td>
                                             <% }  %>
                                             <td class="icons" align="center">
                                                 <a onclick="savePageOffset()" href="department_users.jsp?DeptCode=<%= deptUserList.get(i).get("d_code") %>&remove=<%= deptUserList.get(i).get("bu_id") %>" class="remove">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Remove user" alt="Remove"/>
                                                 </a>
                                             </td>
                                         </tr>

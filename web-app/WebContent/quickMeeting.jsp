@@ -120,7 +120,7 @@
                 <article>
                     <header>
                         <h2>Meeting Details</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
                     </header>
                     <div class="content">
                         <fieldset>

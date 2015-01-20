@@ -242,7 +242,7 @@
                 <article>
                     <header>
                         <h2>Event Schedule</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                     </header>
                     <div class="content">
                         <fieldset>
@@ -285,13 +285,13 @@
                                         <% if (status==1) { %>
                                             <td class="icons" align="center">
                                                 <a href="edit_event_schedule.jsp?ms_id=<%= ms_id %>&m_id=1" class="modify">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting schedule" alt="Modify"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Modify meeting schedule" alt="Modify"/>
                                                 </a>
                                             </td>
                                         <% } else if (status==3) { %>
                                             <td class="icons" align="center">
                                                 <a href="edit_event_schedule.jsp?ls_id=<%= ls_id %>&l_id=1" class="modify">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture schedule" alt="Modify"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Modify lecture schedule" alt="Modify"/>
                                                 </a>
                                             </td>
                                         <% } %>
@@ -339,13 +339,13 @@
                                             <td><%= meetingResult.get(i).get("m_description") %></td>
                                             <td class="icons" align="center">
                                                 <a href="view_event.jsp?ms_id=<%= ms_id %>&m_id=<%= meetingResult.get(i).get("m_id") %>" class="view">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
                                                 </a>
                                             </td>
                                             <% if (status == 1) { %>
                                             <td class="icons" align="center">
                                                 <a href="edit_meeting.jsp?ms_id=<%= ms_id %>&m_id=<%= meetingResult.get(i).get("m_id") %>" class="modify">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify meeting" alt="Modify"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Modify meeting" alt="Modify"/>
                                                 </a>
                                             </td>
                                             <% } %>
@@ -365,13 +365,13 @@
                                             <td><%= lectureResult.get(j).get("l_description") %></td>
                                             <td class="icons" align="center">
                                                 <a href="view_event.jsp?ls_id=<%= ls_id %>&l_id=<%= lectureResult.get(j).get("l_id") %>" class="view">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="View event" alt="View_Event"/>
                                                 </a>
                                             </td>
                                             <% if (status == 3) { %>
                                             <td class="icons" align="center">
                                                 <a href="edit_lecture.jsp?ls_id=<%= ls_id %>&l_id=<%= lectureResult.get(j).get("l_id") %>" class="modify">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Modify lecture" alt="Modify"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Modify lecture" alt="Modify"/>
                                                 </a>
                                             </td>
                                             <% } %>
@@ -391,7 +391,7 @@
                     <% } else { %>
                         <h2>Student List</h2>
                     <% } %>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                     </header>
                     <div class="content">
                         <fieldset>

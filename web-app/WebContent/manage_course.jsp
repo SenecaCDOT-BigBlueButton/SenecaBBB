@@ -112,7 +112,7 @@
                <article>
                     <header>
                         <h2>Subjects</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                     </header>
                     <div class="content"> 
                     <div class="actionButtons" style="margin-bottom:10px;">
@@ -141,12 +141,12 @@
                                             <td ><%= allCourse.get(j).get("c_name") %></td>
                                             <td  align="center">
                                                 <a href="create_course.jsp?c_id=<%= allCourse.get(j).get("c_id") %>&c_name=<%= allCourse.get(j).get("c_name") %>&toEdit=1" class="modify">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Add a course" alt="Edit"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Add a course" alt="Edit"/>
                                                 </a>
                                             </td>
                                             <td  align="center">
                                                 <a href="create_course.jsp?c_id=<%= allCourse.get(j).get("c_id") %>&c_name=<%= allCourse.get(j).get("c_name") %>&toDel=1" class="remove">
-                                                    <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove course" alt="Remove"/>
+                                                    <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Remove course" alt="Remove"/>
                                                 </a>
                                             </td>
                                         </tr>

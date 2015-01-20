@@ -117,7 +117,7 @@
             <article>
                 <header>
                     <h2>Subject and Professor</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                    <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
                 <div class="content">
                     <div class="actionButtons">
@@ -130,7 +130,7 @@
             <article>
                 <header>
                     <h2>Section Created</h2>
-                    <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                    <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                 </header>
                 <div class="content">
                     <fieldset>
@@ -161,7 +161,7 @@
                                             <a onclick="savePageOffset()" 
                                                href="persist_section.jsp?courseCode=<%= sectionInfo.get(i).get("c_id") %>&courseSection=<%= sectionInfo.get(i).get("sc_id") %>&semesterID=<%= sectionInfo.get(i).get("sc_semesterid") %>&toDel=1" 
                                                class="remove">
-                                                <img src="images/iconPlaceholder.svg" width="17" height="17" title="Remove Subject" alt="Remove"/>
+                                                <img src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Remove Subject" alt="Remove"/>
                                             </a>
                                         </td>
                                     </tr>

@@ -132,7 +132,7 @@
                 <article>
                     <header>
                       <h2>Add Internal User</h2>
-                      <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
+                      <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content" alt="Arrow"/>
                     </header>
                     <div class="content">
                         <fieldset>
@@ -147,7 +147,7 @@
                 <article>
                     <header>
                         <h2>All Users Information</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg" title="Click here to collapse/expand content"/>
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg" title="Click here to collapse/expand content"/>
                     </header>
                     <div class="content">
                         <fieldset>
@@ -177,12 +177,12 @@
                                                 <td><%= allUserInfo.get(i).get("bu_issuper") %></td>
                                                 <td class="icons" align="center">
                                                     <a  class="schedule"  href='view_schedule.jsp?id=<%= allUserInfo.get(i).get("bu_id") %>' >
-                                                        <img alt="Search" src="images/iconPlaceholder.svg" width="17" height="17" title="User Schedule" />
+                                                        <img alt="Search" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="User Schedule" />
                                                     </a>
                                                 </td>
                                                 <td class="icons" align="center">
                                                     <a class="modify" href= <%= "edit_user.jsp?id=" +  allUserInfo.get(i).get("bu_id")  +"&action=edit" %>>
-                                                        <img alt="Edit" src="images/iconPlaceholder.svg" width="17" height="17" title="Edit User" />
+                                                        <img alt="Edit" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/iconPlaceholder.svg" width="17" height="17" title="Edit User" />
                                                     </a>
                                                 </td>
                                             </tr>

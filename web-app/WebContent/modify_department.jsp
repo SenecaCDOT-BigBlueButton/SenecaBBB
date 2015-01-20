@@ -104,7 +104,7 @@
                 <article>
                     <header>
                         <h2>Modify Department Form</h2>
-                        <img class="expandContent" width="9" height="6" src="images/arrowDown.svg"
+                        <img class="expandContent" width="9" height="6" src="${pageContext.servletContext.contextPath}/${initParam.ImagesDirectory}/arrowDown.svg"
                              title="Click here to collapse/expand content"/>
                     </header>
                     <div class="content">

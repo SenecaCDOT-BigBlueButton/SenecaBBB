@@ -35,7 +35,7 @@ public class DBAccess {
     
     /** Use this method if you need to reestablish connection */
     public boolean openConnection() {
-        _conn = _db.openConnection();
+        _conn = _db.getConnectionFromPool();
         return (_conn != null);
     }
    

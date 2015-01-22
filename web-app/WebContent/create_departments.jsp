@@ -14,10 +14,10 @@
     <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
     <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
     <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
-    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-    <script type="text/javascript" src="js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="js/additional-methods.min.js"></script>
+    <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/modernizr.custom.79639.js"></script>
+    <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/additional-methods.min.js"></script>
     
     <%
     //Start page validation

@@ -1,6 +1,6 @@
 <jsp:useBean id="usersession" class="helper.UserSession" scope="session" />
-<script type="text/javascript" src="js/jquery.noty.packaged.js"></script>
-<script type="text/javascript" src="js/menuController.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/jquery.noty.packaged.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/menuController.js"></script>
 
 <script type="text/javascript">
 

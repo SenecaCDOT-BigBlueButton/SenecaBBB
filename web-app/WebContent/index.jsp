@@ -43,8 +43,8 @@
     <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico" />
     <link href="css/themes/base/style.css" rel="stylesheet" type="text/css" media="all">
     <link href="css/fonts.css" rel="stylesheet" type="text/css" media="all">
-    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="js/jquery.noty.packaged.js"></script>
+    <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/jquery.noty.packaged.js"></script>
     <script type="text/javascript">
     /*
         if (window.location.protocol == "http:") {

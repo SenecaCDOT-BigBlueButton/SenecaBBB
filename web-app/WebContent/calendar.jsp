@@ -57,7 +57,6 @@
     
     ArrayList<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
     Meeting meet = new Meeting(dbaccess);
-    dbaccess.resetFlag();
     if (!meet.getMeetingsForUser(result, usersession.getUserId(), check1, check3)) {
         message = meet.getErrMsg("CAL01");
         elog.writeLog("[calendar:] " + message +"/n");
@@ -66,7 +65,6 @@
     }
     meetingJSON = meetingDBToJSON(result);
     Lecture lect = new Lecture(dbaccess);
-    dbaccess.resetFlag();
     if (!lect.getLecturesForUser(result, usersession.getUserId(), check2, check4)) {
         message = meet.getErrMsg("CAL02");
         elog.writeLog("[calendar:] " + message +"/n");

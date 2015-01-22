@@ -71,10 +71,8 @@
     ArrayList<HashMap<String,String>> meetingResult = new ArrayList<HashMap<String,String>>();
     ArrayList<HashMap<String,String>> lectureResult = new ArrayList<HashMap<String,String>>();
     Meeting meet = new Meeting(dbaccess);
-    dbaccess.resetFlag();  
     meet.getMeetingsForUser(meetingResult, userID, true, true);
     Lecture lect = new Lecture(dbaccess);
-    dbaccess.resetFlag();
     lect.getLecturesForUser(lectureResult, userID, true, true);
     %>
     <script type="text/javascript" >

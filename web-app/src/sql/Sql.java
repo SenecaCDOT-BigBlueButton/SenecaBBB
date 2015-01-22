@@ -38,7 +38,7 @@ public class Sql {
     }
     
     public String getErrMsg(String code) {
-        resetErrorFlag();
+//        resetErrorFlag();
         String retMsg = "<br />SQL Error Code: " + getErrLog() 
                 + "<br />Error Submission Code : " + code
                 + "<br />Please include the Error Submission Code if you wish to report this problem to site Admin";
@@ -54,9 +54,9 @@ public class Sql {
      * else no other SQL statements would run
      * @return
      */
-    public boolean resetErrorFlag() {
-        return _dbAccess.resetFlag();
-    }
+//    public boolean resetErrorFlag() {
+//        return _dbAccess.resetFlag();
+//    }
     
     /*public String errCleanPkg(boolean init, String eCode, String redirect) {
         String msg = "";

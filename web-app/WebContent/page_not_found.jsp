@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SenecaBBB | Page Not Found</title>
     <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
-    <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/fonts.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/style.css">
     <!--
     To customize 404 error page, please add the following lines to web.xml file in tomcat7 server
     <error-page>

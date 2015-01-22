@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SenecaBBB | Help</title>
     <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
-    <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/fonts.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/style.css">
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/jquery-1.9.1.js"></script>
 </head>
 <body>

@@ -15,13 +15,13 @@
         }
         if($(".warningMessage").text() !=""){
             var message = $(".warningMessage").text();
-            var notierrMessage = noty({text: '<div>'+ message+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+            var notierrMessage = noty({text: '<div>'+ message+' <img  class="notyCloseButton" src="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/images/x.png" alt="close" /></div>',
                           layout:'top',
                           type:'error'});
         }
         if($(".successMessage").text() !=""){
             var successMessage = $(".successMessage").text();
-            var notiMessage = noty({text: '<div>'+ successMessage+'<img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+            var notiMessage = noty({text: '<div>'+ successMessage+'<img  class="notyCloseButton" src="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/images/x.png" alt="close" /></div>',
                           layout:'top',
                           timeout:10000,
                           type:'success'
@@ -29,7 +29,7 @@
         }
         if($(".welcomeMessage").text() !=""){
             var welcomeMessage = $(".welcomeMessage").text();
-            var notiWelcomeMessage = noty({text: '<div>'+ welcomeMessage+'<img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+            var notiWelcomeMessage = noty({text: '<div>'+ welcomeMessage+'<img  class="notyCloseButton" src="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/images/x.png" alt="close" /></div>',
                           layout:'top',
                           timeout:3000,
                           type:'success'

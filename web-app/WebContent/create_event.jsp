@@ -12,13 +12,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SenecaBBB | Create Event</title>
     <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
-    <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.datepicker.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.timepicker.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.selectmenu.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/fonts.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/style.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/jquery.ui.core.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/jquery.ui.theme.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/jquery.ui.datepicker.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/jquery.timepicker.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/jquery.ui.selectmenu.css">
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/modernizr.custom.79639.js"></script>
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/ui/jquery.ui.core.js"></script>
@@ -105,7 +105,7 @@
             var currentUTCTime = moment.utc();
             if(utcdayTime.isBefore(currentUTCTime)){
                 $(".warningMessage").text("Event Start Date&Time must be later than current Date&Time!");
-                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/images/x.png" alt="close" /></div>',
                                     layout:'top',
                                     type:'error'});
                 return false;

@@ -11,10 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SenecaBBB | Help: View Event Schedule</title>
     <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico">
-    <link rel="stylesheet" type="text/css" media="all" href="css/fonts.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/style.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.core.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/themes/base/jquery.ui.theme.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/fonts.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/style.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/jquery.ui.core.css">
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/jquery.ui.theme.css">
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/ui/jquery.ui.core.js"></script>
     <%

@@ -41,8 +41,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SenecaBBB | Conference Management System</title>
     <link rel="shortcut icon" href="http://www.senecacollege.ca/favicon.ico" />
-    <link href="css/themes/base/style.css" rel="stylesheet" type="text/css" media="all">
-    <link href="css/fonts.css" rel="stylesheet" type="text/css" media="all">
+    <link href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/fonts.css" rel="stylesheet" type="text/css" media="all">
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/${initParam.JavaScriptDirectory}/jquery.noty.packaged.js"></script>
     <script type="text/javascript">
@@ -58,14 +58,14 @@
         function validate() {
             if (trim(document.getElementById("SenecaLDAPBBBLogin").value) == "") {
                 $(".warningMessage").text("Login empty!");
-                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/images/x.png" alt="close" /></div>',
                                     layout:'top',
                                     type:'error'});
                 document.getElementById("SenecaLDAPBBBLogin").focus();
                 return false;
             } else if (trim(document.getElementById("SenecaLDAPBBBLoginPass").value) == "") {
                 $(".warningMessage").text("Password empty!");
-                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                var notyMsg = noty({text: '<div>'+ $(".warningMessage").text()+' <img  class="notyCloseButton" src="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/images/x.png" alt="close" /></div>',
                                     layout:'top',
                                     type:'error'});
                 document.getElementById("SenecaLDAPBBBLoginPass").focus();
@@ -79,14 +79,14 @@
             }
             if($(".warningMessage").text() !=""){
                 var message = $(".warningMessage").text();
-                var notierrMessage = noty({text: '<div>'+ message+' <img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                var notierrMessage = noty({text: '<div>'+ message+' <img  class="notyCloseButton" src="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/images/x.png" alt="close" /></div>',
                               layout:'top',
                               type:'error'});
                 }
         
             if($(".successMessage").text() !=""){
                 var successMessage = $(".successMessage").text();
-                var notiMessage = noty({text: '<div>'+ successMessage+'<img  class="notyCloseButton" src="css/themes/base/images/x.png" alt="close" /></div>',
+                var notiMessage = noty({text: '<div>'+ successMessage+'<img  class="notyCloseButton" src="${pageContext.servletContext.contextPath}/${initParam.CSSDirectory}/themes/base/images/x.png" alt="close" /></div>',
                               layout:'top',
                               type:'success'
                              });

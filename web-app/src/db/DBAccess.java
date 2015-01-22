@@ -18,9 +18,6 @@ import helper.GetExceptionLog;
  */
 public class DBAccess {
     private DBConnection _db = null;
-    private PreparedStatement _stmt = null;
-    private ResultSet _rs = null;
-    private Connection _conn = null;
     private String _errCode = null;
     private String _errLog = null; 
     
@@ -30,22 +27,16 @@ public class DBAccess {
         _db = DBConnection.getInstance();
     }
     
-    /** Use this method if you need to reestablish connection */
-    public boolean openConnection() {
-        _conn = _db.getConnectionFromPool();
-        return (_conn != null);
-    }
-   
-    public void closeConnection() {
+    public void closeResources(Connection connection, PreparedStatement statement, ResultSet resultSet) {
         try {
-            if (_stmt != null) { 
-                _stmt.close();
+            if (statement != null) { 
+                statement.close();
             }
-            if (_rs != null) {
-                _rs.close();
+            if (resultSet != null) {
+                resultSet.close();
             }
-            if (_conn != null) {
-                _conn.close();
+            if (connection != null) {
+                connection.close();
             }
         } catch (SQLException e) {
             _errLog += "\nSQLException: failed to close Connection";
@@ -63,56 +54,60 @@ public class DBAccess {
     
     /**
      * Executes all queries<p>
-     * Note that once _flag is set to false, it must be manually set back to
-     * true by the resetFlag() function before further SQL statement can be executed 
      * @param result
      * @param query
      * @return
      */
     public boolean queryDB(ArrayList<HashMap<String, String>> result, String query) {
-        result.clear();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
         try {
-            openConnection();
-            _stmt = _conn.prepareStatement(query);
-            _rs = _stmt.executeQuery();
-            int colCount = _rs.getMetaData().getColumnCount();                    
-            while (_rs.next()) {
-                HashMap<String, String> row = new HashMap<String, String>();
-                for (int i=1; i<=colCount; i++) {
-                    row.put(_rs.getMetaData().getColumnName(i), _rs.getString(i));
-                }
-                result.add(row);
-            }
+            connection = _db.getConnectionFromPool();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();                   
+            parseResultSet(resultSet, result);
         } catch (SQLException e) {
             _errCode = Integer.toString(e.getErrorCode());
             _errLog = e.getMessage();
             elog.writeLog("[queryDB:] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());                    
         } finally {
-            closeConnection();
+            closeResources(connection, statement, resultSet);
         }
         return true;
+    }
+    
+    private void parseResultSet(ResultSet resultSet, ArrayList<HashMap<String, String>> parsedResults) throws SQLException {
+        int colCount = resultSet.getMetaData().getColumnCount();
+        while (resultSet.next()) {
+            HashMap<String, String> row = new HashMap<String, String>();
+            for (int i = 1; i <= colCount; i++) {
+                row.put(resultSet.getMetaData().getColumnName(i), resultSet.getString(i));
+            }
+            parsedResults.add(row);
+        }
     }
     
     /**
      * Execute SQL Data Manipulation Language (DML) statement, 
      * such as INSERT, UPDATE or DELETE; or an SQL statement that returns nothing, 
      * such as a DDL statements<p>
-     * Note that once _flag is set to false, it must be manually set back to
-     * true by the resetFlag() function before further SQL statement can be executed 
      * @param statement
      * @return
      */
-    public boolean updateDB(String statement) {
+    public boolean updateDB(String updateStatement) {
+        Connection connection = null;
+        PreparedStatement statement = null;
         try {
-            openConnection();
-            _stmt = _conn.prepareStatement(statement);
-            _stmt.executeUpdate();
+            connection = _db.getConnectionFromPool();
+            statement = connection.prepareStatement(updateStatement);
+            statement.executeUpdate();
         } catch (SQLException e) {
             _errCode = Integer.toString(e.getErrorCode());
             _errLog = e.getMessage();
             elog.writeLog("[updateDB:] " + _errCode + "-" + _errLog + "/n"+ e.getStackTrace().toString());                   
         } finally {
-            closeConnection();
+            closeResources(connection, statement, null);
         }
         return true;
     }
